@@ -17,29 +17,73 @@ export default async function LeadDetailPage({ params }: Props) {
   const { id } = await params;
   const sb = gogaAdmin();
 
-  const [{ data: lead }, { data: events }, { data: packages }] =
-    await Promise.all([
-      sb
-        .from("leads")
-        .select(
-          "id, name, email, phone, message, source, stage, locale, ip, shoot_date, notes, created_at, package_id",
-        )
-        .eq("id", id)
-        .single(),
-      sb
-        .from("lead_events")
-        .select("id, kind, payload, actor, created_at")
-        .eq("lead_id", id)
-        .order("created_at", { ascending: false })
-        .limit(40),
-      sb
-        .from("packages")
-        .select("id, name_en, base_price_cents, currency")
-        .eq("published", true)
-        .order("sort_order", { ascending: true }),
-    ]);
+  const [
+    { data: lead },
+    { data: events },
+    { data: packages },
+    { data: bookings },
+  ] = await Promise.all([
+    sb
+      .from("leads")
+      .select(
+        "id, name, email, phone, message, source, stage, locale, ip, shoot_date, notes, created_at, package_id",
+      )
+      .eq("id", id)
+      .single(),
+    sb
+      .from("lead_events")
+      .select("id, kind, payload, actor, created_at")
+      .eq("lead_id", id)
+      .order("created_at", { ascending: false })
+      .limit(40),
+    sb
+      .from("packages")
+      .select("id, name_en, base_price_cents, currency")
+      .eq("published", true)
+      .order("sort_order", { ascending: true }),
+    sb
+      .from("bookings")
+      .select(
+        `id, status, shoot_date, total_cents, currency,
+         packages(name_en),
+         contracts(id, status, signed_at),
+         deliveries(id, token, password_hash, view_count, archived)`,
+      )
+      .eq("lead_id", id)
+      .order("created_at", { ascending: false }),
+  ]);
 
   if (!lead) notFound();
+
+  const relatedBookings = (bookings ?? []).map((b) => {
+    const contract = Array.isArray(b.contracts) ? b.contracts[0] : b.contracts;
+    const delivery = Array.isArray(b.deliveries)
+      ? b.deliveries.find((d) => !d.archived)
+      : b.deliveries;
+    return {
+      id: b.id,
+      status: b.status,
+      shootDate: b.shoot_date,
+      packageLabel: b.packages?.name_en ?? null,
+      totalCents: b.total_cents,
+      currency: b.currency,
+      contract: contract
+        ? {
+            id: contract.id,
+            status: contract.status,
+            signedAt: contract.signed_at,
+          }
+        : null,
+      delivery: delivery
+        ? {
+            id: delivery.id,
+            token: delivery.token,
+            hasPassword: !!delivery.password_hash,
+            viewCount: delivery.view_count,
+          }
+        : null,
+    };
+  });
 
   return (
     <AppShell
@@ -105,6 +149,7 @@ export default async function LeadDetailPage({ params }: Props) {
             priceCents: p.base_price_cents,
             currency: p.currency,
           }))}
+          relatedBookings={relatedBookings}
         />
       </div>
     </AppShell>

@@ -18,11 +18,26 @@ export default async function BookingDetailPage({ params }: Props) {
        subtotal_cents, deposit_cents, total_cents, currency, status, deposit_status,
        stripe_session_id, contract_status, client_name, client_email, client_phone,
        notes, created_at,
-       packages(name_en, slug)`,
+       packages(name_en, slug),
+       deliveries(id, token, password_hash, view_count, archived,
+                   delivery_images(count))`,
     )
     .eq("id", id)
     .single();
   if (!data) notFound();
+
+  const delivery = (data.deliveries ?? []).find((d) => !d.archived) ?? null;
+  const deliverySummary = delivery
+    ? {
+        id: delivery.id,
+        token: delivery.token,
+        hasPassword: !!delivery.password_hash,
+        viewCount: delivery.view_count,
+        imageCount:
+          (delivery.delivery_images as Array<{ count: number }> | null)?.[0]
+            ?.count ?? 0,
+      }
+    : null;
 
   return (
     <AppShell
@@ -86,6 +101,7 @@ export default async function BookingDetailPage({ params }: Props) {
             createdAt: data.created_at,
             packageName: data.packages?.name_en ?? null,
           }}
+          delivery={deliverySummary}
         />
       </div>
     </AppShell>

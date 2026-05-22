@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   setLeadStage,
@@ -37,18 +38,36 @@ type Pkg = {
   currency: string;
 };
 
+type RelatedBooking = {
+  id: string;
+  status: string;
+  shootDate: string | null;
+  packageLabel: string | null;
+  totalCents: number | null;
+  currency: string | null;
+  contract: { id: string; status: string; signedAt: string | null } | null;
+  delivery: {
+    id: string;
+    token: string;
+    hasPassword: boolean;
+    viewCount: number;
+  } | null;
+};
+
 export function LeadDetail({
   lead,
   stages,
   labels,
   events,
   packages,
+  relatedBookings,
 }: {
   lead: Lead;
   stages: LeadStage[];
   labels: Record<LeadStage, string>;
   events: EventRow[];
   packages: Pkg[];
+  relatedBookings: RelatedBooking[];
 }) {
   const router = useRouter();
   const [stage, setStage] = useState<LeadStage>(lead.stage);
@@ -128,6 +147,65 @@ export function LeadDetail({
             className="block w-full rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-[14px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
           />
         </section>
+
+        {relatedBookings.length > 0 ? (
+          <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+            <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
+              Linked work
+            </h3>
+            <ul className="space-y-2">
+              {relatedBookings.map((b) => (
+                <li
+                  key={b.id}
+                  className="rounded-xl border border-black/5 bg-slate-50/60 p-3"
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <Link
+                      href={`/app/bookings/${b.id}`}
+                      className="text-[13px] font-medium text-[var(--ink-900)] hover:underline"
+                    >
+                      {b.packageLabel ?? "Booking"}
+                      {b.shootDate
+                        ? ` · ${new Date(b.shootDate).toLocaleDateString()}`
+                        : ""}
+                    </Link>
+                    <span className="rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5">
+                      {b.status}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
+                    {b.contract ? (
+                      <Link
+                        href={`/app/contracts/${b.contract.id}`}
+                        className="rounded-full bg-white px-2.5 py-0.5 uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5 hover:bg-slate-100"
+                      >
+                        Contract · {b.contract.status}
+                      </Link>
+                    ) : null}
+                    {b.delivery ? (
+                      <Link
+                        href={`/app/deliveries/${b.delivery.id}`}
+                        className="rounded-full bg-white px-2.5 py-0.5 uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5 hover:bg-slate-100"
+                      >
+                        Gallery · {b.delivery.viewCount} view
+                        {b.delivery.viewCount === 1 ? "" : "s"}
+                      </Link>
+                    ) : null}
+                    {b.totalCents != null && b.currency ? (
+                      <span className="ml-auto text-[12px] text-[var(--ink-500)]">
+                        {new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: b.currency,
+                          maximumFractionDigits: 0,
+                        }).format(b.totalCents / 100)}
+                      </span>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">

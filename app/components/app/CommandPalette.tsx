@@ -1,10 +1,5 @@
 "use client";
 
-// TODO(tourism-clone): stripped to navigation-only for the tourism rewrite.
-// Spawn/business/tools/artifacts commands removed alongside mock-businesses /
-// mock-artifacts data fixtures. A later task can repopulate this with
-// hotel/contract/contact searches once the Supabase data layer is live.
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -19,51 +14,137 @@ interface Item {
   shortcut?: string;
 }
 
+type RemoteHit = {
+  id: string;
+  label: string;
+  hint: string;
+  href: string;
+  group: string;
+};
+
 export function CommandPalette() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(0);
+  const [hits, setHits] = useState<RemoteHit[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Build the static command set — navigation + sign-out only for now.
+  // Navigation + global actions for the photographer admin.
   const items: Item[] = useMemo(() => {
-    const list: Item[] = [
+    return [
       {
         id: "go-hub",
-        label: "Go to Overview",
-        hint: "Main dashboard",
+        label: "Overview",
+        hint: "Studio dashboard",
         group: "Navigate",
         href: "/app",
         shortcut: "g o",
       },
       {
-        id: "go-account",
-        label: "Account",
-        hint: "Your personal settings",
+        id: "go-leads",
+        label: "Leads",
+        hint: "Pipeline of inquiries",
         group: "Navigate",
-        href: "/app/account",
+        href: "/app/leads",
       },
       {
-        id: "go-org",
-        label: "Organization",
-        hint: "Team-wide settings",
+        id: "go-bookings",
+        label: "Bookings",
+        hint: "Reserved & confirmed shoots",
         group: "Navigate",
-        href: "/app/organization",
+        href: "/app/bookings",
       },
       {
-        id: "go-billing",
-        label: "Billing",
-        hint: "Plan and invoices",
+        id: "go-calendar",
+        label: "Calendar",
+        hint: "Month view of shoots",
         group: "Navigate",
-        href: "/app/billing",
+        href: "/app/calendar",
       },
       {
-        id: "go-help",
-        label: "Help",
-        hint: "In-app docs",
+        id: "go-contracts",
+        label: "Contracts",
+        hint: "Signature pipeline",
         group: "Navigate",
-        href: "/app/help",
+        href: "/app/contracts",
+      },
+      {
+        id: "go-deliveries",
+        label: "Deliveries",
+        hint: "Client galleries",
+        group: "Navigate",
+        href: "/app/deliveries",
+      },
+      {
+        id: "go-packages",
+        label: "Packages",
+        hint: "Pricing & inclusions",
+        group: "Navigate",
+        href: "/app/packages",
+      },
+      {
+        id: "go-projects",
+        label: "Projects",
+        hint: "Portfolio galleries",
+        group: "Navigate",
+        href: "/app/projects",
+      },
+      {
+        id: "go-services",
+        label: "Services",
+        hint: "Public services page",
+        group: "Navigate",
+        href: "/app/services",
+      },
+      {
+        id: "go-pages",
+        label: "Pages",
+        hint: "Static page content",
+        group: "Navigate",
+        href: "/app/pages",
+      },
+      {
+        id: "go-hero",
+        label: "Homepage hero",
+        hint: "Landing copy",
+        group: "Navigate",
+        href: "/app/hero",
+      },
+      {
+        id: "go-contact",
+        label: "Contact inbox",
+        hint: "Form submissions",
+        group: "Navigate",
+        href: "/app/contact",
+      },
+      {
+        id: "go-chatbot",
+        label: "Chatbot sessions",
+        hint: "Site assistant transcripts",
+        group: "Navigate",
+        href: "/app/chatbot",
+      },
+      {
+        id: "create-project",
+        label: "New project",
+        hint: "Start a portfolio piece",
+        group: "Create",
+        href: "/app/projects/new",
+      },
+      {
+        id: "create-package",
+        label: "New package",
+        hint: "Add a pricing tier",
+        group: "Create",
+        href: "/app/packages/new",
+      },
+      {
+        id: "create-service",
+        label: "New service",
+        hint: "Add a service offering",
+        group: "Create",
+        href: "/app/services/new",
       },
       {
         id: "action-signout",
@@ -75,17 +156,47 @@ export function CommandPalette() {
         },
       },
     ];
-
-    return list;
   }, []);
 
-  const filtered = useMemo(() => {
+  // Debounced remote search.
+  useEffect(() => {
+    const q = query.trim();
+    if (!q) {
+      setHits([]);
+      return;
+    }
+    const ctrl = new AbortController();
+    const t = setTimeout(async () => {
+      try {
+        const r = await fetch(`/api/admin/search?q=${encodeURIComponent(q)}`, {
+          signal: ctrl.signal,
+        });
+        if (!r.ok) return;
+        const json = (await r.json()) as { hits?: RemoteHit[] };
+        setHits(json.hits ?? []);
+      } catch {}
+    }, 140);
+    return () => {
+      clearTimeout(t);
+      ctrl.abort();
+    };
+  }, [query]);
+
+  const filtered = useMemo<Item[]>(() => {
     const q = query.trim().toLowerCase();
+    const remote: Item[] = hits.map((h) => ({
+      id: h.id,
+      label: h.label,
+      hint: h.hint,
+      group: h.group,
+      href: h.href,
+    }));
     if (!q) return items.slice(0, 14);
-    return items
+    const local = items
       .filter((it) => (it.label + " " + it.hint).toLowerCase().includes(q))
-      .slice(0, 50);
-  }, [items, query]);
+      .slice(0, 12);
+    return [...remote, ...local];
+  }, [items, hits, query]);
 
   // Keyboard shortcuts
   useEffect(() => {

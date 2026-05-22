@@ -1,7 +1,6 @@
 import { AppShell } from "@/app/components/app/AppShell";
-import { createOrgScopedSupabaseClient } from "@/app/lib/supabase/with-org";
-import { getServerT } from "@/app/lib/i18n/server";
-import { CalendarGrid, type CalendarRow } from "./_calendar-grid";
+import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { CalendarGrid, type CalendarItem } from "./_calendar-grid";
 
 export const dynamic = "force-dynamic";
 
@@ -18,115 +17,65 @@ function parseMonth(s: string | undefined): { year: number; month: number } {
   return { year: now.getUTCFullYear(), month: now.getUTCMonth() + 1 };
 }
 
-async function loadBookings(
+async function loadShoots(
   year: number,
   month: number,
-): Promise<CalendarRow[]> {
-  const { client, orgId } = await createOrgScopedSupabaseClient();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const sb = client as any;
-
-  // Visible window: 1st of month → 1st of next month
+): Promise<CalendarItem[]> {
+  const sb = gogaAdmin();
   const monthStart = `${year}-${String(month).padStart(2, "0")}-01`;
   const next = new Date(Date.UTC(year, month, 1));
   const monthEnd = `${next.getUTCFullYear()}-${String(
     next.getUTCMonth() + 1,
   ).padStart(2, "0")}-01`;
 
-  // p_order_hotel has check_in / check_out per booking. Overlap test:
-  // booking.check_in < monthEnd AND booking.check_out >= monthStart
   const { data } = await sb
-    .from("p_order_hotel")
+    .from("bookings")
     .select(
-      `id, hotel_id, hotel_name, check_in, check_out,
-       p_order_id,
-       p_order:p_order(id, order_number, level, client_first_name, client_last_name, c_semblance)`,
+      `id, client_name, client_email, shoot_date, shoot_time, location,
+       status, packages(name_en)`,
     )
-    .eq("organization_id", orgId)
-    .lt("check_in", monthEnd)
-    .gte("check_out", monthStart)
-    .order("check_in", { ascending: true })
-    .limit(2000);
+    .gte("shoot_date", monthStart)
+    .lt("shoot_date", monthEnd)
+    .order("shoot_date", { ascending: true })
+    .limit(500);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const bookings = (data ?? []) as any[];
-
-  // Group by hotel_id, fetch hotel names for any missing
-  const hotelIds = Array.from(
-    new Set(
-      bookings
-        .map((b) => b.hotel_id as number | null)
-        .filter((id): id is number => typeof id === "number"),
-    ),
-  );
-  let hotelMap = new Map<number, string>();
-  if (hotelIds.length > 0) {
-    const { data: hotels } = await sb
-      .from("hotel")
-      .select("id, name")
-      .in("id", hotelIds);
-    hotelMap = new Map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (hotels ?? []).map((h: any) => [h.id, h.name as string]),
-    );
-  }
-
-  const byHotel = new Map<number, CalendarRow>();
-  for (const b of bookings) {
-    const hotelId = b.hotel_id as number | null;
-    if (hotelId == null) continue;
-    if (!byHotel.has(hotelId)) {
-      byHotel.set(hotelId, {
-        hotel_id: hotelId,
-        hotel_name:
-          hotelMap.get(hotelId) ??
-          (b.hotel_name as string) ??
-          `Hotel #${hotelId}`,
-        bookings: [],
-      });
-    }
-    byHotel.get(hotelId)!.bookings.push({
-      id: b.id,
-      order_id: b.p_order_id,
-      order_number: b.p_order?.order_number ?? null,
-      check_in: b.check_in,
-      check_out: b.check_out,
-      level: b.p_order?.level ?? null,
-      semblance: b.p_order?.c_semblance ?? null,
-      client_name:
-        [b.p_order?.client_first_name, b.p_order?.client_last_name]
-          .filter(Boolean)
-          .join(" ") || null,
-    });
-  }
-
-  return Array.from(byHotel.values()).sort((a, b) =>
-    a.hotel_name.localeCompare(b.hotel_name),
-  );
+  return (data ?? []).map((b) => ({
+    id: b.id,
+    date: b.shoot_date,
+    time: b.shoot_time,
+    title: b.client_name ?? b.client_email ?? "(no client)",
+    packageName: b.packages?.name_en ?? null,
+    location: b.location,
+    status: b.status,
+  }));
 }
 
 export default async function CalendarPage({ searchParams }: PageProps) {
   const sp = await searchParams;
   const { year, month } = parseMonth(sp.month);
-  const t = await getServerT();
-  const rows = await loadBookings(year, month);
+  const items = await loadShoots(year, month);
+
+  const monthName = new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString(
+    "en-US",
+    { month: "long", year: "numeric" },
+  );
 
   return (
     <AppShell
-      breadcrumb={[{ label: t("nav.calendar") }]}
-      chatScope={{ level: "org", org: "travelplace" }}
+      breadcrumb={[{ label: "Calendar" }]}
+      chatScope={{ level: "tool", tool: "calendar" }}
       chatScopeLabel="Calendar"
     >
-      <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-8">
-        <div className="mb-6">
+      <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8">
+        <header className="mb-6">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            {t("calendar.title")}
+            {monthName}
           </h1>
           <p className="mt-1 text-[13px] text-[var(--ink-500)]">
-            {t("calendar.subtitle")}
+            {items.length} shoot{items.length === 1 ? "" : "s"} this month
           </p>
-        </div>
-        <CalendarGrid year={year} month={month} rows={rows} />
+        </header>
+        <CalendarGrid year={year} month={month} items={items} />
       </div>
     </AppShell>
   );

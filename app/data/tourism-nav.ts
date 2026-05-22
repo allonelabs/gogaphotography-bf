@@ -50,6 +50,12 @@ export const tourismNav: NavConfig = {
           label: "Bookings",
           labelKa: "ჯავშნები",
           href: "/app/bookings",
+          icon: "book",
+        },
+        {
+          label: "Calendar",
+          labelKa: "კალენდარი",
+          href: "/app/calendar",
           icon: "calendar",
         },
         {

@@ -6,6 +6,8 @@ import {
   setBookingStatus,
   deleteBooking,
 } from "@/app/lib/goga/actions-bookings";
+import { ensureContractForBooking } from "@/app/lib/goga/actions-contracts";
+import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
 
 type Booking = {
   id: string;
@@ -64,7 +66,21 @@ function fmtMoney(cents: number, currency: string): string {
   }
 }
 
-export function BookingDetail({ booking }: { booking: Booking }) {
+type DeliverySummary = {
+  id: string;
+  token: string;
+  hasPassword: boolean;
+  viewCount: number;
+  imageCount: number;
+};
+
+export function BookingDetail({
+  booking,
+  delivery,
+}: {
+  booking: Booking;
+  delivery: DeliverySummary | null;
+}) {
   const router = useRouter();
   const [status, setStatus] = useState<Booking["status"]>(booking.status);
   const [, start] = useTransition();
@@ -228,6 +244,13 @@ export function BookingDetail({ booking }: { booking: Booking }) {
           </dl>
         </section>
 
+        <ContractButton
+          bookingId={booking.id}
+          contractStatus={booking.contractStatus}
+        />
+
+        <DeliveryButton bookingId={booking.id} delivery={delivery} />
+
         <button
           type="button"
           onClick={onDelete}
@@ -237,6 +260,126 @@ export function BookingDetail({ booking }: { booking: Booking }) {
         </button>
       </aside>
     </div>
+  );
+}
+
+function ContractButton({
+  bookingId,
+  contractStatus,
+}: {
+  bookingId: string;
+  contractStatus: string;
+}) {
+  const router = useRouter();
+  const [pending, start] = useTransition();
+  const [err, setErr] = useState<string | null>(null);
+
+  function onClick() {
+    setErr(null);
+    start(async () => {
+      try {
+        const { id } = await ensureContractForBooking(bookingId);
+        router.push(`/app/contracts/${id}`);
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Could not create contract");
+      }
+    });
+  }
+
+  return (
+    <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+      <h3 className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
+        Contract
+      </h3>
+      <p className="mb-3 text-[12px] text-[var(--ink-500)]">
+        Status:{" "}
+        <strong className="text-[var(--ink-900)]">{contractStatus}</strong>
+      </p>
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={pending}
+        className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
+      >
+        {pending ? "Opening…" : "Create / open contract"}
+      </button>
+      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+    </section>
+  );
+}
+
+function DeliveryButton({
+  bookingId,
+  delivery,
+}: {
+  bookingId: string;
+  delivery: DeliverySummary | null;
+}) {
+  const router = useRouter();
+  const [pending, start] = useTransition();
+  const [err, setErr] = useState<string | null>(null);
+
+  function onClick() {
+    setErr(null);
+    start(async () => {
+      try {
+        const { id } = await ensureDelivery(bookingId);
+        router.push(`/app/deliveries/${id}`);
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Could not create delivery");
+      }
+    });
+  }
+
+  return (
+    <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+      <h3 className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
+        Delivery
+      </h3>
+      {delivery ? (
+        <>
+          <dl className="mb-3 space-y-1.5 text-[12px]">
+            <div className="flex items-baseline justify-between">
+              <dt className="text-[var(--ink-500)]">Photos</dt>
+              <dd className="text-[var(--ink-900)]">{delivery.imageCount}</dd>
+            </div>
+            <div className="flex items-baseline justify-between">
+              <dt className="text-[var(--ink-500)]">Views</dt>
+              <dd className="text-[var(--ink-900)]">{delivery.viewCount}</dd>
+            </div>
+            <div className="flex items-baseline justify-between">
+              <dt className="text-[var(--ink-500)]">Access</dt>
+              <dd className="text-[var(--ink-900)]">
+                {delivery.hasPassword ? "Protected" : "Open"}
+              </dd>
+            </div>
+          </dl>
+          <button
+            type="button"
+            onClick={onClick}
+            disabled={pending}
+            className="w-full rounded-full bg-[var(--ink-900)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:opacity-90 disabled:opacity-50"
+          >
+            {pending ? "Opening…" : "Manage gallery"}
+          </button>
+        </>
+      ) : (
+        <>
+          <p className="mb-3 text-[12px] text-[var(--ink-500)]">
+            Private gallery for the client.
+          </p>
+          <button
+            type="button"
+            onClick={onClick}
+            disabled={pending}
+            className="w-full rounded-full bg-[var(--ink-900)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:opacity-90 disabled:opacity-50"
+          >
+            {pending ? "Opening…" : "Create delivery gallery"}
+          </button>
+        </>
+      )}
+      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+    </section>
   );
 }
 
