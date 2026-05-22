@@ -426,14 +426,15 @@ const en = {
   "home.greeting.afternoon": "Good afternoon",
   "home.greeting.evening": "Good evening",
   "home.composer_placeholder":
-    "Ask about hotels, bookings, customers, today's schedule…",
+    "Ask about leads, bookings, contracts, this week's shoots…",
   "home.footer_disclaimer":
-    "Travelplace assistant can be wrong. Verify before acting.",
-  "home.starter.followup": "Which hotels need a follow-up call today?",
+    "GOGA assistant can be wrong. Verify before acting.",
+  "home.starter.followup": "Which new leads should I follow up with today?",
   "home.starter.draft_email":
-    "Draft a booking confirmation email for a hotel partner.",
-  "home.starter.tbilisi_4plus": "Show me hotels in Tbilisi with 4+ stars.",
-  "home.starter.pending_bookings": "Summarize the day's pending bookings.",
+    "Draft a follow-up email for the most recent inquiry.",
+  "home.starter.tbilisi_4plus": "Summarize this week's upcoming shoots.",
+  "home.starter.pending_bookings":
+    "Which bookings still need a signed contract?",
   "home.aria.attach_files": "Attach files",
   "home.uploading": "Uploading…",
   "home.aria.send": "Send",
@@ -444,8 +445,8 @@ const en = {
   "home.aria.remove_attachment": "Remove attachment",
 
   // ── Sign-in page ──────────────────────────────────────────────────
-  "signin.welcome": "Welcome to Travelplace",
-  "signin.tagline": "Everything for the tour operator in one place.",
+  "signin.welcome": "Welcome to GOGA Studio",
+  "signin.tagline": "Everything for the photographer in one place.",
   "signin.register": "Register",
   "signin.login": "Login",
   "signin.username": "Username",
@@ -459,7 +460,7 @@ const en = {
   "signin.or": "or",
   "signin.new_here": "New here?",
   "signin.request_access": "Request access ↗",
-  "signin.cue": "Travelplace greets you. Then asks one question.",
+  "signin.cue": "GOGA greets you. Then asks one question.",
 
   // ── Orders / Refunds list + table ────────────────────────────────
   "orders.title": "Orders",
@@ -1763,15 +1764,14 @@ const ka: Partial<Record<TranslationKey, string>> = {
   "home.greeting.afternoon": "შუადღე მშვიდობისა",
   "home.greeting.evening": "საღამო მშვიდობისა",
   "home.composer_placeholder":
-    "ჰკითხე სასტუმროებზე, ჯავშნებზე, კლიენტებზე, დღევანდელ განრიგზე…",
+    "ჰკითხე ლიდებზე, ჯავშნებზე, ხელშეკრულებებზე, ამ კვირის გადაღებებზე…",
   "home.footer_disclaimer":
-    "Travelplace-ის ასისტენტი შეიძლება ცდებოდეს. გადაამოწმე მოქმედებამდე.",
-  "home.starter.followup": "რომელ სასტუმროებს სჭირდებათ დღეს თვალის გადევნება?",
-  "home.starter.draft_email":
-    "შეადგინე ჯავშნის დადასტურების წერილი სასტუმროს პარტნიორისთვის.",
-  "home.starter.tbilisi_4plus": "მაჩვენე თბილისის სასტუმროები 4+ ვარსკვლავით.",
+    "GOGA-ს ასისტენტი შეიძლება ცდებოდეს. გადაამოწმე მოქმედებამდე.",
+  "home.starter.followup": "ვის ახალ ლიდს უნდა გავუგზავნო პასუხი დღეს?",
+  "home.starter.draft_email": "შეადგინე პასუხის წერილი ბოლო ლიდისთვის.",
+  "home.starter.tbilisi_4plus": "შეაჯამე ამ კვირის გადაღებები.",
   "home.starter.pending_bookings":
-    "შეაჯამე დღევანდელი მოლოდინში მყოფი ჯავშნები.",
+    "რომელ ჯავშნებს ჯერ ხელშეკრულება არ აქვს ხელმოწერილი?",
   "home.aria.attach_files": "ფაილების მიმაგრება",
   "home.uploading": "იტვირთება…",
   "home.aria.send": "გაგზავნა",
@@ -1782,8 +1782,8 @@ const ka: Partial<Record<TranslationKey, string>> = {
   "home.aria.remove_attachment": "მიმაგრების მოშორება",
 
   // ── Sign-in ───────────────────────────────────────────────────────
-  "signin.welcome": "კეთილი იყოს შენი მობრძანება Travelplace-ში",
-  "signin.tagline": "ყველაფერი ტუროპერატორისთვის — ერთ სივრცეში.",
+  "signin.welcome": "კეთილი იყოს შენი მობრძანება GOGA Studio-ში",
+  "signin.tagline": "ყველაფერი ფოტოგრაფისთვის — ერთ სივრცეში.",
   "signin.register": "რეგისტრაცია",
   "signin.login": "შესვლა",
   "signin.username": "მომხმარებლის სახელი",
@@ -1797,7 +1797,7 @@ const ka: Partial<Record<TranslationKey, string>> = {
   "signin.or": "ან",
   "signin.new_here": "ახალი ხარ?",
   "signin.request_access": "მოითხოვე წვდომა ↗",
-  "signin.cue": "Travelplace მოგესალმება. შემდეგ ერთ კითხვას სვამს.",
+  "signin.cue": "GOGA მოგესალმება. შემდეგ ერთ კითხვას სვამს.",
 
   // ── Orders / refunds list ────────────────────────────────────────
   "orders.title": "შეკვეთები",

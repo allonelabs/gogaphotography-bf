@@ -39,8 +39,8 @@ export default async function HomePage() {
   return (
     <AppShell
       breadcrumb={[{ label: translate(locale, "nav.home") }]}
-      chatScope={{ level: "org", org: "travelplace" }}
-      chatScopeLabel="Travelplace"
+      chatScope={{ level: "org", org: "goga" }}
+      chatScopeLabel="GOGA Studio"
       hideChatToggle
     >
       <OverviewChat operatorFirstName={firstName} starters={STARTERS} />
