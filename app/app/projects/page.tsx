@@ -39,14 +39,26 @@ export default async function ProjectsPage() {
               {items.length} total
             </p>
           </div>
+          <Link
+            href="/app/projects/new"
+            className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
+          >
+            New project
+          </Link>
         </header>
 
         {items.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-            <p className="text-[14px] text-[var(--ink-500)]">
+            <p className="mb-3 text-[14px] text-[var(--ink-500)]">
               No projects yet — your first one will appear on the home grid as
               soon as you publish it.
             </p>
+            <Link
+              href="/app/projects/new"
+              className="inline-block rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
+            >
+              Create the first project
+            </Link>
           </div>
         ) : (
           <ul className="space-y-2">

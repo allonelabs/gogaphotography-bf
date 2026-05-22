@@ -29,6 +29,12 @@ export default async function ServicesPage() {
               {items.length} total
             </p>
           </div>
+          <Link
+            href="/app/services/new"
+            className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
+          >
+            New service
+          </Link>
         </header>
 
         {items.length === 0 ? (
