@@ -181,6 +181,12 @@ export default async function HomePage() {
       breadcrumb={[{ label: "Studio" }]}
       chatScope={{ level: "org", org: "goga" }}
       chatScopeLabel="GOGA Studio"
+      chatStarters={[
+        "What shoots are coming up this week?",
+        "Any contracts still awaiting signature?",
+        "How are leads split across stages right now?",
+        "Revenue this month so far",
+      ]}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 space-y-8">
         <header className="flex flex-wrap items-end justify-between gap-4">
