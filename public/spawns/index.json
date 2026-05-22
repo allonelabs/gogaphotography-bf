@@ -1,0 +1,125 @@
+{
+  "spawns": [
+    {
+      "briefId": "ref-eu-hydrogen-hardtech",
+      "computedAt": "2026-05-03T05:37:14.945Z",
+      "totalToolCount": 19,
+      "activeToolCount": 19,
+      "overallScore": 48,
+      "matrixHealth": 41,
+      "proposalCount": 2,
+      "updatedAt": "2026-05-03T05:37:14.964Z"
+    },
+    {
+      "briefId": "adhoc",
+      "computedAt": "2026-05-01T11:16:44.898Z",
+      "totalToolCount": 13,
+      "activeToolCount": 13,
+      "overallScore": 70,
+      "matrixHealth": 50,
+      "proposalCount": 2,
+      "updatedAt": "2026-05-02T00:42:38.535Z"
+    },
+    {
+      "briefId": "walkby-demo",
+      "computedAt": "2026-05-01T09:45:33.862Z",
+      "totalToolCount": 16,
+      "activeToolCount": 16,
+      "overallScore": 54,
+      "matrixHealth": 43,
+      "proposalCount": 2,
+      "updatedAt": "2026-05-01T21:07:36.546Z"
+    },
+    {
+      "briefId": "demo-cafe",
+      "computedAt": "2026-05-01T09:05:51.650Z",
+      "totalToolCount": 16,
+      "activeToolCount": 16,
+      "overallScore": 56,
+      "matrixHealth": 43,
+      "proposalCount": 3,
+      "updatedAt": "2026-05-01T21:07:36.545Z"
+    },
+    {
+      "briefId": "crema-lab-v8",
+      "computedAt": "2026-04-29T16:57:58.364Z",
+      "totalToolCount": 19,
+      "activeToolCount": 19,
+      "overallScore": 55,
+      "matrixHealth": 43,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:57:58.386Z"
+    },
+    {
+      "briefId": "crema-lab-v7",
+      "computedAt": "2026-04-29T16:41:14.878Z",
+      "totalToolCount": 19,
+      "activeToolCount": 19,
+      "overallScore": 55,
+      "matrixHealth": 43,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:41:14.902Z"
+    },
+    {
+      "briefId": "crema-lab-v6",
+      "computedAt": "2026-04-29T16:40:15.483Z",
+      "totalToolCount": 19,
+      "activeToolCount": 19,
+      "overallScore": 55,
+      "matrixHealth": 43,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:40:15.499Z"
+    },
+    {
+      "briefId": "crema-lab-v5",
+      "computedAt": "2026-04-29T16:39:31.276Z",
+      "totalToolCount": 12,
+      "activeToolCount": 12,
+      "overallScore": 69,
+      "matrixHealth": 50,
+      "proposalCount": 1,
+      "updatedAt": "2026-04-29T16:39:31.297Z"
+    },
+    {
+      "briefId": "crema-lab-v4",
+      "computedAt": "2026-04-29T16:38:04.121Z",
+      "totalToolCount": 15,
+      "activeToolCount": 15,
+      "overallScore": 56,
+      "matrixHealth": 44,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:38:04.136Z"
+    },
+    {
+      "briefId": "crema-lab-v3",
+      "computedAt": "2026-04-29T16:34:50.106Z",
+      "totalToolCount": 15,
+      "activeToolCount": 15,
+      "overallScore": 56,
+      "matrixHealth": 44,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:34:50.122Z"
+    },
+    {
+      "briefId": "crema-lab-v2",
+      "computedAt": "2026-04-29T16:22:52.662Z",
+      "totalToolCount": 15,
+      "activeToolCount": 15,
+      "overallScore": 56,
+      "matrixHealth": 44,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T16:22:52.678Z"
+    },
+    {
+      "briefId": "crema-lab",
+      "computedAt": "2026-04-29T14:19:51.142Z",
+      "totalToolCount": 15,
+      "activeToolCount": 15,
+      "overallScore": 56,
+      "matrixHealth": 44,
+      "proposalCount": 2,
+      "updatedAt": "2026-04-29T14:19:51.166Z"
+    }
+  ],
+  "latest": "ref-eu-hydrogen-hardtech"
+}

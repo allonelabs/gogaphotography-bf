@@ -1,0 +1,55 @@
+{
+  "provider": "resend",
+  "apex": "crema-lab.com",
+  "senders": [
+    {
+      "address": "dpo@crema-lab.com",
+      "localPart": "dpo",
+      "ownerTool": "compliance-forge",
+      "displayName": "Crema Lab DPO",
+      "purpose": "DSAR responses, privacy notices, GDPR correspondence"
+    },
+    {
+      "address": "hello@crema-lab.com",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@crema-lab.com",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@crema-lab.com",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "accounting@crema-lab.com",
+      "localPart": "accounting",
+      "ownerTool": "ledger-spawn",
+      "displayName": "Crema Lab Accounting",
+      "purpose": "Journal entries, financial reports, reconciliation notices"
+    },
+    {
+      "address": "billing@crema-lab.com",
+      "localPart": "billing",
+      "ownerTool": "payment-forge",
+      "displayName": "Crema Lab Billing",
+      "purpose": "Invoices, receipts, dunning reminders"
+    },
+    {
+      "address": "proposals@crema-lab.com",
+      "localPart": "proposals",
+      "ownerTool": "proposal-forge",
+      "displayName": "Crema Lab Proposals",
+      "purpose": "Proposal delivery, follow-ups, contract negotiations"
+    }
+  ]
+}

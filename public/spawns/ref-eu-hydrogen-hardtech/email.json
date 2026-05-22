@@ -1,0 +1,62 @@
+{
+  "provider": "resend",
+  "apex": "northfold-hydrogen.de",
+  "senders": [
+    {
+      "address": "dpo@northfold-hydrogen.de",
+      "localPart": "dpo",
+      "ownerTool": "compliance-forge",
+      "displayName": "northfold-hydrogen DPO",
+      "purpose": "DSAR responses, privacy notices, GDPR correspondence"
+    },
+    {
+      "address": "marketing@northfold-hydrogen.de",
+      "localPart": "marketing",
+      "ownerTool": "content-factory",
+      "displayName": "northfold-hydrogen Marketing",
+      "purpose": "Newsletters, content campaigns, product announcements"
+    },
+    {
+      "address": "hello@northfold-hydrogen.de",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "northfold-hydrogen",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@northfold-hydrogen.de",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "northfold-hydrogen Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@northfold-hydrogen.de",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "northfold-hydrogen",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "accounting@northfold-hydrogen.de",
+      "localPart": "accounting",
+      "ownerTool": "ledger-spawn",
+      "displayName": "northfold-hydrogen Accounting",
+      "purpose": "Journal entries, financial reports, reconciliation notices"
+    },
+    {
+      "address": "billing@northfold-hydrogen.de",
+      "localPart": "billing",
+      "ownerTool": "payment-forge",
+      "displayName": "northfold-hydrogen Billing",
+      "purpose": "Invoices, receipts, dunning reminders"
+    },
+    {
+      "address": "proposals@northfold-hydrogen.de",
+      "localPart": "proposals",
+      "ownerTool": "proposal-forge",
+      "displayName": "northfold-hydrogen Proposals",
+      "purpose": "Proposal delivery, follow-ups, contract negotiations"
+    }
+  ]
+}

@@ -1,0 +1,616 @@
+{
+  "tools": [
+    "academy-forge",
+    "ad-reel",
+    "admin-spawn",
+    "analytics-forge",
+    "backup-forge",
+    "booking-forge",
+    "brand-forge",
+    "compliance-forge",
+    "content-factory",
+    "crm-spawn",
+    "desk-forge",
+    "dns-forge",
+    "ecom-forge",
+    "email-forge",
+    "hr-forge",
+    "lead-hunter",
+    "ledger-spawn",
+    "legal-forge",
+    "media-forge",
+    "monitor-forge",
+    "ops-bootstrap",
+    "payment-forge",
+    "proposal-forge",
+    "site-forge",
+    "social-forge"
+  ],
+  "bridges": [
+    {
+      "id": "bridge-01",
+      "from": "crm-spawn",
+      "to": "ledger-spawn",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-02",
+      "from": "payment-forge",
+      "to": "ledger-spawn",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-03",
+      "from": "payment-forge",
+      "to": "email-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-04",
+      "from": "desk-forge",
+      "to": "crm-spawn",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "bidirectional",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-05",
+      "from": "analytics-forge",
+      "to": "ad-reel",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "batch-weekly"
+    },
+    {
+      "id": "bridge-06",
+      "from": "booking-forge",
+      "to": "email-forge",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-07",
+      "from": "booking-forge",
+      "to": "crm-spawn",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-08",
+      "from": "social-forge",
+      "to": "content-factory",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "batch-weekly"
+    },
+    {
+      "id": "bridge-09",
+      "from": "crm-spawn",
+      "to": "payment-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-10",
+      "from": "payment-forge",
+      "to": "crm-spawn",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-11",
+      "from": "ledger-spawn",
+      "to": "email-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-12",
+      "from": "ecom-forge",
+      "to": "ledger-spawn",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-13",
+      "from": "ecom-forge",
+      "to": "payment-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-14",
+      "from": "ecom-forge",
+      "to": "email-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-15",
+      "from": "proposal-forge",
+      "to": "payment-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-16",
+      "from": "proposal-forge",
+      "to": "crm-spawn",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-17",
+      "from": "payment-forge",
+      "to": "analytics-forge",
+      "category": "revenue",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-18",
+      "from": "booking-forge",
+      "to": "payment-forge",
+      "category": "revenue",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-19",
+      "from": "content-factory",
+      "to": "social-forge",
+      "category": "content",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-20",
+      "from": "content-factory",
+      "to": "email-forge",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-21",
+      "from": "content-factory",
+      "to": "analytics-forge",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-22",
+      "from": "media-forge",
+      "to": "content-factory",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-23",
+      "from": "media-forge",
+      "to": "social-forge",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-24",
+      "from": "media-forge",
+      "to": "site-forge",
+      "category": "content",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-25",
+      "from": "site-forge",
+      "to": "crm-spawn",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-26",
+      "from": "site-forge",
+      "to": "email-forge",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-27",
+      "from": "site-forge",
+      "to": "analytics-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-28",
+      "from": "crm-spawn",
+      "to": "email-forge",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-29",
+      "from": "crm-spawn",
+      "to": "proposal-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-30",
+      "from": "crm-spawn",
+      "to": "booking-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-31",
+      "from": "desk-forge",
+      "to": "email-forge",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-32",
+      "from": "desk-forge",
+      "to": "analytics-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-33",
+      "from": "academy-forge",
+      "to": "analytics-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-34",
+      "from": "academy-forge",
+      "to": "email-forge",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-35",
+      "from": "academy-forge",
+      "to": "crm-spawn",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-36",
+      "from": "monitor-forge",
+      "to": "admin-spawn",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-37",
+      "from": "monitor-forge",
+      "to": "email-forge",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-38",
+      "from": "monitor-forge",
+      "to": "desk-forge",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-39",
+      "from": "monitor-forge",
+      "to": "ops-bootstrap",
+      "category": "operations",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-40",
+      "from": "backup-forge",
+      "to": "admin-spawn",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "batch-daily"
+    },
+    {
+      "id": "bridge-41",
+      "from": "backup-forge",
+      "to": "monitor-forge",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-42",
+      "from": "backup-forge",
+      "to": "email-forge",
+      "category": "operations",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-43",
+      "from": "ops-bootstrap",
+      "to": "admin-spawn",
+      "category": "operations",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-44",
+      "from": "admin-spawn",
+      "to": "analytics-forge",
+      "category": "operations",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-45",
+      "from": "compliance-forge",
+      "to": "site-forge",
+      "category": "compliance",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-46",
+      "from": "compliance-forge",
+      "to": "admin-spawn",
+      "category": "compliance",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-47",
+      "from": "compliance-forge",
+      "to": "email-forge",
+      "category": "compliance",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-48",
+      "from": "compliance-forge",
+      "to": "backup-forge",
+      "category": "compliance",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-49",
+      "from": "legal-forge",
+      "to": "compliance-forge",
+      "category": "compliance",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-50",
+      "from": "brand-forge",
+      "to": "site-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-51",
+      "from": "brand-forge",
+      "to": "email-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-52",
+      "from": "brand-forge",
+      "to": "social-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-53",
+      "from": "dns-forge",
+      "to": "email-forge",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-54",
+      "from": "dns-forge",
+      "to": "monitor-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-55",
+      "from": "email-forge",
+      "to": "crm-spawn",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-56",
+      "from": "email-forge",
+      "to": "analytics-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-57",
+      "from": "hr-forge",
+      "to": "admin-spawn",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-58",
+      "from": "hr-forge",
+      "to": "email-forge",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-59",
+      "from": "hr-forge",
+      "to": "site-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "on-demand"
+    },
+    {
+      "id": "bridge-60",
+      "from": "lead-hunter",
+      "to": "email-forge",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-61",
+      "from": "lead-hunter",
+      "to": "analytics-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "batch-daily"
+    },
+    {
+      "id": "bridge-62",
+      "from": "social-forge",
+      "to": "analytics-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-63",
+      "from": "social-forge",
+      "to": "desk-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "real-time"
+    },
+    {
+      "id": "bridge-64",
+      "from": "ad-reel",
+      "to": "analytics-forge",
+      "category": "cross-cutting",
+      "critical": false,
+      "direction": "one-way",
+      "frequency": "batch-daily"
+    },
+    {
+      "id": "bridge-65",
+      "from": "ecom-forge",
+      "to": "crm-spawn",
+      "category": "cross-cutting",
+      "critical": true,
+      "direction": "one-way",
+      "frequency": "real-time"
+    }
+  ]
+}

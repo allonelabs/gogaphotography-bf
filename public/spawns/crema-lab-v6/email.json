@@ -1,0 +1,62 @@
+{
+  "provider": "resend",
+  "apex": "crema-lab-v6.com",
+  "senders": [
+    {
+      "address": "dpo@crema-lab-v6.com",
+      "localPart": "dpo",
+      "ownerTool": "compliance-forge",
+      "displayName": "Crema Lab v6 DPO",
+      "purpose": "DSAR responses, privacy notices, GDPR correspondence"
+    },
+    {
+      "address": "marketing@crema-lab-v6.com",
+      "localPart": "marketing",
+      "ownerTool": "content-factory",
+      "displayName": "Crema Lab v6 Marketing",
+      "purpose": "Newsletters, content campaigns, product announcements"
+    },
+    {
+      "address": "hello@crema-lab-v6.com",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab v6",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@crema-lab-v6.com",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab v6 Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@crema-lab-v6.com",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "Crema Lab v6",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "accounting@crema-lab-v6.com",
+      "localPart": "accounting",
+      "ownerTool": "ledger-spawn",
+      "displayName": "Crema Lab v6 Accounting",
+      "purpose": "Journal entries, financial reports, reconciliation notices"
+    },
+    {
+      "address": "billing@crema-lab-v6.com",
+      "localPart": "billing",
+      "ownerTool": "payment-forge",
+      "displayName": "Crema Lab v6 Billing",
+      "purpose": "Invoices, receipts, dunning reminders"
+    },
+    {
+      "address": "proposals@crema-lab-v6.com",
+      "localPart": "proposals",
+      "ownerTool": "proposal-forge",
+      "displayName": "Crema Lab v6 Proposals",
+      "purpose": "Proposal delivery, follow-ups, contract negotiations"
+    }
+  ]
+}

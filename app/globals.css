@@ -1,0 +1,973 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════════════════════════════════
+   AllOnce — editorial-tech design tokens.
+   Fraunces (variable serif) for display + emphasis.
+   Geist (sans) for labels, data, UI.
+   Electric blue #0047FF as the single accent.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root {
+    /* layered backgrounds. AppShell paints the blue-swirl bg image; everything
+       above it is translucent glass so the swirl shows through. Old surface
+       pages used these tokens as opaque white tiles — keeping the names but
+       flipping the values lets all 14+ surface pages adopt the glass aesthetic
+       in one swap, no per-component edit. */
+    /* Apple-style light mode — 2026-05-14 second pass.  Operator: full-page
+       background = cool blue-tinted grey, islands (topbar/sidebar/main/
+       chat panel) = pure white, cards inside chrome stay white too.
+         page  (--bg-app)         = #F2F2F7 (Apple systemGray6 — page wash)
+         cards (--bg-surface)     = #FFFFFF (cards / island content)
+         chrome (--bg-surface-alt)= #FFFFFF (topbar / sidebar / main / chat)
+         sunken (--bg-sunken)     = #ECECEF (inputs — slightly cooler) */
+    --bg-app: #f2f2f7;
+    --bg-surface: #ffffff;
+    --bg-surface-alt: #ffffff;
+    --bg-sunken: #ececef;
+
+    --allonce-bg: var(--bg-surface);
+    --allonce-bg-soft: var(--bg-surface-alt);
+    --allonce-bg-raised: var(--bg-sunken);
+
+    /* ink scale (warm near-black) */
+    --ink-900: #0a0a0a;
+    --ink-800: #1d1d1f;
+    --ink-700: #3f3f45;
+    --ink-500: #6b6b6b; /* from the pitch `--muted` */
+    --ink-400: #86868b;
+    --ink-300: #a1a1a6;
+    --ink-200: #c7c7cc;
+    --ink-100: #e5e5ea;
+
+    --allonce-ink: var(--ink-900);
+    --allonce-ink-strong: var(--ink-900);
+    --allonce-ink-muted: var(--ink-500);
+    --allonce-ink-faint: var(--ink-400);
+    --allonce-ink-dim: var(--ink-300);
+
+    --allonce-line: #e5e5e5;
+    --allonce-line-soft: rgba(0, 0, 0, 0.05);
+    --allonce-line-strong: rgba(0, 0, 0, 0.12);
+
+    /* ⚡ electric blue accent (from the pitch) */
+    --ao-accent: #0047ff;
+    --ao-accent-hover: #003bd9;
+    --ao-accent-soft: #e6edff;
+
+    --ao-allonce-accent: var(--ao-accent);
+    --ao-allonce-accent-hover: var(--ao-accent-hover);
+    --ao-allonce-accent-soft: var(--ao-accent-soft);
+
+    --allonce-ok: #28c840;
+    --allonce-warn: #febc2e;
+    --allonce-err: #ff5f57;
+
+    --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+
+    --radius-xs: 10px;
+    --radius-sm: 14px;
+    --radius-md: 20px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+
+    /* type system — single typeface across the operator (Inter), matching
+       the landing-page reference. All three vars resolve to Inter so any
+       existing class that picks --font-display or --font-mono inherits
+       the same face. Distinction now comes from weight + tracking, not
+       font-family. */
+    --font-display:
+      var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui,
+      sans-serif;
+    --font-sans:
+      var(--font-inter), -apple-system, BlinkMacSystemFont, system-ui,
+      sans-serif;
+    --font-mono: var(--font-inter), ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  /* Dark theme overrides — applied when <html data-theme="dark">.
+     2026-05-14 — operator asked for working light/dark/system themes.
+     Flips the background / surface / ink scale; accent stays the same. */
+  html[data-theme="dark"] {
+    --bg-app: #0a0a0a;
+    --bg-surface: #161618;
+    --bg-surface-alt: #1f1f22;
+    --bg-sunken: #2a2a2e;
+
+    --allonce-bg: var(--bg-surface);
+    --allonce-bg-soft: var(--bg-surface-alt);
+    --allonce-bg-raised: var(--bg-sunken);
+
+    --ink-900: #f5f5f7;
+    --ink-800: #e5e5ea;
+    --ink-700: #c7c7cc;
+    --ink-500: #98989d;
+    --ink-400: #6d6d72;
+    --ink-300: #48484a;
+    --ink-200: #2c2c2e;
+    --ink-100: #1c1c1e;
+
+    --allonce-line: rgba(255, 255, 255, 0.08);
+    --allonce-line-soft: rgba(255, 255, 255, 0.05);
+    --allonce-line-strong: rgba(255, 255, 255, 0.16);
+
+    --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  html[data-theme="dark"] {
+    background-color: #0a0a0a;
+  }
+  html[data-theme="dark"] body {
+    color: var(--ink-900);
+  }
+
+  /* ──────────────────────────────────────────────────────────────────
+     Dark-mode Tailwind-utility overrides — 2026-05-14.
+     The operator UI uses hardcoded Tailwind colors (bg-white, bg-emerald-50,
+     text-slate-700, border-emerald-300, etc) that don't follow the CSS var
+     system. Without these overrides, dark mode looks broken because cards
+     stay white and pills stay light-themed. The selectors below target the
+     most-visible utility classes and rewrite them for dark backgrounds.
+     ────────────────────────────────────────────────────────────────── */
+
+  /* Card / surface backgrounds — flip white to dark surface */
+  html[data-theme="dark"] .bg-white,
+  html[data-theme="auto"] .bg-white,
+  html[data-theme="dark"] [class*="bg-[var(--bg-surface)]"],
+  html[data-theme="auto"] [class*="bg-[var(--bg-surface)]"] {
+    background-color: var(--bg-surface) !important;
+  }
+  html[data-theme="dark"] .bg-\[var\(--bg-surface-alt\)\],
+  html[data-theme="auto"] .bg-\[var\(--bg-surface-alt\)\] {
+    background-color: var(--bg-surface-alt) !important;
+  }
+
+  /* Borders — flip light grays to subtle white-alpha */
+  html[data-theme="dark"] [class*="border-\["],
+  html[data-theme="auto"] [class*="border-\["] {
+    /* leave specific border-[var(--ink-XYZ)] alone; CSS vars cascade. */
+  }
+  html[data-theme="dark"] .border-black\/8,
+  html[data-theme="dark"] .border-black\/10,
+  html[data-theme="dark"] .ring-black\/5,
+  html[data-theme="dark"] .ring-black\/10 {
+    --tw-border-opacity: 1;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  html[data-theme="dark"] .ring-1.ring-black\/5,
+  html[data-theme="dark"] .ring-1.ring-black\/10 {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Status pills — keep their tonal identity but darken the chip + brighten the text */
+  html[data-theme="dark"] .bg-emerald-50 {
+    background-color: rgba(16, 185, 129, 0.18) !important;
+  }
+  html[data-theme="dark"] .bg-emerald-100 {
+    background-color: rgba(16, 185, 129, 0.22) !important;
+  }
+  html[data-theme="dark"] .text-emerald-700,
+  html[data-theme="dark"] .text-emerald-900 {
+    color: #6ee7b7 !important;
+  }
+
+  html[data-theme="dark"] .bg-amber-50 {
+    background-color: rgba(245, 158, 11, 0.18) !important;
+  }
+  html[data-theme="dark"] .bg-amber-100,
+  html[data-theme="dark"] .bg-amber-100\/40,
+  html[data-theme="dark"] .bg-amber-100\/70 {
+    background-color: rgba(245, 158, 11, 0.22) !important;
+  }
+  html[data-theme="dark"] .text-amber-700,
+  html[data-theme="dark"] .text-amber-500 {
+    color: #fcd34d !important;
+  }
+  html[data-theme="dark"] .border-amber-400\/50 {
+    border-color: rgba(252, 211, 77, 0.45) !important;
+  }
+
+  html[data-theme="dark"] .bg-rose-50 {
+    background-color: rgba(244, 63, 94, 0.18) !important;
+  }
+  html[data-theme="dark"] .text-rose-700 {
+    color: #fca5a5 !important;
+  }
+
+  html[data-theme="dark"] .bg-slate-100 {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  html[data-theme="dark"] .text-slate-700 {
+    color: var(--ink-700) !important;
+  }
+  html[data-theme="dark"] .bg-slate-400 {
+    background-color: #6d6d72 !important;
+  }
+
+  /* Round-2 dark-mode sweep — additional Tailwind utility classes that
+     surfaced as "didn't adapt" (2026-05-14). */
+  html[data-theme="dark"] .bg-gray-50,
+  html[data-theme="dark"] .bg-zinc-50,
+  html[data-theme="dark"] .bg-neutral-50,
+  html[data-theme="dark"] .bg-stone-50 {
+    background-color: var(--bg-surface-alt) !important;
+  }
+  html[data-theme="dark"] .bg-gray-100,
+  html[data-theme="dark"] .bg-zinc-100,
+  html[data-theme="dark"] .bg-neutral-100,
+  html[data-theme="dark"] .bg-stone-100 {
+    background-color: var(--bg-sunken) !important;
+  }
+  html[data-theme="dark"] .bg-gray-200,
+  html[data-theme="dark"] .bg-zinc-200 {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  html[data-theme="dark"] .text-gray-400,
+  html[data-theme="dark"] .text-zinc-400,
+  html[data-theme="dark"] .text-neutral-400 {
+    color: var(--ink-400) !important;
+  }
+  html[data-theme="dark"] .text-gray-500,
+  html[data-theme="dark"] .text-zinc-500,
+  html[data-theme="dark"] .text-neutral-500 {
+    color: var(--ink-500) !important;
+  }
+  html[data-theme="dark"] .text-gray-700,
+  html[data-theme="dark"] .text-zinc-700,
+  html[data-theme="dark"] .text-neutral-700 {
+    color: var(--ink-700) !important;
+  }
+  html[data-theme="dark"] .text-gray-900,
+  html[data-theme="dark"] .text-zinc-900,
+  html[data-theme="dark"] .text-neutral-900 {
+    color: var(--ink-900) !important;
+  }
+  html[data-theme="dark"] .border-gray-100,
+  html[data-theme="dark"] .border-gray-200,
+  html[data-theme="dark"] .border-zinc-200,
+  html[data-theme="dark"] .border-neutral-200 {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  html[data-theme="dark"] .divide-gray-100 > *,
+  html[data-theme="dark"] .divide-gray-200 > *,
+  html[data-theme="dark"] .divide-zinc-200 > * {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+  }
+  html[data-theme="dark"] .placeholder\:text-gray-400::placeholder,
+  html[data-theme="dark"] .placeholder\:text-zinc-400::placeholder {
+    color: var(--ink-400) !important;
+  }
+  html[data-theme="dark"] .bg-blue-50,
+  html[data-theme="dark"] .bg-sky-50 {
+    background-color: rgba(59, 130, 246, 0.18) !important;
+  }
+  html[data-theme="dark"] .text-blue-700,
+  html[data-theme="dark"] .text-sky-700 {
+    color: #93c5fd !important;
+  }
+  html[data-theme="dark"] .text-blue-500 {
+    color: #60a5fa !important;
+  }
+  html[data-theme="dark"] .bg-indigo-50,
+  html[data-theme="dark"] .bg-violet-50 {
+    background-color: rgba(139, 92, 246, 0.18) !important;
+  }
+  html[data-theme="dark"] .text-indigo-700,
+  html[data-theme="dark"] .text-violet-700 {
+    color: #c4b5fd !important;
+  }
+  html[data-theme="dark"]
+    [class*="shadow-\[inset_0_1px_0_rgba(255,255,255,0.7)"],
+  html[data-theme="dark"]
+    [class*="shadow-\[inset_0_1px_0_rgba(255,255,255,0.85)"] {
+    box-shadow:
+      0 12px 32px -10px rgba(0, 0, 0, 0.6),
+      0 2px 4px -2px rgba(0, 0, 0, 0.4) !important;
+  }
+  /* Chat user-bubble: light-mode uses bg-[var(--ink-900)] text-white; in
+     dark mode --ink-900 becomes near-white → white-on-white.  Force a
+     fixed mid-grey fill so the bubble pops against the dark surface. */
+  html[data-theme="dark"] .bg-\[var\(--ink-900\)\].text-white,
+  html[data-theme="dark"] .bg-\[var\(--ink-900\)\] {
+    background-color: #2a2a2e !important;
+  }
+  html[data-theme="dark"] .bg-\[var\(--ink-900\)\] .text-white,
+  html[data-theme="dark"] .bg-\[var\(--ink-900\)\].text-white {
+    color: #f5f5f7 !important;
+  }
+
+  /* Chat-toggle pill (data-chat-pill) — theme-aware, both light + dark.
+     2026-05-14 — operator: "Chat ⌘/ button not adapted to dark theme". */
+  [data-chat-pill][data-state="closed"] {
+    background-color: var(--bg-app);
+    color: var(--ink-900);
+  }
+  [data-chat-pill][data-state="closed"]:hover {
+    background-color: var(--bg-sunken);
+  }
+  [data-chat-pill][data-state="open"] {
+    background-color: var(--ink-900);
+    color: var(--bg-app);
+  }
+  [data-chat-pill-kbd] {
+    background-color: var(--bg-sunken);
+    color: var(--ink-700);
+  }
+  [data-chat-pill][data-state="open"] [data-chat-pill-kbd] {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  html[data-theme="dark"]
+    [data-chat-pill][data-state="open"]
+    [data-chat-pill-kbd] {
+    background-color: rgba(0, 0, 0, 0.18);
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  /* Hardcoded hex literals from the ChatGPT-style composer / spawn page —
+     these don't follow CSS vars, so the dark-mode override has to target
+     the exact Tailwind arbitrary-value class.  2026-05-14 — operator:
+     "spawn page ai text is black and is not visible, button send is not
+     good color". */
+  html[data-theme="dark"] .text-\[\#0d0d0d\] {
+    color: var(--ink-900) !important;
+  }
+  html[data-theme="dark"] .bg-\[\#0d0d0d\] {
+    background-color: var(--bg-sunken) !important;
+  }
+  html[data-theme="dark"] .bg-\[\#0d0d0d\]:hover {
+    background-color: var(--ink-700) !important;
+  }
+  html[data-theme="dark"] .bg-\[\#f4f4f4\] {
+    background-color: var(--bg-surface-alt) !important;
+  }
+  html[data-theme="dark"] .placeholder\:text-\[\#9b9b9b\]::placeholder {
+    color: var(--ink-400) !important;
+  }
+  html[data-theme="dark"] .text-\[\#9b9b9b\] {
+    color: var(--ink-400) !important;
+  }
+  html[data-theme="dark"] .text-\[\#6b6b6b\] {
+    color: var(--ink-500) !important;
+  }
+  html[data-theme="dark"] .hover\:text-\[\#0d0d0d\]:hover {
+    color: var(--ink-900) !important;
+  }
+  html[data-theme="dark"] .disabled\:bg-\[\#d7d7d7\]:disabled {
+    background-color: var(--bg-sunken) !important;
+    opacity: 0.4 !important;
+  }
+  html[data-theme="dark"] .hover\:bg-black\/\[0\.06\]:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+  }
+
+  /* Icons / SVGs in dark mode — flip hardcoded blacks to current ink, and
+     make sure any SVG that inherits color via fill/stroke="currentColor"
+     reads against the dark bg.  2026-05-14 — operator: "icon should get
+     white too when on dark theme". */
+  html[data-theme="dark"] svg[fill="black"],
+  html[data-theme="dark"] svg [fill="black"],
+  html[data-theme="dark"] svg[fill="#000"],
+  html[data-theme="dark"] svg [fill="#000"],
+  html[data-theme="dark"] svg[fill="#000000"],
+  html[data-theme="dark"] svg [fill="#000000"] {
+    fill: var(--ink-900) !important;
+  }
+  html[data-theme="dark"] svg[stroke="black"],
+  html[data-theme="dark"] svg [stroke="black"],
+  html[data-theme="dark"] svg[stroke="#000"],
+  html[data-theme="dark"] svg [stroke="#000"],
+  html[data-theme="dark"] svg[stroke="#000000"],
+  html[data-theme="dark"] svg [stroke="#000000"] {
+    stroke: var(--ink-900) !important;
+  }
+  /* Brand/logo SVGs that explicitly use #0a0a0a or similar near-black should
+     flip too. */
+  html[data-theme="dark"] svg[fill="#0a0a0a"],
+  html[data-theme="dark"] svg [fill="#0a0a0a"],
+  html[data-theme="dark"] svg[fill="#1a1a1a"],
+  html[data-theme="dark"] svg [fill="#1a1a1a"] {
+    fill: var(--ink-900) !important;
+  }
+
+  /* Dropdown / menu surfaces — punch them up so they pop off the dark bg */
+  html[data-theme="dark"] .bg-\[var\(--bg-surface\)\] {
+    background-color: var(--bg-surface) !important;
+    box-shadow:
+      0 24px 56px -12px rgba(0, 0, 0, 0.6),
+      0 4px 12px -2px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Inputs / selects / textareas — dark surface with light text */
+  html[data-theme="dark"] input,
+  html[data-theme="dark"] select,
+  html[data-theme="dark"] textarea,
+  html[data-theme="auto"] input,
+  html[data-theme="auto"] select,
+  html[data-theme="auto"] textarea {
+    color-scheme: dark;
+  }
+
+  /* Inset highlights baked into shadow chains (light-mode-only flourish) */
+  html[data-theme="dark"] [style*="inset_0_1px_0_rgba(255,255,255,0.7)"],
+  html[data-theme="dark"] [style*="inset_0_1px_0_rgba(255,255,255,0.85)"] {
+    /* Tailwind arbitrary-value shadows can't be flipped by class targeting
+       safely; lower opacity via :where() override that wins over inline. */
+  }
+
+  /* Sparkline / SVG accent currentColor: nothing to do — color: var(--ink-900) cascades */
+
+  /* The "white" iframe placeholder in LiveSiteFrame should match surface */
+  html[data-theme="dark"] .bg-\[var\(--allonce-bg-soft\)\] {
+    background-color: var(--bg-surface-alt) !important;
+  }
+
+  /* System theme — respect prefers-color-scheme when data-theme="auto". */
+  @media (prefers-color-scheme: dark) {
+    html[data-theme="auto"] {
+      --bg-app: #0a0a0a;
+      --bg-surface: #161618;
+      --bg-surface-alt: #1f1f22;
+      --bg-sunken: #2a2a2e;
+      --allonce-bg: var(--bg-surface);
+      --allonce-bg-soft: var(--bg-surface-alt);
+      --allonce-bg-raised: var(--bg-sunken);
+      --ink-900: #f5f5f7;
+      --ink-800: #e5e5ea;
+      --ink-700: #c7c7cc;
+      --ink-500: #98989d;
+      --ink-400: #6d6d72;
+      --ink-300: #48484a;
+      --ink-200: #2c2c2e;
+      --ink-100: #1c1c1e;
+      --allonce-line: rgba(255, 255, 255, 0.08);
+      --allonce-line-soft: rgba(255, 255, 255, 0.05);
+      --allonce-line-strong: rgba(255, 255, 255, 0.16);
+    }
+    html[data-theme="auto"] {
+      background-color: #0a0a0a;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    /* Body bg navy was a fallback, but AppShell's swirl image always paints
+       above it. Use the AppShell-friendly transparent default; the !important
+       remains so any third-party reset doesn't reintroduce a tile. */
+    background-color: transparent !important;
+    color: var(--ink-900);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.005em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    background-color: #f2f2f7;
+  } /* light-mode page wash (cool grey); dark mode override sets #0a0a0a */
+
+  /* Glass-pane utility — apply to outer surface containers that already use
+     bg-[var(--bg-surface)]. Adds backdrop blur so the underlying swirl
+     becomes a frosted haze instead of crisp pixels. Opt-in: we don't apply
+     it via attribute selectors (Tailwind generates random classnames) but
+     class="glass-pane" can be added to specific containers when desired. */
+  .glass-pane {
+    background-color: var(--bg-surface);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  /* Scrollbars off globally. The chrome stays out of the way; scroll still
+     works (mousewheel / trackpad / keys). Use ".show-scrollbar" on a
+     specific element if you ever need them back (e.g. code editor). */
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+  .show-scrollbar {
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+  }
+  .show-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: block;
+  }
+  .show-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(15, 32, 80, 0.18);
+    border-radius: 8px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  ::selection {
+    background-color: var(--ao-accent);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ao-accent);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* Eyebrow — Geist small caps with wide tracking, muted */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-500);
+  }
+
+  /* The editorial italic blue accent — every emphasized word in a headline */
+  .accent-word {
+    color: var(--ao-accent);
+    font-style: italic;
+    font-variation-settings: "opsz" 96;
+  }
+
+  /* Display headline — Fraunces with optical-size axis pushed high */
+  .display-serif {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    line-height: 1.02;
+    font-variation-settings: "opsz" 144;
+  }
+
+  /* Aliases used across the app — now serve serif display */
+  .display-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6.5vw, 88px);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--ink-900);
+    font-variation-settings: "opsz" 144;
+  }
+  .display-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3.2vw, 44px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--ink-900);
+    font-variation-settings: "opsz" 96;
+  }
+
+  /* Blinking caret — signature "live / editable" signal */
+  .caret {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.82em;
+    background: var(--ao-accent);
+    margin-left: 0.12em;
+    vertical-align: -0.08em;
+    animation: caret-blink 1.05s steps(1) infinite;
+  }
+  @keyframes caret-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .card {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .surface-soft {
+    background-color: var(--bg-surface-alt);
+    border-radius: var(--radius-md);
+  }
+
+  .grouped-list {
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .grouped-list > * + * {
+    border-top: 1px solid var(--allonce-line-soft);
+  }
+
+  /* Primary — gets an electric-blue glow on hover */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    background-color: var(--ink-900);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 999px;
+    transition:
+      transform 0.15s ease,
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+  .btn-primary:hover {
+    background-color: #000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0, 71, 255, 0.22);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 16px;
+    background-color: var(--bg-surface);
+    color: var(--ink-900);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--allonce-line);
+    transition:
+      box-shadow 0.15s ease,
+      transform 0.15s ease,
+      color 0.15s ease;
+  }
+  .btn-ghost:hover {
+    box-shadow: inset 0 0 0 1px var(--ao-accent);
+    color: var(--ao-accent);
+    transform: translateY(-1px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 24px;
+    padding: 0 10px;
+    background-color: var(--bg-sunken);
+    color: var(--ink-700);
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 999px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Cloned-Vercel overrides for /(pages)/* subpages.
+   Hide Vercel chrome, re-skin typography + colors to AllOnce.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Hide the cloned Vercel navbar (secondary header inside content) */
+main [class*="header-module__"][class*="__header"],
+main [class*="navigation-module__"],
+main [class*="navigation-menu-module__"][class*="__root"],
+main [class*="navigation-menu-module__AENi"],
+main [class*="toolbar-module__"],
+main footer[class*="footer-module__"] {
+  display: none !important;
+}
+
+/* Hide the Vercel logo wherever it appears in cloned content */
+main svg[data-testid="geist-icon"][aria-label="Vercel logo"],
+main svg[aria-label="Vercel logo"],
+main svg[aria-label="AllOnce logo"] {
+  display: none !important;
+}
+
+/* Re-skin typography inside cloned pages */
+main article,
+main .page-content,
+main [class*="blog-post"],
+main [class*="post-module__"] {
+  font-family: var(--font-sans) !important;
+  color: var(--ink-800) !important;
+}
+
+main article h1,
+main article h2,
+main article h3,
+main [class*="post-module__"] h1,
+main [class*="post-module__"] h2,
+main [class*="post-module__"] h3 {
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--ink-900) !important;
+}
+
+/* Re-colour links in cloned content */
+main article a,
+main [class*="post-module__"] a {
+  color: var(--ao-accent) !important;
+}
+
+/* Re-skin Vercel's own buttons/pills inside cloned pages */
+main [class*="button-module__"][data-version] {
+  background: var(--ink-900) !important;
+  color: #fff !important;
+  border: none !important;
+}
+main [class*="button-module__"][data-version] svg {
+  color: #fff !important;
+}
+
+/* Force cloned content root to transparent so body bg shows through uniformly */
+main > [data-page],
+main > section,
+main > div[class*="page-module__"],
+main [class*="layout-module__"] > div {
+  background-color: transparent !important;
+}
+
+/* Cloned pages use var(--geist-foreground) and var(--ds-gray-*) everywhere;
+   remap to AllOnce ink so headings/body read in our palette. */
+main {
+  --geist-foreground: var(--ink-900);
+  --geist-background: var(--bg-surface);
+  --ds-gray-1000: var(--ink-900);
+  --ds-gray-900: var(--ink-800);
+  --ds-gray-700: var(--ink-700);
+  --ds-gray-500: var(--ink-500);
+  --ds-gray-400: var(--ink-400);
+  --ds-gray-300: var(--ink-300);
+  --ds-gray-200: var(--ink-200);
+  --ds-gray-100: var(--ink-100);
+  --ds-background-100: var(--bg-surface);
+  --ds-background-200: var(--bg-surface-alt);
+  /* Full blue ramp → AllOnce electric accent.
+     Cloned Vercel pages use 100–1000; without this most pages read flat grey. */
+  --ds-blue-100: #e6edff; /* softest wash */
+  --ds-blue-200: #cfd9ff;
+  --ds-blue-300: #99aeff;
+  --ds-blue-400: #4d77ff;
+  --ds-blue-500: var(--ao-accent); /* #0047FF core */
+  --ds-blue-600: var(--ao-accent);
+  --ds-blue-700: var(--ao-accent);
+  --ds-blue-800: var(--ao-accent-hover); /* #003bd9 */
+  --ds-blue-900: #0030b3; /* deep — used heavily for emphasis */
+  --ds-blue-1000: #001f7a; /* deepest — text-on-soft-blue */
+}
+
+/* Give cloned-page links + inline emphasis the accent — muted enough not to saturate */
+main a[class*="link"],
+main a[data-type="link"],
+main [class*="link-module__"] {
+  color: var(--ao-accent) !important;
+}
+main a[class*="link"]:hover,
+main a[data-type="link"]:hover,
+main [class*="link-module__"]:hover {
+  color: var(--ao-accent-hover) !important;
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .font-serif {
+    font-family: var(--font-display);
+  }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .no-ring:focus {
+    outline: none;
+  }
+  .text-accent {
+    color: var(--ao-accent);
+  }
+
+  /* Variable-font optical-size helpers for Fraunces */
+  .opsz-144 {
+    font-variation-settings: "opsz" 144;
+  }
+  .opsz-96 {
+    font-variation-settings: "opsz" 96;
+  }
+  .opsz-48 {
+    font-variation-settings: "opsz" 48;
+  }
+  .opsz-24 {
+    font-variation-settings: "opsz" 24;
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-slide-down {
+    animation: slide-down 0.4s ease;
+  }
+
+  @keyframes ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+  .animate-ping {
+    animation: ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .animate-fade-in {
+    animation: fade-in 0.5s ease;
+  }
+
+  /* Skeleton shimmer — used by loading.tsx pages. Linear gradient sweeps
+     across blue-tinted placeholder shapes. Premium feel, no spinners. */
+  @keyframes ao-shimmer {
+    0% {
+      background-position: -180% 0;
+    }
+    100% {
+      background-position: 180% 0;
+    }
+  }
+  .ao-skel {
+    background-image: linear-gradient(
+      90deg,
+      var(--bg-surface-alt) 0%,
+      var(--bg-sunken) 50%,
+      var(--bg-surface-alt) 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: ao-shimmer 1.8s linear infinite;
+    border-radius: 12px;
+  }
+
+  /* Top progress bar — slim 2px sliver under the topbar. Indeterminate
+     animation: a short highlight slides left→right inside a full-width
+     track. Only painted while page transition in flight. */
+  @keyframes ao-progress {
+    0% {
+      transform: translateX(-100%);
+    }
+    50% {
+      transform: translateX(20%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  .ao-progress-bar {
+    animation: ao-progress 1.1s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  .form-input {
+    display: block;
+    width: 100%;
+    height: 2.25rem;
+    padding: 0 0.625rem;
+    font-size: 12.5px;
+    color: var(--ink-900);
+    background: var(--bg-app);
+    border: 1px solid var(--bg-surface-alt);
+    border-radius: var(--radius-md, 8px);
+    transition: border-color 120ms;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--ink-700);
+  }
+  textarea.form-input {
+    height: auto;
+    min-height: 4.5rem;
+    padding: 0.5rem 0.625rem;
+    line-height: 1.4;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Print styles. Pages that opt into print rendering bypass AppShell when
+   `?print=1` is in the URL (see hotel-price report) and render a clean
+   white background with black ink. The rules below provide a safety net
+   for any print attempt — they hide common chrome and reset colors so
+   long reports print legibly even from within AppShell.
+   ══════════════════════════════════════════════════════════════════════ */
+@media print {
+  :root {
+    --bg-app: #ffffff;
+    --bg-surface: #ffffff;
+    --bg-surface-alt: #ffffff;
+    --bg-sunken: #ffffff;
+    --ink-900: #000000;
+    --ink-700: #000000;
+    --ink-500: #333333;
+    --ink-400: #555555;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  /* Tailwind's `print:hidden` utility covers most cases; for AppShell's
+     own elements (topbar, sidebar, chat pane) we hide by structural role. */
+  .allonce-topbar,
+  .allonce-sidebar,
+  .allonce-chatpane,
+  [data-print-hide="true"] {
+    display: none !important;
+  }
+  main {
+    overflow: visible !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+  /* Avoid wide-table page-break orphans. */
+  table {
+    page-break-inside: auto;
+  }
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+  thead {
+    display: table-header-group;
+  }
+}

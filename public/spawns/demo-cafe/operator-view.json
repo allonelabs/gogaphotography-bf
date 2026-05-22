@@ -1,0 +1,350 @@
+{
+  "computedAt": "2026-05-01T09:05:51.650Z",
+  "summary": {
+    "businessId": "5a152a03784ef3a9",
+    "activeToolCount": 16,
+    "totalToolCount": 16,
+    "overallScore": 56,
+    "matrixHealth": 43,
+    "diagnoses": 10,
+    "proposalCount": 3,
+    "highProposals": 0,
+    "classifierConfidence": 0.5897222222222223,
+    "classifierSource": "deterministic"
+  },
+  "groups": [
+    {
+      "category": "content",
+      "label": "Content",
+      "cards": [
+        {
+          "name": "content-factory",
+          "category": "content",
+          "summary": "Blog + content marketing for A cozy specialty coffee",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "site-forge",
+          "category": "content",
+          "summary": "Marketing website for Demo Cafe (A cozy specialty coffee)",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "brand",
+      "label": "Brand",
+      "cards": [
+        {
+          "name": "brand-forge",
+          "category": "brand",
+          "summary": "Brand identity (archetype, palette, typography, logos) for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "media-forge",
+          "category": "brand",
+          "summary": "Media library + AI-generated brand assets for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "social-forge",
+          "category": "brand",
+          "summary": "Social media presence for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "revenue",
+      "label": "Revenue",
+      "cards": [
+        {
+          "name": "booking-forge",
+          "category": "revenue",
+          "summary": "Appointment booking system for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "lead-hunter",
+          "category": "revenue",
+          "summary": "Lead generation + scraping for A cozy specialty coffee in GE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "ledger-spawn",
+          "category": "revenue",
+          "summary": "Double-entry accounting + invoicing for GE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "payment-forge",
+          "category": "revenue",
+          "summary": "Stripe payment processing for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 6,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "customer",
+      "label": "Customer",
+      "cards": [
+        {
+          "name": "crm-spawn",
+          "category": "customer",
+          "summary": "CRM pipeline + contact management for A cozy specialty coffee",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 8,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "email-forge",
+          "category": "customer",
+          "summary": "Email system (transactional + sequences) for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 12,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "operations",
+      "label": "Operations",
+      "cards": [
+        {
+          "name": "admin-spawn",
+          "category": "operations",
+          "summary": "Admin panel with RBAC, audit logs, feature flags for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "analytics-forge",
+          "category": "operations",
+          "summary": "Product + web analytics (PostHog + Plausible) for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 7,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "infrastructure",
+      "label": "Infrastructure",
+      "cards": [
+        {
+          "name": "dns-forge",
+          "category": "infrastructure",
+          "summary": "DNS zone + subdomains for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "legal-forge",
+          "category": "infrastructure",
+          "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for GE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 0,
+          "proposalCount": 1,
+          "highestSeverityProposal": "low",
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "monitor-forge",
+          "category": "infrastructure",
+          "summary": "Uptime monitoring + status page for Demo Cafe",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:05:51.649Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    }
+  ],
+  "score": {
+    "overall": 56,
+    "matrixHealth": 43,
+    "classifierConfidence": 0.5897222222222223,
+    "bridgeCoverage": 0.7777777777777778,
+    "criticalNoImpl": 2,
+    "diagnoses": 10,
+    "computedAt": "2026-05-01T09:05:51.650Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.59 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "medium",
+      "title": "9 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-75",
+          "bridge-81",
+          "bridge-77",
+          "bridge-78",
+          "bridge-84",
+          "bridge-85",
+          "bridge-87"
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "isolated-legal-forge",
+      "kind": "investigate-stale",
+      "severity": "low",
+      "title": "Active tool legal-forge has no firing edges — is it isolated?",
+      "rationale": "The simulator battery didn't replay any event that lit up an edge involving legal-forge. Either the tool is legitimately terminal (e.g. ops-bootstrap emits no inter-tool events), or SAMPLE_PAYLOADS is missing an event that should connect to it.",
+      "params": {
+        "toolName": "legal-forge"
+      },
+      "applicable": false
+    }
+  ],
+  "diagnoses": [
+    "Bridge bridge-105 is enabled but has never fired",
+    "Bridge bridge-106 is enabled but has never fired",
+    "Bridge bridge-75 is enabled but has never fired",
+    "Bridge bridge-81 is enabled but has never fired",
+    "Bridge bridge-77 is enabled but has never fired",
+    "Bridge bridge-78 is enabled but has never fired",
+    "Bridge bridge-83 is enabled but has never fired",
+    "Bridge bridge-84 is enabled but has never fired",
+    "Bridge bridge-85 is enabled but has never fired",
+    "Bridge bridge-87 is enabled but has never fired"
+  ],
+  "vendors": [
+    {
+      "category": "hosting",
+      "name": "Vercel",
+      "why": "Next.js + edge hosting for the public site and app."
+    },
+    {
+      "category": "auth",
+      "name": "Supabase Auth",
+      "why": "Email/password + OAuth + magic-link auth out of the box."
+    },
+    {
+      "category": "storage",
+      "name": "Cloudflare R2",
+      "why": "S3-compatible object storage for brand assets, uploads, backups."
+    },
+    {
+      "category": "email",
+      "name": "Resend",
+      "why": "Transactional send + unified domain authentication."
+    },
+    {
+      "category": "analytics",
+      "name": "Plausible",
+      "why": "Privacy-friendly web analytics; GDPR-ready without cookies."
+    },
+    {
+      "category": "payments",
+      "name": "Stripe",
+      "why": "One-time checkout + Stripe Tax for VAT calculation."
+    },
+    {
+      "category": "inventory",
+      "name": "Supabase (ecom schema)",
+      "why": "Products + variants + stock tracked in the app-forge DB."
+    },
+    {
+      "category": "fulfillment",
+      "name": "Shippo",
+      "why": "Label generation + rate comparison across carriers."
+    },
+    {
+      "category": "customer-support",
+      "name": "Chatwoot",
+      "why": "Order-lookup automation tied to the ecom schema."
+    },
+    {
+      "category": "email",
+      "name": "Resend (marketing)",
+      "why": "Abandoned-cart + post-purchase sequences."
+    }
+  ]
+}

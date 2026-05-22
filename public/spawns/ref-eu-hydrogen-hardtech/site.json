@@ -1,0 +1,235 @@
+{
+  "apex": "northfold-hydrogen.de",
+  "framework": "nextjs-app-router",
+  "i18nNamespaces": [
+    "academy",
+    "blog",
+    "common",
+    "legal",
+    "proposals",
+    "site",
+    "status"
+  ],
+  "routes": [
+    {
+      "path": "/academy",
+      "ownerTool": "academy-forge",
+      "kind": "static",
+      "filePath": "academy/page.tsx",
+      "meta": {
+        "title": "Academy · northfold-hydrogen",
+        "description": "Training and docs from northfold-hydrogen."
+      }
+    },
+    {
+      "path": "/academy/[course]",
+      "ownerTool": "academy-forge",
+      "kind": "dynamic",
+      "filePath": "academy/[course]/page.tsx",
+      "meta": {
+        "title": "Academy · northfold-hydrogen",
+        "description": "Course detail pages for northfold-hydrogen Academy."
+      }
+    },
+    {
+      "path": "/academy/[course]/[lesson]",
+      "ownerTool": "academy-forge",
+      "kind": "dynamic",
+      "filePath": "academy/[course]/[lesson]/page.tsx",
+      "meta": {
+        "title": "Academy · northfold-hydrogen",
+        "description": "Lesson pages for northfold-hydrogen Academy."
+      }
+    },
+    {
+      "path": "/blog",
+      "ownerTool": "content-factory",
+      "kind": "static",
+      "filePath": "blog/page.tsx",
+      "meta": {
+        "title": "Blog · northfold-hydrogen",
+        "description": "Articles and updates from northfold-hydrogen."
+      }
+    },
+    {
+      "path": "/blog/[slug]",
+      "ownerTool": "content-factory",
+      "kind": "dynamic",
+      "filePath": "blog/[slug]/page.tsx",
+      "meta": {
+        "title": "Blog · northfold-hydrogen",
+        "description": "Blog post pages for northfold-hydrogen."
+      }
+    },
+    {
+      "path": "/cookies",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "cookies/page.tsx",
+      "meta": {
+        "title": "Cookie Policy · northfold-hydrogen",
+        "description": "Cookie Policy for northfold-hydrogen (EU)."
+      }
+    },
+    {
+      "path": "/legal/[doc]",
+      "ownerTool": "legal-forge",
+      "kind": "dynamic",
+      "filePath": "legal/[doc]/page.tsx",
+      "meta": {
+        "title": "Legal · northfold-hydrogen",
+        "description": "Legal documents for northfold-hydrogen"
+      }
+    },
+    {
+      "path": "/privacy",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "privacy/page.tsx",
+      "meta": {
+        "title": "Privacy Policy · northfold-hydrogen",
+        "description": "Privacy Policy for northfold-hydrogen (EU)."
+      }
+    },
+    {
+      "path": "/terms",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "terms/page.tsx",
+      "meta": {
+        "title": "Terms of Service · northfold-hydrogen",
+        "description": "Terms of Service for northfold-hydrogen (EU)."
+      }
+    },
+    {
+      "path": "/status",
+      "ownerTool": "monitor-forge",
+      "kind": "static",
+      "filePath": "status/page.tsx",
+      "meta": {
+        "title": "Status · northfold-hydrogen",
+        "description": "Live operational status for northfold-hydrogen."
+      }
+    },
+    {
+      "path": "/plans",
+      "ownerTool": "payment-forge",
+      "kind": "static",
+      "filePath": "plans/page.tsx",
+      "meta": {
+        "title": "Plans · northfold-hydrogen",
+        "description": "Simple, transparent pricing for northfold-hydrogen. Choose the plan that fits your needs."
+      }
+    },
+    {
+      "path": "/proposals/[id]",
+      "ownerTool": "proposal-forge",
+      "kind": "dynamic",
+      "filePath": "proposals/[id]/page.tsx",
+      "meta": {
+        "title": "Proposal · northfold-hydrogen",
+        "description": "View and respond to proposals from northfold-hydrogen."
+      }
+    },
+    {
+      "path": "/",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "page.tsx",
+      "meta": {
+        "title": "Home | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=northfold-hydrogen&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/404",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "404/page.tsx",
+      "meta": {
+        "title": "404 | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=404&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/about",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "about/page.tsx",
+      "meta": {
+        "title": "About | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=About&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/changelog",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "changelog/page.tsx",
+      "meta": {
+        "title": "Changelog | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Changelog&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/contact",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "contact/page.tsx",
+      "meta": {
+        "title": "Contact | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Contact&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/customers",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "customers/page.tsx",
+      "meta": {
+        "title": "Customers | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Customers&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/features",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "features/page.tsx",
+      "meta": {
+        "title": "Features | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Features&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/legal",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "legal/page.tsx",
+      "meta": {
+        "title": "Legal | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Legal&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    },
+    {
+      "path": "/pricing",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "pricing/page.tsx",
+      "meta": {
+        "title": "Pricing | northfold-hydrogen",
+        "description": "northfold-hydrogen — green hydrogen electrolyzer platform and plant-delivery service targeting utility-scale and industrial offtakers under long-term hydrogen supply agreements",
+        "ogImageUrl": "https://northfold-hydrogen.de/api/og?title=Pricing&subtitle=green%20hydrogen%20electrolyzer%20platform%20and%20plant-delivery%20service%20targeting%20utility-scale%20and%20industrial%20offtakers%20under%20long-term%20hydrogen%20supply%20agreements"
+      }
+    }
+  ],
+  "sharedFileCount": 37
+}

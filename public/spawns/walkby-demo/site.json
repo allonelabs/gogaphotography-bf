@@ -1,0 +1,180 @@
+{
+  "apex": "walkby-demo.com",
+  "framework": "nextjs-app-router",
+  "i18nNamespaces": [
+    "common",
+    "ecom",
+    "legal",
+    "site",
+    "social",
+    "status"
+  ],
+  "routes": [
+    {
+      "path": "/cart",
+      "ownerTool": "ecom-forge",
+      "kind": "static",
+      "filePath": "cart/page.tsx",
+      "meta": {
+        "title": "Cart · Walkby Demo",
+        "description": "Review your shopping cart at Walkby Demo."
+      }
+    },
+    {
+      "path": "/checkout",
+      "ownerTool": "ecom-forge",
+      "kind": "static",
+      "filePath": "checkout/page.tsx",
+      "meta": {
+        "title": "Checkout · Walkby Demo",
+        "description": "Complete your purchase at Walkby Demo."
+      }
+    },
+    {
+      "path": "/shop",
+      "ownerTool": "ecom-forge",
+      "kind": "static",
+      "filePath": "shop/page.tsx",
+      "meta": {
+        "title": "Shop · Walkby Demo",
+        "description": "Browse the full Walkby Demo product catalog."
+      }
+    },
+    {
+      "path": "/shop/[slug]",
+      "ownerTool": "ecom-forge",
+      "kind": "dynamic",
+      "filePath": "shop/[slug]/page.tsx",
+      "meta": {
+        "title": "Shop · Walkby Demo",
+        "description": "Product detail page for Walkby Demo."
+      }
+    },
+    {
+      "path": "/cookies",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "cookies/page.tsx",
+      "meta": {
+        "title": "Cookie Policy · Walkby Demo",
+        "description": "Cookie Policy for Walkby Demo (EU)."
+      }
+    },
+    {
+      "path": "/legal/[doc]",
+      "ownerTool": "legal-forge",
+      "kind": "dynamic",
+      "filePath": "legal/[doc]/page.tsx",
+      "meta": {
+        "title": "Legal · Walkby Demo",
+        "description": "Legal documents for Walkby Demo"
+      }
+    },
+    {
+      "path": "/privacy",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "privacy/page.tsx",
+      "meta": {
+        "title": "Privacy Policy · Walkby Demo",
+        "description": "Privacy Policy for Walkby Demo (EU)."
+      }
+    },
+    {
+      "path": "/terms",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "terms/page.tsx",
+      "meta": {
+        "title": "Terms of Service · Walkby Demo",
+        "description": "Terms of Service for Walkby Demo (EU)."
+      }
+    },
+    {
+      "path": "/status",
+      "ownerTool": "monitor-forge",
+      "kind": "static",
+      "filePath": "status/page.tsx",
+      "meta": {
+        "title": "Status · Walkby Demo",
+        "description": "Live operational status for Walkby Demo."
+      }
+    },
+    {
+      "path": "/plans",
+      "ownerTool": "payment-forge",
+      "kind": "static",
+      "filePath": "plans/page.tsx",
+      "meta": {
+        "title": "Plans · Walkby Demo",
+        "description": "Simple, transparent pricing for Walkby Demo. Choose the plan that fits your needs."
+      }
+    },
+    {
+      "path": "/",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "page.tsx",
+      "meta": {
+        "title": "Home | Walkby Demo",
+        "description": "Walkby Demo — DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe.",
+        "ogImageUrl": "https://walkby-demo.com/api/og?title=Walkby%20Demo&subtitle=DTC%20fashion%20brand%20selling%20minimalist%20tees%20and%20denim%20to%20Gen-Z%20customers%20in%20Europe."
+      }
+    },
+    {
+      "path": "/404",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "404/page.tsx",
+      "meta": {
+        "title": "404 | Walkby Demo",
+        "description": "Walkby Demo — DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe.",
+        "ogImageUrl": "https://walkby-demo.com/api/og?title=404&subtitle=DTC%20fashion%20brand%20selling%20minimalist%20tees%20and%20denim%20to%20Gen-Z%20customers%20in%20Europe."
+      }
+    },
+    {
+      "path": "/about",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "about/page.tsx",
+      "meta": {
+        "title": "About | Walkby Demo",
+        "description": "Walkby Demo — DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe.",
+        "ogImageUrl": "https://walkby-demo.com/api/og?title=About&subtitle=DTC%20fashion%20brand%20selling%20minimalist%20tees%20and%20denim%20to%20Gen-Z%20customers%20in%20Europe."
+      }
+    },
+    {
+      "path": "/contact",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "contact/page.tsx",
+      "meta": {
+        "title": "Contact | Walkby Demo",
+        "description": "Walkby Demo — DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe.",
+        "ogImageUrl": "https://walkby-demo.com/api/og?title=Contact&subtitle=DTC%20fashion%20brand%20selling%20minimalist%20tees%20and%20denim%20to%20Gen-Z%20customers%20in%20Europe."
+      }
+    },
+    {
+      "path": "/legal",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "legal/page.tsx",
+      "meta": {
+        "title": "Legal | Walkby Demo",
+        "description": "Walkby Demo — DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe.",
+        "ogImageUrl": "https://walkby-demo.com/api/og?title=Legal&subtitle=DTC%20fashion%20brand%20selling%20minimalist%20tees%20and%20denim%20to%20Gen-Z%20customers%20in%20Europe."
+      }
+    },
+    {
+      "path": "/links",
+      "ownerTool": "social-forge",
+      "kind": "static",
+      "filePath": "links/page.tsx",
+      "meta": {
+        "title": "Links · Walkby Demo",
+        "description": "DTC fashion brand selling minimalist tees and denim to Gen-Z customers in Europe."
+      }
+    }
+  ],
+  "sharedFileCount": 27
+}

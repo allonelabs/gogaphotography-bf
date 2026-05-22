@@ -1,0 +1,321 @@
+// afisha-hotel template — cinematic noir × warm cream.
+//
+// Aesthetic source: github.com/allonelabs/Afisha-Hotel. Cormorant Garamond
+// display, large overlay heritage shots, sticky booking band, suite cards
+// with price-per-night, amenity glyph grid, gallery strip.
+//
+// Consumes the shared VariantSpec — picks/params/decorations still drive
+// palette/fonts/motion. The hotel-specific layouts live in _sections/hotel.ts.
+
+import type { VariantSpec, RenderContext, ResolvedPalette, ResolvedFonts, VariantParams } from '../schema';
+import { resolvePalette } from '../_variants/palettes';
+import { resolveFonts } from '../_variants/fonts';
+import { backgroundCss } from '../_variants/backgrounds';
+import {
+  motionCss, ctaCss, radiusCss, densityCss, typeScaleCss, imageFxCss,
+  navStyleCss, footerStyleCss, hoverEffectCss, dividersCss,
+} from '../_variants/styles';
+import { sanitizeParams, validateDecorations } from '../_variants/validators';
+import { renderHero } from '../_sections/heroes';
+import {
+  renderNav, renderTestimonials, renderFaq, renderCtaBand, renderFooter,
+} from '../_sections/blocks';
+import {
+  renderBookingBand, renderHeritage, renderRoomsGrid, renderAmenitiesGrid,
+  renderGalleryStrip, renderLocation,
+} from '../_sections/hotel';
+import { esc, linkStyleCss, accentEmphasisCss, selectStyleCss, focusRingStyleCss, scrollIndicatorCss, cardElevationCss, inputStyleCss, badgeStyleCss, imageBorderRadiusCss, customCssOverride } from '../_sections/helpers';
+
+export interface TemplateInput {
+  name: string;
+  slug: string;
+  paragraph: string;
+  spec: VariantSpec;
+  heroImageUrl?: string;
+}
+
+export function renderSite(input: TemplateInput): Record<string, string> {
+  const { spec } = input;
+  const initialPalette = resolvePalette(spec.picks.palette);
+  const params: VariantParams = sanitizeParams(spec.params, initialPalette.paper);
+  const palette: ResolvedPalette = resolvePalette(spec.picks.palette, params);
+  const fonts: ResolvedFonts = resolveFonts(spec.picks.fonts);
+  const decorations = validateDecorations(spec.decorations);
+
+  const baseCss = `
+:root{
+  --ink:${palette.ink};
+  --paper:${palette.paper};
+  --accent:${palette.accent};
+  --accent-soft:${palette.accentSoft};
+  --muted:${palette.muted};
+  --line:${palette.line};
+  --on-accent:${palette.inkOnAccent};
+  --font-display:${fonts.display};
+  --font-body:${fonts.body};
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:var(--paper)}
+h1,h2,h3{font-family:var(--font-display);font-weight:400}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+.row{display:flex;gap:32px;align-items:center}
+
+/* Nav — minimal noir, transparent over hero */
+header.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 92%, transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line)}
+header.nav .row{height:72px;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 32px}
+header.nav .logo{font-family:var(--font-display);font-weight:500;letter-spacing:0.16em;font-size:20px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+header.nav .logo .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+header.nav nav{display:flex;gap:28px;align-items:center}
+header.nav nav a{font-size:12px;font-weight:500;color:var(--ink);letter-spacing:0.18em;text-transform:uppercase;transition:opacity .15s ease}
+header.nav nav a:hover{opacity:.5}
+header.nav nav a[aria-current]{opacity:.5}
+header.nav .cta{padding:10px 22px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;background:var(--accent);color:var(--on-accent);border:none}
+header.nav .cta:hover{transform:translateY(-1px)}
+
+/* Hero override for hotel aesthetic */
+.hero h1{letter-spacing:-0.02em;font-weight:400;font-family:var(--font-display)}
+.hero p.subhead{margin-top:24px;font-size:18px;color:var(--muted);max-width:640px;letter-spacing:0;line-height:1.6}
+.hero .ctas{margin-top:40px;display:flex;gap:12px;flex-wrap:wrap}
+.kicker{font-size:11px;font-weight:400;letter-spacing:0.32em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;display:inline-flex;align-items:center;gap:12px;font-family:var(--font-body)}
+.kicker::before{content:"";width:32px;height:1px;background:var(--muted)}
+
+/* Sections */
+section{padding:120px 0}
+
+/* CTA band */
+.cta-band{margin:120px 32px;max-width:1216px;margin-left:auto;margin-right:auto;padding:96px 48px;background:var(--ink);color:var(--paper);text-align:center}
+.cta-band h2{color:var(--paper);margin:0 auto;max-width:780px;font-weight:400;letter-spacing:-0.02em;font-family:var(--font-display)}
+.cta-band p{color:color-mix(in srgb, var(--paper) 75%, transparent);margin-top:18px;font-size:17px;line-height:1.6;max-width:560px;margin-left:auto;margin-right:auto}
+.cta-band .ctas{margin-top:40px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-band .cta.primary{background:var(--paper);color:var(--ink)}
+.cta-band .cta.secondary{border-color:color-mix(in srgb, var(--paper) 25%, transparent);color:var(--paper)}
+
+/* Contact card */
+.contact-card{margin-top:48px;max-width:560px;padding:40px;border:1px solid var(--line)}
+.contact-card .email{font-size:22px;font-weight:500;letter-spacing:-0.01em;color:var(--accent);margin-bottom:12px;font-family:var(--font-display)}
+.contact-card .blurb{color:var(--muted);font-size:15px;line-height:1.6}
+
+/* Footer — cinematic noir 4-col with address block + concierge */
+footer{padding:80px 0 40px;background:var(--ink);color:color-mix(in srgb, var(--paper) 70%, transparent);font-size:13px;letter-spacing:0.02em}
+footer > .wrap, footer .footer-grid, footer .meta{max-width:1280px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
+footer .footer-grid{display:grid;grid-template-columns:1fr;gap:48px;padding-top:64px;padding-bottom:64px}
+@media (min-width:640px){footer .footer-grid{grid-template-columns:1fr 1fr}}
+@media (min-width:1024px){footer .footer-grid{grid-template-columns:1.5fr 1fr 1fr 1fr}}
+footer .col-brand h3{font-family:var(--font-display);font-weight:400;color:var(--paper);font-size:32px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;line-height:1}
+footer .col-brand p{max-width:340px;line-height:1.7;letter-spacing:0.02em;color:color-mix(in srgb, var(--paper) 65%, transparent);font-size:13px}
+footer .col-address{font-style:normal}
+footer .col-address .line{margin-bottom:4px;color:color-mix(in srgb, var(--paper) 75%, transparent);font-size:13px;letter-spacing:0.02em}
+footer h4{font-family:var(--font-body);font-size:10px;font-weight:500;letter-spacing:0.32em;text-transform:uppercase;color:var(--paper);margin-bottom:20px}
+footer ul{list-style:none}
+footer ul li{margin-bottom:12px}
+footer ul a{font-size:13px;color:color-mix(in srgb, var(--paper) 70%, transparent);transition:color .25s ease;letter-spacing:0.02em}
+footer ul a:hover{color:var(--paper)}
+footer .meta{margin-top:0;padding-top:24px;padding-bottom:0;border-top:1px solid color-mix(in srgb, var(--paper) 12%, transparent);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:color-mix(in srgb, var(--paper) 45%, transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+/* FAQ */
+.faq{margin-top:48px;max-width:780px}
+.faq details{border-bottom:1px solid var(--line);padding:28px 0}
+.faq summary{font-size:20px;font-weight:400;cursor:pointer;letter-spacing:-0.01em;list-style:none;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-display)}
+.faq summary::after{content:"+";font-size:24px;color:var(--muted);font-weight:300;transition:transform .2s ease}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin-top:14px;color:var(--muted);font-size:15px;line-height:1.65;max-width:680px}
+
+/* Testimonials */
+.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;margin-top:48px}
+.testimonial{padding:40px;background:var(--paper);border:1px solid var(--line)}
+.testimonial blockquote{font-size:18px;line-height:1.6;color:var(--ink);margin-bottom:28px;letter-spacing:0;font-family:var(--font-display);font-style:italic}
+.testimonial .qmark{font-size:36px;color:var(--accent);line-height:0;margin-right:6px;font-style:normal}
+.testimonial .author{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500}
+.testimonial .role{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:0.08em}
+
+@media (max-width: 640px){
+  .wrap{padding:0 20px}
+  header.nav nav{display:none}
+  section{padding:80px 0}
+  .cta-band{margin:80px 16px;padding:64px 28px}
+}
+`;
+
+  const overlayCss = [
+    backgroundCss(spec.picks.background, palette, params),
+    motionCss(spec.picks.motion),
+    ctaCss(spec.picks.cta, palette),
+    radiusCss(spec.picks.radius),
+    densityCss(spec.picks.density),
+    typeScaleCss(spec.picks.typeScale),
+    imageFxCss(spec.picks.imageFx, palette),
+    navStyleCss(spec.picks.navStyle, palette),
+    footerStyleCss(spec.picks.footerStyle, palette),
+    hoverEffectCss(spec.picks.hoverEffect, palette),
+    dividersCss(spec.picks.dividers, palette),
+  ].filter(Boolean).join('\n');
+
+  function makeCtx(route: '/' | '/about' | '/features' | '/pricing' | '/contact'): RenderContext {
+    return {
+      name: input.name, slug: input.slug, paragraph: input.paragraph,
+      palette, fonts, picks: spec.picks, params, decorations,
+      content: spec.content,
+      assets: { heroImageUrl: input.heroImageUrl },
+      currentRoute: route,
+    };
+  }
+
+  function shell(opts: { title: string; description: string; route: '/' | '/about' | '/features' | '/pricing' | '/contact'; body: string }): string {
+    const ctxForNav = makeCtx(opts.route);
+    return `<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${esc(opts.title)}</title>
+<meta name="description" content="${esc(opts.description)}"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="${esc(fonts.googleFontsUrl)}"/>
+<style>${baseCss}${overlayCss}${linkStyleCss(spec.picks.linkStyle)}${accentEmphasisCss(spec.picks.accentEmphasis)}${selectStyleCss(spec.picks.selectStyle)}${focusRingStyleCss(spec.picks.focusRingStyle)}${scrollIndicatorCss(spec.picks.scrollIndicator)}${cardElevationCss(spec.picks.cardElevation)}${inputStyleCss(spec.picks.inputStyle)}${badgeStyleCss(spec.picks.badgeStyle)}${imageBorderRadiusCss(spec.picks.imageBorderRadius)}${customCssOverride(spec.params.customCss)}</style>
+</head>
+<body>
+${renderNav(ctxForNav)}
+${opts.body}
+</body></html>`;
+  }
+
+  // Cinematic 4-col footer — Brand / Visit / Concierge / Connect.
+  function renderAfishaFooter(ctx: RenderContext): string {
+    const year = new Date().getFullYear();
+    const addressLines = (ctx.content.contact.blurb || '').split(/\n|,/).map((l) => l.trim()).filter(Boolean).slice(0, 3);
+    return `<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="col-brand">
+        <h3>${esc(ctx.name)}</h3>
+        <p>${esc(ctx.content.footer.tagline)}</p>
+      </div>
+      <div class="col-address">
+        <h4>Visit</h4>
+        ${addressLines.length > 0
+          ? addressLines.map((l) => `<div class="line">${esc(l)}</div>`).join('')
+          : `<div class="line">Old town · Tbilisi</div><div class="line">Open daily 24/7</div>`}
+        <div class="line" style="margin-top:14px"><a href="mailto:${esc(ctx.content.contact.email)}" style="color:var(--accent)">${esc(ctx.content.contact.email)}</a></div>
+      </div>
+      <div>
+        <h4>Concierge</h4>
+        <ul>
+          <li><a href="/pricing">Suites & rates</a></li>
+          <li><a href="/features">Amenities</a></li>
+          <li><a href="/about">Heritage</a></li>
+          <li><a href="/contact">Reservations</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Press kit</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="meta">
+      <span>© ${year} ${esc(ctx.name)}</span>
+      <span>Built with AllOnce</span>
+    </div>
+  </div>
+</footer>`;
+  }
+
+  // ── Home: hero → booking band → heritage → rooms → amenities → gallery → testimonials → cta → footer
+  function renderHome(): string {
+    const ctx = makeCtx('/');
+    return shell({
+      title: `${input.name} — ${spec.content.tagline}`,
+      description: spec.content.subhead,
+      route: '/',
+      body: `${renderHero(ctx)}
+${renderBookingBand(ctx)}
+${renderHeritage(ctx)}
+${renderRoomsGrid(ctx)}
+${renderAmenitiesGrid(ctx)}
+${renderGalleryStrip(ctx)}
+${renderTestimonials(ctx)}
+${renderCtaBand(ctx)}
+${renderAfishaFooter(ctx)}`,
+    });
+  }
+
+  function renderAbout(): string {
+    const ctx = makeCtx('/about');
+    return shell({
+      title: `Heritage — ${input.name}`,
+      description: spec.content.about.mission,
+      route: '/about',
+      body: `${renderHero(ctx)}
+${renderHeritage(ctx)}
+${renderAmenitiesGrid(ctx)}
+${renderTestimonials(ctx)}
+${renderCtaBand(ctx)}
+${renderAfishaFooter(ctx)}`,
+    });
+  }
+
+  function renderFeaturesPage(): string {
+    const ctx = makeCtx('/features');
+    return shell({
+      title: `Amenities — ${input.name}`,
+      description: `What ${input.name} offers — every amenity, in detail.`,
+      route: '/features',
+      body: `${renderHero(ctx)}
+${renderAmenitiesGrid(ctx)}
+${renderGalleryStrip(ctx)}
+${renderCtaBand(ctx)}
+${renderAfishaFooter(ctx)}`,
+    });
+  }
+
+  function renderPricingPage(): string {
+    const ctx = makeCtx('/pricing');
+    return shell({
+      title: `Suites — ${input.name}`,
+      description: `Accommodations at ${input.name}.`,
+      route: '/pricing',
+      body: `${renderHero(ctx)}
+${renderBookingBand(ctx)}
+${renderRoomsGrid(ctx)}
+${renderFaq(ctx)}
+${renderCtaBand(ctx)}
+${renderAfishaFooter(ctx)}`,
+    });
+  }
+
+  function renderContactPage(): string {
+    const ctx = makeCtx('/contact');
+    const c = spec.content;
+    return shell({
+      title: `Contact — ${input.name}`,
+      description: c.contact.blurb,
+      route: '/contact',
+      body: `${renderHero(ctx)}
+${renderLocation(ctx)}
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="contact-card">
+      <div class="email"><a href="mailto:${esc(c.contact.email)}">${esc(c.contact.email)}</a></div>
+      <div class="blurb">${esc(c.contact.blurb)}</div>
+    </div>
+  </div>
+</section>
+${renderCtaBand(ctx)}
+${renderAfishaFooter(ctx)}`,
+    });
+  }
+
+  return {
+    'index.html': renderHome(),
+    'about.html': renderAbout(),
+    'features.html': renderFeaturesPage(),
+    'pricing.html': renderPricingPage(),
+    'contact.html': renderContactPage(),
+  };
+}

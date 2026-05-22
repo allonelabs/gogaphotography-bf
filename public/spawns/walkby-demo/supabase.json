@@ -1,0 +1,83 @@
+{
+  "provider": "supabase",
+  "schemas": [
+    {
+      "schemaName": "bf_default_9f3e50d393772404_brand",
+      "ownerTool": "brand-forge"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_crm",
+      "ownerTool": "crm-spawn"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_ecom",
+      "ownerTool": "ecom-forge"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_email",
+      "ownerTool": "email-forge"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_payment",
+      "ownerTool": "payment-forge"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_site",
+      "ownerTool": "site-forge"
+    },
+    {
+      "schemaName": "bf_default_9f3e50d393772404_social",
+      "ownerTool": "social-forge"
+    }
+  ],
+  "crossSchemaForeignKeys": [
+    {
+      "fromTable": "customers",
+      "fromColumn": "contact_source_ref",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_payment"
+    },
+    {
+      "fromTable": "subscriptions",
+      "fromColumn": "deal_source_ref",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "deals",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_payment"
+    },
+    {
+      "fromTable": "sends",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_email"
+    },
+    {
+      "fromTable": "segment_members",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_email"
+    },
+    {
+      "fromTable": "post_engagements",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_social"
+    },
+    {
+      "fromTable": "orders",
+      "fromColumn": "customer_id",
+      "toSchema": "bf_default_9f3e50d393772404_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_9f3e50d393772404_ecom"
+    }
+  ]
+}

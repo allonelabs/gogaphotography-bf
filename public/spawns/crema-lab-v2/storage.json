@@ -1,0 +1,36 @@
+{
+  "provider": "cloudflare-r2",
+  "bucketName": "business-forge-52ecd4382763c4b2",
+  "prefixes": [
+    {
+      "prefix": "default/brand-assets/",
+      "ownerTool": "brand-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/email/",
+      "ownerTool": "email-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/hunter/",
+      "ownerTool": "lead-hunter",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/legal/",
+      "ownerTool": "legal-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/payments/",
+      "ownerTool": "payment-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/proposals/",
+      "ownerTool": "proposal-forge",
+      "initialObjects": []
+    }
+  ]
+}

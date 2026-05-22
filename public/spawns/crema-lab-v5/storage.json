@@ -1,0 +1,21 @@
+{
+  "provider": "cloudflare-r2",
+  "bucketName": "business-forge-310d9a2e48216c4c",
+  "prefixes": [
+    {
+      "prefix": "default/brand-assets/",
+      "ownerTool": "brand-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/email/",
+      "ownerTool": "email-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/legal/",
+      "ownerTool": "legal-forge",
+      "initialObjects": []
+    }
+  ]
+}

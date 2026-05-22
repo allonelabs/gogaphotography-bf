@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "0.1.0",
+  "activeTools": [
+    "dns-forge",
+    "brand-forge",
+    "legal-forge",
+    "site-forge",
+    "ledger-spawn",
+    "crm-spawn",
+    "admin-spawn",
+    "lead-hunter",
+    "email-forge",
+    "analytics-forge",
+    "content-factory",
+    "social-forge",
+    "payment-forge",
+    "booking-forge",
+    "media-forge",
+    "monitor-forge"
+  ],
+  "inactiveTools": [
+    {
+      "name": "app-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "desk-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ad-reel",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ops-bootstrap",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "proposal-forge",
+      "reason": "[hospitality] no B2B proposals in hospitality"
+    },
+    {
+      "name": "automation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "compliance-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "backup-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ecom-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "hr-forge",
+      "reason": "[small-team] solo/tiny team — HR is overkill"
+    },
+    {
+      "name": "academy-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "community-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "event-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "partnership-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "reputation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "voice-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "locale-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "investor-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "knowledge-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "bi-forge",
+      "reason": "score below threshold"
+    }
+  ],
+  "toolParameters": {
+    "lead-hunter": {
+      "channels": [
+        "google-maps",
+        "linkedin",
+        "2gis"
+      ]
+    },
+    "email-forge": {
+      "warmupDailyCeiling": 50,
+      "supportsMultipleLocales": false
+    },
+    "content-factory": {
+      "cadencePerWeek": 1,
+      "seoFocus": "technical"
+    },
+    "payment-forge": {
+      "mode": "one-time"
+    },
+    "booking-forge": {
+      "vertical": "services",
+      "maxAdvanceDays": 60
+    }
+  },
+  "reasoning": "B2B A cozy specialty coffee in GE — activated 16 of 36 tools. Highest-signal tools: crm-spawn, payment-forge, dns-forge, brand-forge, site-forge. Excluded: app-forge, desk-forge, ad-reel, ops-bootstrap, proposal-forge + 15 more.",
+  "scores": {
+    "dns-forge": 0.95,
+    "brand-forge": 0.95,
+    "legal-forge": 0.9,
+    "site-forge": 0.95,
+    "app-forge": 0.2,
+    "ledger-spawn": 0.9,
+    "crm-spawn": 1,
+    "admin-spawn": 0.85,
+    "lead-hunter": 0.9,
+    "email-forge": 0.9,
+    "analytics-forge": 0.85,
+    "desk-forge": 0.5,
+    "content-factory": 0.7,
+    "ad-reel": 0.3,
+    "ops-bootstrap": 0.3,
+    "social-forge": 0.9,
+    "payment-forge": 1,
+    "booking-forge": 0.95,
+    "proposal-forge": 0.5499999999999999,
+    "media-forge": 0.9,
+    "monitor-forge": 0.85,
+    "automation-forge": 0.5,
+    "compliance-forge": 0.5,
+    "backup-forge": 0.5,
+    "ecom-forge": 0.3,
+    "hr-forge": 0.45,
+    "academy-forge": 0.5,
+    "community-forge": 0.5,
+    "event-forge": 0.5,
+    "partnership-forge": 0.5,
+    "reputation-forge": 0.5,
+    "voice-forge": 0.5,
+    "locale-forge": 0.5,
+    "investor-forge": 0.5,
+    "knowledge-forge": 0.5,
+    "bi-forge": 0.5
+  },
+  "confidence": 0.5897222222222223,
+  "source": "deterministic",
+  "taxonomy": {
+    "domain": "b2c-consumables",
+    "vertical": "coffee"
+  },
+  "shapeHints": {
+    "archetype": "artist",
+    "aesthetic": "editorial",
+    "voice": "sensory",
+    "pace": "meditative",
+    "motion": "expressive",
+    "density": "rich"
+  }
+}

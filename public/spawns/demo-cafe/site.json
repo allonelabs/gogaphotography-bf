@@ -1,0 +1,203 @@
+{
+  "apex": "demo-cafe.ge",
+  "framework": "nextjs-app-router",
+  "i18nNamespaces": [
+    "blog",
+    "booking",
+    "common",
+    "legal",
+    "site",
+    "social",
+    "status"
+  ],
+  "routes": [
+    {
+      "path": "/book",
+      "ownerTool": "booking-forge",
+      "kind": "static",
+      "filePath": "book/page.tsx",
+      "meta": {
+        "title": "Book · Demo Cafe",
+        "description": "Book a service with Demo Cafe."
+      }
+    },
+    {
+      "path": "/book/[service]",
+      "ownerTool": "booking-forge",
+      "kind": "dynamic",
+      "filePath": "book/[service]/page.tsx",
+      "meta": {
+        "title": "Book · Demo Cafe",
+        "description": "Per-service booking detail for Demo Cafe."
+      }
+    },
+    {
+      "path": "/blog",
+      "ownerTool": "content-factory",
+      "kind": "static",
+      "filePath": "blog/page.tsx",
+      "meta": {
+        "title": "Blog · Demo Cafe",
+        "description": "Articles and updates from Demo Cafe."
+      }
+    },
+    {
+      "path": "/blog/[slug]",
+      "ownerTool": "content-factory",
+      "kind": "dynamic",
+      "filePath": "blog/[slug]/page.tsx",
+      "meta": {
+        "title": "Blog · Demo Cafe",
+        "description": "Blog post pages for Demo Cafe."
+      }
+    },
+    {
+      "path": "/cookies",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "cookies/page.tsx",
+      "meta": {
+        "title": "Cookie Policy · Demo Cafe",
+        "description": "Cookie Policy for Demo Cafe (GE)."
+      }
+    },
+    {
+      "path": "/legal/[doc]",
+      "ownerTool": "legal-forge",
+      "kind": "dynamic",
+      "filePath": "legal/[doc]/page.tsx",
+      "meta": {
+        "title": "Legal · Demo Cafe",
+        "description": "Legal documents for Demo Cafe"
+      }
+    },
+    {
+      "path": "/privacy",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "privacy/page.tsx",
+      "meta": {
+        "title": "Privacy Policy · Demo Cafe",
+        "description": "Privacy Policy for Demo Cafe (GE)."
+      }
+    },
+    {
+      "path": "/terms",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "terms/page.tsx",
+      "meta": {
+        "title": "Terms of Service · Demo Cafe",
+        "description": "Terms of Service for Demo Cafe (GE)."
+      }
+    },
+    {
+      "path": "/status",
+      "ownerTool": "monitor-forge",
+      "kind": "static",
+      "filePath": "status/page.tsx",
+      "meta": {
+        "title": "Status · Demo Cafe",
+        "description": "Live operational status for Demo Cafe."
+      }
+    },
+    {
+      "path": "/plans",
+      "ownerTool": "payment-forge",
+      "kind": "static",
+      "filePath": "plans/page.tsx",
+      "meta": {
+        "title": "Plans · Demo Cafe",
+        "description": "Simple, transparent pricing for Demo Cafe. Choose the plan that fits your needs."
+      }
+    },
+    {
+      "path": "/",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "page.tsx",
+      "meta": {
+        "title": "Home | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Demo%20Cafe&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/404",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "404/page.tsx",
+      "meta": {
+        "title": "404 | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=404&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/contact",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "contact/page.tsx",
+      "meta": {
+        "title": "Contact | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Contact&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/legal",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "legal/page.tsx",
+      "meta": {
+        "title": "Legal | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Legal&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/origin",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "origin/page.tsx",
+      "meta": {
+        "title": "Origin | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Origin&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/visit",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "visit/page.tsx",
+      "meta": {
+        "title": "Visit | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Visit&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/wholesale",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "wholesale/page.tsx",
+      "meta": {
+        "title": "Wholesale | Demo Cafe",
+        "description": "Demo Cafe — A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics.",
+        "ogImageUrl": "https://demo-cafe.ge/api/og?title=Wholesale&subtitle=A%20cozy%20specialty%20coffee%20bar%20in%20Tbilisi%20serving%20filter%20coffee%2C%20single-origin%20espresso%2C%20and%20house-made%20pastries%20to%20the%20morning%20office%20crowd.%20Founder%20cares%20about%20ethically%20sourced%20beans%20and%20clean%20minimal%20aesthetics."
+      }
+    },
+    {
+      "path": "/links",
+      "ownerTool": "social-forge",
+      "kind": "static",
+      "filePath": "links/page.tsx",
+      "meta": {
+        "title": "Links · Demo Cafe",
+        "description": "A cozy specialty coffee bar in Tbilisi serving filter coffee, single-origin espresso, and house-made pastries to the morning office crowd. Founder cares about ethically sourced beans and clean minimal aesthetics."
+      }
+    }
+  ],
+  "sharedFileCount": 22
+}

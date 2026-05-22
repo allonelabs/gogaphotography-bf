@@ -1,0 +1,27 @@
+{
+  "lib": "framer-motion,",
+  "gsap": [],
+  "st": [],
+  "lenis": [],
+  "framer": [
+    "motion.div",
+    "motion.div",
+    "whileInView",
+    "motion.div",
+    "motion.div"
+  ],
+  "eases": [
+    "ease:\"linear\""
+  ],
+  "durs": [
+    "duration:.6",
+    "duration:.7"
+  ],
+  "delays": [
+    "delay:.05",
+    "delay:.2",
+    "delay:.3",
+    "delay:.4",
+    "delay:0.06"
+  ]
+}

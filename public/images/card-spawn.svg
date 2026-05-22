@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#0000FF"/>
+
+  <text x="60" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#FFFFFF" fill-opacity="0.7">03 — SPAWN</text>
+  <g transform="translate(740,76)">
+    <text x="-18" y="4" text-anchor="end" font-family="Inter,sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#FFFFFF" fill-opacity="0.7">A PARAGRAPH IN</text>
+    <circle r="4" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.25;1;0.25" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Headline -->
+  <g transform="translate(60,150)">
+    <text x="0" y="0" font-family="Inter,sans-serif" font-size="11" font-weight="600" letter-spacing="2.4" fill="#FFFFFF" fill-opacity="0.7">PROVISIONED — IN 11.4 SECONDS</text>
+    <text x="0" y="64" font-family="Inter,sans-serif" font-size="60" font-weight="700" fill="#FFFFFF" letter-spacing="-2.2">7 modules</text>
+    <text x="0" y="92" font-family="Inter,sans-serif" font-size="12" font-weight="500" fill="#FFFFFF" fill-opacity="0.65">customers · inbox · books · tasks · sales · spaces · brand</text>
+  </g>
+
+  <!-- Brief preview chip (input) — y=300 -->
+  <g transform="translate(160,300)">
+    <rect width="480" height="50" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.45"/>
+    <text x="20" y="22" font-family="Inter,sans-serif" font-size="10" font-weight="600" letter-spacing="1.6" fill="#FFFFFF" fill-opacity="0.6">BRIEF</text>
+    <text x="80" y="22" font-family="Inter,sans-serif" font-size="10" font-weight="500" letter-spacing="0.4" fill="#FFFFFF" fill-opacity="0.45">— 1 paragraph</text>
+    <text x="20" y="40" font-family="Inter,sans-serif" font-size="13" font-weight="500" fill="#FFFFFF">"I run a coffee roaster. 200 customers."</text>
+  </g>
+
+  <!-- Source seed (centre, below brief) — y=410 -->
+  <g transform="translate(400,420)">
+    <circle r="11" fill="#FFFFFF"/>
+    <circle r="34" fill="none" stroke="#FFFFFF" stroke-opacity="0.30" stroke-width="1.2"/>
+    <circle r="60" fill="none" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="1"/>
+    <circle r="11" fill="none" stroke="#FFFFFF" stroke-width="2">
+      <animate attributeName="r" values="11;90;11" dur="2.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.9;0;0.9" dur="2.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="11" fill="none" stroke="#FFFFFF" stroke-width="2">
+      <animate attributeName="r" values="11;90;11" dur="2.6s" begin="1.3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.9;0;0.9" dur="2.6s" begin="1.3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Connector lines from seed (400,420) down to output cards (y=720) -->
+  <g stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="1.2" fill="none">
+    <path id="sp-p1" d="M400 432 C 400 540, 130 620, 130 720"/>
+    <path id="sp-p2" d="M400 432 C 400 540, 220 610, 220 720"/>
+    <path id="sp-p3" d="M400 432 C 400 540, 310 600, 310 720"/>
+    <path id="sp-p4" d="M400 432 L 400 720"/>
+    <path id="sp-p5" d="M400 432 C 400 540, 490 600, 490 720"/>
+    <path id="sp-p6" d="M400 432 C 400 540, 580 610, 580 720"/>
+    <path id="sp-p7" d="M400 432 C 400 540, 670 620, 670 720"/>
+  </g>
+
+  <!-- Light dots traveling DOWN -->
+  <g fill="#FFFFFF">
+    <circle r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#sp-p1"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="0.3s" repeatCount="indefinite"><mpath href="#sp-p2"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="0.6s" repeatCount="indefinite"><mpath href="#sp-p3"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="0.9s" repeatCount="indefinite"><mpath href="#sp-p4"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite"><mpath href="#sp-p5"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="1.5s" repeatCount="indefinite"><mpath href="#sp-p6"/></animateMotion></circle>
+    <circle r="3.5"><animateMotion dur="2.4s" begin="1.8s" repeatCount="indefinite"><mpath href="#sp-p7"/></animateMotion></circle>
+  </g>
+
+  <!-- Output module cards — flat white, monochrome (no brand color avatars) -->
+  <g font-family="Inter,sans-serif">
+    <g transform="translate(100,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">CUST.</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">200</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">imported</text>
+    </g>
+    <g transform="translate(190,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">INBOX</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">12</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">unread</text>
+    </g>
+    <g transform="translate(280,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">BOOKS</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">$48k</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">monthly</text>
+    </g>
+    <g transform="translate(370,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">TASKS</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">8</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">cycles</text>
+    </g>
+    <g transform="translate(460,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">SALES</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">$23k</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">MRR</text>
+    </g>
+    <g transform="translate(550,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">SPACES</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">3</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">workspaces</text>
+    </g>
+    <g transform="translate(640,720)">
+      <rect width="60" height="80" rx="0" fill="#FFFFFF" fill-opacity="0.95"/>
+      <text x="30" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#0000FF" letter-spacing="1.2">BRAND</text>
+      <text x="30" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#0E0E0E" letter-spacing="-0.4">v1</text>
+      <text x="30" y="68" text-anchor="middle" font-size="8" font-weight="500" fill="rgba(0,0,0,0.55)">book</text>
+    </g>
+  </g>
+
+  <!-- Caption -->
+  <text x="60" y="940" font-family="Inter,sans-serif" font-size="20" font-weight="500" fill="#FFFFFF" fill-opacity="0.92" letter-spacing="-0.5">A paragraph in. A whole company out.</text>
+</svg>

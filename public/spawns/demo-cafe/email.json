@@ -1,0 +1,55 @@
+{
+  "provider": "resend",
+  "apex": "demo-cafe.ge",
+  "senders": [
+    {
+      "address": "bookings@demo-cafe.ge",
+      "localPart": "bookings",
+      "ownerTool": "booking-forge",
+      "displayName": "Demo Cafe Bookings",
+      "purpose": "Booking confirmations, reminders, cancellations"
+    },
+    {
+      "address": "marketing@demo-cafe.ge",
+      "localPart": "marketing",
+      "ownerTool": "content-factory",
+      "displayName": "Demo Cafe Marketing",
+      "purpose": "Newsletters, content campaigns, product announcements"
+    },
+    {
+      "address": "hello@demo-cafe.ge",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "Demo Cafe",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@demo-cafe.ge",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "Demo Cafe Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@demo-cafe.ge",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "Demo Cafe",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "accounting@demo-cafe.ge",
+      "localPart": "accounting",
+      "ownerTool": "ledger-spawn",
+      "displayName": "Demo Cafe Accounting",
+      "purpose": "Journal entries, financial reports, reconciliation notices"
+    },
+    {
+      "address": "billing@demo-cafe.ge",
+      "localPart": "billing",
+      "ownerTool": "payment-forge",
+      "displayName": "Demo Cafe Billing",
+      "purpose": "Invoices, receipts, dunning reminders"
+    }
+  ]
+}

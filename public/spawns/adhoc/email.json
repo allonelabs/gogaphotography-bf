@@ -1,0 +1,48 @@
+{
+  "provider": "resend",
+  "apex": "yoga-studio-in-tbilisi.com",
+  "senders": [
+    {
+      "address": "bookings@yoga-studio-in-tbilisi.com",
+      "localPart": "bookings",
+      "ownerTool": "booking-forge",
+      "displayName": "yoga studio in tbilisi Bookings",
+      "purpose": "Booking confirmations, reminders, cancellations"
+    },
+    {
+      "address": "marketing@yoga-studio-in-tbilisi.com",
+      "localPart": "marketing",
+      "ownerTool": "content-factory",
+      "displayName": "yoga studio in tbilisi Marketing",
+      "purpose": "Newsletters, content campaigns, product announcements"
+    },
+    {
+      "address": "hello@yoga-studio-in-tbilisi.com",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "yoga studio in tbilisi",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@yoga-studio-in-tbilisi.com",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "yoga studio in tbilisi Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@yoga-studio-in-tbilisi.com",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "yoga studio in tbilisi",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "proposals@yoga-studio-in-tbilisi.com",
+      "localPart": "proposals",
+      "ownerTool": "proposal-forge",
+      "displayName": "yoga studio in tbilisi Proposals",
+      "purpose": "Proposal delivery, follow-ups, contract negotiations"
+    }
+  ]
+}

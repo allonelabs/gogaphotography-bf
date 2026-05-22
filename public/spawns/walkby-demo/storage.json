@@ -1,0 +1,46 @@
+{
+  "provider": "cloudflare-r2",
+  "bucketName": "business-forge-9f3e50d393772404",
+  "prefixes": [
+    {
+      "prefix": "default/ad-creatives/",
+      "ownerTool": "ad-reel",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/brand-assets/",
+      "ownerTool": "brand-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/ecom/",
+      "ownerTool": "ecom-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/email/",
+      "ownerTool": "email-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/legal/",
+      "ownerTool": "legal-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/media/",
+      "ownerTool": "media-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/payments/",
+      "ownerTool": "payment-forge",
+      "initialObjects": []
+    },
+    {
+      "prefix": "default/social/",
+      "ownerTool": "social-forge",
+      "initialObjects": []
+    }
+  ]
+}

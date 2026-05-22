@@ -1,0 +1,363 @@
+{
+  "computedAt": "2026-04-29T16:57:58.364Z",
+  "summary": {
+    "businessId": "38fe479951fb0038",
+    "activeToolCount": 19,
+    "totalToolCount": 19,
+    "overallScore": 55,
+    "matrixHealth": 43,
+    "diagnoses": 12,
+    "proposalCount": 2,
+    "highProposals": 1,
+    "classifierConfidence": 0.6188888888888888,
+    "classifierSource": "deterministic"
+  },
+  "groups": [
+    {
+      "category": "content",
+      "label": "Content",
+      "cards": [
+        {
+          "name": "app-forge",
+          "category": "content",
+          "summary": "Product app scaffold with auth, billing, teams for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 0,
+          "proposalCount": 1,
+          "highestSeverityProposal": "low",
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "content-factory",
+          "category": "content",
+          "summary": "Blog + content marketing for B2B SaaS platform for",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "site-forge",
+          "category": "content",
+          "summary": "Marketing website for Crema Lab v8 (B2B SaaS platform for)",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "brand",
+      "label": "Brand",
+      "cards": [
+        {
+          "name": "brand-forge",
+          "category": "brand",
+          "summary": "Brand identity (archetype, palette, typography, logos) for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "social-forge",
+          "category": "brand",
+          "summary": "Social media presence for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "revenue",
+      "label": "Revenue",
+      "cards": [
+        {
+          "name": "lead-hunter",
+          "category": "revenue",
+          "summary": "Lead generation + scraping for B2B SaaS platform for in EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "ledger-spawn",
+          "category": "revenue",
+          "summary": "Double-entry accounting + invoicing for EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "payment-forge",
+          "category": "revenue",
+          "summary": "Stripe payment processing for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 6,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "proposal-forge",
+          "category": "revenue",
+          "summary": "Proposal generation + e-signature for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "customer",
+      "label": "Customer",
+      "cards": [
+        {
+          "name": "academy-forge",
+          "category": "customer",
+          "summary": "Learning portal + course system for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "crm-spawn",
+          "category": "customer",
+          "summary": "CRM pipeline + contact management for B2B SaaS platform for",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 9,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "email-forge",
+          "category": "customer",
+          "summary": "Email system (transactional + sequences) for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 14,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "operations",
+      "label": "Operations",
+      "cards": [
+        {
+          "name": "admin-spawn",
+          "category": "operations",
+          "summary": "Admin panel with RBAC, audit logs, feature flags for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "analytics-forge",
+          "category": "operations",
+          "summary": "Product + web analytics (PostHog + Plausible) for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 8,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "infrastructure",
+      "label": "Infrastructure",
+      "cards": [
+        {
+          "name": "backup-forge",
+          "category": "infrastructure",
+          "summary": "Backup + disaster recovery for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "compliance-forge",
+          "category": "infrastructure",
+          "summary": "GDPR/privacy compliance dashboard for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "dns-forge",
+          "category": "infrastructure",
+          "summary": "DNS zone + subdomains for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "legal-forge",
+          "category": "infrastructure",
+          "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 1,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "monitor-forge",
+          "category": "infrastructure",
+          "summary": "Uptime monitoring + status page for Crema Lab v8",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:57:58.360Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    }
+  ],
+  "score": {
+    "overall": 55,
+    "matrixHealth": 43,
+    "classifierConfidence": 0.6188888888888888,
+    "bridgeCoverage": 0.7777777777777778,
+    "criticalNoImpl": 4,
+    "diagnoses": 12,
+    "computedAt": "2026-04-29T16:57:58.362Z"
+  },
+  "proposals": [
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "high",
+      "title": "11 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-107",
+          "bridge-75",
+          "bridge-81",
+          "bridge-77",
+          "bridge-78",
+          "bridge-84",
+          "bridge-85",
+          "bridge-86",
+          "bridge-87"
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "isolated-app-forge",
+      "kind": "investigate-stale",
+      "severity": "low",
+      "title": "Active tool app-forge has no firing edges — is it isolated?",
+      "rationale": "The simulator battery didn't replay any event that lit up an edge involving app-forge. Either the tool is legitimately terminal (e.g. ops-bootstrap emits no inter-tool events), or SAMPLE_PAYLOADS is missing an event that should connect to it.",
+      "params": {
+        "toolName": "app-forge"
+      },
+      "applicable": false
+    }
+  ],
+  "diagnoses": [
+    "Bridge bridge-105 is enabled but has never fired",
+    "Bridge bridge-106 is enabled but has never fired",
+    "Bridge bridge-107 is enabled but has never fired",
+    "Bridge bridge-75 is enabled but has never fired",
+    "Bridge bridge-81 is enabled but has never fired",
+    "Bridge bridge-77 is enabled but has never fired",
+    "Bridge bridge-78 is enabled but has never fired",
+    "Bridge bridge-83 is enabled but has never fired",
+    "Bridge bridge-84 is enabled but has never fired",
+    "Bridge bridge-85 is enabled but has never fired",
+    "Bridge bridge-86 is enabled but has never fired",
+    "Bridge bridge-87 is enabled but has never fired"
+  ],
+  "vendors": [
+    {
+      "category": "hosting",
+      "name": "Vercel",
+      "why": "Next.js + edge hosting for the public site and app."
+    },
+    {
+      "category": "auth",
+      "name": "Supabase Auth",
+      "why": "Email/password + OAuth + magic-link auth out of the box."
+    },
+    {
+      "category": "storage",
+      "name": "Cloudflare R2",
+      "why": "S3-compatible object storage for brand assets, uploads, backups."
+    },
+    {
+      "category": "email",
+      "name": "Resend",
+      "why": "Transactional send + unified domain authentication."
+    },
+    {
+      "category": "analytics",
+      "name": "Plausible",
+      "why": "Privacy-friendly web analytics; GDPR-ready without cookies."
+    },
+    {
+      "category": "payments",
+      "name": "Stripe",
+      "why": "Subscription billing + customer portal for seats/usage."
+    },
+    {
+      "category": "crm",
+      "name": "Supabase (crm schema)",
+      "why": "Self-hosted CRM via the app-forge schema for lower cost."
+    },
+    {
+      "category": "customer-support",
+      "name": "Chatwoot",
+      "why": "Self-hosted desk for live chat + shared inbox."
+    }
+  ]
+}

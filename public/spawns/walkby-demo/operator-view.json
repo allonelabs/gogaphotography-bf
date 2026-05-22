@@ -1,0 +1,342 @@
+{
+  "computedAt": "2026-05-01T09:45:33.862Z",
+  "summary": {
+    "businessId": "9f3e50d393772404",
+    "activeToolCount": 16,
+    "totalToolCount": 16,
+    "overallScore": 54,
+    "matrixHealth": 43,
+    "diagnoses": 11,
+    "proposalCount": 2,
+    "highProposals": 1,
+    "classifierConfidence": 0.5527777777777778,
+    "classifierSource": "deterministic"
+  },
+  "groups": [
+    {
+      "category": "content",
+      "label": "Content",
+      "cards": [
+        {
+          "name": "site-forge",
+          "category": "content",
+          "summary": "Marketing website for Walkby Demo (DTC fashion brand selling)",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 6,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "brand",
+      "label": "Brand",
+      "cards": [
+        {
+          "name": "ad-reel",
+          "category": "brand",
+          "summary": "Video ad creative generation for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "brand-forge",
+          "category": "brand",
+          "summary": "Brand identity (archetype, palette, typography, logos) for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "media-forge",
+          "category": "brand",
+          "summary": "Media library + AI-generated brand assets for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "social-forge",
+          "category": "brand",
+          "summary": "Social media presence for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "revenue",
+      "label": "Revenue",
+      "cards": [
+        {
+          "name": "ecom-forge",
+          "category": "revenue",
+          "summary": "E-commerce storefront for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "payment-forge",
+          "category": "revenue",
+          "summary": "Stripe payment processing for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "customer",
+      "label": "Customer",
+      "cards": [
+        {
+          "name": "crm-spawn",
+          "category": "customer",
+          "summary": "CRM pipeline + contact management for DTC fashion brand selling",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 6,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "email-forge",
+          "category": "customer",
+          "summary": "Email system (transactional + sequences) for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 11,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "operations",
+      "label": "Operations",
+      "cards": [
+        {
+          "name": "admin-spawn",
+          "category": "operations",
+          "summary": "Admin panel with RBAC, audit logs, feature flags for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "analytics-forge",
+          "category": "operations",
+          "summary": "Product + web analytics (PostHog + Plausible) for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 7,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "infrastructure",
+      "label": "Infrastructure",
+      "cards": [
+        {
+          "name": "backup-forge",
+          "category": "infrastructure",
+          "summary": "Backup + disaster recovery for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "compliance-forge",
+          "category": "infrastructure",
+          "summary": "GDPR/privacy compliance dashboard for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "dns-forge",
+          "category": "infrastructure",
+          "summary": "DNS zone + subdomains for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "legal-forge",
+          "category": "infrastructure",
+          "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 1,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "monitor-forge",
+          "category": "infrastructure",
+          "summary": "Uptime monitoring + status page for Walkby Demo",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-05-01T09:45:33.860Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    }
+  ],
+  "score": {
+    "overall": 54,
+    "matrixHealth": 43,
+    "classifierConfidence": 0.5527777777777778,
+    "bridgeCoverage": 0.7555555555555555,
+    "criticalNoImpl": 3,
+    "diagnoses": 11,
+    "computedAt": "2026-05-01T09:45:33.861Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.55 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "high",
+      "title": "11 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-107",
+          "bridge-87",
+          "bridge-88",
+          "bridge-89",
+          "bridge-90",
+          "bridge-91",
+          "bridge-92",
+          "bridge-93",
+          "bridge-94"
+        ]
+      },
+      "applicable": false
+    }
+  ],
+  "diagnoses": [
+    "Bridge bridge-105 is enabled but has never fired",
+    "Bridge bridge-106 is enabled but has never fired",
+    "Bridge bridge-107 is enabled but has never fired",
+    "Bridge bridge-87 is enabled but has never fired",
+    "Bridge bridge-88 is enabled but has never fired",
+    "Bridge bridge-89 is enabled but has never fired",
+    "Bridge bridge-90 is enabled but has never fired",
+    "Bridge bridge-91 is enabled but has never fired",
+    "Bridge bridge-92 is enabled but has never fired",
+    "Bridge bridge-93 is enabled but has never fired",
+    "Bridge bridge-94 is enabled but has never fired"
+  ],
+  "vendors": [
+    {
+      "category": "hosting",
+      "name": "Vercel",
+      "why": "Next.js + edge hosting for the public site and app."
+    },
+    {
+      "category": "auth",
+      "name": "Supabase Auth",
+      "why": "Email/password + OAuth + magic-link auth out of the box."
+    },
+    {
+      "category": "storage",
+      "name": "Cloudflare R2",
+      "why": "S3-compatible object storage for brand assets, uploads, backups."
+    },
+    {
+      "category": "email",
+      "name": "Resend",
+      "why": "Transactional send + unified domain authentication."
+    },
+    {
+      "category": "analytics",
+      "name": "Plausible",
+      "why": "Privacy-friendly web analytics; GDPR-ready without cookies."
+    },
+    {
+      "category": "payments",
+      "name": "Stripe",
+      "why": "One-time checkout + Stripe Tax for VAT calculation."
+    },
+    {
+      "category": "inventory",
+      "name": "Supabase (ecom schema)",
+      "why": "Products + variants + stock tracked in the app-forge DB."
+    },
+    {
+      "category": "fulfillment",
+      "name": "Shippo",
+      "why": "Label generation + rate comparison across carriers."
+    },
+    {
+      "category": "customer-support",
+      "name": "Chatwoot",
+      "why": "Order-lookup automation tied to the ecom schema."
+    },
+    {
+      "category": "email",
+      "name": "Resend (marketing)",
+      "why": "Abandoned-cart + post-purchase sequences."
+    }
+  ]
+}

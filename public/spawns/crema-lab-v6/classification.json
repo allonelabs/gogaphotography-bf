@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "0.1.0",
+  "activeTools": [
+    "dns-forge",
+    "brand-forge",
+    "legal-forge",
+    "site-forge",
+    "app-forge",
+    "ledger-spawn",
+    "crm-spawn",
+    "admin-spawn",
+    "lead-hunter",
+    "email-forge",
+    "analytics-forge",
+    "content-factory",
+    "social-forge",
+    "payment-forge",
+    "proposal-forge",
+    "monitor-forge",
+    "compliance-forge",
+    "backup-forge",
+    "academy-forge"
+  ],
+  "inactiveTools": [
+    {
+      "name": "desk-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ad-reel",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ops-bootstrap",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "booking-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "media-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "automation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ecom-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "hr-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "community-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "event-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "partnership-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "reputation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "voice-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "locale-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "investor-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "knowledge-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "bi-forge",
+      "reason": "score below threshold"
+    }
+  ],
+  "toolParameters": {
+    "lead-hunter": {
+      "channels": [
+        "google-maps",
+        "linkedin",
+        "2gis"
+      ]
+    },
+    "email-forge": {
+      "warmupDailyCeiling": 50,
+      "supportsMultipleLocales": false
+    },
+    "content-factory": {
+      "cadencePerWeek": 3,
+      "seoFocus": "technical"
+    },
+    "payment-forge": {
+      "mode": "subscription"
+    },
+    "compliance-forge": {
+      "gdprEnforcement": "full",
+      "dpiaRequired": false
+    }
+  },
+  "reasoning": "B2B B2B SaaS platform for in EE — activated 19 of 36 tools. Highest-signal tools: crm-spawn, payment-forge, dns-forge, brand-forge, site-forge. Excluded: desk-forge, ad-reel, ops-bootstrap, booking-forge, media-forge + 12 more.",
+  "scores": {
+    "dns-forge": 0.95,
+    "brand-forge": 0.95,
+    "legal-forge": 0.9,
+    "site-forge": 0.95,
+    "app-forge": 0.95,
+    "ledger-spawn": 0.9,
+    "crm-spawn": 1,
+    "admin-spawn": 0.85,
+    "lead-hunter": 0.9,
+    "email-forge": 0.9,
+    "analytics-forge": 0.85,
+    "desk-forge": 0.5,
+    "content-factory": 0.8,
+    "ad-reel": 0.3,
+    "ops-bootstrap": 0.5,
+    "social-forge": 0.7,
+    "payment-forge": 1,
+    "booking-forge": 0.25,
+    "proposal-forge": 0.95,
+    "media-forge": 0.5,
+    "monitor-forge": 0.85,
+    "automation-forge": 0.5,
+    "compliance-forge": 0.9,
+    "backup-forge": 0.75,
+    "ecom-forge": 0.09999999999999998,
+    "hr-forge": 0.5,
+    "academy-forge": 0.8,
+    "community-forge": 0.5,
+    "event-forge": 0.5,
+    "partnership-forge": 0.5,
+    "reputation-forge": 0.5,
+    "voice-forge": 0.5,
+    "locale-forge": 0.5,
+    "investor-forge": 0.5,
+    "knowledge-forge": 0.5,
+    "bi-forge": 0.5
+  },
+  "confidence": 0.6188888888888888,
+  "source": "deterministic",
+  "taxonomy": {
+    "domain": "b2b-software",
+    "vertical": "saas"
+  },
+  "shapeHints": {
+    "archetype": "technical-founder",
+    "aesthetic": "premium minimalist",
+    "voice": "restrained",
+    "pace": "energetic",
+    "motion": "restrained",
+    "density": "rich"
+  }
+}

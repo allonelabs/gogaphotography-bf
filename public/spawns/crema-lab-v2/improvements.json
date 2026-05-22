@@ -1,0 +1,48 @@
+{
+  "score": {
+    "overall": 56,
+    "matrixHealth": 44,
+    "classifierConfidence": 0.5391666666666667,
+    "bridgeCoverage": 0.7857142857142857,
+    "criticalNoImpl": 4,
+    "diagnoses": 9,
+    "computedAt": "2026-04-29T16:22:52.661Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.54 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "medium",
+      "title": "9 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-107",
+          "bridge-75",
+          "bridge-81",
+          "bridge-77",
+          "bridge-78",
+          "bridge-85",
+          "bridge-86"
+        ]
+      },
+      "applicable": false
+    }
+  ]
+}

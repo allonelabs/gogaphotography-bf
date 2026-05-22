@@ -1,0 +1,51 @@
+{
+  "provider": "supabase",
+  "schemas": [
+    {
+      "schemaName": "bf_default_310d9a2e48216c4c_brand",
+      "ownerTool": "brand-forge"
+    },
+    {
+      "schemaName": "bf_default_310d9a2e48216c4c_crm",
+      "ownerTool": "crm-spawn"
+    },
+    {
+      "schemaName": "bf_default_310d9a2e48216c4c_email",
+      "ownerTool": "email-forge"
+    },
+    {
+      "schemaName": "bf_default_310d9a2e48216c4c_ledger",
+      "ownerTool": "ledger-spawn"
+    },
+    {
+      "schemaName": "bf_default_310d9a2e48216c4c_site",
+      "ownerTool": "site-forge"
+    }
+  ],
+  "crossSchemaForeignKeys": [
+    {
+      "fromTable": "invoices",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_310d9a2e48216c4c_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_310d9a2e48216c4c_ledger"
+    },
+    {
+      "fromTable": "sends",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_310d9a2e48216c4c_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_310d9a2e48216c4c_email"
+    },
+    {
+      "fromTable": "segment_members",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_310d9a2e48216c4c_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_310d9a2e48216c4c_email"
+    }
+  ]
+}

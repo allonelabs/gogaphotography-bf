@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <rect width="800" height="1000" fill="#0000FF"/>
+
+  <text x="60" y="80" font-family="Inter,sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#FFFFFF" fill-opacity="0.7">05 — MATRIX</text>
+  <g transform="translate(740,76)">
+    <text x="-18" y="4" text-anchor="end" font-family="Inter,sans-serif" font-size="12" font-weight="600" letter-spacing="3" fill="#FFFFFF" fill-opacity="0.7">9 SIGNALS · 1 VIEW</text>
+    <circle r="4" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.25;1;0.25" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <g transform="translate(60,150)">
+    <text x="0" y="0" font-family="Inter,sans-serif" font-size="11" font-weight="600" letter-spacing="2.4" fill="#FFFFFF" fill-opacity="0.7">YOUR WORKSPACE — TODAY</text>
+    <text x="0" y="64" font-family="Inter,sans-serif" font-size="60" font-weight="700" fill="#FFFFFF" letter-spacing="-2.2">All clear</text>
+    <text x="0" y="92" font-family="Inter,sans-serif" font-size="12" font-weight="500" fill="#FFFFFF" fill-opacity="0.7">9 signals tracked · 0 amber · 0 red · last sync 2s ago</text>
+  </g>
+
+  <!-- 3×3 metric grid -->
+  <g font-family="Inter,sans-serif">
+    <!-- Row 1 -->
+    <g transform="translate(60,260)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">MRR</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">$48.2k</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">▲ 12.4%</text>
+      <polyline points="120,118 138,108 156,112 174,98 192,102 200,90"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="120" stroke-dashoffset="120">
+        <animate attributeName="stroke-dashoffset" values="120;-120" dur="4s" repeatCount="indefinite"/>
+      </polyline>
+    </g>
+    <g transform="translate(290,260)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">CUSTOMERS</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">1,284</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">▲ 87 / wk</text>
+      <polyline points="120,118 138,114 156,108 174,104 192,98 200,92"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="120" stroke-dashoffset="120">
+        <animate attributeName="stroke-dashoffset" values="120;-120" dur="4.4s" repeatCount="indefinite"/>
+      </polyline>
+    </g>
+    <g transform="translate(520,260)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">CHURN</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">2.1%</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">▼ 0.4%</text>
+      <polyline points="120,98 138,104 156,108 174,114 192,118 200,118"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="120" stroke-dashoffset="120">
+        <animate attributeName="stroke-dashoffset" values="120;-120" dur="3.8s" repeatCount="indefinite"/>
+      </polyline>
+    </g>
+
+    <!-- Row 2 -->
+    <g transform="translate(60,410)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">RUNWAY</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">14 mo</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.65">stable</text>
+      <g fill="#FFFFFF" fill-opacity="0.55">
+        <rect x="120" y="100" width="10" height="20"/>
+        <rect x="134" y="96"  width="10" height="24"/>
+        <rect x="148" y="92"  width="10" height="28"/>
+        <rect x="162" y="88"  width="10" height="32"/>
+        <rect x="176" y="86"  width="10" height="34"/>
+        <rect x="190" y="84"  width="10" height="36"/>
+      </g>
+    </g>
+    <g transform="translate(290,410)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">PIPELINE</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">$96.4k</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">▲ 18 deals</text>
+      <polyline points="120,118 138,108 156,118 174,98 192,108 200,90"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="120" stroke-dashoffset="120">
+        <animate attributeName="stroke-dashoffset" values="120;-120" dur="4.6s" repeatCount="indefinite"/>
+      </polyline>
+    </g>
+    <g transform="translate(520,410)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">TASKS DUE</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">9</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">3 overdue</text>
+      <circle cx="200" cy="100" r="6" fill="#FFFFFF">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="200" cy="100" r="6" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+        <animate attributeName="r" values="6;16;6" dur="1.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.7;0;0.7" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Row 3 -->
+    <g transform="translate(60,560)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">NPS</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">62</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.85">▲ 4</text>
+      <path d="M 130 122 A 36 36 0 0 1 200 122" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 130 122 A 36 36 0 0 1 188 100" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="80" stroke-dashoffset="80">
+        <animate attributeName="stroke-dashoffset" values="80;0" dur="1.6s" begin="0.4s" fill="freeze"
+                 calcMode="spline" keySplines="0.4 0 0.2 1"/>
+      </path>
+    </g>
+    <g transform="translate(290,560)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">SHIPS / WK</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">11</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.65">on cadence</text>
+      <g fill="#FFFFFF" fill-opacity="0.65">
+        <circle cx="124" cy="114" r="3"/><circle cx="138" cy="114" r="3"/><circle cx="152" cy="114" r="3"/>
+        <circle cx="166" cy="114" r="3"/><circle cx="180" cy="114" r="3"/><circle cx="194" cy="114" r="3"/>
+        <circle cx="124" cy="100" r="3"/><circle cx="138" cy="100" r="3"/><circle cx="152" cy="100" r="3"/>
+        <circle cx="166" cy="100" r="3"/><circle cx="180" cy="100" r="3"/>
+      </g>
+    </g>
+    <g transform="translate(520,560)">
+      <rect width="220" height="140" rx="0" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.30"/>
+      <text x="16" y="28" font-size="10" font-weight="600" fill="#FFFFFF" fill-opacity="0.65" letter-spacing="1.6">CASH</text>
+      <text x="16" y="72" font-size="34" font-weight="700" fill="#FFFFFF" letter-spacing="-1">$312k</text>
+      <text x="16" y="108" font-size="12" fill="#FFFFFF" fill-opacity="0.65">2 accounts</text>
+      <polyline points="120,116 138,112 156,108 174,100 192,94 200,90"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="120" stroke-dashoffset="120">
+        <animate attributeName="stroke-dashoffset" values="120;-120" dur="4.2s" repeatCount="indefinite"/>
+      </polyline>
+    </g>
+  </g>
+
+  <!-- Scanning sweep line -->
+  <line x1="60" y1="260" x2="740" y2="260" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2">
+    <animate attributeName="y1" values="260;700;260" dur="5s" repeatCount="indefinite"/>
+    <animate attributeName="y2" values="260;700;260" dur="5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;0.55;0" dur="5s" repeatCount="indefinite"/>
+  </line>
+
+  <g transform="translate(60,860)" font-family="Inter,sans-serif" font-size="11" font-weight="600" letter-spacing="1.4" fill="#FFFFFF">
+    <circle cx="6" cy="-4" r="5" fill="#FFFFFF"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/></circle>
+    <text x="20" y="0">SYNCING · 9 SOURCES</text>
+    <text x="500" y="0" fill="#FFFFFF" fill-opacity="0.6">LAST 2s AGO</text>
+  </g>
+
+  <text x="60" y="940" font-family="Inter,sans-serif" font-size="20" font-weight="500" fill="#FFFFFF" fill-opacity="0.92" letter-spacing="-0.5">Every metric. One unblinking view.</text>
+</svg>

@@ -1,0 +1,68 @@
+/* Light theme override — flips the baked-in dark Tailwind classes to a white scheme */
+
+html, body { background-color: #ffffff !important; color: #111111 !important; }
+
+/* Solid dark backgrounds → solid light */
+.bg-black { background-color: #ffffff !important; }
+.bg-\[\#050505\] { background-color: #fafafa !important; }
+.bg-\[\#0a0a0a\] { background-color: #fafafa !important; }
+.bg-\[\#111\]    { background-color: #f5f5f5 !important; }
+.bg-\[\#1a1a1a\] { background-color: #ededed !important; }
+.bg-\[\#262626\] { background-color: #e5e5e5 !important; }
+
+/* Translucent black overlays → translucent white (kept on now-light bg) */
+.bg-black\/10 { background-color: rgba(255,255,255,0.10) !important; }
+.bg-black\/45 { background-color: rgba(255,255,255,0.55) !important; }
+.bg-black\/60 { background-color: rgba(255,255,255,0.70) !important; }
+.bg-black\/80 { background-color: rgba(255,255,255,0.85) !important; }
+
+/* White tints that were over dark → dark tints over light */
+.bg-white\/8  { background-color: rgba(0,0,0,0.05) !important; }
+.bg-white\/15 { background-color: rgba(0,0,0,0.08) !important; }
+.bg-\[rgba\(197\,197\,197\,0\.15\)\] { background-color: rgba(0,0,0,0.06) !important; }
+
+/* Text — main (pure black) and secondary (darker grey) */
+.text-white                     { color: #000000 !important; }
+.text-\[\#c5c5c5\]              { color: #000000 !important; }
+
+.text-white\/40                 { color: #1f1f1f !important; }
+.text-white\/50                 { color: #1d1d1d !important; }
+.text-white\/60                 { color: #1a1a1a !important; }
+.text-white\/70                 { color: #161616 !important; }
+.text-white\/80                 { color: #121212 !important; }
+
+.text-\[rgba\(197\,197\,197\,0\.4\)\] { color: #1f1f1f !important; }
+.text-\[\#c5c5c5bf\]            { color: #1d1d1d !important; }
+.text-\[\#c5c5c566\]            { color: #1f1f1f !important; }
+.text-\[\#c5c5c526\]            { color: #2a2a2a !important; }
+
+/* "What we do" cards have vivid red/blue backgrounds — keep their title white */
+[aria-label^="Open "] h3,
+[aria-label^="Open "] .text-white { color: #ffffff !important; }
+
+/* Force light/white icon SVGs to render solid black on light bg */
+img[src="/images/img-0.svg"],
+img[src="/images/img-1.svg"],
+img[src="/images/img-6.svg"],
+img[src="/images/img-8.svg"],
+img[src="/images/img-13.svg"],
+img[src="/images/img-14.svg"],
+img[src="/images/img-18.svg"],
+img[src="/images/img-19.svg"],
+img[src="/images/img-20.svg"],
+img[src="/images/img-21.svg"],
+img[src="/images/img-22.svg"],
+img[src="/images/img-23.svg"],
+img[src="/images/img-24.svg"],
+img[src="/images/img-25.svg"] { filter: brightness(0) !important; opacity: 1 !important; }
+
+/* Borders */
+.border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+.border-white\/15 { border-color: rgba(0,0,0,0.12) !important; }
+.border-white\/20 { border-color: rgba(0,0,0,0.16) !important; }
+.border-white     { border-color: #111111 !important; }
+.border-black     { border-color: #d4d4d4 !important; }
+
+/* Fills (icons/SVG) */
+.fill-white  { fill: #111111 !important; }
+.stroke-white{ stroke: #111111 !important; }

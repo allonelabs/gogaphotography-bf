@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "0.1.0",
+  "activeTools": [
+    "dns-forge",
+    "brand-forge",
+    "legal-forge",
+    "site-forge",
+    "crm-spawn",
+    "admin-spawn",
+    "email-forge",
+    "analytics-forge",
+    "content-factory",
+    "booking-forge",
+    "proposal-forge",
+    "media-forge",
+    "monitor-forge"
+  ],
+  "inactiveTools": [
+    {
+      "name": "app-forge",
+      "reason": "[agency-creative] no product — services only"
+    },
+    {
+      "name": "ledger-spawn",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "lead-hunter",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "desk-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ad-reel",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ops-bootstrap",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "social-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "payment-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "automation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "compliance-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "backup-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ecom-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "hr-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "academy-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "community-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "event-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "partnership-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "reputation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "voice-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "locale-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "investor-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "knowledge-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "bi-forge",
+      "reason": "score below threshold"
+    }
+  ],
+  "toolParameters": {
+    "email-forge": {
+      "warmupDailyCeiling": 50,
+      "supportsMultipleLocales": false
+    },
+    "content-factory": {
+      "cadencePerWeek": 1,
+      "seoFocus": "technical"
+    },
+    "booking-forge": {
+      "vertical": "services",
+      "maxAdvanceDays": 60
+    }
+  },
+  "reasoning": "B2B yoga studio in tbilisi in US — activated 13 of 36 tools. Highest-signal tools: crm-spawn, dns-forge, brand-forge, site-forge, proposal-forge. Excluded: app-forge, ledger-spawn, lead-hunter, desk-forge, ad-reel + 18 more.",
+  "scores": {
+    "dns-forge": 0.95,
+    "brand-forge": 0.95,
+    "legal-forge": 0.9,
+    "site-forge": 0.95,
+    "app-forge": 0.2,
+    "ledger-spawn": 0.5,
+    "crm-spawn": 1,
+    "admin-spawn": 0.85,
+    "lead-hunter": 0.5,
+    "email-forge": 0.9,
+    "analytics-forge": 0.85,
+    "desk-forge": 0.5,
+    "content-factory": 0.7,
+    "ad-reel": 0.5,
+    "ops-bootstrap": 0.5,
+    "social-forge": 0.5,
+    "payment-forge": 0.5,
+    "booking-forge": 0.75,
+    "proposal-forge": 0.95,
+    "media-forge": 0.95,
+    "monitor-forge": 0.85,
+    "automation-forge": 0.5,
+    "compliance-forge": 0.5,
+    "backup-forge": 0.5,
+    "ecom-forge": 0.09999999999999998,
+    "hr-forge": 0.5,
+    "academy-forge": 0.5,
+    "community-forge": 0.5,
+    "event-forge": 0.5,
+    "partnership-forge": 0.5,
+    "reputation-forge": 0.5,
+    "voice-forge": 0.5,
+    "locale-forge": 0.5,
+    "investor-forge": 0.5,
+    "knowledge-forge": 0.5,
+    "bi-forge": 0.5
+  },
+  "confidence": 0.523611111111111,
+  "source": "deterministic",
+  "taxonomy": {
+    "domain": "b2b-software",
+    "vertical": "saas"
+  },
+  "shapeHints": {
+    "archetype": "technical-founder",
+    "aesthetic": "minimal-mono",
+    "voice": "restrained",
+    "pace": "energetic",
+    "motion": "restrained",
+    "density": "rich"
+  }
+}

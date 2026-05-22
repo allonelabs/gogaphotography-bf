@@ -1,0 +1,43 @@
+{
+  "provider": "supabase",
+  "schemas": [
+    {
+      "schemaName": "bf_default_2c4a2b07a5f9a68d_brand",
+      "ownerTool": "brand-forge"
+    },
+    {
+      "schemaName": "bf_default_2c4a2b07a5f9a68d_content",
+      "ownerTool": "content-factory"
+    },
+    {
+      "schemaName": "bf_default_2c4a2b07a5f9a68d_crm",
+      "ownerTool": "crm-spawn"
+    },
+    {
+      "schemaName": "bf_default_2c4a2b07a5f9a68d_email",
+      "ownerTool": "email-forge"
+    },
+    {
+      "schemaName": "bf_default_2c4a2b07a5f9a68d_site",
+      "ownerTool": "site-forge"
+    }
+  ],
+  "crossSchemaForeignKeys": [
+    {
+      "fromTable": "sends",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_2c4a2b07a5f9a68d_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_2c4a2b07a5f9a68d_email"
+    },
+    {
+      "fromTable": "segment_members",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_2c4a2b07a5f9a68d_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_2c4a2b07a5f9a68d_email"
+    }
+  ]
+}

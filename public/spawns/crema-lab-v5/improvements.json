@@ -1,0 +1,27 @@
+{
+  "score": {
+    "overall": 69,
+    "matrixHealth": 50,
+    "classifierConfidence": 0.45944444444444443,
+    "bridgeCoverage": 1,
+    "criticalNoImpl": 0,
+    "diagnoses": 0,
+    "computedAt": "2026-04-29T16:39:31.275Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.46 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    }
+  ]
+}

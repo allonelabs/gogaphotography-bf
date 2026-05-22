@@ -1,0 +1,149 @@
+/* Workflow — fixed/pinned, white bg, black elements only, Apple Messages feel */
+
+.workflow {
+  position: relative;
+  width: 100%;
+  height: 1400vh; /* scroll budget — 7 scenes × 2 viewports each */
+  background: #000;
+  margin-top: clamp(40px, 6vw, 100px);
+  color: #000;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Stage is JS-driven: switches between absolute (before/after) and fixed (during) */
+.workflow-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 2.5vh, 36px) clamp(20px, 3vw, 60px);
+  background-image: url("/images/workflow-bg.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+.workflow-stage.is-fixed {
+  position: fixed;
+  top: 0;
+}
+.workflow-stage.is-end {
+  top: auto;
+  bottom: 0;
+}
+
+/* Glass frame holding the animation — frosted, sits over the marbled bg */
+.workflow-frame {
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  max-height: 92vh;
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  /* 2026-05-19 — frame was rgba(255,255,255,0.18) on a black page bg, which
+     rendered as near-black wash; the SVG's #000 icons + text disappeared into
+     it ("elements grey and not visible"). Lifted to 0.94 so the frame is a
+     near-opaque light surface; the cream bg-image still peeks at the edges. */
+  background: rgba(252, 248, 240, 0.94);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.45),
+    0 8px 24px -8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2vh, 28px);
+}
+
+.workflow-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* HUD — minimal, Apple-quiet */
+.wf-hud-top {
+  position: absolute;
+  top: clamp(20px, 3vh, 32px);
+  left: clamp(20px, 3vw, 36px);
+  right: clamp(20px, 3vw, 36px);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #000;
+  z-index: 2;
+}
+.wf-hud-top .left {
+  display: inline-flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.wf-hud-top .step {
+  color: #000;
+}
+.wf-hud-top .right {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* Progress dot row instead of a bar — more iOS */
+.wf-progress {
+  position: absolute;
+  bottom: clamp(28px, 4vh, 56px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+.wf-progress span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+.wf-progress span.active {
+  background: #000;
+  transform: scale(1.4);
+}
+
+.wf-caption {
+  position: absolute;
+  bottom: clamp(60px, 8vh, 100px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(14px, 1.3vw, 17px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(0, 0, 0, 0.65);
+  text-align: center;
+  max-width: 80%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Scenes hard-toggle — no CSS transition so JS-driven opacity = exact display */
+.wf-scene {
+  transition: none;
+}
+
+/* Subtle dotted floor (very faint, only suggests space) */
+.wf-grid {
+  display: none;
+}

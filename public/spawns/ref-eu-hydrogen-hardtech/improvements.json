@@ -1,0 +1,53 @@
+{
+  "score": {
+    "overall": 48,
+    "matrixHealth": 41,
+    "classifierConfidence": 0.6363888888888889,
+    "bridgeCoverage": 0.6896551724137931,
+    "criticalNoImpl": 5,
+    "diagnoses": 18,
+    "computedAt": "2026-05-03T05:37:14.944Z"
+  },
+  "proposals": [
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "high",
+      "title": "17 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-107",
+          "bridge-75",
+          "bridge-81",
+          "bridge-77",
+          "bridge-78",
+          "bridge-85",
+          "bridge-86",
+          "bridge-95",
+          "bridge-96",
+          "bridge-97",
+          "bridge-98",
+          "bridge-99",
+          "bridge-100",
+          "bridge-101",
+          "bridge-102"
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "isolated-app-forge",
+      "kind": "investigate-stale",
+      "severity": "low",
+      "title": "Active tool app-forge has no firing edges — is it isolated?",
+      "rationale": "The simulator battery didn't replay any event that lit up an edge involving app-forge. Either the tool is legitimately terminal (e.g. ops-bootstrap emits no inter-tool events), or SAMPLE_PAYLOADS is missing an event that should connect to it.",
+      "params": {
+        "toolName": "app-forge"
+      },
+      "applicable": false
+    }
+  ]
+}

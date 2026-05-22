@@ -1,0 +1,59 @@
+{
+  "score": {
+    "overall": 56,
+    "matrixHealth": 43,
+    "classifierConfidence": 0.5897222222222223,
+    "bridgeCoverage": 0.7777777777777778,
+    "criticalNoImpl": 2,
+    "diagnoses": 10,
+    "computedAt": "2026-05-01T09:05:51.649Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.59 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "investigate-stale",
+      "kind": "investigate-stale",
+      "severity": "medium",
+      "title": "9 enabled real-time bridges never fired in the simulator battery",
+      "rationale": "These edges are either (a) metadata-only bridges without a transform in bridge-simulator, (b) fired by events not in SAMPLE_PAYLOADS, or (c) legitimately dormant until real traffic arrives. Investigate which category each falls into.",
+      "params": {
+        "edgeIds": [
+          "bridge-105",
+          "bridge-106",
+          "bridge-75",
+          "bridge-81",
+          "bridge-77",
+          "bridge-78",
+          "bridge-84",
+          "bridge-85",
+          "bridge-87"
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "isolated-legal-forge",
+      "kind": "investigate-stale",
+      "severity": "low",
+      "title": "Active tool legal-forge has no firing edges — is it isolated?",
+      "rationale": "The simulator battery didn't replay any event that lit up an edge involving legal-forge. Either the tool is legitimately terminal (e.g. ops-bootstrap emits no inter-tool events), or SAMPLE_PAYLOADS is missing an event that should connect to it.",
+      "params": {
+        "toolName": "legal-forge"
+      },
+      "applicable": false
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+/* Electric-blue accent system — applied to all page accents.
+   Loaded after theme-light.css / ig-mix.css so it wins on shared selectors.
+   Uses --ll-accent (NOT --accent) to avoid collision with Tailwind's --accent.
+   (Briefly recoloured to black 2026-05-13 and reverted 2026-05-14 — blue
+   restored everywhere EXCEPT the sign-in header link, which the user
+   explicitly wants to stay ink-black.) */
+
+:root {
+  --ll-accent: #0000ff;
+  --ll-accent-bright: #3b5bff;
+  --ll-accent-soft: rgba(0, 0, 255, 0.12);
+  --ll-accent-glow: rgba(0, 0, 255, 0.45);
+}
+
+/* ─── Header — Sign In stays ink-black on the light page bg ──
+   (Explicit exception: every other accent on the landing is electric
+   blue, but the sign-in link is the one element the user wants to
+   read as neutral ink. Hardcoded #0E0E0E so it never picks up
+   --ll-accent.) */
+header nav[aria-label="Primary"] a[href="/signin/index.html"],
+[aria-hidden="true"] nav[aria-label="Primary"] a[href="/signin/index.html"] {
+  color: #0e0e0e !important;
+  text-decoration-color: #0e0e0e !important;
+}
+header nav[aria-label="Primary"] a:not([href="/signin/index.html"]):hover {
+  color: var(--ll-accent) !important;
+}
+
+/* ─── Hero stat numbers (36, 65) — back to electric blue. */
+section.rp-hero-section span.font-medium.text-\[32px\] {
+  color: var(--ll-accent) !important;
+}
+
+/* ─── "Watch Spawn Reel" arc ─────────────────────────── */
+.showreel-ring-arc circle {
+  stroke: var(--ll-accent) !important;
+}
+
+/* ─── Ingamana kicker dot ─────────────────────────────── */
+.ig-kicker::before {
+  background: var(--ll-accent) !important;
+  box-shadow: 0 0 8px var(--ll-accent-glow) !important;
+}
+
+/* ─── Workflow scroll-stop ─────────────────────────────
+   Workflow now sits on a blue glass background — its inner accents must be
+   black/white (chosen per element by the SVG itself) instead of blue.
+   The progress dot stays blue because it lives outside the workflow. */
+.wf-progress span.active {
+  background: var(--ll-accent) !important;
+}
+
+/* ─── Selection ───────────────────────────────────────── */
+::selection {
+  background: var(--ll-accent);
+  color: #fff;
+}
+::-moz-selection {
+  background: var(--ll-accent);
+  color: #fff;
+}
+
+/* ─── Focus ring ──────────────────────────────────────── */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--ll-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ─── Tighten hero spacing ─────────────────────────────────
+   Legacy rule pushed the headline ~390px below the navbar to leave
+   room for a hero video/showreel that no longer exists. Pull it back.
+   (The marbled pattern that briefly lived here was removed — the hero
+   now sits directly on the page's bg-black body, no extra backdrop.) */
+.rp-hero-section {
+  height: auto !important;
+  margin-top: clamp(48px, 6vw, 96px) !important;
+}

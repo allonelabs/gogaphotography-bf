@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "0.1.0",
+  "activeTools": [
+    "dns-forge",
+    "brand-forge",
+    "legal-forge",
+    "site-forge",
+    "app-forge",
+    "ledger-spawn",
+    "crm-spawn",
+    "admin-spawn",
+    "lead-hunter",
+    "email-forge",
+    "analytics-forge",
+    "content-factory",
+    "payment-forge",
+    "proposal-forge",
+    "media-forge",
+    "monitor-forge",
+    "compliance-forge",
+    "backup-forge",
+    "academy-forge"
+  ],
+  "inactiveTools": [
+    {
+      "name": "desk-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ad-reel",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ops-bootstrap",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "social-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "booking-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "automation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ecom-forge",
+      "reason": "[climate-tech-hardtech] no storefront — megawatt / ton offtakes"
+    },
+    {
+      "name": "hr-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "community-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "event-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "partnership-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "reputation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "voice-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "locale-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "investor-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "knowledge-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "bi-forge",
+      "reason": "score below threshold"
+    }
+  ],
+  "toolParameters": {
+    "lead-hunter": {
+      "channels": [
+        "google-maps",
+        "linkedin",
+        "2gis"
+      ]
+    },
+    "email-forge": {
+      "warmupDailyCeiling": 50,
+      "supportsMultipleLocales": true
+    },
+    "content-factory": {
+      "cadencePerWeek": 1,
+      "seoFocus": "technical"
+    },
+    "payment-forge": {
+      "mode": "one-time",
+      "defaultCurrency": "EUR"
+    },
+    "compliance-forge": {
+      "gdprEnforcement": "full",
+      "dpiaRequired": false
+    }
+  },
+  "reasoning": "B2B climate-hardtech in DE — activated 19 of 36 tools. Highest-signal tools: legal-forge, crm-spawn, proposal-forge, compliance-forge, dns-forge. Excluded: desk-forge, ad-reel, ops-bootstrap, social-forge, booking-forge + 12 more.",
+  "scores": {
+    "dns-forge": 0.95,
+    "brand-forge": 0.95,
+    "legal-forge": 1,
+    "site-forge": 0.95,
+    "app-forge": 0.6499999999999999,
+    "ledger-spawn": 0.9,
+    "crm-spawn": 1,
+    "admin-spawn": 0.85,
+    "lead-hunter": 0.85,
+    "email-forge": 0.9,
+    "analytics-forge": 0.85,
+    "desk-forge": 0.5,
+    "content-factory": 0.75,
+    "ad-reel": 0.2,
+    "ops-bootstrap": 0.5,
+    "social-forge": 0.3,
+    "payment-forge": 0.9,
+    "booking-forge": 0,
+    "proposal-forge": 1,
+    "media-forge": 0.75,
+    "monitor-forge": 0.85,
+    "automation-forge": 0.5,
+    "compliance-forge": 1,
+    "backup-forge": 0.75,
+    "ecom-forge": 0,
+    "hr-forge": 0.5,
+    "academy-forge": 0.8,
+    "community-forge": 0.5,
+    "event-forge": 0.5,
+    "partnership-forge": 0.5,
+    "reputation-forge": 0.5,
+    "voice-forge": 0.5,
+    "locale-forge": 0.5,
+    "investor-forge": 0.5,
+    "knowledge-forge": 0.5,
+    "bi-forge": 0.5
+  },
+  "confidence": 0.6363888888888889,
+  "source": "deterministic",
+  "taxonomy": {
+    "domain": "b2b-software",
+    "vertical": "platform"
+  },
+  "shapeHints": {
+    "archetype": "sage",
+    "aesthetic": "institutional-precise",
+    "voice": "technical-founder",
+    "pace": "energetic",
+    "motion": "restrained",
+    "density": "rich"
+  }
+}

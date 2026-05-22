@@ -1,0 +1,183 @@
+{
+  "apex": "crema-lab-v4.com",
+  "framework": "nextjs-app-router",
+  "i18nNamespaces": [
+    "common",
+    "legal",
+    "proposals",
+    "site",
+    "status"
+  ],
+  "routes": [
+    {
+      "path": "/cookies",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "cookies/page.tsx",
+      "meta": {
+        "title": "Cookie Policy · Crema Lab v4",
+        "description": "Cookie Policy for Crema Lab v4 (EU)."
+      }
+    },
+    {
+      "path": "/legal/[doc]",
+      "ownerTool": "legal-forge",
+      "kind": "dynamic",
+      "filePath": "legal/[doc]/page.tsx",
+      "meta": {
+        "title": "Legal · Crema Lab v4",
+        "description": "Legal documents for Crema Lab v4"
+      }
+    },
+    {
+      "path": "/privacy",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "privacy/page.tsx",
+      "meta": {
+        "title": "Privacy Policy · Crema Lab v4",
+        "description": "Privacy Policy for Crema Lab v4 (EU)."
+      }
+    },
+    {
+      "path": "/terms",
+      "ownerTool": "legal-forge",
+      "kind": "static",
+      "filePath": "terms/page.tsx",
+      "meta": {
+        "title": "Terms of Service · Crema Lab v4",
+        "description": "Terms of Service for Crema Lab v4 (EU)."
+      }
+    },
+    {
+      "path": "/status",
+      "ownerTool": "monitor-forge",
+      "kind": "static",
+      "filePath": "status/page.tsx",
+      "meta": {
+        "title": "Status · Crema Lab v4",
+        "description": "Live operational status for Crema Lab v4."
+      }
+    },
+    {
+      "path": "/plans",
+      "ownerTool": "payment-forge",
+      "kind": "static",
+      "filePath": "plans/page.tsx",
+      "meta": {
+        "title": "Plans · Crema Lab v4",
+        "description": "Simple, transparent pricing for Crema Lab v4. Choose the plan that fits your needs."
+      }
+    },
+    {
+      "path": "/proposals/[id]",
+      "ownerTool": "proposal-forge",
+      "kind": "dynamic",
+      "filePath": "proposals/[id]/page.tsx",
+      "meta": {
+        "title": "Proposal · Crema Lab v4",
+        "description": "View and respond to proposals from Crema Lab v4."
+      }
+    },
+    {
+      "path": "/",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "page.tsx",
+      "meta": {
+        "title": "Home | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Crema%20Lab%20v4&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/404",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "404/page.tsx",
+      "meta": {
+        "title": "404 | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=404&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/about",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "about/page.tsx",
+      "meta": {
+        "title": "About | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=About&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/changelog",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "changelog/page.tsx",
+      "meta": {
+        "title": "Changelog | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Changelog&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/contact",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "contact/page.tsx",
+      "meta": {
+        "title": "Contact | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Contact&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/customers",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "customers/page.tsx",
+      "meta": {
+        "title": "Customers | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Customers&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/features",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "features/page.tsx",
+      "meta": {
+        "title": "Features | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Features&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/legal",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "legal/page.tsx",
+      "meta": {
+        "title": "Legal | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Legal&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    },
+    {
+      "path": "/pricing",
+      "ownerTool": "site-forge",
+      "kind": "static",
+      "filePath": "pricing/page.tsx",
+      "meta": {
+        "title": "Pricing | Crema Lab v4",
+        "description": "Crema Lab v4 — Estonian-registered espresso review and comparison site, premium minimalist identity, affiliate-monetized via Amazon plus specialty roasters.",
+        "ogImageUrl": "https://crema-lab-v4.com/api/og?title=Pricing&subtitle=Estonian-registered%20espresso%20review%20and%20comparison%20site%2C%20premium%20minimalist%20identity%2C%20affiliate-monetized%20via%20Amazon%20plus%20specialty%20roasters."
+      }
+    }
+  ],
+  "sharedFileCount": 23
+}

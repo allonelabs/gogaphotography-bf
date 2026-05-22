@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" preserveAspectRatio="xMidYMid slice">
+  <!-- Cream paper -->
+  <rect width="1200" height="1600" fill="#F2EBDA"/>
+
+  <!-- Thick rounded ribbons of cobalt blue, drawn as strokes — they read as
+       organic blobs because of the round caps and the sinuous S-curves. -->
+  <g fill="none" stroke="#0000FF" stroke-width="190" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Ribbon 1 — top sweep, S-curve from upper-left into the right edge -->
+    <path d="M -160,200
+             C 120,80   320,360  560,220
+             S 980,420  1260,260"/>
+
+    <!-- Ribbon 2 — vertical wave coming down on the left -->
+    <path d="M 220,420
+             C 100,560  340,720  180,920
+             S 360,1240 200,1480"/>
+
+    <!-- Ribbon 3 — diagonal, sweeps middle-right -->
+    <path d="M 1260,520
+             C 980,640  1080,840  860,920
+             S 540,1080 360,1020
+             S 80,860   -120,920"/>
+
+    <!-- Ribbon 4 — broad C-curve in the lower half -->
+    <path d="M -160,1240
+             C 220,1080 480,1380 760,1220
+             S 1080,1480 1380,1300"/>
+
+    <!-- Ribbon 5 — short accent in the upper-right -->
+    <path d="M 880,40
+             C 940,180  1100,140  1240,60"/>
+
+    <!-- Ribbon 6 — short accent bottom-left -->
+    <path d="M -40,1500
+             C 140,1420 320,1560 520,1480"/>
+  </g>
+
+  <!-- A handful of standalone blob accents so the pattern doesn't read as pure ribbons -->
+  <g fill="#0000FF">
+    <ellipse cx="540"  cy="540"  rx="36" ry="58" transform="rotate(22  540  540)"/>
+    <ellipse cx="980"  cy="1040" rx="44" ry="68" transform="rotate(-18 980 1040)"/>
+    <ellipse cx="200"  cy="280"  rx="26" ry="40" transform="rotate(40  200  280)"/>
+  </g>
+</svg>

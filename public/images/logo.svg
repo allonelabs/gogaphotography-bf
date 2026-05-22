@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720" fill="none">
+  <!-- Copyright mark — tucked into top-right of mark/wordmark unit -->
+  <text x="446" y="226"
+        text-anchor="start"
+        font-family="Inter, system-ui, -apple-system, 'Helvetica Neue', sans-serif"
+        font-size="34" font-weight="500"
+        fill="#000">©</text>
+
+  <!-- Three-bar mark — centered, upper half -->
+  <g fill="#000">
+    <rect x="300" y="240" width="24" height="100"/>
+    <rect x="348" y="208" width="24" height="164"/>
+    <rect x="396" y="256" width="24" height="68"/>
+  </g>
+
+  <!-- Wordmark — centered, lower half -->
+  <text x="360" y="500"
+        text-anchor="middle"
+        font-family="Inter, system-ui, -apple-system, 'Helvetica Neue', sans-serif"
+        font-size="116" font-weight="700"
+        letter-spacing="-4.2"
+        fill="#000">AllOnce</text>
+</svg>

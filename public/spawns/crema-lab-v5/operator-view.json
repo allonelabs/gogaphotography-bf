@@ -1,0 +1,253 @@
+{
+  "computedAt": "2026-04-29T16:39:31.276Z",
+  "summary": {
+    "businessId": "310d9a2e48216c4c",
+    "activeToolCount": 12,
+    "totalToolCount": 12,
+    "overallScore": 69,
+    "matrixHealth": 50,
+    "diagnoses": 0,
+    "proposalCount": 1,
+    "highProposals": 0,
+    "classifierConfidence": 0.45944444444444443,
+    "classifierSource": "deterministic"
+  },
+  "groups": [
+    {
+      "category": "content",
+      "label": "Content",
+      "cards": [
+        {
+          "name": "site-forge",
+          "category": "content",
+          "summary": "Marketing website for Crema Lab v5 (Estonian-registered espresso review site,)",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "brand",
+      "label": "Brand",
+      "cards": [
+        {
+          "name": "brand-forge",
+          "category": "brand",
+          "summary": "Brand identity (archetype, palette, typography, logos) for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "revenue",
+      "label": "Revenue",
+      "cards": [
+        {
+          "name": "ledger-spawn",
+          "category": "revenue",
+          "summary": "Double-entry accounting + invoicing for EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "customer",
+      "label": "Customer",
+      "cards": [
+        {
+          "name": "crm-spawn",
+          "category": "customer",
+          "summary": "CRM pipeline + contact management for Estonian-registered espresso review site,",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "email-forge",
+          "category": "customer",
+          "summary": "Email system (transactional + sequences) for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 10,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "operations",
+      "label": "Operations",
+      "cards": [
+        {
+          "name": "admin-spawn",
+          "category": "operations",
+          "summary": "Admin panel with RBAC, audit logs, feature flags for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "analytics-forge",
+          "category": "operations",
+          "summary": "Product + web analytics (PostHog + Plausible) for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "infrastructure",
+      "label": "Infrastructure",
+      "cards": [
+        {
+          "name": "backup-forge",
+          "category": "infrastructure",
+          "summary": "Backup + disaster recovery for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "compliance-forge",
+          "category": "infrastructure",
+          "summary": "GDPR/privacy compliance dashboard for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "dns-forge",
+          "category": "infrastructure",
+          "summary": "DNS zone + subdomains for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "legal-forge",
+          "category": "infrastructure",
+          "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for EE",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 1,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "monitor-forge",
+          "category": "infrastructure",
+          "summary": "Uptime monitoring + status page for Crema Lab v5",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-04-29T16:39:31.275Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    }
+  ],
+  "score": {
+    "overall": 69,
+    "matrixHealth": 50,
+    "classifierConfidence": 0.45944444444444443,
+    "bridgeCoverage": 1,
+    "criticalNoImpl": 0,
+    "diagnoses": 0,
+    "computedAt": "2026-04-29T16:39:31.276Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.46 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    }
+  ],
+  "diagnoses": [],
+  "vendors": [
+    {
+      "category": "hosting",
+      "name": "Vercel",
+      "why": "Next.js + edge hosting for the public site and app."
+    },
+    {
+      "category": "auth",
+      "name": "Supabase Auth",
+      "why": "Email/password + OAuth + magic-link auth out of the box."
+    },
+    {
+      "category": "storage",
+      "name": "Cloudflare R2",
+      "why": "S3-compatible object storage for brand assets, uploads, backups."
+    },
+    {
+      "category": "email",
+      "name": "Resend",
+      "why": "Transactional send + unified domain authentication."
+    },
+    {
+      "category": "analytics",
+      "name": "Plausible",
+      "why": "Privacy-friendly web analytics; GDPR-ready without cookies."
+    },
+    {
+      "category": "payments",
+      "name": "Stripe",
+      "why": "Subscription billing + customer portal for seats/usage."
+    },
+    {
+      "category": "crm",
+      "name": "Supabase (crm schema)",
+      "why": "Self-hosted CRM via the app-forge schema for lower cost."
+    },
+    {
+      "category": "customer-support",
+      "name": "Chatwoot",
+      "why": "Self-hosted desk for live chat + shared inbox."
+    }
+  ]
+}

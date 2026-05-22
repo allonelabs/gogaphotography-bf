@@ -1,0 +1,41 @@
+{
+  "provider": "resend",
+  "apex": "walkby-demo.com",
+  "senders": [
+    {
+      "address": "dpo@walkby-demo.com",
+      "localPart": "dpo",
+      "ownerTool": "compliance-forge",
+      "displayName": "Walkby Demo DPO",
+      "purpose": "DSAR responses, privacy notices, GDPR correspondence"
+    },
+    {
+      "address": "hello@walkby-demo.com",
+      "localPart": "hello",
+      "ownerTool": "email-forge",
+      "displayName": "Walkby Demo",
+      "purpose": "General correspondence + catch-all"
+    },
+    {
+      "address": "newsletter@walkby-demo.com",
+      "localPart": "newsletter",
+      "ownerTool": "email-forge",
+      "displayName": "Walkby Demo Newsletter",
+      "purpose": "Periodic newsletters, digests, subscriber updates"
+    },
+    {
+      "address": "noreply@walkby-demo.com",
+      "localPart": "noreply",
+      "ownerTool": "email-forge",
+      "displayName": "Walkby Demo",
+      "purpose": "Transactional (confirmations, receipts, password resets)"
+    },
+    {
+      "address": "billing@walkby-demo.com",
+      "localPart": "billing",
+      "ownerTool": "payment-forge",
+      "displayName": "Walkby Demo Billing",
+      "purpose": "Invoices, receipts, dunning reminders"
+    }
+  ]
+}

@@ -1,0 +1,275 @@
+{
+  "computedAt": "2026-05-01T11:16:44.898Z",
+  "summary": {
+    "businessId": "2c4a2b07a5f9a68d",
+    "activeToolCount": 13,
+    "totalToolCount": 13,
+    "overallScore": 70,
+    "matrixHealth": 50,
+    "diagnoses": 0,
+    "proposalCount": 2,
+    "highProposals": 0,
+    "classifierConfidence": 0.523611111111111,
+    "classifierSource": "deterministic"
+  },
+  "groups": [
+    {
+      "category": "content",
+      "label": "Content",
+      "cards": [
+        {
+          "name": "content-factory",
+          "category": "content",
+          "summary": "Blog + content marketing for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "site-forge",
+          "category": "content",
+          "summary": "Marketing website for yoga studio in tbilisi (yoga studio in tbilisi)",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 5,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "brand",
+      "label": "Brand",
+      "cards": [
+        {
+          "name": "brand-forge",
+          "category": "brand",
+          "summary": "Brand identity (archetype, palette, typography, logos) for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "media-forge",
+          "category": "brand",
+          "summary": "Media library + AI-generated brand assets for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "revenue",
+      "label": "Revenue",
+      "cards": [
+        {
+          "name": "booking-forge",
+          "category": "revenue",
+          "summary": "Appointment booking system for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "proposal-forge",
+          "category": "revenue",
+          "summary": "Proposal generation + e-signature for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T11:16:44.895Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "customer",
+      "label": "Customer",
+      "cards": [
+        {
+          "name": "crm-spawn",
+          "category": "customer",
+          "summary": "CRM pipeline + contact management for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 7,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "email-forge",
+          "category": "customer",
+          "summary": "Email system (transactional + sequences) for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 9,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "operations",
+      "label": "Operations",
+      "cards": [
+        {
+          "name": "admin-spawn",
+          "category": "operations",
+          "summary": "Admin panel with RBAC, audit logs, feature flags for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "analytics-forge",
+          "category": "operations",
+          "summary": "Product + web analytics (PostHog + Plausible) for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 4,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    },
+    {
+      "category": "infrastructure",
+      "label": "Infrastructure",
+      "cards": [
+        {
+          "name": "dns-forge",
+          "category": "infrastructure",
+          "summary": "DNS zone + subdomains for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 2,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "legal-forge",
+          "category": "infrastructure",
+          "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for US",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 0,
+          "proposalCount": 1,
+          "highestSeverityProposal": "low",
+          "hasMechanismProposals": false
+        },
+        {
+          "name": "monitor-forge",
+          "category": "infrastructure",
+          "summary": "Uptime monitoring + status page for yoga studio in tbilisi",
+          "active": true,
+          "health": "unknown",
+          "firingEdges": 3,
+          "lastFiredAt": "2026-05-01T11:16:44.896Z",
+          "proposalCount": 0,
+          "hasMechanismProposals": false
+        }
+      ]
+    }
+  ],
+  "score": {
+    "overall": 70,
+    "matrixHealth": 50,
+    "classifierConfidence": 0.523611111111111,
+    "bridgeCoverage": 1,
+    "criticalNoImpl": 0,
+    "diagnoses": 0,
+    "computedAt": "2026-05-01T11:16:44.897Z"
+  },
+  "proposals": [
+    {
+      "id": "enrich-brief",
+      "kind": "enrich-brief",
+      "severity": "medium",
+      "title": "Classifier confidence is 0.52 — enrich the brief",
+      "rationale": "Low classifier confidence means the brief's rule matches are all near the 0.5 prior. Enriching the brief gives the classifier more signal to work with; a Claude refinement pass may also be worth enabling.",
+      "params": {
+        "hints": [
+          "Add a pricePoint range — helps the classifier tune payment-forge mode.",
+          "targetCustomer is generic — specifying the buyer persona strengthens lead-hunter + content-factory signals."
+        ]
+      },
+      "applicable": false
+    },
+    {
+      "id": "isolated-legal-forge",
+      "kind": "investigate-stale",
+      "severity": "low",
+      "title": "Active tool legal-forge has no firing edges — is it isolated?",
+      "rationale": "The simulator battery didn't replay any event that lit up an edge involving legal-forge. Either the tool is legitimately terminal (e.g. ops-bootstrap emits no inter-tool events), or SAMPLE_PAYLOADS is missing an event that should connect to it.",
+      "params": {
+        "toolName": "legal-forge"
+      },
+      "applicable": false
+    }
+  ],
+  "diagnoses": [],
+  "vendors": [
+    {
+      "category": "hosting",
+      "name": "Vercel",
+      "why": "Next.js + edge hosting for the public site and app."
+    },
+    {
+      "category": "auth",
+      "name": "Supabase Auth",
+      "why": "Email/password + OAuth + magic-link auth out of the box."
+    },
+    {
+      "category": "storage",
+      "name": "Cloudflare R2",
+      "why": "S3-compatible object storage for brand assets, uploads, backups."
+    },
+    {
+      "category": "email",
+      "name": "Resend",
+      "why": "Transactional send + unified domain authentication."
+    },
+    {
+      "category": "analytics",
+      "name": "Plausible",
+      "why": "Privacy-friendly web analytics; GDPR-ready without cookies."
+    },
+    {
+      "category": "payments",
+      "name": "Stripe",
+      "why": "Subscription billing + customer portal for seats/usage."
+    },
+    {
+      "category": "crm",
+      "name": "Supabase (crm schema)",
+      "why": "Self-hosted CRM via the app-forge schema for lower cost."
+    },
+    {
+      "category": "customer-support",
+      "name": "Chatwoot",
+      "why": "Self-hosted desk for live chat + shared inbox."
+    }
+  ]
+}

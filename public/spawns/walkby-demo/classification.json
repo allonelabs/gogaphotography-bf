@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "0.1.0",
+  "activeTools": [
+    "dns-forge",
+    "brand-forge",
+    "legal-forge",
+    "site-forge",
+    "crm-spawn",
+    "admin-spawn",
+    "email-forge",
+    "analytics-forge",
+    "ad-reel",
+    "social-forge",
+    "payment-forge",
+    "media-forge",
+    "monitor-forge",
+    "compliance-forge",
+    "backup-forge",
+    "ecom-forge"
+  ],
+  "inactiveTools": [
+    {
+      "name": "app-forge",
+      "reason": "[ecommerce] no product app — storefront is the app"
+    },
+    {
+      "name": "ledger-spawn",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "lead-hunter",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "desk-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "content-factory",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "ops-bootstrap",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "booking-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "proposal-forge",
+      "reason": "[ecommerce] no B2B proposals in DTC"
+    },
+    {
+      "name": "automation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "hr-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "academy-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "community-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "event-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "partnership-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "reputation-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "voice-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "locale-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "investor-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "knowledge-forge",
+      "reason": "score below threshold"
+    },
+    {
+      "name": "bi-forge",
+      "reason": "score below threshold"
+    }
+  ],
+  "toolParameters": {
+    "email-forge": {
+      "warmupDailyCeiling": 50,
+      "supportsMultipleLocales": false
+    },
+    "payment-forge": {
+      "mode": "one-time"
+    },
+    "compliance-forge": {
+      "gdprEnforcement": "full",
+      "dpiaRequired": false
+    }
+  },
+  "reasoning": "B2B DTC fashion brand selling in EE — activated 16 of 36 tools. Highest-signal tools: ecom-forge, dns-forge, brand-forge, site-forge, payment-forge. Excluded: app-forge, ledger-spawn, lead-hunter, desk-forge, content-factory + 15 more.",
+  "scores": {
+    "dns-forge": 0.95,
+    "brand-forge": 0.95,
+    "legal-forge": 0.9,
+    "site-forge": 0.95,
+    "app-forge": 0.25,
+    "ledger-spawn": 0.5,
+    "crm-spawn": 0.65,
+    "admin-spawn": 0.85,
+    "lead-hunter": 0.5,
+    "email-forge": 0.9,
+    "analytics-forge": 0.85,
+    "desk-forge": 0.5,
+    "content-factory": 0.5,
+    "ad-reel": 0.85,
+    "ops-bootstrap": 0.5,
+    "social-forge": 0.8,
+    "payment-forge": 0.95,
+    "booking-forge": 0.5,
+    "proposal-forge": 0.2,
+    "media-forge": 0.85,
+    "monitor-forge": 0.85,
+    "automation-forge": 0.5,
+    "compliance-forge": 0.9,
+    "backup-forge": 0.75,
+    "ecom-forge": 1,
+    "hr-forge": 0.5,
+    "academy-forge": 0.5,
+    "community-forge": 0.5,
+    "event-forge": 0.5,
+    "partnership-forge": 0.5,
+    "reputation-forge": 0.5,
+    "voice-forge": 0.5,
+    "locale-forge": 0.5,
+    "investor-forge": 0.5,
+    "knowledge-forge": 0.5,
+    "bi-forge": 0.5
+  },
+  "confidence": 0.5527777777777778,
+  "source": "deterministic",
+  "taxonomy": {
+    "domain": "b2c-goods",
+    "vertical": "fashion"
+  },
+  "shapeHints": {
+    "archetype": "indie-maker",
+    "aesthetic": "editorial",
+    "voice": "expressive",
+    "pace": "energetic",
+    "motion": "restrained",
+    "density": "rich"
+  }
+}

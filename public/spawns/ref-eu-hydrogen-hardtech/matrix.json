@@ -1,0 +1,2346 @@
+{
+  "id": "matrix-552421f264c5f37f",
+  "schemaVersion": "0.1.0",
+  "businessId": "552421f264c5f37f",
+  "generatedAt": "2026-05-03T05:37:14.942Z",
+  "nodes": [
+    {
+      "tool": "dns-forge",
+      "version": "0.1.0",
+      "slot": "domain",
+      "readsFrom": [
+        "brief"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "DNS zone + subdomains for northfold-hydrogen"
+    },
+    {
+      "tool": "brand-forge",
+      "version": "0.2.0",
+      "slot": "brand",
+      "readsFrom": [
+        "brief"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Brand identity (archetype, palette, typography, logos) for northfold-hydrogen"
+    },
+    {
+      "tool": "legal-forge",
+      "version": "0.1.0",
+      "slot": "legal",
+      "readsFrom": [
+        "brief"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Legal documents (ToS, Privacy, Cookies, DPA) for DE"
+    },
+    {
+      "tool": "site-forge",
+      "version": "0.2.0",
+      "slot": "site",
+      "readsFrom": [
+        "brief",
+        "brand"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Marketing website for northfold-hydrogen (climate-hardtech)"
+    },
+    {
+      "tool": "analytics-forge",
+      "version": "0.3.0",
+      "slot": "analytics",
+      "readsFrom": [
+        "brief",
+        "domain"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Product + web analytics (PostHog + Plausible) for northfold-hydrogen"
+    },
+    {
+      "tool": "content-factory",
+      "version": "0.3.0",
+      "slot": "content",
+      "readsFrom": [
+        "brief"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Blog + content marketing for climate-hardtech"
+    },
+    {
+      "tool": "ledger-spawn",
+      "version": "0.2.0",
+      "slot": "ledger",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "domain"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Double-entry accounting + invoicing for DE"
+    },
+    {
+      "tool": "crm-spawn",
+      "version": "0.2.0",
+      "slot": "crm",
+      "readsFrom": [
+        "brief"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "CRM pipeline + contact management for climate-hardtech"
+    },
+    {
+      "tool": "email-forge",
+      "version": "0.2.0",
+      "slot": "email",
+      "readsFrom": [
+        "brief",
+        "domain",
+        "crm",
+        "app"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Email system (transactional + sequences) for northfold-hydrogen"
+    },
+    {
+      "tool": "lead-hunter",
+      "version": "0.3.0",
+      "slot": "leads",
+      "readsFrom": [
+        "brief",
+        "crm"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Lead generation + scraping for climate-hardtech in DE"
+    },
+    {
+      "tool": "admin-spawn",
+      "version": "0.1.0",
+      "slot": "admin",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "crm",
+        "ledger",
+        "email",
+        "analytics",
+        "desk",
+        "app",
+        "site"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Admin panel with RBAC, audit logs, feature flags for northfold-hydrogen"
+    },
+    {
+      "tool": "app-forge",
+      "version": "0.2.0",
+      "slot": "app",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "domain"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Product app scaffold with auth, billing, teams for northfold-hydrogen"
+    },
+    {
+      "tool": "payment-forge",
+      "version": "0.1.0",
+      "slot": "payment",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "domain",
+        "ledger",
+        "crm",
+        "analytics"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Stripe payment processing for northfold-hydrogen"
+    },
+    {
+      "tool": "proposal-forge",
+      "version": "0.1.0",
+      "slot": "proposals",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "domain",
+        "payment",
+        "legal",
+        "analytics",
+        "email",
+        "admin"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Proposal generation + e-signature for northfold-hydrogen"
+    },
+    {
+      "tool": "media-forge",
+      "version": "0.1.0",
+      "slot": "media",
+      "readsFrom": [
+        "brief",
+        "brand",
+        "domain"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Media library + AI-generated brand assets for northfold-hydrogen"
+    },
+    {
+      "tool": "monitor-forge",
+      "version": "0.1.0",
+      "slot": "monitoring",
+      "readsFrom": [
+        "brief",
+        "domain",
+        "site",
+        "app",
+        "crm",
+        "ledger",
+        "admin",
+        "desk",
+        "ops",
+        "email"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Uptime monitoring + status page for northfold-hydrogen"
+    },
+    {
+      "tool": "compliance-forge",
+      "version": "0.1.0",
+      "slot": "compliance",
+      "readsFrom": [
+        "brief",
+        "ops",
+        "admin"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "GDPR/privacy compliance dashboard for northfold-hydrogen"
+    },
+    {
+      "tool": "backup-forge",
+      "version": "0.1.0",
+      "slot": "backup",
+      "readsFrom": [
+        "brief",
+        "domain",
+        "crm",
+        "app",
+        "desk",
+        "ledger",
+        "analytics",
+        "media",
+        "site",
+        "content",
+        "admin",
+        "email",
+        "monitoring"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Backup + disaster recovery for northfold-hydrogen"
+    },
+    {
+      "tool": "academy-forge",
+      "version": "0.1.0",
+      "slot": "academy",
+      "readsFrom": [
+        "brief",
+        "desk"
+      ],
+      "active": true,
+      "health": "unknown",
+      "summary": "Learning portal + course system for northfold-hydrogen"
+    }
+  ],
+  "edges": [
+    {
+      "id": "bridge-01",
+      "from": "crm-spawn",
+      "to": "ledger-spawn",
+      "trigger": {
+        "event": "crm.deal.won",
+        "description": "CRM deal moves to won stage"
+      },
+      "action": {
+        "name": "createInvoice",
+        "description": "Generate invoice + journal entry from deal data"
+      },
+      "payloadSchema": {
+        "dealId": "string",
+        "contactName": "string",
+        "companyName": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "products[]": "Product[]",
+        "closedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-ledger",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-02",
+      "from": "payment-forge",
+      "to": "ledger-spawn",
+      "trigger": {
+        "event": "payment.received",
+        "description": "Payment successfully collected (Stripe webhook payment_intent.succeeded)"
+      },
+      "action": {
+        "name": "recordPaymentJournal",
+        "description": "Create journal SQL: Debit Bank, Credit AR"
+      },
+      "payloadSchema": {
+        "invoiceNumber": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "paymentMethod": "string",
+        "receivedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-ledger",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-03",
+      "from": "payment-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "payment.completed",
+        "description": "Payment completed"
+      },
+      "action": {
+        "name": "sendReceipt",
+        "description": "Build and send receipt email payload"
+      },
+      "payloadSchema": {
+        "customerEmail": "string",
+        "customerName": "string",
+        "productName": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "invoiceNumber": "string",
+        "paymentMethod": "string",
+        "receiptUrl": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-email",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-09",
+      "from": "crm-spawn",
+      "to": "payment-forge",
+      "trigger": {
+        "event": "crm.deal.proposal-sent",
+        "description": "CRM deal moves to proposal-sent stage"
+      },
+      "action": {
+        "name": "generatePaymentLink",
+        "description": "Generate Stripe Payment Link for deal amount"
+      },
+      "payloadSchema": {
+        "dealId": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "customerEmail": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-payment",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-10",
+      "from": "payment-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "payment.received",
+        "description": "Payment received (Stripe webhook)"
+      },
+      "action": {
+        "name": "updateDealStage",
+        "description": "Update CRM deal stage to closed-won, log payment activity"
+      },
+      "payloadSchema": {
+        "invoiceNumber": "string",
+        "amountCents": "number",
+        "dealId": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-crm",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-11",
+      "from": "ledger-spawn",
+      "to": "email-forge",
+      "trigger": {
+        "event": "ledger.invoice.overdue",
+        "description": "Invoice becomes overdue (dunning cadence day hit)"
+      },
+      "action": {
+        "name": "sendDunningReminder",
+        "description": "Send dunning reminder email using dunning template at step N"
+      },
+      "payloadSchema": {
+        "invoiceNumber": "string",
+        "daysPastDue": "number",
+        "amountCents": "number",
+        "step": "number",
+        "templateId": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/ledger-to-email",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-15",
+      "from": "proposal-forge",
+      "to": "payment-forge",
+      "trigger": {
+        "event": "proposal.signed",
+        "description": "Proposal signed (e-signature completed)"
+      },
+      "action": {
+        "name": "generateInvoice",
+        "description": "Generate Stripe invoice for signed proposal amount"
+      },
+      "payloadSchema": {
+        "proposalId": "string",
+        "amountCents": "number",
+        "terms": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/proposal-to-payment",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-16",
+      "from": "proposal-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "proposal.status-changed",
+        "description": "Proposal signed / rejected / expired"
+      },
+      "action": {
+        "name": "updateDealFromProposal",
+        "description": "Update CRM deal stage accordingly"
+      },
+      "payloadSchema": {
+        "proposalId": "string",
+        "dealId": "string",
+        "newStatus": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/proposal-to-crm",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-17",
+      "from": "payment-forge",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "payment.received",
+        "description": "Payment received"
+      },
+      "action": {
+        "name": "trackRevenueEvent",
+        "description": "Track revenue event in PostHog"
+      },
+      "payloadSchema": {
+        "amountCents": "number",
+        "source": "string",
+        "productName": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-analytics",
+      "category": "revenue",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-20",
+      "from": "content-factory",
+      "to": "email-forge",
+      "trigger": {
+        "event": "content.post.published",
+        "description": "Blog post published"
+      },
+      "action": {
+        "name": "sendNewsletter",
+        "description": "Send newsletter to subscribed audience"
+      },
+      "payloadSchema": {
+        "title": "string",
+        "excerpt": "string",
+        "url": "string",
+        "audienceId": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/content-to-email",
+      "category": "content",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-21",
+      "from": "content-factory",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "content.post.published",
+        "description": "Blog post published / updated"
+      },
+      "action": {
+        "name": "trackContentEvent",
+        "description": "Track content event + update editorial calendar"
+      },
+      "payloadSchema": {
+        "slug": "string",
+        "title": "string",
+        "action": "string",
+        "url": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/content-to-analytics",
+      "category": "content",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-22",
+      "from": "media-forge",
+      "to": "content-factory",
+      "trigger": {
+        "event": "media.image.generated",
+        "description": "New brand image generated"
+      },
+      "action": {
+        "name": "registerMediaAsset",
+        "description": "Make available in content factory image library"
+      },
+      "payloadSchema": {
+        "imageUrl": "string",
+        "altText": "string",
+        "tags[]": "string[]"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/media-to-content",
+      "category": "content",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-24",
+      "from": "media-forge",
+      "to": "site-forge",
+      "trigger": {
+        "event": "media.hero.generated",
+        "description": "Brand hero image generated"
+      },
+      "action": {
+        "name": "updateSiteHero",
+        "description": "Update site-forge hero section"
+      },
+      "payloadSchema": {
+        "heroImageUrl": "string",
+        "altText": "string"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/media-to-site",
+      "category": "content",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-25",
+      "from": "site-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "site.form.submitted",
+        "description": "Contact form submitted on marketing site"
+      },
+      "action": {
+        "name": "createContactAndDeal",
+        "description": "Create CRM contact + deal"
+      },
+      "payloadSchema": {
+        "email": "string",
+        "name": "string",
+        "formFields": "string",
+        "source": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/site-to-crm",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-26",
+      "from": "site-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "site.newsletter.signup",
+        "description": "Newsletter signup form submitted"
+      },
+      "action": {
+        "name": "addToAudienceAndWelcome",
+        "description": "Add to Resend audience + trigger welcome sequence"
+      },
+      "payloadSchema": {
+        "email": "string",
+        "name": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/site-to-email",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-27",
+      "from": "site-forge",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "site.interaction",
+        "description": "Page view / form submit / CTA click"
+      },
+      "action": {
+        "name": "trackWebEvent",
+        "description": "Track web analytics event"
+      },
+      "payloadSchema": {
+        "event": "string",
+        "page": "string",
+        "properties": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/site-to-analytics",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-28",
+      "from": "crm-spawn",
+      "to": "email-forge",
+      "trigger": {
+        "event": "crm.contact.nurture-entered",
+        "description": "Contact enters nurture stage in pipeline"
+      },
+      "action": {
+        "name": "startDripSequence",
+        "description": "Trigger email drip sequence"
+      },
+      "payloadSchema": {
+        "contactEmail": "string",
+        "sequenceName": "string",
+        "stage": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-email",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-29",
+      "from": "crm-spawn",
+      "to": "proposal-forge",
+      "trigger": {
+        "event": "crm.deal.proposal-stage",
+        "description": "Deal moves to proposal stage"
+      },
+      "action": {
+        "name": "generateProposal",
+        "description": "Auto-generate proposal from deal data"
+      },
+      "payloadSchema": {
+        "dealId": "string",
+        "contactName": "string",
+        "products[]": "Product[]",
+        "amountCents": "number"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/crm-to-proposal",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-33",
+      "from": "academy-forge",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "academy.course.completed",
+        "description": "Course completed / lesson viewed / quiz passed"
+      },
+      "action": {
+        "name": "trackLearningEngagement",
+        "description": "Track learning engagement"
+      },
+      "payloadSchema": {
+        "userId": "string",
+        "courseId": "string",
+        "lessonId": "string",
+        "score": "number"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/academy-to-analytics",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-34",
+      "from": "academy-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "academy.course.completed",
+        "description": "Course completed"
+      },
+      "action": {
+        "name": "sendCertificateEmail",
+        "description": "Send completion certificate email"
+      },
+      "payloadSchema": {
+        "userId": "string",
+        "courseName": "string",
+        "certificateUrl": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/academy-to-email",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-35",
+      "from": "academy-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "academy.onboarding.completed",
+        "description": "Customer completes onboarding course"
+      },
+      "action": {
+        "name": "updateContactMilestone",
+        "description": "Update CRM contact milestone"
+      },
+      "payloadSchema": {
+        "contactId": "string",
+        "courseId": "string",
+        "completedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/academy-to-crm",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-36",
+      "from": "monitor-forge",
+      "to": "admin-spawn",
+      "trigger": {
+        "event": "monitor.check.failed",
+        "description": "Uptime check fails / SSL expiring / domain expiring"
+      },
+      "action": {
+        "name": "sendAdminNotification",
+        "description": "Send SSE notification to admin dashboard"
+      },
+      "payloadSchema": {
+        "checkName": "string",
+        "status": "string",
+        "severity": "string",
+        "url": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/monitor-to-admin",
+      "category": "operations",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-37",
+      "from": "monitor-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "monitor.critical.alert",
+        "description": "Critical alert fires (uptime down > 5 min)"
+      },
+      "action": {
+        "name": "sendAlertEmail",
+        "description": "Send alert email to owner"
+      },
+      "payloadSchema": {
+        "alertType": "string",
+        "endpoint": "string",
+        "downSince": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/monitor-to-email",
+      "category": "operations",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-40",
+      "from": "backup-forge",
+      "to": "admin-spawn",
+      "trigger": {
+        "event": "backup.completed",
+        "description": "Backup succeeds / fails / missed"
+      },
+      "action": {
+        "name": "sendBackupNotification",
+        "description": "Dashboard notification"
+      },
+      "payloadSchema": {
+        "target": "string",
+        "status": "string",
+        "sizeBytes": "number",
+        "duration": "number"
+      },
+      "direction": "one-way",
+      "frequency": "batch-daily",
+      "bridgeModule": "../bridges/backup-to-admin",
+      "category": "operations",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-41",
+      "from": "backup-forge",
+      "to": "monitor-forge",
+      "trigger": {
+        "event": "backup.failed",
+        "description": "Backup failure"
+      },
+      "action": {
+        "name": "createBackupAlert",
+        "description": "Create alert in monitoring system"
+      },
+      "payloadSchema": {
+        "target": "string",
+        "failureReason": "string",
+        "lastSuccessAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/backup-to-monitor",
+      "category": "operations",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-42",
+      "from": "backup-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "backup.failed",
+        "description": "Backup failure"
+      },
+      "action": {
+        "name": "sendBackupAlertEmail",
+        "description": "Send alert email to owner"
+      },
+      "payloadSchema": {
+        "target": "string",
+        "failureReason": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/backup-to-email",
+      "category": "operations",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-44",
+      "from": "admin-spawn",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "admin.action.performed",
+        "description": "Admin action (impersonation, feature flag toggle)"
+      },
+      "action": {
+        "name": "trackAuditEvent",
+        "description": "Audit trail event tracking"
+      },
+      "payloadSchema": {
+        "actor": "string",
+        "action": "string",
+        "resource": "string",
+        "metadata": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/admin-to-analytics",
+      "category": "operations",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-45",
+      "from": "compliance-forge",
+      "to": "site-forge",
+      "trigger": {
+        "event": "compliance.consent.updated",
+        "description": "Cookie consent config updated"
+      },
+      "action": {
+        "name": "updateCookieBanner",
+        "description": "Update cookie banner on marketing site"
+      },
+      "payloadSchema": {
+        "consentConfig": "string",
+        "bannerHtml": "string"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/compliance-to-site",
+      "category": "compliance",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-46",
+      "from": "compliance-forge",
+      "to": "admin-spawn",
+      "trigger": {
+        "event": "compliance.dsar.received",
+        "description": "DSAR received / retention deadline approaching"
+      },
+      "action": {
+        "name": "createComplianceTask",
+        "description": "Dashboard notification + task creation"
+      },
+      "payloadSchema": {
+        "requestType": "string",
+        "subjectEmail": "string",
+        "deadline": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/compliance-to-admin",
+      "category": "compliance",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-47",
+      "from": "compliance-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "compliance.notification.ready",
+        "description": "DSAR response ready / retention warning"
+      },
+      "action": {
+        "name": "sendComplianceNotification",
+        "description": "Send compliance notification"
+      },
+      "payloadSchema": {
+        "type": "string",
+        "recipientEmail": "string",
+        "body": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/compliance-to-email",
+      "category": "compliance",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-48",
+      "from": "compliance-forge",
+      "to": "backup-forge",
+      "trigger": {
+        "event": "compliance.retention.updated",
+        "description": "Retention policy updated"
+      },
+      "action": {
+        "name": "adjustRetention",
+        "description": "Adjust backup retention schedules"
+      },
+      "payloadSchema": {
+        "retentionPolicies": "string",
+        "affectedTargets": "string"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/compliance-to-backup",
+      "category": "compliance",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-49",
+      "from": "legal-forge",
+      "to": "compliance-forge",
+      "trigger": {
+        "event": "legal.document.updated",
+        "description": "Legal document updated (new version)"
+      },
+      "action": {
+        "name": "triggerComplianceReview",
+        "description": "Trigger compliance re-review"
+      },
+      "payloadSchema": {
+        "docKind": "string",
+        "version": "string",
+        "jurisdiction": "string"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/legal-to-compliance",
+      "category": "compliance",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-50",
+      "from": "brand-forge",
+      "to": "site-forge",
+      "trigger": {
+        "event": "brand.tokens.updated",
+        "description": "Brand tokens updated (improvement loop v2)"
+      },
+      "action": {
+        "name": "rebuildSite",
+        "description": "Rebuild site with new brand tokens"
+      },
+      "payloadSchema": {
+        "tokensUrl": "string",
+        "cssUrl": "string",
+        "paletteChanged": "boolean"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/brand-to-site",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-51",
+      "from": "brand-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "brand.palette.updated",
+        "description": "Brand palette/logo updated"
+      },
+      "action": {
+        "name": "refreshEmailBranding",
+        "description": "Update email template branding"
+      },
+      "payloadSchema": {
+        "palette": "string",
+        "logoUrl": "string"
+      },
+      "direction": "one-way",
+      "frequency": "on-demand",
+      "bridgeModule": "../bridges/brand-to-email",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-53",
+      "from": "dns-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "dns.zone.modified",
+        "description": "DNS zone modified (DKIM/SPF records changed)"
+      },
+      "action": {
+        "name": "verifyEmailAuth",
+        "description": "Verify email authentication records"
+      },
+      "payloadSchema": {
+        "spf": "string",
+        "dkimSelectors": "string",
+        "dmarc": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/dns-to-email",
+      "category": "cross-cutting",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-54",
+      "from": "dns-forge",
+      "to": "monitor-forge",
+      "trigger": {
+        "event": "dns.subdomain.created",
+        "description": "New subdomain created"
+      },
+      "action": {
+        "name": "addUptimeCheck",
+        "description": "Add uptime check for new endpoint"
+      },
+      "payloadSchema": {
+        "subdomain": "string",
+        "url": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/dns-to-monitor",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-55",
+      "from": "email-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "email.bounced",
+        "description": "Email bounced / unsubscribed"
+      },
+      "action": {
+        "name": "updateContactDisposition",
+        "description": "Update CRM contact disposition"
+      },
+      "payloadSchema": {
+        "email": "string",
+        "event": "string",
+        "reason": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/email-to-crm",
+      "category": "cross-cutting",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-56",
+      "from": "email-forge",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "email.engagement",
+        "description": "Email opened / clicked / bounced"
+      },
+      "action": {
+        "name": "trackEmailEngagement",
+        "description": "Track email engagement event"
+      },
+      "payloadSchema": {
+        "campaignId": "string",
+        "email": "string",
+        "action": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/email-to-analytics",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-60",
+      "from": "lead-hunter",
+      "to": "email-forge",
+      "trigger": {
+        "event": "lead.qualified",
+        "description": "Lead qualified (score above threshold)"
+      },
+      "action": {
+        "name": "triggerOutreachSequence",
+        "description": "Trigger outreach sequence"
+      },
+      "payloadSchema": {
+        "email": "string",
+        "name": "string",
+        "score": "number",
+        "stage": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/lead-to-email",
+      "category": "cross-cutting",
+      "critical": true,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-61",
+      "from": "lead-hunter",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "lead.batch.imported",
+        "description": "Lead batch imported"
+      },
+      "action": {
+        "name": "trackAcquisitionEvent",
+        "description": "Track acquisition event"
+      },
+      "payloadSchema": {
+        "count": "number",
+        "source": "string",
+        "avgScore": "number"
+      },
+      "direction": "one-way",
+      "frequency": "batch-daily",
+      "bridgeModule": "../bridges/lead-to-analytics",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true,
+      "metrics": {
+        "totalFired": 1,
+        "lastFiredAt": "2026-05-03T05:37:14.944Z",
+        "avgLatencyMs": 0,
+        "errorRate": 0
+      }
+    },
+    {
+      "id": "bridge-105",
+      "from": "payment-forge",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "payment.subscription.canceled",
+        "description": "Subscription state machine transitions into canceled (terminal)"
+      },
+      "action": {
+        "name": "markContactChurned",
+        "description": "Mark crm.contacts.lifecycle_stage=churned + log a churn activity. Resolves contact via subscription.deal_source_ref → crm.deals.contact_id, falling back to customers.contact_source_ref."
+      },
+      "payloadSchema": {
+        "subscriptionStripeId": "string",
+        "customerStripeId": "string",
+        "canceledAt": "string",
+        "reason": "ChurnReason?",
+        "dealSourceRef": "string?",
+        "mrrCentsAtCancel": "number?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-crm-churn",
+      "category": "customer-lifecycle",
+      "critical": true,
+      "enabled": true
+    },
+    {
+      "id": "bridge-106",
+      "from": "payment-forge",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "payment.subscription.mrr-delta",
+        "description": "Subscription transition that changes the tenant MRR (new-sub / churn / upgrade / downgrade)"
+      },
+      "action": {
+        "name": "emitRevenueDeltaEvent",
+        "description": "Emit a typed revenue.mrr.delta event for the analytics-forge ingest path. Pure event payload — analytics owns persistence + bucketing."
+      },
+      "payloadSchema": {
+        "subscriptionStripeId": "string",
+        "customerStripeId": "string",
+        "occurredAt": "string",
+        "previousMrrCents": "number",
+        "nextMrrCents": "number",
+        "deltaCents": "number",
+        "currency": "string",
+        "deltaSource": "DeltaSource",
+        "stripeEventId": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-analytics-mrr",
+      "category": "revenue",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-107",
+      "from": "payment-forge",
+      "to": "compliance-forge",
+      "trigger": {
+        "event": "payment.charge.dispute",
+        "description": "charge.dispute.created or charge.dispute.updated webhook from Stripe (rare, high-stakes)"
+      },
+      "action": {
+        "name": "logDisputeAndNotify",
+        "description": "INSERT INTO compliance.audit_log + UPSERT INTO compliance.disputes (the system-of-record row); also emit a typed notification event for the operator dashboard with severity heuristic (critical / warning / info)."
+      },
+      "payloadSchema": {
+        "disputeStripeId": "string",
+        "chargeStripeId": "string",
+        "customerStripeId": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "reason": "DisputeReason",
+        "status": "DisputeStatus",
+        "occurredAt": "string",
+        "evidenceDueBy": "string?",
+        "stripeEventId": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-compliance-dispute",
+      "category": "compliance",
+      "critical": true,
+      "enabled": true
+    },
+    {
+      "id": "bridge-75",
+      "from": "lead-hunter",
+      "to": "brand-forge",
+      "trigger": {
+        "event": "lead.demo.requested",
+        "description": "Cadence-runner about to send a touch with attachDemo:true; needs a per-lead preview spawn (Plan 6 — the AllOnce moat)"
+      },
+      "action": {
+        "name": "spawnMinimalBrief",
+        "description": "Trigger brand-forge spawn in DEMO_MODE: brand-name + palette + wordmark + site-hero + one section + tokens; output lands at <tenantId>/hunter/demos/<lead-slug>/"
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "leadId": "string",
+        "leadSlug": "string",
+        "brief": "BusinessBrief",
+        "requestedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/lead-to-brand",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-81",
+      "from": "brand-forge",
+      "to": "lead-hunter",
+      "trigger": {
+        "event": "brand.demo-brief.materialized",
+        "description": "Brand-forge demo spawn finished; preview URL ready (round-trip with bridge-75)"
+      },
+      "action": {
+        "name": "attachDemoUrl",
+        "description": "Write leads.demo_url so the next cadence pass can interpolate it into the touch body. Lead-slug parsed from the spawn outputPrefix."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "outputPrefix": "string",
+        "previewUrl": "string?",
+        "materializedAt": "string",
+        "costSpentUsd": "number"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/brand-to-lead",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-77",
+      "from": "lead-hunter",
+      "to": "payment-forge",
+      "trigger": {
+        "event": "lead.conversion.recorded",
+        "description": "A lead's outreach culminated in a paid checkout — conversion row links acquisition cost → revenue"
+      },
+      "action": {
+        "name": "recordAttribution",
+        "description": "Attach lead-source + acquisition-cost provenance to the payment_intent / subscription row. Includes daysToConvert derivation. Informational, not blocking — payment-forge already processed the charge through Stripe webhook."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "leadId": "string",
+        "leadSource": "string",
+        "paymentIntentStripeId": "string?",
+        "subscriptionStripeId": "string?",
+        "customerStripeId": "string",
+        "acquisitionCostCents": "number",
+        "firstTouchAt": "string",
+        "conversionAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/lead-to-payment",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-78",
+      "from": "lead-hunter",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "lead.qualified",
+        "description": "Lead-hunter scored above threshold AND deduper confirmed new contact (fan-out target alongside bridge-60 lead → email-forge)"
+      },
+      "action": {
+        "name": "upsertContact",
+        "description": "Write a row in crm.contacts with provenance pointing back to the lead row. UPSERT key (tenant_id, source_name, source_external_id) per crm-pusher config. Falls back to <source>:<leadId> external id when source didn't supply one."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "leadId": "string",
+        "leadAddress": "string",
+        "leadName": "string?",
+        "leadCompanyName": "string?",
+        "leadCompanyDomain": "string?",
+        "leadSource": "string",
+        "leadSourceExternalId": "string?",
+        "qualityScore": "number",
+        "stage": "LeadStage",
+        "qualifiedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/lead-to-crm",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-83",
+      "from": "lead-hunter",
+      "to": "content-factory",
+      "trigger": {
+        "event": "lead.objection-pattern.detected",
+        "description": "Same objection theme surfaced N times across replies in the analysis window — pattern signal that one content piece would address it once-and-for-all"
+      },
+      "action": {
+        "name": "draftObjectionResponse",
+        "description": "Content-factory drafts a piece (blog-post / faq-entry / sales-card / tweet-thread depending on theme); operator approves before publish. Format picked from theme; priority from count (≥10 → high, ≥4 → normal, else low)."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "windowEndDay": "string",
+        "windowDays": "number",
+        "count": "number",
+        "theme": "ObjectionTheme",
+        "examples": "string[]"
+      },
+      "direction": "one-way",
+      "frequency": "batch-daily",
+      "bridgeModule": "../bridges/lead-to-content",
+      "category": "cross-cutting",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-85",
+      "from": "crm-spawn",
+      "to": "lead-hunter",
+      "trigger": {
+        "event": "crm.contact.suppressed",
+        "description": "CRM is system-of-record for do-not-contact decisions made outside lead-hunter (operator marked in HubSpot, customer emailed support@, Mailchimp unsubscribe sync, Salesforce DNC flag)"
+      },
+      "action": {
+        "name": "syncSuppression",
+        "description": "Mirror the suppression so the next cadence-runner pass blocks any send. Source maps to SuppressionReason: operator-manual stays itself; mailchimp/support → unsubscribe; salesforce/crm-sync/unknown → unknown. Address lower-cased on the way in for store key consistency."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "contactAddress": "string",
+        "source": "CrmSuppressionSource",
+        "suppressedAt": "string",
+        "operatorUserId": "string?",
+        "note": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-lead",
+      "category": "cross-cutting",
+      "critical": true,
+      "enabled": true
+    },
+    {
+      "id": "bridge-86",
+      "from": "compliance-forge",
+      "to": "lead-hunter",
+      "trigger": {
+        "event": "compliance.dsar.purge.requested",
+        "description": "A Data Subject Access Request under GDPR Art. 17 / CCPA §1798.105 demands deletion of all personal data the tenant holds about the subject. 30-day legal deadline (GDPR Art. 12(3))"
+      },
+      "action": {
+        "name": "purgeLead",
+        "description": "Hard-delete the leads row + cascade delete from outbound_messages / inbound_messages / conversations / lead_sequences (matched on recipient_address). Add suppression entry with reason 'dsar' so the address can never be re-imported. Emit audit log entry retained 6 years per ICO guidance."
+      },
+      "payloadSchema": {
+        "tenantId": "string",
+        "dsarTicketId": "string",
+        "subjectAddress": "string",
+        "requestedAt": "string",
+        "deadlineAt": "string",
+        "subjectStatement": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/compliance-to-lead",
+      "category": "compliance",
+      "critical": true,
+      "enabled": true
+    },
+    {
+      "id": "bridge-95",
+      "from": "payment-forge",
+      "to": "email-forge",
+      "trigger": {
+        "event": "payment.failed",
+        "description": "Payment failed (Stripe invoice.payment_failed or payment_intent.payment_failed)"
+      },
+      "action": {
+        "name": "queuePaymentRecovery",
+        "description": "Queue voice-aware payment-recovery email; resolves customer email from payload or contacts.jsonl op=upsert lookup. Idempotent on invoiceNumber."
+      },
+      "payloadSchema": {
+        "invoiceNumber": "string",
+        "customerStripeId": "string",
+        "customerEmail?": "string",
+        "amountCents": "number",
+        "currency": "string",
+        "retryUrl?": "string",
+        "failedAt": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/payment-to-email",
+      "category": "revenue",
+      "critical": true,
+      "enabled": true
+    },
+    {
+      "id": "bridge-96",
+      "from": "lead-hunter",
+      "to": "email-forge",
+      "trigger": {
+        "event": "leads.imported",
+        "description": "Lead-hunter import batch landed; queue lead-intro emails per row"
+      },
+      "action": {
+        "name": "queueLeadIntros",
+        "description": "Iterate batch; per row with email, queue a lead-intro email. Idempotent on lead-intro-<email>."
+      },
+      "payloadSchema": {
+        "batch": "Array<{email,name?,source?,score?}>"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/leads-to-email",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-97",
+      "from": "crm-spawn",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "customer.lifecycle.churned",
+        "description": "Customer churned — append a row to per-spawn customer-lifecycle.jsonl for unified timeline analysis."
+      },
+      "action": {
+        "name": "recordCustomerLifecycleEvent",
+        "description": "Append lifecycle-event row keyed on event idempotencyKey. Records churn, milestone, suspension, reactivation as a single chronological ledger."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "customerStripeId": "string",
+        "customerEmail": "string?",
+        "mrrCentsAtCancel": "number",
+        "reason": "string",
+        "canceledAt": "string",
+        "subscriptionStripeId": "string"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-analytics",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-98",
+      "from": "crm-spawn",
+      "to": "lead-hunter",
+      "trigger": {
+        "event": "customer.lifecycle.churned",
+        "description": "Customer churned — tell lead-hunter not to re-pursue them via the cold pipeline."
+      },
+      "action": {
+        "name": "markLeadDoNotReacquire",
+        "description": "Append no-reacquire row to lead-no-reacquire.jsonl keyed on email. Lead-hunter icp-parser + cold-pipeline read this ledger and skip matches."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "customerEmail": "string",
+        "customerStripeId": "string?",
+        "reason": "string",
+        "subscriptionStripeId": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/crm-to-lead",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-99",
+      "from": "lead-hunter",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "lead.classified",
+        "description": "Lead-hunter classified a visitor against cross-forge state — propagate the classification onto the contacts ledger."
+      },
+      "action": {
+        "name": "recordClassifiedContact",
+        "description": "Append op=classified row to contacts.jsonl keyed on email. Captures classification, ltvCents, priorChurnReason, and priorClassification (transition signal)."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "visitorAddress": "string",
+        "classification": "string",
+        "customerLtvCents": "number?",
+        "priorChurnReason": "string?",
+        "visitorName": "string?",
+        "visitorCompanyName": "string?",
+        "ingestSource": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/lead-to-crm",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-100",
+      "from": "content-factory",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "customer.lifecycle.milestone",
+        "description": "Customer hit a milestone (first-purchase, anniversary, etc) — record on the unified lifecycle ledger."
+      },
+      "action": {
+        "name": "recordCustomerLifecycleEvent",
+        "description": "Append op=lifecycle-event row keyed on idempotencyKey. Same handler as the churn cascade — kind derives from event suffix."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "milestone": "string",
+        "customerEmail": "string?",
+        "customerStripeId": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/content-to-analytics",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-101",
+      "from": "content-factory",
+      "to": "crm-spawn",
+      "trigger": {
+        "event": "customer.lifecycle.milestone",
+        "description": "Customer hit a milestone — write contacts.jsonl op=milestone row + queue milestone-acknowledgment email."
+      },
+      "action": {
+        "name": "updateContactMilestone",
+        "description": "Auto-263 handler: writes op=milestone row AND queues milestone-acknowledgment email when customerEmail present."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "milestone": "string",
+        "customerEmail": "string?",
+        "customerStripeId": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/content-to-crm",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    },
+    {
+      "id": "bridge-102",
+      "from": "content-factory",
+      "to": "analytics-forge",
+      "trigger": {
+        "event": "customer.lifecycle.reactivated",
+        "description": "Customer reactivated (came back after a churn) — record on the unified lifecycle ledger so the comeback compound rule fires."
+      },
+      "action": {
+        "name": "recordCustomerLifecycleEvent",
+        "description": "Append op=lifecycle-event row with kind=reactivated. Compound rule comebacks-7d (Auto-295) reads this."
+      },
+      "payloadSchema": {
+        "businessId": "string",
+        "customerEmail": "string?",
+        "customerStripeId": "string?",
+        "reason": "string?"
+      },
+      "direction": "one-way",
+      "frequency": "real-time",
+      "bridgeModule": "../bridges/content-to-analytics",
+      "category": "customer-lifecycle",
+      "critical": false,
+      "enabled": true
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "marketing-site",
+      "name": "Marketing Site",
+      "provider": "vercel",
+      "contributors": [
+        {
+          "tool": "site-forge",
+          "contribution": "Base pages (/, /about, /contact, /pricing)",
+          "scope": "/"
+        },
+        {
+          "tool": "academy-forge",
+          "contribution": "Learning portal (/academy, /academy/[course])",
+          "scope": "/academy"
+        },
+        {
+          "tool": "content-factory",
+          "contribution": "Blog (/blog, /blog/[slug])",
+          "scope": "/blog"
+        },
+        {
+          "tool": "legal-forge",
+          "contribution": "Legal pages (/terms, /privacy, /cookies)",
+          "scope": "/legal"
+        },
+        {
+          "tool": "monitor-forge",
+          "contribution": "Status page (/status)",
+          "scope": "/status"
+        }
+      ],
+      "target": "https://northfold-hydrogen.de"
+    },
+    {
+      "id": "product-app",
+      "name": "Product App",
+      "provider": "vercel",
+      "contributors": [
+        {
+          "tool": "admin-spawn",
+          "contribution": "Dashboard module",
+          "scope": "/dashboard"
+        },
+        {
+          "tool": "crm-spawn",
+          "contribution": "CRM module",
+          "scope": "/crm"
+        },
+        {
+          "tool": "analytics-forge",
+          "contribution": "Analytics module",
+          "scope": "/analytics"
+        },
+        {
+          "tool": "ledger-spawn",
+          "contribution": "Accounting module",
+          "scope": "/ledger"
+        },
+        {
+          "tool": "payment-forge",
+          "contribution": "Billing module",
+          "scope": "/billing"
+        },
+        {
+          "tool": "proposal-forge",
+          "contribution": "Proposals module",
+          "scope": "/proposals"
+        },
+        {
+          "tool": "media-forge",
+          "contribution": "Media module",
+          "scope": "/media"
+        },
+        {
+          "tool": "compliance-forge",
+          "contribution": "Compliance module",
+          "scope": "/compliance"
+        },
+        {
+          "tool": "academy-forge",
+          "contribution": "Academy module",
+          "scope": "/academy"
+        },
+        {
+          "tool": "app-forge",
+          "contribution": "Settings module",
+          "scope": "/settings"
+        },
+        {
+          "tool": "monitor-forge",
+          "contribution": "Monitoring module",
+          "scope": "/monitoring"
+        },
+        {
+          "tool": "backup-forge",
+          "contribution": "Backups module",
+          "scope": "/backups"
+        }
+      ],
+      "target": "https://app.northfold-hydrogen.de"
+    },
+    {
+      "id": "database",
+      "name": "Database (Supabase)",
+      "provider": "supabase",
+      "contributors": [
+        {
+          "tool": "app-forge",
+          "contribution": "users, teams, memberships, invitations, settings",
+          "scope": "public"
+        },
+        {
+          "tool": "crm-spawn",
+          "contribution": "contacts, companies, deals, activities, pipelines",
+          "scope": "crm"
+        },
+        {
+          "tool": "ledger-spawn",
+          "contribution": "accounts, journal_entries, invoices, bank_transactions",
+          "scope": "ledger"
+        },
+        {
+          "tool": "email-forge",
+          "contribution": "sequences, sends, bounces, suppressions",
+          "scope": "email"
+        },
+        {
+          "tool": "content-factory",
+          "contribution": "posts, categories, editorial_calendar",
+          "scope": "content"
+        },
+        {
+          "tool": "academy-forge",
+          "contribution": "courses, lessons, enrollments, quiz_results",
+          "scope": "academy"
+        },
+        {
+          "tool": "analytics-forge",
+          "contribution": "event_definitions, funnel_configs",
+          "scope": "analytics"
+        },
+        {
+          "tool": "compliance-forge",
+          "contribution": "processing_activities, dsar_requests, audit_events",
+          "scope": "compliance"
+        },
+        {
+          "tool": "admin-spawn",
+          "contribution": "audit_trail, announcements, metrics_snapshots",
+          "scope": "admin"
+        },
+        {
+          "tool": "monitor-forge",
+          "contribution": "uptime_checks, incidents, sla_reports",
+          "scope": "monitoring"
+        },
+        {
+          "tool": "backup-forge",
+          "contribution": "backup_schedules, backup_runs",
+          "scope": "backup"
+        }
+      ],
+      "target": "supabase://552421f264c5f37f"
+    },
+    {
+      "id": "media-storage",
+      "name": "Media Storage (R2)",
+      "provider": "cloudflare-r2",
+      "contributors": [
+        {
+          "tool": "brand-forge",
+          "contribution": "logos, tokens, guidelines",
+          "scope": "brand/"
+        },
+        {
+          "tool": "legal-forge",
+          "contribution": "legal documents, signing configs",
+          "scope": "legal/"
+        },
+        {
+          "tool": "site-forge",
+          "contribution": "OG images, screenshots",
+          "scope": "site/"
+        },
+        {
+          "tool": "content-factory",
+          "contribution": "post images, feeds",
+          "scope": "content/"
+        },
+        {
+          "tool": "media-forge",
+          "contribution": "brand images, email headers, video clips",
+          "scope": "media/"
+        },
+        {
+          "tool": "proposal-forge",
+          "contribution": "cover pages, signed documents",
+          "scope": "proposals/"
+        },
+        {
+          "tool": "academy-forge",
+          "contribution": "completion certificates",
+          "scope": "academy/"
+        },
+        {
+          "tool": "backup-forge",
+          "contribution": "cold storage snapshots",
+          "scope": "backup/"
+        }
+      ],
+      "target": "r2://business-forge-media/552421f264c5f37f"
+    },
+    {
+      "id": "email-system",
+      "name": "Email System (Resend)",
+      "provider": "resend",
+      "contributors": [
+        {
+          "tool": "email-forge",
+          "contribution": "hello@ + noreply@ (general, transactional)",
+          "scope": "hello@, noreply@"
+        },
+        {
+          "tool": "payment-forge",
+          "contribution": "billing@ (invoices, receipts, dunning)",
+          "scope": "billing@"
+        },
+        {
+          "tool": "content-factory",
+          "contribution": "marketing@ (newsletters, campaigns)",
+          "scope": "marketing@"
+        },
+        {
+          "tool": "proposal-forge",
+          "contribution": "sales@ (proposal follow-ups)",
+          "scope": "sales@"
+        },
+        {
+          "tool": "compliance-forge",
+          "contribution": "dpo@ (DSAR responses, privacy notices)",
+          "scope": "dpo@"
+        }
+      ],
+      "target": "northfold-hydrogen.de"
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule-email-warmup-throttle",
+      "name": "Throttle email edges to warmup ceiling",
+      "edgeId": "*-to-email",
+      "evaluateAt": "before-action",
+      "condition": {
+        "email.warmup.currentDailyCeiling": {
+          "$exists": true
+        }
+      },
+      "outcome": {
+        "action": "throttle",
+        "params": {
+          "source": "email.warmup.currentDailyCeiling"
+        }
+      },
+      "enabled": true
+    },
+    {
+      "id": "rule-skip-dunning-if-paid",
+      "name": "Skip dunning if payment received within 24h",
+      "edgeId": "bridge-11",
+      "evaluateAt": "before-action",
+      "condition": {
+        "invoice.lastPaymentWithin24h": true
+      },
+      "outcome": {
+        "action": "skip"
+      },
+      "enabled": true
+    },
+    {
+      "id": "rule-critical-bridge-alert",
+      "name": "Alert operator on critical bridge failure",
+      "edgeId": "*-critical",
+      "evaluateAt": "on-error",
+      "condition": {
+        "edge.critical": true
+      },
+      "outcome": {
+        "action": "alert",
+        "params": {
+          "channel": "email",
+          "severity": "high"
+        }
+      },
+      "enabled": true
+    }
+  ],
+  "metrics": {
+    "computedAt": "2026-05-03T05:37:14.944Z",
+    "nodeHealth": {},
+    "edgeThroughput": {
+      "bridge-01": 1,
+      "bridge-02": 1,
+      "bridge-03": 1,
+      "bridge-09": 1,
+      "bridge-10": 1,
+      "bridge-11": 1,
+      "bridge-15": 1,
+      "bridge-16": 1,
+      "bridge-17": 1,
+      "bridge-20": 1,
+      "bridge-21": 1,
+      "bridge-22": 1,
+      "bridge-24": 1,
+      "bridge-25": 1,
+      "bridge-26": 1,
+      "bridge-27": 1,
+      "bridge-28": 1,
+      "bridge-29": 1,
+      "bridge-33": 1,
+      "bridge-34": 1,
+      "bridge-35": 1,
+      "bridge-36": 1,
+      "bridge-37": 1,
+      "bridge-40": 1,
+      "bridge-41": 1,
+      "bridge-42": 1,
+      "bridge-44": 1,
+      "bridge-45": 1,
+      "bridge-46": 1,
+      "bridge-47": 1,
+      "bridge-48": 1,
+      "bridge-49": 1,
+      "bridge-50": 1,
+      "bridge-51": 1,
+      "bridge-53": 1,
+      "bridge-54": 1,
+      "bridge-55": 1,
+      "bridge-56": 1,
+      "bridge-60": 1,
+      "bridge-61": 1
+    },
+    "staleEdges": [
+      "bridge-105",
+      "bridge-106",
+      "bridge-107",
+      "bridge-75",
+      "bridge-81",
+      "bridge-77",
+      "bridge-78",
+      "bridge-83",
+      "bridge-85",
+      "bridge-86",
+      "bridge-95",
+      "bridge-96",
+      "bridge-97",
+      "bridge-98",
+      "bridge-99",
+      "bridge-100",
+      "bridge-101",
+      "bridge-102"
+    ],
+    "overallHealth": 41
+  }
+}

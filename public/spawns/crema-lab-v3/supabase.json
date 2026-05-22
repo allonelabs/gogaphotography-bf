@@ -1,0 +1,91 @@
+{
+  "provider": "supabase",
+  "schemas": [
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_brand",
+      "ownerTool": "brand-forge"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_crm",
+      "ownerTool": "crm-spawn"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_email",
+      "ownerTool": "email-forge"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_ledger",
+      "ownerTool": "ledger-spawn"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_payment",
+      "ownerTool": "payment-forge"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_hunter",
+      "ownerTool": "lead-hunter"
+    },
+    {
+      "schemaName": "bf_default_6fe658a4d299e973_site",
+      "ownerTool": "site-forge"
+    }
+  ],
+  "crossSchemaForeignKeys": [
+    {
+      "fromTable": "invoices",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_ledger"
+    },
+    {
+      "fromTable": "customers",
+      "fromColumn": "contact_source_ref",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_payment"
+    },
+    {
+      "fromTable": "subscriptions",
+      "fromColumn": "deal_source_ref",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "deals",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_payment"
+    },
+    {
+      "fromTable": "sends",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_email"
+    },
+    {
+      "fromTable": "segment_members",
+      "fromColumn": "contact_id",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_email"
+    },
+    {
+      "fromTable": "leads",
+      "fromColumn": "crm_contact_id",
+      "toSchema": "bf_default_6fe658a4d299e973_crm",
+      "toTable": "contacts",
+      "toColumn": "id",
+      "fromSchema": "bf_default_6fe658a4d299e973_hunter"
+    },
+    {
+      "fromTable": "conversions",
+      "fromColumn": "stripe_customer_id",
+      "toSchema": "bf_default_6fe658a4d299e973_payment",
+      "toTable": "payment_intents",
+      "toColumn": "stripe_customer_id",
+      "fromSchema": "bf_default_6fe658a4d299e973_hunter"
+    }
+  ]
+}
