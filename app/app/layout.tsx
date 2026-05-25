@@ -5,7 +5,7 @@ import { SessionProviderClient } from "./_components/SessionProviderClient";
 // Server-side defense-in-depth: every page under /app gets this layout, and
 // it runs on the edge before any client JS hydrates. If there's no session
 // the operator never sees a flash of cached dashboard HTML — they get a
-// 307 to /signin instead. The AuthGuard client component still runs on top
+// 307 to /admin/login instead. The AuthGuard client component still runs on top
 // of this to catch the case where the session expires while the tab is
 // open and a soft client-side nav happens.
 //
@@ -18,7 +18,7 @@ export default async function AppLayout({
 }) {
   const session = await auth();
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/admin/login");
   }
   return <SessionProviderClient>{children}</SessionProviderClient>;
 }

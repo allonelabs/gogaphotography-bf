@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 // Cross-zone session check. Hits the next-auth session endpoint (which
 // lives on the shell-zone but resolves on the same bf.allonelabs.com host
 // so it's reachable from business-zone pages via the Vercel rewrite layer
-// too). If there's no signed-in user, kick the operator to /signin so a
+// too). If there's no signed-in user, kick the operator to /admin/login so a
 // signed-out tab can't reveal cached /app content after a refresh or a
 // back-button visit. The check is idempotent across renders.
 export function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -34,7 +34,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (state === 'out') {
       const next = encodeURIComponent(pathname ?? '/app');
-      window.location.replace(`/signin?next=${next}`);
+      window.location.replace(`/admin/login?next=${next}`);
     }
   }, [state, pathname]);
 
