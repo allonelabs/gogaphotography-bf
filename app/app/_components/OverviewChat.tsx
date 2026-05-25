@@ -7,6 +7,9 @@
 // (user = soft pill, assistant = plain text). Routes to /api/chat.
 
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
 import { AssistantThinking } from "@/app/components/app/AssistantThinking";
 import { StreamingText } from "@/app/components/app/StreamingText";
 import { useVoiceAgent } from "@/app/lib/voice/useVoiceAgent";
@@ -529,6 +532,18 @@ function truncateMiddle(name: string, max: number): string {
 
 function Bubble({ turn }: { turn: Turn }) {
   const isUser = turn.role === "user";
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(turn.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* ignore */
+    }
+  }
+
   if (isUser) {
     return (
       <div className="flex justify-end">
@@ -539,8 +554,76 @@ function Bubble({ turn }: { turn: Turn }) {
     );
   }
   return (
-    <div className="whitespace-pre-wrap text-[15px] leading-[1.65] text-[var(--ink-900)]">
-      {turn.content}
+    <div className="group relative">
+      <article
+        className="prose prose-sm max-w-none text-[15px] leading-[1.65] text-[var(--ink-900)]
+                   prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5
+                   prose-headings:font-medium prose-headings:tracking-[-0.012em] prose-headings:text-[var(--ink-900)]
+                   prose-h1:text-[18px] prose-h2:text-[16px] prose-h3:text-[15px]
+                   prose-strong:text-[var(--ink-900)] prose-strong:font-semibold
+                   prose-a:text-[var(--ao-accent)] prose-a:no-underline hover:prose-a:underline
+                   prose-code:rounded prose-code:bg-[var(--bg-sunken)] prose-code:px-1 prose-code:py-0.5 prose-code:font-mono prose-code:text-[13px] prose-code:before:content-none prose-code:after:content-none
+                   prose-pre:rounded-[var(--radius-sm)] prose-pre:bg-[var(--bg-sunken)] prose-pre:text-[13px] prose-pre:text-[var(--ink-900)]
+                   prose-table:text-[13px] prose-th:font-semibold prose-th:text-[var(--ink-700)] prose-td:border-b prose-td:border-[var(--allonce-line)]
+                   prose-blockquote:border-l-2 prose-blockquote:border-[var(--allonce-line)] prose-blockquote:pl-3 prose-blockquote:text-[var(--ink-700)] prose-blockquote:font-normal prose-blockquote:not-italic"
+      >
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeSanitize]}
+          components={{
+            a: ({ href, children }) => (
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="break-words"
+              >
+                {children}
+              </a>
+            ),
+          }}
+        >
+          {turn.content}
+        </ReactMarkdown>
+      </article>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={copied ? "Copied" : "Copy"}
+        title={copied ? "Copied" : "Copy"}
+        className="absolute -right-1 top-0 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--ink-400)] opacity-0 transition hover:bg-[var(--bg-sunken)] hover:text-[var(--ink-900)] group-hover:opacity-100"
+      >
+        {copied ? (
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+        ) : (
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 }
