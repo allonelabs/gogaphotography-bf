@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { ServiceActions } from "./_actions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Services" };
@@ -50,18 +51,18 @@ export default async function ServicesPage() {
                 key={s.id}
                 className="rounded-2xl bg-white ring-1 ring-black/5 transition hover:ring-black/10"
               >
-                <Link
-                  href={`/app/services/${s.id}`}
-                  className="grid grid-cols-[1fr_140px_90px] items-center gap-4 px-5 py-4"
-                >
-                  <div className="text-[14px] font-medium text-[var(--ink-900)]">
+                <div className="grid grid-cols-[1fr_140px_70px_auto_auto_auto] items-center gap-3 px-5 py-4">
+                  <Link
+                    href={`/app/services/${s.id}`}
+                    className="text-[14px] font-medium text-[var(--ink-900)] hover:underline"
+                  >
                     {s.title_en}
-                  </div>
+                  </Link>
                   <span className="text-[13px] text-[var(--ink-500)]">
                     {s.price ?? ""}
                   </span>
                   <span
-                    className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
+                    className={`justify-self-center rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                       s.published
                         ? "bg-emerald-50 text-emerald-700"
                         : "bg-slate-100 text-slate-700"
@@ -69,7 +70,12 @@ export default async function ServicesPage() {
                   >
                     {s.published ? "Live" : "Draft"}
                   </span>
-                </Link>
+                  <ServiceActions
+                    id={s.id}
+                    title={s.title_en}
+                    published={s.published}
+                  />
+                </div>
               </li>
             ))}
           </ul>

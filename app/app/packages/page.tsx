@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { PackageActions } from "./_actions";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Packages" };
@@ -71,11 +72,11 @@ export default async function PackagesPage() {
                 key={p.id}
                 className="rounded-2xl bg-white ring-1 ring-black/5 transition hover:ring-black/10"
               >
-                <Link
-                  href={`/app/packages/${p.id}`}
-                  className="grid grid-cols-[1fr_120px_90px] items-center gap-4 px-5 py-4"
-                >
-                  <div className="min-w-0">
+                <div className="grid grid-cols-[1fr_120px_70px_auto_auto_auto] items-center gap-3 px-5 py-4">
+                  <Link
+                    href={`/app/packages/${p.id}`}
+                    className="min-w-0 hover:underline"
+                  >
                     <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
                       {p.name_en}
                     </div>
@@ -83,12 +84,12 @@ export default async function PackagesPage() {
                       /{p.slug}
                       {p.duration_hours ? ` · ${p.duration_hours}h` : ""}
                     </div>
-                  </div>
+                  </Link>
                   <span className="text-[15px] font-medium tabular-nums text-[var(--ink-900)]">
                     {fmtMoney(p.base_price_cents, p.currency)}
                   </span>
                   <span
-                    className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
+                    className={`justify-self-center rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                       p.published
                         ? "bg-emerald-50 text-emerald-700"
                         : "bg-slate-100 text-slate-700"
@@ -96,7 +97,12 @@ export default async function PackagesPage() {
                   >
                     {p.published ? "Live" : "Draft"}
                   </span>
-                </Link>
+                  <PackageActions
+                    id={p.id}
+                    title={p.name_en}
+                    published={p.published}
+                  />
+                </div>
               </li>
             ))}
           </ul>

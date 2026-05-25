@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { ProjectsList } from "./_list";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Projects" };
@@ -36,7 +37,7 @@ export default async function ProjectsPage() {
               Projects
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} total
+              {items.length} total · drag to reorder
             </p>
           </div>
           <Link
@@ -61,52 +62,16 @@ export default async function ProjectsPage() {
             </Link>
           </div>
         ) : (
-          <ul className="space-y-2">
-            {items.map((p) => {
-              const thumb = publicImageUrl(p.hero_image_path);
-              return (
-                <li
-                  key={p.id}
-                  className="rounded-2xl bg-white ring-1 ring-black/5 transition hover:ring-black/10"
-                >
-                  <Link
-                    href={`/app/projects/${p.id}`}
-                    className="grid grid-cols-[64px_1fr_90px] items-center gap-4 px-4 py-3"
-                  >
-                    {thumb ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={thumb}
-                        alt=""
-                        className="h-14 w-14 rounded-lg bg-slate-100 object-cover"
-                      />
-                    ) : (
-                      <div className="grid h-14 w-14 place-items-center rounded-lg bg-slate-100 text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                        —
-                      </div>
-                    )}
-                    <div className="min-w-0">
-                      <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                        {p.title_en}
-                      </div>
-                      <div className="truncate text-[12px] text-[var(--ink-500)]">
-                        {p.location_en ? `${p.location_en} · ` : ""}/{p.slug}
-                      </div>
-                    </div>
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
-                        p.published
-                          ? "bg-emerald-50 text-emerald-700"
-                          : "bg-slate-100 text-slate-700"
-                      }`}
-                    >
-                      {p.published ? "Live" : "Draft"}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <ProjectsList
+            initial={items.map((p) => ({
+              id: p.id,
+              slug: p.slug,
+              title_en: p.title_en,
+              location_en: p.location_en,
+              thumbUrl: publicImageUrl(p.hero_image_path),
+              published: p.published,
+            }))}
+          />
         )}
       </div>
     </AppShell>

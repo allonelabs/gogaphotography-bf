@@ -98,5 +98,18 @@ export async function deletePackage(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("packages").delete().eq("id", id);
   revalidatePath("/app/packages");
-  redirect("/app/packages");
+}
+
+export async function togglePackagePublished(id: string): Promise<void> {
+  await requireSession();
+  const sb = gogaAdmin();
+  const { data } = await sb
+    .from("packages")
+    .select("published")
+    .eq("id", id)
+    .single();
+  if (!data) throw new Error("not_found");
+  await sb.from("packages").update({ published: !data.published }).eq("id", id);
+  revalidatePath("/app/packages");
+  revalidatePath(`/app/packages/${id}`);
 }

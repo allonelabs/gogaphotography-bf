@@ -8,6 +8,7 @@ import {
 } from "@/app/lib/goga/actions-bookings";
 import { ensureContractForBooking } from "@/app/lib/goga/actions-contracts";
 import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
+import { createDepositCheckout } from "@/app/lib/goga/actions-payments";
 
 type Booking = {
   id: string;
@@ -244,6 +245,13 @@ export function BookingDetail({
           </dl>
         </section>
 
+        <DepositActions
+          bookingId={booking.id}
+          depositCents={booking.depositCents}
+          currency={booking.currency}
+          depositStatus={booking.depositStatus}
+        />
+
         <ContractButton
           bookingId={booking.id}
           contractStatus={booking.contractStatus}
@@ -378,6 +386,96 @@ function DeliveryButton({
           </button>
         </>
       )}
+      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+    </section>
+  );
+}
+
+function DepositActions({
+  bookingId,
+  depositCents,
+  currency,
+  depositStatus,
+}: {
+  bookingId: string;
+  depositCents: number;
+  currency: string;
+  depositStatus: string;
+}) {
+  const [pending, start] = useTransition();
+  const [err, setErr] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [link, setLink] = useState<string | null>(null);
+
+  const isPaid = depositStatus === "paid";
+  const isPending = depositStatus === "pending";
+
+  function onStart() {
+    setErr(null);
+    setCopied(false);
+    start(async () => {
+      try {
+        const { url } = await createDepositCheckout(bookingId);
+        setLink(url);
+        try {
+          await navigator.clipboard.writeText(url);
+          setCopied(true);
+        } catch {}
+        window.open(url, "_blank", "noopener,noreferrer");
+      } catch (e) {
+        setErr(e instanceof Error ? e.message : "Could not create checkout");
+      }
+    });
+  }
+
+  return (
+    <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+      <h3 className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
+        Deposit
+      </h3>
+      <p className="mb-3 text-[12px] text-[var(--ink-500)]">
+        {isPaid ? (
+          <span className="text-emerald-700">
+            Paid — booking confirmed, lead advanced to “contract”.
+          </span>
+        ) : depositCents <= 0 ? (
+          "Zero deposit configured — no payment link needed."
+        ) : isPending ? (
+          "Awaiting payment. Stripe webhook flips this to paid automatically."
+        ) : (
+          <>
+            Charge:{" "}
+            <strong className="text-[var(--ink-900)]">
+              {fmtMoney(depositCents, currency)}
+            </strong>
+          </>
+        )}
+      </p>
+
+      {!isPaid && depositCents > 0 ? (
+        <>
+          <button
+            type="button"
+            onClick={onStart}
+            disabled={pending}
+            className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
+          >
+            {pending
+              ? "Creating link…"
+              : isPending
+                ? "Resend deposit link"
+                : `Send deposit link · ${fmtMoney(depositCents, currency)}`}
+          </button>
+          {link ? (
+            <p className="mt-2 text-[11px] text-[var(--ink-500)]">
+              {copied
+                ? "Copied to clipboard — paste to the client."
+                : "Link opened in a new tab."}
+            </p>
+          ) : null}
+        </>
+      ) : null}
+
       {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
     </section>
   );

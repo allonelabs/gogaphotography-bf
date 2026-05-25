@@ -259,3 +259,28 @@ export async function deleteImage(imageId: string): Promise<void> {
   }
   revalidatePath(`/app/projects/${data.project_id}`);
 }
+
+export async function togglePublish(id: string): Promise<void> {
+  await requireSession();
+  const sb = gogaAdmin();
+  const { data } = await sb
+    .from("projects")
+    .select("published")
+    .eq("id", id)
+    .single();
+  if (!data) throw new Error("not_found");
+  await sb.from("projects").update({ published: !data.published }).eq("id", id);
+  revalidatePath("/app/projects");
+  revalidatePath(`/app/projects/${id}`);
+}
+
+export async function reorderProjects(orderedIds: string[]): Promise<void> {
+  await requireSession();
+  const sb = gogaAdmin();
+  await Promise.all(
+    orderedIds.map((id, idx) =>
+      sb.from("projects").update({ sort_order: idx }).eq("id", id),
+    ),
+  );
+  revalidatePath("/app/projects");
+}

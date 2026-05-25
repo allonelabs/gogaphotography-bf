@@ -124,5 +124,18 @@ export async function deleteService(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("services").delete().eq("id", id);
   revalidatePath("/app/services");
-  redirect("/app/services");
+}
+
+export async function toggleServicePublished(id: string): Promise<void> {
+  await requireSession();
+  const sb = gogaAdmin();
+  const { data } = await sb
+    .from("services")
+    .select("published")
+    .eq("id", id)
+    .single();
+  if (!data) throw new Error("not_found");
+  await sb.from("services").update({ published: !data.published }).eq("id", id);
+  revalidatePath("/app/services");
+  revalidatePath(`/app/services/${id}`);
 }
