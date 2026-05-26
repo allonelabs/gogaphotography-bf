@@ -79,9 +79,11 @@ type DeliverySummary = {
 export function BookingDetail({
   booking,
   delivery,
+  stripeReady,
 }: {
   booking: Booking;
   delivery: DeliverySummary | null;
+  stripeReady: boolean;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState<Booking["status"]>(booking.status);
@@ -242,6 +244,7 @@ export function BookingDetail({
           depositCents={booking.depositCents}
           currency={booking.currency}
           depositStatus={booking.depositStatus}
+          stripeReady={stripeReady}
         />
 
         <ContractButton
@@ -388,11 +391,13 @@ function DepositActions({
   depositCents,
   currency,
   depositStatus,
+  stripeReady,
 }: {
   bookingId: string;
   depositCents: number;
   currency: string;
   depositStatus: string;
+  stripeReady: boolean;
 }) {
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
@@ -449,14 +454,21 @@ function DepositActions({
           <button
             type="button"
             onClick={onStart}
-            disabled={pending}
+            disabled={pending || !stripeReady}
+            title={
+              stripeReady
+                ? undefined
+                : "Set STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on Vercel to enable deposits."
+            }
             className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
           >
-            {pending
-              ? "Creating link…"
-              : isPending
-                ? "Resend deposit link"
-                : `Send deposit link · ${fmtMoney(depositCents, currency)}`}
+            {!stripeReady
+              ? "Stripe not configured"
+              : pending
+                ? "Creating link…"
+                : isPending
+                  ? "Resend deposit link"
+                  : `Send deposit link · ${fmtMoney(depositCents, currency)}`}
           </button>
           {link ? (
             <p className="mt-2 text-[11px] text-[var(--ink-500)]">

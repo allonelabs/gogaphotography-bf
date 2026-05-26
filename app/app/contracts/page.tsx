@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/app/_components/FilterChips";
+import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contracts" };
@@ -83,13 +84,24 @@ export default async function ContractsPage({ searchParams }: Props) {
         />
 
         {items.length === 0 ? (
-          <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-            <p className="text-[14px] text-[var(--ink-500)]">
-              {active
-                ? `No contracts in the “${STATUS_LABELS[active]}” bucket right now.`
-                : "No contracts yet. Create one from a booking detail page."}
-            </p>
-          </div>
+          <EmptyState
+            icon={<Icon name="scroll" />}
+            title={
+              active
+                ? `Nothing in the “${STATUS_LABELS[active]}” bucket`
+                : "No contracts yet"
+            }
+            description={
+              active
+                ? "Try a different status — or clear the filter."
+                : "Open a booking detail page and click “Create / open contract” to start one."
+            }
+            secondary={
+              active
+                ? { label: "All contracts", href: "/app/contracts" }
+                : undefined
+            }
+          />
         ) : (
           <ul className="space-y-2">
             {items.map((c) => (

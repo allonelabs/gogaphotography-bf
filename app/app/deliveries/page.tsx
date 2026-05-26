@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Deliveries" };
@@ -34,12 +35,11 @@ export default async function DeliveriesPage() {
         </header>
 
         {items.length === 0 ? (
-          <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-            <p className="text-[14px] text-[var(--ink-500)]">
-              No deliveries yet. Create one from a booking detail page after the
-              shoot.
-            </p>
-          </div>
+          <EmptyState
+            icon={<Icon name="image" />}
+            title="No deliveries yet"
+            description="Open a booking detail page after the shoot and hit “Create delivery gallery” to share photos with the client."
+          />
         ) : (
           <ul className="space-y-2">
             {items.map((d) => (

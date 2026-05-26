@@ -2,6 +2,8 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/app/_components/FilterChips";
+import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
+import { ListSearch } from "@/app/app/_components/ListSearch";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings" };
@@ -61,7 +63,7 @@ const FILTER_STATUSES = [
 ] as const;
 type FilterStatus = (typeof FILTER_STATUSES)[number];
 
-type Props = { searchParams: Promise<{ status?: string }> };
+type Props = { searchParams: Promise<{ status?: string; q?: string }> };
 
 export default async function BookingsPage({ searchParams }: Props) {
   const sp = await searchParams;
@@ -71,6 +73,7 @@ export default async function BookingsPage({ searchParams }: Props) {
   ).includes(sp.status ?? "")
     ? (sp.status as FilterStatus)
     : null;
+  const query = (sp.q ?? "").trim();
 
   const [{ data: counts }, { data }] = await Promise.all([
     sb.from("bookings").select("status"),
@@ -82,6 +85,12 @@ export default async function BookingsPage({ searchParams }: Props) {
         )
         .order("shoot_date", { ascending: true });
       if (active) q = q.eq("status", active);
+      if (query) {
+        const like = `%${query.replace(/[%_]/g, " ")}%`;
+        q = q.or(
+          `client_name.ilike.${like},client_email.ilike.${like},location.ilike.${like}`,
+        );
+      }
       return q;
     })(),
   ]);
@@ -113,6 +122,8 @@ export default async function BookingsPage({ searchParams }: Props) {
           </div>
         </header>
 
+        <ListSearch placeholder="Search bookings by client, email, or location…" />
+
         <FilterChips
           basePath="/app/bookings"
           active={active}
@@ -124,11 +135,28 @@ export default async function BookingsPage({ searchParams }: Props) {
         />
 
         {bookings.length === 0 ? (
-          <Empty>
-            {active
-              ? `No bookings in the “${STATUS_LABELS[active]}” bucket right now.`
-              : "No bookings yet. Bookings are created from a lead detail page or via the public /book route."}
-          </Empty>
+          <EmptyState
+            icon={<Icon name="calendar" />}
+            title={
+              query
+                ? `No bookings match “${query}”`
+                : active
+                  ? `Nothing in the “${STATUS_LABELS[active]}” bucket`
+                  : "No bookings yet"
+            }
+            description={
+              query
+                ? "Try a different name, email, or location."
+                : active
+                  ? "Try a different status filter — or clear it."
+                  : "Bookings are created from a lead detail page or via the public /book route."
+            }
+            secondary={
+              query || active
+                ? { label: "Clear filters", href: "/app/bookings" }
+                : undefined
+            }
+          />
         ) : (
           <ul className="space-y-2">
             {bookings.map((b) => (
@@ -186,13 +214,5 @@ export default async function BookingsPage({ searchParams }: Props) {
         )}
       </div>
     </AppShell>
-  );
-}
-
-function Empty({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-      <p className="text-[14px] text-[var(--ink-500)]">{children}</p>
-    </div>
   );
 }
