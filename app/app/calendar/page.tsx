@@ -158,7 +158,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
               {title}
             </h1>
-            <p className="mt-1 text-[13px] text-[var(--ink-500)]">
+            <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
               {items.length} shoot{items.length === 1 ? "" : "s"}
             </p>
           </div>

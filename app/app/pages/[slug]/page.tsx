@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { PageForm } from "./_form";
+import { ImageUploader } from "@/app/app/_components/ImageUploader";
 
 export const dynamic = "force-dynamic";
 
@@ -19,11 +20,20 @@ export default async function EditPagePage({ params }: Props) {
   if (!["about", "services", "faq"].includes(slug)) notFound();
 
   const sb = gogaAdmin();
-  const { data } = await sb
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data } = (await (sb as any)
     .from("pages")
-    .select("title_en, title_ka, body_en, body_ka")
+    .select("title_en, title_ka, body_en, body_ka, og_image_path")
     .eq("slug", slug)
-    .maybeSingle();
+    .maybeSingle()) as {
+    data: {
+      title_en: string | null;
+      title_ka: string | null;
+      body_en: string | null;
+      body_ka: string | null;
+      og_image_path: string | null;
+    } | null;
+  };
 
   return (
     <AppShell
@@ -52,6 +62,17 @@ export default async function EditPagePage({ params }: Props) {
           Markdown is supported. Leave a translation blank to fall back to the
           English version.
         </p>
+
+        <section className="mb-5 rounded-2xl bg-white p-5 ring-1 ring-black/5">
+          <ImageUploader
+            surface="page.og_image"
+            rowId={slug}
+            label="Share image (Open Graph)"
+            hint="Shown when this page is shared on social / chat apps. Landscape 1200×630, JPG/PNG."
+            currentPath={data?.og_image_path ?? null}
+            aspect="1200/630"
+          />
+        </section>
 
         <PageForm
           slug={slug}

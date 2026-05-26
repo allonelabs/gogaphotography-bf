@@ -127,7 +127,7 @@ export const tourismNav: NavConfig = {
           label: "Audit",
           labelKa: "აუდიტი",
           href: "/app/audit",
-          icon: "file-text",
+          icon: "clipboard-list",
         },
       ],
     },
@@ -138,7 +138,11 @@ export const tourismNav: NavConfig = {
  * Footer items. The BF multi-tenant routes (Organization, Billing) were
  * stripped — single-tenant photographer admin doesn't need them.
  */
-export const tourismFooter = [
-  { label: "Account", href: "/app/account" },
-  { label: "Help", href: "/app/help" },
+export const tourismFooter: Array<{
+  label: string;
+  href: string;
+  icon?: string;
+}> = [
+  { label: "Account", href: "/app/account", icon: "user" },
+  { label: "Help", href: "/app/help", icon: "help-circle" },
 ];

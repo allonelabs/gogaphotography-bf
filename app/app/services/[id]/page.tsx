@@ -4,21 +4,34 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ServiceForm } from "../_form";
 import { DeleteServiceButton } from "./_delete";
+import { ImageUploader } from "@/app/app/_components/ImageUploader";
 
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
 
+interface ServiceRow {
+  id: string;
+  title_en: string;
+  title_ka: string | null;
+  description_en: string | null;
+  description_ka: string | null;
+  price: string | null;
+  published: boolean;
+  hero_image_path: string | null;
+}
+
 export default async function EditServicePage({ params }: Props) {
   const { id } = await params;
   const sb = gogaAdmin();
-  const { data } = await sb
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data } = (await (sb as any)
     .from("services")
     .select(
-      "id, title_en, title_ka, description_en, description_ka, price, published",
+      "id, title_en, title_ka, description_en, description_ka, price, published, hero_image_path",
     )
     .eq("id", id)
-    .single();
+    .single()) as { data: ServiceRow | null };
 
   if (!data) notFound();
 
@@ -44,6 +57,17 @@ export default async function EditServicePage({ params }: Props) {
             ← back
           </Link>
         </header>
+
+        <section className="mb-5 rounded-2xl bg-white p-5 ring-1 ring-black/5">
+          <ImageUploader
+            surface="service.hero_image"
+            rowId={data.id}
+            label="Service hero image"
+            hint="Used on the public /services page. Landscape 16:9."
+            currentPath={data.hero_image_path}
+            aspect="16/9"
+          />
+        </section>
 
         <ServiceForm initial={data} />
 
