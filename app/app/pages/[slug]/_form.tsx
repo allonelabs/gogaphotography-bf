@@ -3,6 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { upsertPage } from "@/app/lib/goga/actions-content";
+import { useToast } from "@/app/app/_components/Toaster";
 
 type Initial = {
   title_en: string;
@@ -19,6 +20,7 @@ export function PageForm({
   initial: Initial;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -32,9 +34,12 @@ export function PageForm({
       try {
         await upsertPage(slug, fd);
         setSaved(true);
+        toast.show("Page saved", "success");
         router.refresh();
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Save failed");
+        const msg = e instanceof Error ? e.message : "Save failed";
+        setErr(msg);
+        toast.show(msg, "error");
       }
     });
   }

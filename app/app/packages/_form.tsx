@@ -3,6 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createPackage, updatePackage } from "@/app/lib/goga/actions-packages";
+import { useToast } from "@/app/app/_components/Toaster";
 
 type Initial = {
   id?: string;
@@ -25,6 +26,7 @@ const fromCents = (c: number | null | undefined) =>
 
 export function PackageForm({ initial }: { initial?: Initial }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const isEdit = !!initial?.id;
@@ -37,12 +39,16 @@ export function PackageForm({ initial }: { initial?: Initial }) {
       try {
         if (isEdit && initial?.id) {
           await updatePackage(initial.id, fd);
+          toast.show("Package saved", "success");
           router.refresh();
         } else {
           await createPackage(fd);
+          toast.show("Package created", "success");
         }
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Save failed");
+        const msg = e instanceof Error ? e.message : "Save failed";
+        setErr(msg);
+        toast.show(msg, "error");
       }
     });
   }

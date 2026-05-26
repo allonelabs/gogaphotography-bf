@@ -3,6 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createService, updateService } from "@/app/lib/goga/actions-content";
+import { useToast } from "@/app/app/_components/Toaster";
 
 type Initial = {
   id?: string;
@@ -16,6 +17,7 @@ type Initial = {
 
 export function ServiceForm({ initial }: { initial?: Initial }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const isEdit = !!initial?.id;
@@ -28,12 +30,16 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
       try {
         if (isEdit && initial?.id) {
           await updateService(initial.id, fd);
+          toast.show("Service saved", "success");
           router.refresh();
         } else {
           await createService(fd);
+          toast.show("Service created", "success");
         }
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Save failed");
+        const msg = e instanceof Error ? e.message : "Save failed";
+        setErr(msg);
+        toast.show(msg, "error");
       }
     });
   }
