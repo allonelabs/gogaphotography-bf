@@ -4,7 +4,7 @@ import { ChromeBanner } from "@/app/components/app/ChromeBanner";
 import { getServerT } from "@/app/lib/i18n/server";
 import type { TranslationKey } from "@/app/lib/i18n/dict";
 
-export const metadata: Metadata = { title: "Changelog — Travelplace" };
+export const metadata: Metadata = { title: "Changelog" };
 
 interface Entry {
   date: string;

@@ -4,7 +4,7 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { ChromeBanner } from "@/app/components/app/ChromeBanner";
 import { getServerT } from "@/app/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Help — Travelplace" };
+export const metadata: Metadata = { title: "Help" };
 
 interface Guide {
   href: string;
@@ -94,7 +94,7 @@ export default async function Page() {
     cta: string;
   }> = [
     {
-      href: "mailto:team@allonelabs.com?subject=Travelplace%20support",
+      href: "mailto:team@allonelabs.com?subject=GOGA%20Photography%20admin%20support",
       titleKey: "help.reach.email.title",
       subKey: "help.reach.email.sub",
       cta: "team@allonelabs.com",

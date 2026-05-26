@@ -19,10 +19,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Travelplace — operator",
-    template: "%s · Travelplace",
+    default: "GOGA Photography — studio admin",
+    template: "%s · GOGA Photography",
   },
-  description: "Internal operator dashboard for travelplace.ge.",
+  description: "Studio admin for goga.photography — wedding & editorial.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
