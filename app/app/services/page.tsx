@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ServiceActions } from "./_actions";
+import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Services" };
@@ -39,11 +40,12 @@ export default async function ServicesPage() {
         </header>
 
         {items.length === 0 ? (
-          <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-            <p className="text-[14px] text-[var(--ink-500)]">
-              No services yet.
-            </p>
-          </div>
+          <EmptyState
+            icon={<Icon name="grid" />}
+            title="No services yet"
+            description="Services show up on the public /services page once published. Add your first one to publish it."
+            primary={{ label: "New service", href: "/app/services/new" }}
+          />
         ) : (
           <ul className="space-y-2">
             {items.map((s) => (

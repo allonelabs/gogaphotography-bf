@@ -42,12 +42,16 @@ function cookieName(token: string): string {
 function secret(): string {
   // NextAuth secret doubles as the per-delivery HMAC secret here. We don't
   // need a separate ADMIN_SESSION_SECRET — this cookie scope is its own,
-  // and NEXTAUTH_SECRET is always available.
-  return (
-    process.env["NEXTAUTH_SECRET"] ??
-    process.env["AUTH_SECRET"] ??
-    "delivery-fallback-secret"
-  );
+  // and NEXTAUTH_SECRET is always available in env. Fail loud if it's not:
+  // a silent hardcoded fallback would let a misconfigured prod sign and
+  // verify with a known-public key, granting anyone delivery access.
+  const s = process.env["NEXTAUTH_SECRET"] ?? process.env["AUTH_SECRET"];
+  if (!s) {
+    throw new Error(
+      "NEXTAUTH_SECRET (or AUTH_SECRET) is required to sign delivery cookies",
+    );
+  }
+  return s;
 }
 
 export async function setDeliveryCookie(token: string): Promise<{

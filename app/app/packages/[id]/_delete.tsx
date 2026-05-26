@@ -1,9 +1,13 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { deletePackage } from "@/app/lib/goga/actions-packages";
+import { useToast } from "@/app/app/_components/Toaster";
 
 export function DeleteButton({ id, name }: { id: string; name: string }) {
+  const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   return (
     <button
@@ -19,8 +23,13 @@ export function DeleteButton({ id, name }: { id: string; name: string }) {
           start(async () => {
             try {
               await deletePackage(id);
+              toast.show("Package deleted", "success");
+              router.push("/app/packages");
             } catch (e) {
-              alert(`Delete failed: ${e instanceof Error ? e.message : e}`);
+              toast.show(
+                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                "error",
+              );
             }
           });
         }

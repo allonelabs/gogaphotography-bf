@@ -1,7 +1,9 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { deleteProject } from "@/app/lib/goga/actions-projects";
+import { useToast } from "@/app/app/_components/Toaster";
 
 export function DeleteProjectButton({
   id,
@@ -10,6 +12,8 @@ export function DeleteProjectButton({
   id: string;
   title: string;
 }) {
+  const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   return (
     <button
@@ -25,8 +29,13 @@ export function DeleteProjectButton({
           start(async () => {
             try {
               await deleteProject(id);
+              toast.show("Project deleted", "success");
+              router.push("/app/projects");
             } catch (e) {
-              alert(`Delete failed: ${e instanceof Error ? e.message : e}`);
+              toast.show(
+                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                "error",
+              );
             }
           });
         }

@@ -10,7 +10,13 @@ type Props = { searchParams: Promise<{ next?: string }> };
 export default async function AdminLoginPage({ searchParams }: Props) {
   const session = await auth();
   const { next } = await searchParams;
-  const target = next && next.startsWith("/app") ? next : "/app";
+  // Require a same-origin path: must start with "/", must not start with "//"
+  // (protocol-relative), and the only safe scope here is "/app" or "/app/…".
+  const safeNext =
+    typeof next === "string" &&
+    /^\/app(\/|$)/.test(next) &&
+    !next.startsWith("//");
+  const target = safeNext ? next : "/app";
   if (session?.user?.email) {
     redirect(target);
   }

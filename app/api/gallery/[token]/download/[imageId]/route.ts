@@ -53,10 +53,14 @@ export async function GET(_req: Request, ctx: RouteCtx) {
     );
   }
 
-  void sb
+  // Best-effort increment. PostgREST can't express atomic `count = count+1`,
+  // so under concurrent downloads we may lose a few — that's acceptable for
+  // an analytics counter. Await so failures hit logs instead of being lost.
+  const { error: incErr } = await sb
     .from("delivery_images")
     .update({ download_count: img.download_count + 1 })
     .eq("id", img.id);
+  if (incErr) console.error("[gallery/download] count++ failed:", incErr);
 
   return NextResponse.redirect(signed.signedUrl);
 }

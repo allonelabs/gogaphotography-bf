@@ -56,14 +56,17 @@ export default async function GalleryPage({ params }: Props) {
     );
   }
 
-  // Increment view counter (best-effort)
-  void gogaAdmin()
+  // Increment view counter (best-effort, awaited so failures log instead
+  // of vanishing). Race-safe enough for analytics — concurrent loads may
+  // collide but the loss is bounded and visible.
+  const { error: viewErr } = await gogaAdmin()
     .from("deliveries")
     .update({
       view_count: 1 + ((delivery as { view_count?: number }).view_count ?? 0),
       last_viewed_at: new Date().toISOString(),
     })
     .eq("id", delivery.id);
+  if (viewErr) console.error("[gallery] view_count++ failed:", viewErr);
 
   const sb = gogaAdmin();
   const { data: images } = await sb

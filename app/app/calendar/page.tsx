@@ -67,7 +67,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
       chatScopeLabel="Calendar"
     >
       <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8">
-        <header className="mb-6">
+        <header className="mb-5">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
             {monthName}
           </h1>

@@ -1,6 +1,7 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { LEAD_STAGES, LEAD_STAGE_LABELS } from "@/app/lib/goga/leads";
+import { safeLike } from "@/app/lib/goga/safe-like";
 import { Kanban, type CardData } from "./_kanban";
 import { LeadsSearch } from "./_search";
 
@@ -22,7 +23,7 @@ export default async function LeadsPage({ searchParams }: Props) {
     .order("created_at", { ascending: false });
 
   if (query) {
-    const like = `%${query.replace(/[%_]/g, " ")}%`;
+    const like = safeLike(query);
     select = select.or(
       `name.ilike.${like},email.ilike.${like},phone.ilike.${like},message.ilike.${like}`,
     );

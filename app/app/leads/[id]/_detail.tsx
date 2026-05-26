@@ -10,6 +10,7 @@ import {
 } from "@/app/lib/goga/actions";
 import { createBookingFromLead } from "@/app/lib/goga/actions-bookings";
 import type { LeadStage } from "@/app/lib/goga/leads";
+import { useToast } from "@/app/app/_components/Toaster";
 
 type Lead = {
   id: string;
@@ -70,6 +71,7 @@ export function LeadDetail({
   relatedBookings: RelatedBooking[];
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [stage, setStage] = useState<LeadStage>(lead.stage);
   const [notes, setNotes] = useState(lead.notes ?? "");
   const [, start] = useTransition();
@@ -88,7 +90,10 @@ export function LeadDetail({
         router.refresh();
       } catch (e) {
         setStage(prev);
-        alert(e instanceof Error ? e.message : "Stage update failed");
+        toast.show(
+          e instanceof Error ? e.message : "Stage update failed",
+          "error",
+        );
       }
     });
   }

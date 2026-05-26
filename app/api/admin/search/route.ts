@@ -3,6 +3,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { safeLike } from "@/app/lib/goga/safe-like";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,7 +28,7 @@ export async function GET(req: Request) {
   }
 
   const sb = gogaAdmin();
-  const like = `%${q.replace(/[%_]/g, " ")}%`;
+  const like = safeLike(q);
   const limit = 6;
 
   const [leads, bookings, packages, projects, contracts] = await Promise.all([

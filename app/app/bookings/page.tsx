@@ -4,6 +4,7 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/app/_components/FilterChips";
 import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 import { ListSearch } from "@/app/app/_components/ListSearch";
+import { safeLike } from "@/app/lib/goga/safe-like";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings" };
@@ -86,7 +87,7 @@ export default async function BookingsPage({ searchParams }: Props) {
         .order("shoot_date", { ascending: true });
       if (active) q = q.eq("status", active);
       if (query) {
-        const like = `%${query.replace(/[%_]/g, " ")}%`;
+        const like = safeLike(query);
         q = q.or(
           `client_name.ilike.${like},client_email.ilike.${like},location.ilike.${like}`,
         );

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { setLeadStage } from "@/app/lib/goga/actions";
 import { STAGE_TONE, type LeadStage } from "@/app/lib/goga/leads";
+import { useToast } from "@/app/app/_components/Toaster";
 
 export type CardData = {
   id: string;
@@ -25,6 +26,7 @@ interface Props {
 
 export function Kanban({ stages, labels, initial }: Props) {
   const router = useRouter();
+  const toast = useToast();
   const [cards, setCards] = useState<CardData[]>(initial);
   const [, start] = useTransition();
   const dragRef = useRef<{ id: string; fromStage: LeadStage } | null>(null);
@@ -57,7 +59,10 @@ export function Kanban({ stages, labels, initial }: Props) {
         await setLeadStage(cur.id, stage);
         router.refresh();
       } catch (err) {
-        alert(`Move failed: ${err instanceof Error ? err.message : err}`);
+        toast.show(
+          `Move failed: ${err instanceof Error ? err.message : err}`,
+          "error",
+        );
         setCards((c) =>
           c.map((x) => (x.id === cur.id ? { ...x, stage: cur.fromStage } : x)),
         );

@@ -123,10 +123,11 @@ export const tourismNav: NavConfig = {
   ],
 };
 
-/** Footer items — preserved verbatim. */
+/**
+ * Footer items. The BF multi-tenant routes (Organization, Billing) were
+ * stripped — single-tenant photographer admin doesn't need them.
+ */
 export const tourismFooter = [
   { label: "Account", href: "/app/account" },
-  { label: "Organization", href: "/app/organization" },
-  { label: "Billing", href: "/app/billing" },
   { label: "Help", href: "/app/help" },
 ];

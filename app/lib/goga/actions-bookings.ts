@@ -29,7 +29,8 @@ export async function createBookingFromLead(input: {
     .from("leads")
     .select("name, email, phone")
     .eq("id", input.leadId)
-    .single();
+    .maybeSingle();
+  if (!lead) throw new Error("lead_not_found");
 
   const { data, error } = await sb
     .from("bookings")

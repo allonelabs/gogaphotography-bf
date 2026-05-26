@@ -1,5 +1,6 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contact inbox" };
@@ -38,12 +39,11 @@ export default async function ContactInbox() {
         </header>
 
         {rows.length === 0 ? (
-          <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
-            <p className="text-[14px] text-[var(--ink-500)]">
-              No inquiries yet. Submissions to the /contact form land here
-              automatically.
-            </p>
-          </div>
+          <EmptyState
+            icon={<Icon name="inbox" />}
+            title="No inquiries yet"
+            description="Submissions to the public /contact form land here automatically — name, message, locale, and IP."
+          />
         ) : (
           <ul className="space-y-3">
             {rows.map((r) => (

@@ -147,7 +147,7 @@ export async function POST(req: Request, ctx: RouteCtx) {
     .from("bookings")
     .select("lead_id")
     .eq("id", contract.booking_id)
-    .single();
+    .maybeSingle();
   if (booking?.lead_id) {
     await sb.from("leads").update({ stage: "shoot" }).eq("id", booking.lead_id);
     await sb.from("lead_events").insert({

@@ -36,6 +36,20 @@ export async function POST(req: Request) {
         if (!bookingId) break;
 
         const sb = gogaAdmin();
+
+        // Idempotency guard. Stripe retries failed deliveries with the same
+        // event id, and `checkout.session.completed` fires once per session
+        // but the webhook may be invoked multiple times. If the booking is
+        // already in 'paid' state, skip the lead_event insert so we don't
+        // accrue duplicate audit rows on each retry. Booking + lead updates
+        // are themselves idempotent (same values overwrite).
+        const { data: prior } = await sb
+          .from("bookings")
+          .select("deposit_status")
+          .eq("id", bookingId)
+          .maybeSingle();
+        const alreadyPaid = prior?.deposit_status === "paid";
+
         await sb
           .from("bookings")
           .update({
@@ -49,7 +63,7 @@ export async function POST(req: Request) {
           .eq("id", bookingId);
 
         const leadId = session.metadata?.["leadId"];
-        if (leadId) {
+        if (leadId && !alreadyPaid) {
           await sb.from("leads").update({ stage: "contract" }).eq("id", leadId);
           await sb.from("lead_events").insert({
             lead_id: leadId,

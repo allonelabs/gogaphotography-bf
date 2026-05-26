@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/app/app/_components/Toaster";
 import Link from "next/link";
 import {
   reorderProjects,
@@ -181,6 +182,7 @@ function DeleteButton({
   onDeleted: () => void;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   return (
     <button
@@ -200,7 +202,10 @@ function DeleteButton({
             onDeleted();
             router.refresh();
           } catch (e) {
-            alert(`Delete failed: ${e instanceof Error ? e.message : e}`);
+            toast.show(
+              `Delete failed: ${e instanceof Error ? e.message : e}`,
+              "error",
+            );
           }
         });
       }}

@@ -10,6 +10,7 @@ import {
 import { ensureContractForBooking } from "@/app/lib/goga/actions-contracts";
 import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
 import { createDepositCheckout } from "@/app/lib/goga/actions-payments";
+import { useToast } from "@/app/app/_components/Toaster";
 
 type Booking = {
   id: string;
@@ -86,6 +87,7 @@ export function BookingDetail({
   stripeReady: boolean;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [status, setStatus] = useState<Booking["status"]>(booking.status);
   const [, start] = useTransition();
   const [saved, setSaved] = useState(false);
@@ -102,7 +104,10 @@ export function BookingDetail({
         router.refresh();
       } catch (e) {
         setStatus(prev);
-        alert(e instanceof Error ? e.message : "Status update failed");
+        toast.show(
+          e instanceof Error ? e.message : "Status update failed",
+          "error",
+        );
       }
     });
   }

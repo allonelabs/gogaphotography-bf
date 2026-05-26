@@ -55,7 +55,8 @@ export async function POST(req: Request, ctx: RouteCtx) {
   await sb
     .from("delivery_images")
     .update({ favorited_at: nextFav ? new Date().toISOString() : null })
-    .eq("id", imageId);
+    .eq("id", imageId)
+    .eq("delivery_id", delivery.id);
 
   return NextResponse.json({ ok: true, favorited: nextFav });
 }

@@ -2,6 +2,7 @@ import "server-only";
 
 import type { ToolDef } from "@/app/lib/llm-fallback";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { safeLike } from "@/app/lib/goga/safe-like";
 
 export const GOGA_TOOLS: ToolDef[] = [
   {
@@ -167,7 +168,7 @@ export async function runGogaTool(
       case "find_lead": {
         const query = String(input.query ?? "").trim();
         if (!query) return { ok: true, result: [] };
-        const like = `%${query.replace(/[%_]/g, " ")}%`;
+        const like = safeLike(query);
         const { data, error } = await sb
           .from("leads")
           .select(
@@ -200,7 +201,7 @@ export async function runGogaTool(
       case "find_booking": {
         const query = String(input.query ?? "").trim();
         if (!query) return { ok: true, result: [] };
-        const like = `%${query.replace(/[%_]/g, " ")}%`;
+        const like = safeLike(query);
         const { data, error } = await sb
           .from("bookings")
           .select(
