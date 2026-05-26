@@ -98,3 +98,15 @@ export async function deleteBooking(id: string): Promise<void> {
   revalidatePath("/app/bookings");
   redirect("/app/bookings");
 }
+
+export async function updateBookingNotes(
+  id: string,
+  notes: string,
+): Promise<void> {
+  await requireSession();
+  await gogaAdmin()
+    .from("bookings")
+    .update({ notes: notes.trim() || null })
+    .eq("id", id);
+  revalidatePath(`/app/bookings/${id}`);
+}

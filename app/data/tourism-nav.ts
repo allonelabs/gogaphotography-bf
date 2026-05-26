@@ -41,6 +41,12 @@ export const tourismNav: NavConfig = {
       label: "Pipeline",
       items: [
         {
+          label: "Dashboard",
+          labelKa: "მთავარი",
+          href: "/app/dashboard",
+          icon: "layout-dashboard",
+        },
+        {
           label: "Leads",
           labelKa: "კლიენტები",
           href: "/app/leads",

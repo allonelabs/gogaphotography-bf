@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "./Toaster";
 
 type ActionFn<T extends unknown[] = []> = (...args: T) => Promise<void>;
 
@@ -14,6 +15,7 @@ export function PublishToggle({
   onToggle: ActionFn;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   return (
     <button
@@ -24,9 +26,13 @@ export function PublishToggle({
         start(async () => {
           try {
             await onToggle();
+            toast.show(published ? "Unpublished" : "Published", "success");
             router.refresh();
           } catch (e) {
-            alert(e instanceof Error ? e.message : "Toggle failed");
+            toast.show(
+              e instanceof Error ? e.message : "Toggle failed",
+              "error",
+            );
           }
         })
       }
@@ -57,6 +63,7 @@ export function DeleteButton({
   onDelete: ActionFn;
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [pending, start] = useTransition();
   return (
     <button
@@ -68,9 +75,13 @@ export function DeleteButton({
         start(async () => {
           try {
             await onDelete();
+            toast.show("Deleted", "success");
             router.refresh();
           } catch (e) {
-            alert(`Delete failed: ${e instanceof Error ? e.message : e}`);
+            toast.show(
+              `Delete failed: ${e instanceof Error ? e.message : e}`,
+              "error",
+            );
           }
         });
       }}

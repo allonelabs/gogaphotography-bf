@@ -34,6 +34,22 @@ const DEPOSIT_TONE: Record<string, string> = {
   failed: "bg-rose-50 text-rose-700",
 };
 
+const STATUS_LABELS: Record<string, string> = {
+  inquiry: "Inquiry",
+  reserved: "Reserved",
+  confirmed: "Confirmed",
+  completed: "Completed",
+  cancelled: "Cancelled",
+  no_show: "No-show",
+};
+const DEPOSIT_LABELS: Record<string, string> = {
+  none: "No deposit",
+  pending: "Pending",
+  paid: "Paid",
+  refunded: "Refunded",
+  failed: "Failed",
+};
+
 export default async function BookingsPage() {
   const sb = gogaAdmin();
   const { data } = await sb
@@ -108,14 +124,14 @@ export default async function BookingsPage() {
                       DEPOSIT_TONE[b.deposit_status] ?? DEPOSIT_TONE.none
                     }`}
                   >
-                    {b.deposit_status}
+                    {DEPOSIT_LABELS[b.deposit_status] ?? b.deposit_status}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                       STATUS_TONE[b.status] ?? STATUS_TONE.inquiry
                     }`}
                   >
-                    {b.status.replace("_", " ")}
+                    {STATUS_LABELS[b.status] ?? b.status.replace("_", " ")}
                   </span>
                 </Link>
               </li>

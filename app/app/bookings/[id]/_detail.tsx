@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   setBookingStatus,
   deleteBooking,
+  updateBookingNotes,
 } from "@/app/lib/goga/actions-bookings";
 import { ensureContractForBooking } from "@/app/lib/goga/actions-contracts";
 import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
@@ -176,16 +177,7 @@ export function BookingDetail({
           </dl>
         </section>
 
-        {booking.notes ? (
-          <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
-            <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              Notes
-            </h3>
-            <p className="m-0 whitespace-pre-wrap text-[14px] leading-[1.55] text-[var(--ink-800)]">
-              {booking.notes}
-            </p>
-          </section>
-        ) : null}
+        <NotesEditor bookingId={booking.id} initial={booking.notes ?? ""} />
       </div>
 
       <aside className="space-y-3">
@@ -477,6 +469,48 @@ function DepositActions({
       ) : null}
 
       {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+    </section>
+  );
+}
+
+function NotesEditor({
+  bookingId,
+  initial,
+}: {
+  bookingId: string;
+  initial: string;
+}) {
+  const [value, setValue] = useState(initial);
+  const [, start] = useTransition();
+  const [saved, setSaved] = useState(false);
+
+  function onBlur() {
+    if (value === initial) return;
+    start(async () => {
+      await updateBookingNotes(bookingId, value);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1200);
+    });
+  }
+
+  return (
+    <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+      <header className="mb-3 flex items-baseline justify-between">
+        <h3 className="text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
+          Notes
+        </h3>
+        {saved ? (
+          <span className="text-[11px] text-emerald-700">Saved.</span>
+        ) : null}
+      </header>
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+        rows={5}
+        placeholder="Pre-shoot prep, shot list, delivery preferences…"
+        className="block w-full rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-[14px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
+      />
     </section>
   );
 }

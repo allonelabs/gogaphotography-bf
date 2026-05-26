@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { SessionProviderClient } from "./_components/SessionProviderClient";
+import { ToasterProvider } from "./_components/Toaster";
 
 // Server-side defense-in-depth: every page under /app gets this layout, and
 // it runs on the edge before any client JS hydrates. If there's no session
@@ -20,5 +21,9 @@ export default async function AppLayout({
   if (!session?.user) {
     redirect("/admin/login");
   }
-  return <SessionProviderClient>{children}</SessionProviderClient>;
+  return (
+    <SessionProviderClient>
+      <ToasterProvider>{children}</ToasterProvider>
+    </SessionProviderClient>
+  );
 }
