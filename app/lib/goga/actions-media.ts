@@ -87,6 +87,30 @@ export async function uploadSurfaceImage(formData: FormData): Promise<{
       : `${cfg.pathPrefix}/${rowId || "x"}/${stamp}-${base}.${safeExt}`;
 
   const sb = gogaAdmin();
+
+  // Capture the old path FIRST so we can clean up the orphaned storage
+  // object after the new one is in place. Failing to do this would leak
+  // every replaced image into the bucket forever.
+  let oldPath: string | null = null;
+  if (cfg.table === "hero") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: prior } = await (sb as any)
+      .from("hero")
+      .select(cfg.column)
+      .eq("id", 1)
+      .maybeSingle();
+    oldPath = (prior?.[cfg.column] as string | null) ?? null;
+  } else if (rowId) {
+    const keyCol = cfg.table === "pages" ? "slug" : "id";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: prior } = await (sb as any)
+      .from(cfg.table)
+      .select(cfg.column)
+      .eq(keyCol, rowId)
+      .maybeSingle();
+    oldPath = (prior?.[cfg.column] as string | null) ?? null;
+  }
+
   const buf = Buffer.from(await file.arrayBuffer());
   const { error: upErr } = await sb.storage
     .from("projects")
@@ -110,6 +134,15 @@ export async function uploadSurfaceImage(formData: FormData): Promise<{
       .from(cfg.table)
       .update({ [cfg.column]: objectPath })
       .eq(keyCol, rowId);
+  }
+
+  // Best-effort cleanup of the old storage object. We log on failure but
+  // don't propagate — the row already points at the new image.
+  if (oldPath && oldPath !== objectPath) {
+    const { error: rmErr } = await sb.storage
+      .from("projects")
+      .remove([oldPath]);
+    if (rmErr) console.error("[media/upload] cleanup failed:", rmErr);
   }
 
   await logAdminEvent("hero.updated", {
@@ -154,17 +187,41 @@ export async function clearSurfaceImage(
   if (!cfg) throw new Error("unknown_surface");
 
   const sb = gogaAdmin();
+  // Grab the current path so we can delete the storage object after the
+  // row is cleared.
+  let oldPath: string | null = null;
   if (cfg.table === "hero") {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: prior } = await (sb as any)
+      .from("hero")
+      .select(cfg.column)
+      .eq("id", 1)
+      .maybeSingle();
+    oldPath = (prior?.[cfg.column] as string | null) ?? null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (sb as any).from("hero").upsert({ id: 1, [cfg.column]: null });
   } else {
     if (!rowId) throw new Error("missing_rowId");
     const keyCol = cfg.table === "pages" ? "slug" : "id";
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: prior } = await (sb as any)
+      .from(cfg.table)
+      .select(cfg.column)
+      .eq(keyCol, rowId)
+      .maybeSingle();
+    oldPath = (prior?.[cfg.column] as string | null) ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (sb as any)
       .from(cfg.table)
       .update({ [cfg.column]: null })
       .eq(keyCol, rowId);
+  }
+
+  if (oldPath) {
+    const { error: rmErr } = await sb.storage
+      .from("projects")
+      .remove([oldPath]);
+    if (rmErr) console.error("[media/clear] cleanup failed:", rmErr);
   }
 
   switch (cfg.table) {
