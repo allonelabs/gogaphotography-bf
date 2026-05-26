@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
+import { logAdminEvent } from "./admin-events";
 
 export async function createBookingFromLead(input: {
   leadId: string;
@@ -68,6 +69,15 @@ export async function createBookingFromLead(input: {
     kind: "booking.created",
     payload: { bookingId: data.id, packageId: input.packageId },
   });
+  await logAdminEvent("booking.created", {
+    entityType: "booking",
+    entityId: data.id,
+    payload: {
+      leadId: input.leadId,
+      packageId: input.packageId,
+      shootDate: input.shootDate,
+    },
+  });
 
   revalidatePath("/app/bookings");
   revalidatePath("/app/leads");
@@ -87,8 +97,18 @@ export async function setBookingStatus(
 ): Promise<void> {
   await requireSession();
   const sb = gogaAdmin();
+  const { data: prior } = await sb
+    .from("bookings")
+    .select("status")
+    .eq("id", id)
+    .maybeSingle();
   const { error } = await sb.from("bookings").update({ status }).eq("id", id);
   if (error) throw new Error(error.message);
+  await logAdminEvent("booking.status_changed", {
+    entityType: "booking",
+    entityId: id,
+    payload: { from: prior?.status ?? null, to: status },
+  });
   revalidatePath("/app/bookings");
   revalidatePath(`/app/bookings/${id}`);
 }
@@ -96,6 +116,10 @@ export async function setBookingStatus(
 export async function deleteBooking(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("bookings").delete().eq("id", id);
+  await logAdminEvent("booking.deleted", {
+    entityType: "booking",
+    entityId: id,
+  });
   revalidatePath("/app/bookings");
   redirect("/app/bookings");
 }
@@ -109,5 +133,9 @@ export async function updateBookingNotes(
     .from("bookings")
     .update({ notes: notes.trim() || null })
     .eq("id", id);
+  await logAdminEvent("booking.note_edited", {
+    entityType: "booking",
+    entityId: id,
+  });
   revalidatePath(`/app/bookings/${id}`);
 }

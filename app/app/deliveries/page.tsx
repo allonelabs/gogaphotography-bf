@@ -2,20 +2,29 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
+import { Pagination, parsePage } from "@/app/app/_components/Pagination";
+import { RealtimeRefresh } from "@/app/app/_components/useRealtimeRefresh";
+
+const PAGE_SIZE = 50;
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Deliveries" };
 
-export default async function DeliveriesPage() {
+type Props = { searchParams: Promise<{ page?: string }> };
+
+export default async function DeliveriesPage({ searchParams }: Props) {
+  const sp = await searchParams;
+  const { page, from, to } = parsePage(sp.page, PAGE_SIZE);
   const sb = gogaAdmin();
-  const { data } = await sb
+  const { data, count } = await sb
     .from("deliveries")
     .select(
       "id, token, password_hash, expires_at, downloads_enabled, archived, view_count, last_viewed_at, created_at, booking_id",
+      { count: "exact" },
     )
     .eq("archived", false)
     .order("created_at", { ascending: false })
-    .limit(200);
+    .range(from, to);
   const items = data ?? [];
 
   return (
@@ -33,6 +42,8 @@ export default async function DeliveriesPage() {
             {items.length} active galleries
           </p>
         </header>
+
+        <RealtimeRefresh tables={["deliveries"]} />
 
         {items.length === 0 ? (
           <EmptyState
@@ -78,6 +89,13 @@ export default async function DeliveriesPage() {
             ))}
           </ul>
         )}
+
+        <Pagination
+          basePath="/app/deliveries"
+          page={page}
+          pageSize={PAGE_SIZE}
+          totalCount={count ?? items.length}
+        />
       </div>
     </AppShell>
   );

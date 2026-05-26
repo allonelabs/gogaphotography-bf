@@ -80,11 +80,11 @@ type DeliverySummary = {
 export function BookingDetail({
   booking,
   delivery,
-  stripeReady,
+  paymentsReady,
 }: {
   booking: Booking;
   delivery: DeliverySummary | null;
-  stripeReady: boolean;
+  paymentsReady: boolean;
 }) {
   const router = useRouter();
   const toast = useToast();
@@ -249,7 +249,7 @@ export function BookingDetail({
           depositCents={booking.depositCents}
           currency={booking.currency}
           depositStatus={booking.depositStatus}
-          stripeReady={stripeReady}
+          paymentsReady={paymentsReady}
         />
 
         <ContractButton
@@ -396,13 +396,13 @@ function DepositActions({
   depositCents,
   currency,
   depositStatus,
-  stripeReady,
+  paymentsReady,
 }: {
   bookingId: string;
   depositCents: number;
   currency: string;
   depositStatus: string;
-  stripeReady: boolean;
+  paymentsReady: boolean;
 }) {
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
@@ -443,7 +443,7 @@ function DepositActions({
         ) : depositCents <= 0 ? (
           "Zero deposit configured — no payment link needed."
         ) : isPending ? (
-          "Awaiting payment. Stripe webhook flips this to paid automatically."
+          "Awaiting payment. The TBC callback flips this to paid automatically."
         ) : (
           <>
             Charge:{" "}
@@ -459,16 +459,16 @@ function DepositActions({
           <button
             type="button"
             onClick={onStart}
-            disabled={pending || !stripeReady}
+            disabled={pending || !paymentsReady}
             title={
-              stripeReady
+              paymentsReady
                 ? undefined
-                : "Set STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET on Vercel to enable deposits."
+                : "Set TBC_API_KEY + TBC_CLIENT_ID + TBC_CLIENT_SECRET on Vercel to enable deposits."
             }
             className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
           >
-            {!stripeReady
-              ? "Stripe not configured"
+            {!paymentsReady
+              ? "TBC not configured"
               : pending
                 ? "Creating link…"
                 : isPending

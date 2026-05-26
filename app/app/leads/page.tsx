@@ -4,6 +4,7 @@ import { LEAD_STAGES, LEAD_STAGE_LABELS } from "@/app/lib/goga/leads";
 import { safeLike } from "@/app/lib/goga/safe-like";
 import { Kanban, type CardData } from "./_kanban";
 import { LeadsSearch } from "./_search";
+import { RealtimeRefresh } from "@/app/app/_components/useRealtimeRefresh";
 
 export const dynamic = "force-dynamic";
 
@@ -63,6 +64,7 @@ export default async function LeadsPage({ searchParams }: Props) {
           </p>
         </header>
 
+        <RealtimeRefresh tables={["leads", "lead_events"]} />
         <LeadsSearch initial={query} />
 
         <Kanban

@@ -120,6 +120,17 @@ export const tourismNav: NavConfig = {
         { label: "Chatbot", href: "/app/chatbot", icon: "bot" },
       ],
     },
+    {
+      label: "System",
+      items: [
+        {
+          label: "Audit",
+          labelKa: "აუდიტი",
+          href: "/app/audit",
+          icon: "file-text",
+        },
+      ],
+    },
   ],
 };
 

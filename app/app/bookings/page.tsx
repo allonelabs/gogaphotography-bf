@@ -4,7 +4,11 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/app/_components/FilterChips";
 import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
 import { ListSearch } from "@/app/app/_components/ListSearch";
+import { Pagination, parsePage } from "@/app/app/_components/Pagination";
+import { RealtimeRefresh } from "@/app/app/_components/useRealtimeRefresh";
 import { safeLike } from "@/app/lib/goga/safe-like";
+
+const PAGE_SIZE = 50;
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings" };
@@ -64,7 +68,9 @@ const FILTER_STATUSES = [
 ] as const;
 type FilterStatus = (typeof FILTER_STATUSES)[number];
 
-type Props = { searchParams: Promise<{ status?: string; q?: string }> };
+type Props = {
+  searchParams: Promise<{ status?: string; q?: string; page?: string }>;
+};
 
 export default async function BookingsPage({ searchParams }: Props) {
   const sp = await searchParams;
@@ -75,14 +81,16 @@ export default async function BookingsPage({ searchParams }: Props) {
     ? (sp.status as FilterStatus)
     : null;
   const query = (sp.q ?? "").trim();
+  const { page, from, to } = parsePage(sp.page, PAGE_SIZE);
 
-  const [{ data: counts }, { data }] = await Promise.all([
+  const [{ data: counts }, { data, count }] = await Promise.all([
     sb.from("bookings").select("status"),
     (() => {
       let q = sb
         .from("bookings")
         .select(
           "id, shoot_date, shoot_time, location, subtotal_cents, deposit_cents, currency, status, deposit_status, client_name, client_email",
+          { count: "exact" },
         )
         .order("shoot_date", { ascending: true });
       if (active) q = q.eq("status", active);
@@ -92,7 +100,7 @@ export default async function BookingsPage({ searchParams }: Props) {
           `client_name.ilike.${like},client_email.ilike.${like},location.ilike.${like}`,
         );
       }
-      return q;
+      return q.range(from, to);
     })(),
   ]);
 
@@ -116,13 +124,14 @@ export default async function BookingsPage({ searchParams }: Props) {
               Bookings
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {active
-                ? `${bookings.length} of ${totalAll} · filtered by ${STATUS_LABELS[active]}`
+              {active || query
+                ? `${count ?? bookings.length} of ${totalAll} · filtered`
                 : `${totalAll} total`}
             </p>
           </div>
         </header>
 
+        <RealtimeRefresh tables={["bookings"]} />
         <ListSearch placeholder="Search bookings by client, email, or location…" />
 
         <FilterChips
@@ -213,6 +222,14 @@ export default async function BookingsPage({ searchParams }: Props) {
             ))}
           </ul>
         )}
+
+        <Pagination
+          basePath="/app/bookings"
+          page={page}
+          pageSize={PAGE_SIZE}
+          totalCount={count ?? bookings.length}
+          searchParams={{ status: active ?? undefined, q: query || undefined }}
+        />
       </div>
     </AppShell>
   );

@@ -3,6 +3,10 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/app/_components/FilterChips";
 import { EmptyState, Icon } from "@/app/app/_components/EmptyState";
+import { Pagination, parsePage } from "@/app/app/_components/Pagination";
+import { RealtimeRefresh } from "@/app/app/_components/useRealtimeRefresh";
+
+const PAGE_SIZE = 50;
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contracts" };
@@ -22,7 +26,9 @@ const STATUS_LABELS: Record<string, string> = {
 const FILTER_STATUSES = ["draft", "sent", "signed", "void"] as const;
 type FilterStatus = (typeof FILTER_STATUSES)[number];
 
-type Props = { searchParams: Promise<{ status?: string }> };
+type Props = {
+  searchParams: Promise<{ status?: string; page?: string }>;
+};
 
 export default async function ContractsPage({ searchParams }: Props) {
   const sp = await searchParams;
@@ -32,19 +38,20 @@ export default async function ContractsPage({ searchParams }: Props) {
   ).includes(sp.status ?? "")
     ? (sp.status as FilterStatus)
     : null;
+  const { page, from, to } = parsePage(sp.page, PAGE_SIZE);
 
-  const [{ data: counts }, { data }] = await Promise.all([
+  const [{ data: counts }, { data, count }] = await Promise.all([
     sb.from("contracts").select("status"),
     (() => {
       let q = sb
         .from("contracts")
         .select(
           "id, status, signer_name, signer_email, signed_at, sent_at, created_at, booking_id",
+          { count: "exact" },
         )
-        .order("created_at", { ascending: false })
-        .limit(200);
+        .order("created_at", { ascending: false });
       if (active) q = q.eq("status", active);
-      return q;
+      return q.range(from, to);
     })(),
   ]);
 
@@ -73,6 +80,7 @@ export default async function ContractsPage({ searchParams }: Props) {
           </p>
         </header>
 
+        <RealtimeRefresh tables={["contracts"]} />
         <FilterChips
           basePath="/app/contracts"
           active={active}
@@ -140,6 +148,14 @@ export default async function ContractsPage({ searchParams }: Props) {
             ))}
           </ul>
         )}
+
+        <Pagination
+          basePath="/app/contracts"
+          page={page}
+          pageSize={PAGE_SIZE}
+          totalCount={count ?? items.length}
+          searchParams={{ status: active ?? undefined }}
+        />
       </div>
     </AppShell>
   );

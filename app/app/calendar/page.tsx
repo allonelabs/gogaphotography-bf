@@ -1,42 +1,103 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
-import { CalendarGrid, type CalendarItem } from "./_calendar-grid";
+import {
+  CalendarGrid,
+  type CalendarItem,
+  type CalendarView,
+} from "./_calendar-grid";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
-  searchParams: Promise<{ month?: string }>;
+  searchParams: Promise<{ view?: string; date?: string; month?: string }>;
 }
 
-function parseMonth(s: string | undefined): { year: number; month: number } {
-  if (s && /^\d{4}-\d{2}$/.test(s)) {
-    const [y, m] = s.split("-").map(Number);
-    if (m >= 1 && m <= 12) return { year: y, month: m };
+function parseView(s: string | undefined): CalendarView {
+  if (s === "week" || s === "day") return s;
+  return "month";
+}
+
+function pad(n: number): string {
+  return String(n).padStart(2, "0");
+}
+function ymd(d: Date): string {
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(
+    d.getUTCDate(),
+  )}`;
+}
+
+function parseAnchor(
+  view: CalendarView,
+  dateRaw: string | undefined,
+  monthRaw: string | undefined,
+): Date {
+  // Back-compat: month=YYYY-MM still works for the month view.
+  if (view === "month" && monthRaw && /^\d{4}-\d{2}$/.test(monthRaw)) {
+    const [y, m] = monthRaw.split("-").map(Number);
+    return new Date(Date.UTC(y!, (m ?? 1) - 1, 1));
   }
-  const now = new Date();
-  return { year: now.getUTCFullYear(), month: now.getUTCMonth() + 1 };
+  if (dateRaw && /^\d{4}-\d{2}-\d{2}$/.test(dateRaw)) {
+    const [y, m, d] = dateRaw.split("-").map(Number);
+    return new Date(Date.UTC(y!, (m ?? 1) - 1, d ?? 1));
+  }
+  return new Date();
+}
+
+/**
+ * Mon-first start-of-week. Returns the Monday on/before `d` (UTC).
+ */
+function startOfWeek(d: Date): Date {
+  const dow = (d.getUTCDay() + 6) % 7; // Mon = 0
+  return new Date(
+    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - dow),
+  );
+}
+
+function rangeForView(
+  view: CalendarView,
+  anchor: Date,
+): { start: string; endExclusive: string } {
+  if (view === "day") {
+    const start = new Date(
+      Date.UTC(
+        anchor.getUTCFullYear(),
+        anchor.getUTCMonth(),
+        anchor.getUTCDate(),
+      ),
+    );
+    const end = new Date(start.getTime() + 86400000);
+    return { start: ymd(start), endExclusive: ymd(end) };
+  }
+  if (view === "week") {
+    const start = startOfWeek(anchor);
+    const end = new Date(start.getTime() + 7 * 86400000);
+    return { start: ymd(start), endExclusive: ymd(end) };
+  }
+  // month
+  const start = new Date(
+    Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth(), 1),
+  );
+  const end = new Date(
+    Date.UTC(anchor.getUTCFullYear(), anchor.getUTCMonth() + 1, 1),
+  );
+  return { start: ymd(start), endExclusive: ymd(end) };
 }
 
 async function loadShoots(
-  year: number,
-  month: number,
+  start: string,
+  endExclusive: string,
 ): Promise<CalendarItem[]> {
   const sb = gogaAdmin();
-  const monthStart = `${year}-${String(month).padStart(2, "0")}-01`;
-  const next = new Date(Date.UTC(year, month, 1));
-  const monthEnd = `${next.getUTCFullYear()}-${String(
-    next.getUTCMonth() + 1,
-  ).padStart(2, "0")}-01`;
-
   const { data } = await sb
     .from("bookings")
     .select(
       `id, client_name, client_email, shoot_date, shoot_time, location,
        status, packages(name_en)`,
     )
-    .gte("shoot_date", monthStart)
-    .lt("shoot_date", monthEnd)
+    .gte("shoot_date", start)
+    .lt("shoot_date", endExclusive)
     .order("shoot_date", { ascending: true })
+    .order("shoot_time", { ascending: true, nullsFirst: true })
     .limit(500);
 
   return (data ?? []).map((b) => ({
@@ -50,15 +111,40 @@ async function loadShoots(
   }));
 }
 
+function titleFor(view: CalendarView, anchor: Date): string {
+  if (view === "day") {
+    return anchor.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      timeZone: "UTC",
+    });
+  }
+  if (view === "week") {
+    const start = startOfWeek(anchor);
+    const end = new Date(start.getTime() + 6 * 86400000);
+    const sameMonth = start.getUTCMonth() === end.getUTCMonth();
+    const fmt = (d: Date, opts: Intl.DateTimeFormatOptions) =>
+      d.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+    return sameMonth
+      ? `${fmt(start, { month: "long", day: "numeric" })} – ${fmt(end, { day: "numeric", year: "numeric" })}`
+      : `${fmt(start, { month: "short", day: "numeric" })} – ${fmt(end, { month: "short", day: "numeric", year: "numeric" })}`;
+  }
+  return anchor.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export default async function CalendarPage({ searchParams }: PageProps) {
   const sp = await searchParams;
-  const { year, month } = parseMonth(sp.month);
-  const items = await loadShoots(year, month);
-
-  const monthName = new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString(
-    "en-US",
-    { month: "long", year: "numeric" },
-  );
+  const view = parseView(sp.view);
+  const anchor = parseAnchor(view, sp.date, sp.month);
+  const { start, endExclusive } = rangeForView(view, anchor);
+  const items = await loadShoots(start, endExclusive);
+  const title = titleFor(view, anchor);
 
   return (
     <AppShell
@@ -67,15 +153,17 @@ export default async function CalendarPage({ searchParams }: PageProps) {
       chatScopeLabel="Calendar"
     >
       <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8">
-        <header className="mb-5">
-          <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            {monthName}
-          </h1>
-          <p className="mt-1 text-[13px] text-[var(--ink-500)]">
-            {items.length} shoot{items.length === 1 ? "" : "s"} this month
-          </p>
+        <header className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
+              {title}
+            </h1>
+            <p className="mt-1 text-[13px] text-[var(--ink-500)]">
+              {items.length} shoot{items.length === 1 ? "" : "s"}
+            </p>
+          </div>
         </header>
-        <CalendarGrid year={year} month={month} items={items} />
+        <CalendarGrid view={view} anchor={anchor.toISOString()} items={items} />
       </div>
     </AppShell>
   );

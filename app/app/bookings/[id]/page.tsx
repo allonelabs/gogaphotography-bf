@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
-import { isStripeConfigured } from "@/app/lib/stripe";
+import { isTbcConfigured } from "@/app/lib/tbc";
 import { BookingDetail } from "./_detail";
 
 export const dynamic = "force-dynamic";
@@ -103,7 +103,7 @@ export default async function BookingDetailPage({ params }: Props) {
             packageName: data.packages?.name_en ?? null,
           }}
           delivery={deliverySummary}
-          stripeReady={isStripeConfigured()}
+          paymentsReady={isTbcConfigured()}
         />
       </div>
     </AppShell>

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
+import { logAdminEvent } from "./admin-events";
 
 function randomToken(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(18));
@@ -109,6 +110,11 @@ export async function ensureContractForBooking(
     .select("id, token")
     .single();
   if (error || !data) throw new Error(error?.message ?? "insert_failed");
+  await logAdminEvent("contract.created", {
+    entityType: "contract",
+    entityId: data.id,
+    payload: { bookingId },
+  });
 
   revalidatePath(`/app/bookings/${bookingId}`);
   revalidatePath("/app/contracts");
@@ -174,6 +180,11 @@ export async function sendContract(id: string): Promise<{ ok: boolean }> {
     .from("contracts")
     .update({ status: "sent", sent_at: new Date().toISOString() })
     .eq("id", id);
+  await logAdminEvent("contract.sent", {
+    entityType: "contract",
+    entityId: id,
+    payload: { to: c.signer_email, emailed: !!key },
+  });
 
   revalidatePath(`/app/contracts/${id}`);
   revalidatePath("/app/contracts");
@@ -183,6 +194,10 @@ export async function sendContract(id: string): Promise<{ ok: boolean }> {
 export async function voidContract(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("contracts").update({ status: "void" }).eq("id", id);
+  await logAdminEvent("contract.voided", {
+    entityType: "contract",
+    entityId: id,
+  });
   revalidatePath(`/app/contracts/${id}`);
   revalidatePath("/app/contracts");
 }
