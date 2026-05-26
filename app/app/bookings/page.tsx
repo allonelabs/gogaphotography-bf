@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { FilterChips } from "@/app/app/_components/FilterChips";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings" };
@@ -50,15 +51,47 @@ const DEPOSIT_LABELS: Record<string, string> = {
   failed: "Failed",
 };
 
-export default async function BookingsPage() {
+const FILTER_STATUSES = [
+  "inquiry",
+  "reserved",
+  "confirmed",
+  "completed",
+  "cancelled",
+  "no_show",
+] as const;
+type FilterStatus = (typeof FILTER_STATUSES)[number];
+
+type Props = { searchParams: Promise<{ status?: string }> };
+
+export default async function BookingsPage({ searchParams }: Props) {
+  const sp = await searchParams;
   const sb = gogaAdmin();
-  const { data } = await sb
-    .from("bookings")
-    .select(
-      "id, shoot_date, shoot_time, location, subtotal_cents, deposit_cents, currency, status, deposit_status, client_name, client_email",
-    )
-    .order("shoot_date", { ascending: true });
+  const active: FilterStatus | null = (
+    FILTER_STATUSES as readonly string[]
+  ).includes(sp.status ?? "")
+    ? (sp.status as FilterStatus)
+    : null;
+
+  const [{ data: counts }, { data }] = await Promise.all([
+    sb.from("bookings").select("status"),
+    (() => {
+      let q = sb
+        .from("bookings")
+        .select(
+          "id, shoot_date, shoot_time, location, subtotal_cents, deposit_cents, currency, status, deposit_status, client_name, client_email",
+        )
+        .order("shoot_date", { ascending: true });
+      if (active) q = q.eq("status", active);
+      return q;
+    })(),
+  ]);
+
+  const countByStatus: Record<string, number> = {};
+  for (const r of counts ?? []) {
+    countByStatus[r.status] = (countByStatus[r.status] ?? 0) + 1;
+  }
   const bookings = data ?? [];
+  const totalAll = (counts ?? []).length;
 
   return (
     <AppShell
@@ -73,15 +106,28 @@ export default async function BookingsPage() {
               Bookings
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {bookings.length} total
+              {active
+                ? `${bookings.length} of ${totalAll} · filtered by ${STATUS_LABELS[active]}`
+                : `${totalAll} total`}
             </p>
           </div>
         </header>
 
+        <FilterChips
+          basePath="/app/bookings"
+          active={active}
+          chips={FILTER_STATUSES.map((s) => ({
+            value: s,
+            label: STATUS_LABELS[s] ?? s,
+            count: countByStatus[s] ?? 0,
+          }))}
+        />
+
         {bookings.length === 0 ? (
           <Empty>
-            No bookings yet. Bookings are created from a lead detail page or via
-            the public /book route.
+            {active
+              ? `No bookings in the “${STATUS_LABELS[active]}” bucket right now.`
+              : "No bookings yet. Bookings are created from a lead detail page or via the public /book route."}
           </Empty>
         ) : (
           <ul className="space-y-2">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { FilterChips } from "@/app/app/_components/FilterChips";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contracts" };
@@ -11,17 +12,47 @@ const STATUS_TONE: Record<string, string> = {
   signed: "bg-emerald-50 text-emerald-700",
   void: "bg-rose-50 text-rose-700",
 };
+const STATUS_LABELS: Record<string, string> = {
+  draft: "Draft",
+  sent: "Sent",
+  signed: "Signed",
+  void: "Void",
+};
+const FILTER_STATUSES = ["draft", "sent", "signed", "void"] as const;
+type FilterStatus = (typeof FILTER_STATUSES)[number];
 
-export default async function ContractsPage() {
+type Props = { searchParams: Promise<{ status?: string }> };
+
+export default async function ContractsPage({ searchParams }: Props) {
+  const sp = await searchParams;
   const sb = gogaAdmin();
-  const { data } = await sb
-    .from("contracts")
-    .select(
-      "id, status, signer_name, signer_email, signed_at, sent_at, created_at, booking_id",
-    )
-    .order("created_at", { ascending: false })
-    .limit(200);
+  const active: FilterStatus | null = (
+    FILTER_STATUSES as readonly string[]
+  ).includes(sp.status ?? "")
+    ? (sp.status as FilterStatus)
+    : null;
+
+  const [{ data: counts }, { data }] = await Promise.all([
+    sb.from("contracts").select("status"),
+    (() => {
+      let q = sb
+        .from("contracts")
+        .select(
+          "id, status, signer_name, signer_email, signed_at, sent_at, created_at, booking_id",
+        )
+        .order("created_at", { ascending: false })
+        .limit(200);
+      if (active) q = q.eq("status", active);
+      return q;
+    })(),
+  ]);
+
+  const countByStatus: Record<string, number> = {};
+  for (const r of counts ?? []) {
+    countByStatus[r.status] = (countByStatus[r.status] ?? 0) + 1;
+  }
   const items = data ?? [];
+  const totalAll = (counts ?? []).length;
 
   return (
     <AppShell
@@ -35,14 +66,28 @@ export default async function ContractsPage() {
             Contracts
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            {items.length} total
+            {active
+              ? `${items.length} of ${totalAll} · filtered by ${STATUS_LABELS[active]}`
+              : `${totalAll} total`}
           </p>
         </header>
+
+        <FilterChips
+          basePath="/app/contracts"
+          active={active}
+          chips={FILTER_STATUSES.map((s) => ({
+            value: s,
+            label: STATUS_LABELS[s] ?? s,
+            count: countByStatus[s] ?? 0,
+          }))}
+        />
 
         {items.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
             <p className="text-[14px] text-[var(--ink-500)]">
-              No contracts yet. Create one from a booking detail page.
+              {active
+                ? `No contracts in the “${STATUS_LABELS[active]}” bucket right now.`
+                : "No contracts yet. Create one from a booking detail page."}
             </p>
           </div>
         ) : (
@@ -76,7 +121,7 @@ export default async function ContractsPage() {
                       STATUS_TONE[c.status] ?? STATUS_TONE.draft
                     }`}
                   >
-                    {c.status}
+                    {STATUS_LABELS[c.status] ?? c.status}
                   </span>
                 </Link>
               </li>
