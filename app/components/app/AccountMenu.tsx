@@ -103,7 +103,7 @@ export function AccountMenu() {
       {open && (
         <div
           ref={panelRef}
-          className="absolute right-0 top-[calc(100%+8px)] z-50 w-[260px] overflow-hidden rounded-[var(--radius-lg)] border border-black/8 bg-[var(--bg-surface)] shadow-[0_24px_56px_-12px_rgba(0,0,0,0.18),0_4px_12px_-2px_rgba(0,0,0,0.08)] ring-1 ring-black/5 animate-fade-in"
+          className="absolute right-0 top-[calc(100%+8px)] z-50 w-[min(260px,calc(100vw-24px))] overflow-hidden rounded-[var(--radius-lg)] border border-black/8 bg-[var(--bg-surface)] shadow-[0_24px_56px_-12px_rgba(0,0,0,0.18),0_4px_12px_-2px_rgba(0,0,0,0.08)] ring-1 ring-black/5 animate-fade-in"
         >
           <div className="border-b border-[var(--allonce-line-soft)] px-4 py-3">
             <p className="text-[13.5px] font-semibold text-[var(--ink-900)]">

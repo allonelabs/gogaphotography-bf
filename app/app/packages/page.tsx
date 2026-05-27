@@ -73,7 +73,7 @@ export default async function PackagesPage() {
                 key={p.id}
                 className="rounded-2xl bg-white ring-1 ring-black/5 transition hover:ring-black/10"
               >
-                <div className="grid grid-cols-[1fr_120px_70px_auto_auto_auto] items-center gap-3 px-5 py-4">
+                <div className="grid grid-cols-[1fr_auto] items-center gap-y-2 gap-x-3 px-5 py-4 sm:grid-cols-[1fr_120px_70px_auto_auto_auto]">
                   <Link
                     href={`/app/packages/${p.id}`}
                     className="min-w-0 hover:underline"

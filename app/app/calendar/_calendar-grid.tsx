@@ -180,65 +180,67 @@ function MonthGrid({
     cells.push({ date: null, inMonth: false, day: 0 });
 
   return (
-    <div className="grid grid-cols-7 gap-px overflow-hidden rounded-xl bg-black/[0.06] text-[12px]">
-      {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-        <div
-          key={d}
-          className="bg-slate-50 px-2 py-2 text-center text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]"
-        >
-          {d}
-        </div>
-      ))}
-      {cells.map((c, i) => {
-        const dayItems = c.date ? (byDate.get(c.date) ?? []) : [];
-        const isToday = c.date === todayKey;
-        return (
+    <div className="-mx-1 overflow-x-auto sm:mx-0">
+      <div className="grid min-w-[600px] grid-cols-7 gap-px overflow-hidden rounded-xl bg-black/[0.06] text-[12px] sm:min-w-0">
+        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
           <div
-            key={i}
-            className={`min-h-[112px] bg-white p-1.5 ${c.inMonth ? "" : "opacity-40"}`}
+            key={d}
+            className="bg-slate-50 px-2 py-2 text-center text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]"
           >
-            <div className="mb-1 flex items-center gap-2">
-              <div
-                className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] ${
-                  isToday
-                    ? "bg-[var(--ink-900)] text-white"
-                    : "text-[var(--ink-700)]"
-                }`}
-              >
-                {c.day || ""}
-              </div>
-              {c.date && dayItems.length > 0 ? (
-                <Link
-                  href={`/app/calendar?view=day&date=${c.date}`}
-                  className="text-[10px] uppercase tracking-[0.14em] text-[var(--ink-400)] hover:text-[var(--ink-900)]"
-                >
-                  day →
-                </Link>
-              ) : null}
-            </div>
-            <div className="space-y-1">
-              {dayItems.slice(0, 4).map((it) => (
-                <Link
-                  key={it.id}
-                  href={`/app/bookings/${it.id}`}
-                  className={`block truncate rounded px-1.5 py-0.5 text-[11px] leading-tight ${
-                    STATUS_TONE[it.status] ?? "bg-slate-100 text-slate-700"
-                  }`}
-                  title={`${it.title}${it.time ? ` · ${it.time}` : ""}${it.location ? ` · ${it.location}` : ""}`}
-                >
-                  {it.time ? <span className="mr-1">{it.time}</span> : null}
-                  {it.title}
-                </Link>
-              ))}
-              {dayItems.length > 4 ? (
-                <span className="block px-1.5 text-[10px] uppercase tracking-[0.12em] text-[var(--ink-500)]">
-                  +{dayItems.length - 4} more
-                </span>
-              ) : null}
-            </div>
+            {d}
           </div>
-        );
-      })}
+        ))}
+        {cells.map((c, i) => {
+          const dayItems = c.date ? (byDate.get(c.date) ?? []) : [];
+          const isToday = c.date === todayKey;
+          return (
+            <div
+              key={i}
+              className={`min-h-[112px] bg-white p-1.5 ${c.inMonth ? "" : "opacity-40"}`}
+            >
+              <div className="mb-1 flex items-center gap-2">
+                <div
+                  className={`inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5 text-[11px] ${
+                    isToday
+                      ? "bg-[var(--ink-900)] text-white"
+                      : "text-[var(--ink-700)]"
+                  }`}
+                >
+                  {c.day || ""}
+                </div>
+                {c.date && dayItems.length > 0 ? (
+                  <Link
+                    href={`/app/calendar?view=day&date=${c.date}`}
+                    className="text-[10px] uppercase tracking-[0.14em] text-[var(--ink-400)] hover:text-[var(--ink-900)]"
+                  >
+                    day →
+                  </Link>
+                ) : null}
+              </div>
+              <div className="space-y-1">
+                {dayItems.slice(0, 4).map((it) => (
+                  <Link
+                    key={it.id}
+                    href={`/app/bookings/${it.id}`}
+                    className={`block truncate rounded px-1.5 py-0.5 text-[11px] leading-tight ${
+                      STATUS_TONE[it.status] ?? "bg-slate-100 text-slate-700"
+                    }`}
+                    title={`${it.title}${it.time ? ` · ${it.time}` : ""}${it.location ? ` · ${it.location}` : ""}`}
+                  >
+                    {it.time ? <span className="mr-1">{it.time}</span> : null}
+                    {it.title}
+                  </Link>
+                ))}
+                {dayItems.length > 4 ? (
+                  <span className="block px-1.5 text-[10px] uppercase tracking-[0.12em] text-[var(--ink-500)]">
+                    +{dayItems.length - 4} more
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -260,64 +262,68 @@ function WeekGrid({
     return { date: ymd(d), label: d, dow: d.getUTCDay() };
   });
   return (
-    <div className="grid grid-cols-7 gap-px overflow-hidden rounded-xl bg-black/[0.06]">
-      {days.map((d) => {
-        const items = byDate.get(d.date) ?? [];
-        const isToday = d.date === todayKey;
-        const dayNum = d.label.getUTCDate();
-        const dowLabel = d.label.toLocaleDateString("en-US", {
-          weekday: "short",
-          timeZone: "UTC",
-        });
-        return (
-          <div key={d.date} className="min-h-[360px] bg-white">
-            <Link
-              href={`/app/calendar?view=day&date=${d.date}`}
-              className="block border-b border-black/5 bg-slate-50 px-2 py-2 text-center transition hover:bg-slate-100"
-            >
-              <div className="text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                {dowLabel}
-              </div>
-              <div
-                className={`mx-auto mt-0.5 inline-flex h-7 min-w-7 items-center justify-center rounded-full px-1.5 text-[13px] tabular-nums ${
-                  isToday
-                    ? "bg-[var(--ink-900)] text-white"
-                    : "text-[var(--ink-900)]"
-                }`}
+    <div className="-mx-1 overflow-x-auto sm:mx-0">
+      <div className="grid min-w-[840px] grid-cols-7 gap-px overflow-hidden rounded-xl bg-black/[0.06] sm:min-w-0">
+        {days.map((d) => {
+          const items = byDate.get(d.date) ?? [];
+          const isToday = d.date === todayKey;
+          const dayNum = d.label.getUTCDate();
+          const dowLabel = d.label.toLocaleDateString("en-US", {
+            weekday: "short",
+            timeZone: "UTC",
+          });
+          return (
+            <div key={d.date} className="min-h-[360px] bg-white">
+              <Link
+                href={`/app/calendar?view=day&date=${d.date}`}
+                className="block border-b border-black/5 bg-slate-50 px-2 py-2 text-center transition hover:bg-slate-100"
               >
-                {dayNum}
+                <div className="text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
+                  {dowLabel}
+                </div>
+                <div
+                  className={`mx-auto mt-0.5 inline-flex h-7 min-w-7 items-center justify-center rounded-full px-1.5 text-[13px] tabular-nums ${
+                    isToday
+                      ? "bg-[var(--ink-900)] text-white"
+                      : "text-[var(--ink-900)]"
+                  }`}
+                >
+                  {dayNum}
+                </div>
+              </Link>
+              <div className="space-y-1 p-1.5">
+                {items.length === 0 ? (
+                  <p className="px-1 py-2 text-[11px] text-[var(--ink-300)]">
+                    —
+                  </p>
+                ) : (
+                  items.map((it) => (
+                    <Link
+                      key={it.id}
+                      href={`/app/bookings/${it.id}`}
+                      className={`block rounded-md px-2 py-1.5 text-[11px] leading-tight ${
+                        STATUS_TONE[it.status] ?? "bg-slate-100 text-slate-700"
+                      }`}
+                    >
+                      {it.time ? (
+                        <div className="font-mono text-[10px] tabular-nums opacity-80">
+                          {it.time}
+                        </div>
+                      ) : null}
+                      <div className="truncate font-medium">{it.title}</div>
+                      {it.location ? (
+                        <div className="truncate text-[10px] opacity-75">
+                          {it.location}
+                        </div>
+                      ) : null}
+                    </Link>
+                  ))
+                )}
               </div>
-            </Link>
-            <div className="space-y-1 p-1.5">
-              {items.length === 0 ? (
-                <p className="px-1 py-2 text-[11px] text-[var(--ink-300)]">—</p>
-              ) : (
-                items.map((it) => (
-                  <Link
-                    key={it.id}
-                    href={`/app/bookings/${it.id}`}
-                    className={`block rounded-md px-2 py-1.5 text-[11px] leading-tight ${
-                      STATUS_TONE[it.status] ?? "bg-slate-100 text-slate-700"
-                    }`}
-                  >
-                    {it.time ? (
-                      <div className="font-mono text-[10px] tabular-nums opacity-80">
-                        {it.time}
-                      </div>
-                    ) : null}
-                    <div className="truncate font-medium">{it.title}</div>
-                    {it.location ? (
-                      <div className="truncate text-[10px] opacity-75">
-                        {it.location}
-                      </div>
-                    ) : null}
-                  </Link>
-                ))
-              )}
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

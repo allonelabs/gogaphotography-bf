@@ -12,9 +12,13 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#FAFAFA",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
+  // Lock the rendered viewport into the safe area on iOS so the PWA
+  // sits flush behind the notch + home indicator. Without `viewport-fit`
+  // the standalone shell leaves a default grey strip under the status bar.
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -23,12 +27,25 @@ export const metadata: Metadata = {
     template: "%s · GOGA Photography",
   },
   description: "Studio admin for goga.photography — wedding & editorial.",
+  applicationName: "GOGA Studio",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "GOGA",
+    statusBarStyle: "black-translucent",
+    startupImage: ["/apple-touch-icon.png"],
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
       { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-256.png", sizes: "256x256", type: "image/png" },
+      { url: "/favicon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: { url: "/apple-touch-icon.png" },
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 

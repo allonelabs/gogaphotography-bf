@@ -176,7 +176,7 @@ export default async function BookingsPage({ searchParams }: Props) {
               >
                 <Link
                   href={`/app/bookings/${b.id}`}
-                  className="grid grid-cols-[110px_1fr_120px_110px_120px] items-center gap-4 px-5 py-4"
+                  className="grid grid-cols-1 items-start gap-y-1 gap-x-4 px-5 py-4 sm:grid-cols-[110px_1fr_120px_110px_120px] sm:items-center"
                 >
                   <span className="text-[13px] font-medium tabular-nums text-[var(--ink-900)]">
                     {new Date(b.shoot_date).toLocaleDateString(undefined, {

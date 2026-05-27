@@ -119,7 +119,7 @@ export default async function ContractsPage({ searchParams }: Props) {
               >
                 <Link
                   href={`/app/contracts/${c.id}`}
-                  className="grid grid-cols-[1fr_140px_100px] items-center gap-4 px-5 py-4"
+                  className="grid grid-cols-1 items-start gap-y-1 gap-x-4 px-5 py-4 sm:grid-cols-[1fr_140px_100px] sm:items-center"
                 >
                   <div>
                     <div className="text-[14px] font-medium text-[var(--ink-900)]">

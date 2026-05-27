@@ -64,11 +64,11 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
           onDragOver={onDragOver}
           onDrop={(e) => onDrop(p.id, e)}
         >
-          <div className="grid grid-cols-[24px_64px_1fr_70px_auto_auto_auto] items-center gap-3 px-4 py-3">
+          <div className="grid grid-cols-[64px_1fr] items-center gap-y-2 gap-x-3 px-4 py-3 sm:grid-cols-[24px_64px_1fr_70px_auto_auto_auto]">
             <span
               aria-hidden="true"
               title="Drag to reorder"
-              className="cursor-grab select-none text-[16px] text-[var(--ink-300)] active:cursor-grabbing"
+              className="hidden select-none text-[16px] text-[var(--ink-300)] cursor-grab active:cursor-grabbing sm:inline"
             >
               ⋮⋮
             </span>
