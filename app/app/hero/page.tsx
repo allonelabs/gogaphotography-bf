@@ -1,6 +1,5 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
-import { ImageUploader } from "@/app/app/_components/ImageUploader";
 import { HeroForm } from "./_form";
 
 export const dynamic = "force-dynamic";
@@ -8,23 +7,11 @@ export const metadata = { title: "Homepage hero" };
 
 export default async function HeroPage() {
   const sb = gogaAdmin();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = (await (sb as any)
+  const { data } = await sb
     .from("hero")
-    .select(
-      "headline_en, headline_ka, subtitle_en, subtitle_ka, hero_image_path, portrait_image_path",
-    )
+    .select("headline_en, headline_ka, subtitle_en, subtitle_ka")
     .eq("id", 1)
-    .single()) as {
-    data: {
-      headline_en: string | null;
-      headline_ka: string | null;
-      subtitle_en: string | null;
-      subtitle_ka: string | null;
-      hero_image_path: string | null;
-      portrait_image_path: string | null;
-    } | null;
-  };
+    .single();
 
   return (
     <AppShell
@@ -38,41 +25,17 @@ export default async function HeroPage() {
             Homepage hero
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            First impression on the home page
+            Headline + subtitle on the home page
           </p>
         </header>
 
-        <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
-          <h2 className="mb-4 text-[14px] font-medium text-[var(--ink-900)]">
-            Visuals
-          </h2>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <ImageUploader
-              surface="hero.hero_image"
-              label="Hero background"
-              hint="Full-bleed image behind the headline. Wide aspect — landscape 16:9."
-              currentPath={data?.hero_image_path ?? null}
-              aspect="16/9"
-            />
-            <ImageUploader
-              surface="hero.portrait_image"
-              label="Studio portrait"
-              hint="Optional portrait used on About / contact. Tall aspect — 4:5."
-              currentPath={data?.portrait_image_path ?? null}
-              aspect="4/5"
-            />
-          </div>
-        </section>
+        <p className="max-w-prose text-[13px] text-[var(--ink-500)]">
+          These two lines greet every visitor on the home page. Keep the
+          headline short — it&rsquo;s set in the large display font. The
+          subtitle sits one line below.
+        </p>
 
-        <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
-          <h2 className="mb-2 text-[14px] font-medium text-[var(--ink-900)]">
-            Copy
-          </h2>
-          <p className="mb-4 text-[12px] text-[var(--ink-500)]">
-            Keep the headline short — it's set in the large display font.
-          </p>
-          <HeroForm initial={data ?? null} />
-        </section>
+        <HeroForm initial={data ?? null} />
       </div>
     </AppShell>
   );

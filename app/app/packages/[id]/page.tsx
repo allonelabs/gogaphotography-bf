@@ -4,40 +4,21 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { PackageForm } from "../_form";
 import { DeleteButton } from "./_delete";
-import { ImageUploader } from "@/app/app/_components/ImageUploader";
 
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
 
-interface PackageRow {
-  id: string;
-  slug: string;
-  name_en: string;
-  name_ka: string | null;
-  short_desc_en: string | null;
-  short_desc_ka: string | null;
-  deliverables_en: string | null;
-  deliverables_ka: string | null;
-  base_price_cents: number;
-  currency: string;
-  duration_hours: number | null;
-  deposit_pct: number | null;
-  published: boolean;
-  hero_image_path: string | null;
-}
-
 export default async function EditPackagePage({ params }: Props) {
   const { id } = await params;
   const sb = gogaAdmin();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data } = (await (sb as any)
+  const { data } = await sb
     .from("packages")
     .select(
-      "id, slug, name_en, name_ka, short_desc_en, short_desc_ka, deliverables_en, deliverables_ka, base_price_cents, currency, duration_hours, deposit_pct, published, hero_image_path",
+      "id, slug, name_en, name_ka, short_desc_en, short_desc_ka, deliverables_en, deliverables_ka, base_price_cents, currency, duration_hours, deposit_pct, published",
     )
     .eq("id", id)
-    .single()) as { data: PackageRow | null };
+    .single();
 
   if (!data) notFound();
 
@@ -63,17 +44,6 @@ export default async function EditPackagePage({ params }: Props) {
             ← back
           </Link>
         </header>
-
-        <section className="mb-5 rounded-2xl bg-white p-5 ring-1 ring-black/5">
-          <ImageUploader
-            surface="package.hero_image"
-            rowId={data.id}
-            label="Package hero image"
-            hint="Used on the public /packages page and as the share-image for this package. Landscape 16:9."
-            currentPath={data.hero_image_path}
-            aspect="16/9"
-          />
-        </section>
 
         <PackageForm initial={data} />
 
