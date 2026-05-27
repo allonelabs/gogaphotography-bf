@@ -27,11 +27,22 @@ function safeEqual(a: string | null, b: string | null): boolean {
 
 export async function POST(req: NextRequest) {
   const expected = process.env["PAYMENT_CALLBACK_SECRET"];
-  if (expected) {
-    const provided = new URL(req.url).searchParams.get("secret");
-    if (!safeEqual(provided, expected)) {
-      return NextResponse.json({ error: "forbidden" }, { status: 403 });
-    }
+  // Fail-CLOSED. If the secret env isn't set, refuse every webhook —
+  // a misconfigured production must not silently accept unauthenticated
+  // callbacks. The only legitimate case where it could be unset is a
+  // brand-new deploy that hasn't been provisioned yet.
+  if (!expected) {
+    console.error(
+      "[payments/callback] PAYMENT_CALLBACK_SECRET unset; rejecting",
+    );
+    return NextResponse.json(
+      { error: "callback_unconfigured" },
+      { status: 503 },
+    );
+  }
+  const provided = new URL(req.url).searchParams.get("secret");
+  if (!safeEqual(provided, expected)) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 
   let body: unknown = null;
