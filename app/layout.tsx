@@ -38,6 +38,11 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  // Next 16 only emits the modern `mobile-web-app-capable`. iOS Safari
+  // still respects the older Apple-prefixed name, so include both.
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
