@@ -111,6 +111,12 @@ export const tourismNav: NavConfig = {
           href: "/app/pages",
           icon: "file-text",
         },
+        {
+          label: "Studio info",
+          labelKa: "სტუდიის ინფო",
+          href: "/app/studio",
+          icon: "user",
+        },
       ],
     },
     {
