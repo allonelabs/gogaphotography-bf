@@ -24,9 +24,18 @@ export default async function AdminLoginPage({ searchParams }: Props) {
   return (
     <div className="min-h-screen w-full grid place-items-center bg-[#0a0a0a] text-[#f4f4f4] px-5 font-sans">
       <div className="w-full max-w-[420px] rounded-[14px] border border-white/10 bg-[#131313] p-8 md:p-9 text-center shadow-[0_24px_80px_rgba(0,0,0,0.35)]">
+        <div className="mx-auto mb-7 grid h-16 w-16 place-items-center rounded-2xl bg-white/5 text-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logomark.svg"
+            alt="GOGA Photography"
+            width={48}
+            height={48}
+          />
+        </div>
         <h1
-          className="text-[22px] uppercase tracking-[0.06em] m-0"
-          style={{ fontVariationSettings: '"wght" 640, "opsz" 36' }}
+          className="text-[22px] uppercase tracking-[0.18em] m-0"
+          style={{ fontVariationSettings: '"wght" 640' }}
         >
           GOGA
         </h1>

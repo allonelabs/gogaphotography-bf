@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GOGA Photography — wordmark.
+  Wide-tracked uppercase sans + tiny italic-serif `· photography` caption.
+  Color = currentColor so the SVG inherits the parent's `color`.
+
+  Font-stack falls back through common system fonts; the admin loads
+  Inter via next/font and the public site loads it too, so both renderers
+  hit the intended typeface. Standalone viewers (Finder, an email
+  client) get the closest system fallback, which still reads correctly
+  at the spacing this design uses.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 240"
+  role="img"
+  aria-label="GOGA Photography"
+  fill="currentColor"
+>
+  <text
+    x="600"
+    y="155"
+    text-anchor="middle"
+    font-family="'Inter', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif"
+    font-weight="600"
+    font-size="170"
+    letter-spacing="42"
+    style="text-transform: uppercase"
+  >GOGA</text>
+  <text
+    x="600"
+    y="218"
+    text-anchor="middle"
+    font-family="'Cormorant Garamond', 'EB Garamond', Georgia, 'Times New Roman', serif"
+    font-style="italic"
+    font-weight="500"
+    font-size="28"
+    letter-spacing="6"
+    fill-opacity="0.7"
+  >·  photography</text>
+</svg>
