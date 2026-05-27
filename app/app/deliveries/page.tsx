@@ -19,7 +19,9 @@ export default async function DeliveriesPage({ searchParams }: Props) {
   const { data, count } = await sb
     .from("deliveries")
     .select(
-      "id, token, password_hash, expires_at, downloads_enabled, archived, view_count, last_viewed_at, created_at, booking_id",
+      `id, token, password_hash, expires_at, downloads_enabled, archived,
+       view_count, last_viewed_at, created_at, booking_id,
+       bookings(client_name, shoot_date)`,
       { count: "exact" },
     )
     .eq("archived", false)
@@ -62,11 +64,17 @@ export default async function DeliveriesPage({ searchParams }: Props) {
                   href={`/app/deliveries/${d.id}`}
                   className="grid grid-cols-1 items-start gap-y-1 gap-x-4 px-5 py-4 sm:grid-cols-[1fr_120px_120px] sm:items-center"
                 >
-                  <div>
-                    <div className="text-[14px] font-medium text-[var(--ink-900)]">
-                      /gallery/{d.token}
+                  <div className="min-w-0">
+                    <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
+                      {d.bookings?.client_name ?? "(no client)"}
+                      {d.bookings?.shoot_date ? (
+                        <span className="ml-2 font-mono text-[11px] font-normal tabular-nums text-[var(--ink-500)]">
+                          {new Date(d.bookings.shoot_date).toLocaleDateString()}
+                        </span>
+                      ) : null}
                     </div>
-                    <div className="text-[12px] text-[var(--ink-500)]">
+                    <div className="truncate font-mono text-[11px] text-[var(--ink-400)]">
+                      /gallery/{d.token} ·{" "}
                       {d.last_viewed_at
                         ? `last viewed ${new Date(d.last_viewed_at).toLocaleDateString()}`
                         : "never viewed"}
