@@ -12,10 +12,10 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Contracts" };
 
 const STATUS_TONE: Record<string, string> = {
-  draft: "bg-slate-100 text-slate-700",
-  sent: "bg-blue-50 text-blue-700",
-  signed: "bg-emerald-50 text-emerald-700",
-  void: "bg-rose-50 text-rose-700",
+  draft: "bg-slate-100 text-slate-600",
+  sent: "bg-white text-slate-900 ring-1 ring-inset ring-black/15",
+  signed: "bg-slate-900 text-white",
+  void: "bg-slate-100 text-slate-400 line-through",
 };
 const STATUS_LABELS: Record<string, string> = {
   draft: "Draft",

@@ -165,7 +165,7 @@ export function StudioForm({ initial }: { initial: StudioRow | null }) {
           {pending ? "Saving…" : "Save"}
         </button>
         {savedAt ? (
-          <span className="text-[12px] text-emerald-700">Saved.</span>
+          <span className="text-[12px] text-slate-900 font-medium">Saved.</span>
         ) : null}
       </div>
     </form>

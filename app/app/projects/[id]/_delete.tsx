@@ -19,7 +19,7 @@ export function DeleteProjectButton({
     <button
       type="button"
       disabled={pending}
-      className="rounded-full border border-rose-300 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50 disabled:opacity-50"
+      className="rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"
       onClick={() => {
         if (
           confirm(

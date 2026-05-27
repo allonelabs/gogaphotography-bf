@@ -69,7 +69,7 @@ export function DeleteButton({
     <button
       type="button"
       disabled={pending}
-      className="rounded-full border border-rose-300 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50 disabled:opacity-50"
+      className="rounded-full border border-black/20 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"
       onClick={() => {
         if (!confirm(confirmText)) return;
         start(async () => {

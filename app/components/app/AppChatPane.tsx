@@ -2028,7 +2028,7 @@ export function AppChatPane({
                                   : ""}
                               </span>
                               {r.error && (
-                                <span className="text-[10px] text-rose-600">
+                                <span className="text-[10px] text-slate-600">
                                   {r.error.slice(0, 80)}
                                 </span>
                               )}
@@ -2166,7 +2166,7 @@ export function AppChatPane({
                       </span>
                     )}
                     {m.videoStatus === "failed" && (
-                      <span className="text-[11px] font-mono text-rose-600">
+                      <span className="text-[11px] font-mono text-slate-600">
                         failed: {m.videoError ?? "unknown error"}
                       </span>
                     )}

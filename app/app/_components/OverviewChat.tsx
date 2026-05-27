@@ -289,7 +289,7 @@ export function OverviewChat({
               </div>
             )}
             {error && (
-              <div className="rounded-2xl border border-rose-300/60 bg-rose-50/70 px-4 py-3 text-[13px] text-rose-800">
+              <div className="rounded-2xl border border-black/20 bg-slate-200/70 px-4 py-3 text-[13px] text-slate-900">
                 {error}
               </div>
             )}

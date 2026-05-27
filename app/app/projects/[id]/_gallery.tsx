@@ -240,7 +240,7 @@ export function Gallery({
                 onDragOver={onRowDragOver}
                 onDrop={(e) => onRowDrop(img.id, e)}
                 className={`grid grid-cols-[24px_96px_1fr_auto] items-center gap-3 rounded-2xl bg-white px-3 py-2 ring-1 transition ${
-                  isHero ? "ring-amber-300/60" : "ring-black/5"
+                  isHero ? "ring-black/10" : "ring-black/5"
                 }`}
               >
                 <span
@@ -276,7 +276,7 @@ export function Gallery({
                 </div>
                 <div className="flex items-center gap-2">
                   {isHero ? (
-                    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-amber-800">
+                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-900">
                       ⭐ Hero
                     </span>
                   ) : (
@@ -291,7 +291,7 @@ export function Gallery({
                   <button
                     type="button"
                     onClick={() => void onDelete(img.id, img.imagePath)}
-                    className="rounded-full border border-rose-300 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-rose-700 hover:bg-rose-50"
+                    className="rounded-full border border-black/20 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-700 hover:bg-slate-100"
                   >
                     Delete
                   </button>

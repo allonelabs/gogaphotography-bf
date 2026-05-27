@@ -86,7 +86,7 @@ export default async function DeliveriesPage({ searchParams }: Props) {
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                       d.password_hash
-                        ? "bg-amber-50 text-amber-700"
+                        ? "bg-white text-slate-900 ring-1 ring-inset ring-black/15"
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >

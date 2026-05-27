@@ -48,7 +48,7 @@ export default async function EditServicePage({ params }: Props) {
         <ServiceForm initial={data} />
 
         <section className="mt-12 border-t border-black/5 pt-6">
-          <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-rose-700">
+          <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-700">
             Danger zone
           </h2>
           <DeleteServiceButton id={data.id} title={data.title_en} />

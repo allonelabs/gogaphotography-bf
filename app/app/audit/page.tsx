@@ -18,26 +18,29 @@ type Props = {
   }>;
 };
 
+/** Monochrome event tones — three tiers communicate consequence:
+ *  - terminal good (paid, signed, published)  → filled ink chip
+ *  - in-flight     (sent, link_created, etc.) → outlined chip
+ *  - terminal bad  (failed, deleted, void)    → struck-through grey
+ *  - neutral       (everything else)          → flat grey chip
+ */
 const KIND_TONE: Array<{ test: RegExp; cls: string }> = [
-  { test: /^deposit\.paid$/, cls: "bg-emerald-50 text-emerald-700" },
-  { test: /^deposit\.failed$/, cls: "bg-rose-50 text-rose-700" },
-  { test: /^deposit\./, cls: "bg-amber-50 text-amber-700" },
-  { test: /^contract\.sent$/, cls: "bg-blue-50 text-blue-700" },
-  { test: /^contract\.signed$/, cls: "bg-emerald-50 text-emerald-700" },
-  { test: /^contract\./, cls: "bg-slate-100 text-slate-700" },
   {
-    test: /^booking\.(created|status_changed)$/,
-    cls: "bg-sky-50 text-sky-700",
+    test: /^deposit\.paid$|^contract\.signed$|\.published$/,
+    cls: "bg-slate-900 text-white",
   },
-  { test: /^booking\.deleted$/, cls: "bg-rose-50 text-rose-700" },
-  { test: /^lead\.archived$/, cls: "bg-rose-50 text-rose-700" },
-  { test: /^lead\./, cls: "bg-violet-50 text-violet-700" },
-  { test: /\.published$/, cls: "bg-emerald-50 text-emerald-700" },
-  { test: /\.unpublished$/, cls: "bg-slate-100 text-slate-700" },
+  {
+    test: /^deposit\.failed$|^booking\.deleted$|^contract\.voided$|^lead\.archived$/,
+    cls: "bg-slate-100 text-slate-400 line-through",
+  },
+  {
+    test: /^deposit\.|^contract\.sent$|^booking\.(created|status_changed)$|^lead\.stage_changed$/,
+    cls: "bg-white text-slate-900 ring-1 ring-inset ring-black/15",
+  },
 ];
 function toneFor(kind: string): string {
   for (const t of KIND_TONE) if (t.test.test(kind)) return t.cls;
-  return "bg-slate-100 text-slate-700";
+  return "bg-slate-100 text-slate-600";
 }
 
 function entityHref(t: string | null, id: string | null): string | null {

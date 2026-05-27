@@ -25,21 +25,22 @@ function fmtMoney(cents: number, currency: string): string {
   }
 }
 
+/** Monochrome status / deposit tones — see lib/goga/leads.ts STAGE_TONE. */
 const STATUS_TONE: Record<string, string> = {
-  inquiry: "bg-slate-100 text-slate-700",
-  reserved: "bg-blue-50 text-blue-700",
-  confirmed: "bg-emerald-50 text-emerald-700",
-  completed: "bg-emerald-50 text-emerald-700",
-  cancelled: "bg-rose-50 text-rose-700",
-  no_show: "bg-rose-50 text-rose-700",
+  inquiry: "bg-slate-100 text-slate-600",
+  reserved: "bg-white text-slate-900 ring-1 ring-inset ring-black/15",
+  confirmed: "bg-slate-900 text-white",
+  completed: "bg-slate-200 text-slate-900",
+  cancelled: "bg-slate-100 text-slate-400 line-through",
+  no_show: "bg-slate-100 text-slate-400 line-through",
 };
 
 const DEPOSIT_TONE: Record<string, string> = {
-  none: "bg-slate-100 text-slate-700",
-  pending: "bg-amber-50 text-amber-700",
-  paid: "bg-emerald-50 text-emerald-700",
-  refunded: "bg-rose-50 text-rose-700",
-  failed: "bg-rose-50 text-rose-700",
+  none: "bg-slate-100 text-slate-600",
+  pending: "bg-white text-slate-900 ring-1 ring-inset ring-black/15",
+  paid: "bg-slate-900 text-white",
+  refunded: "bg-slate-200 text-slate-900",
+  failed: "bg-slate-100 text-slate-400 line-through",
 };
 
 const STATUS_LABELS: Record<string, string> = {

@@ -376,8 +376,8 @@ export default async function HomePage() {
                       <span
                         className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-[0.16em] ${
                           c.status === "sent"
-                            ? "bg-blue-50 text-blue-700"
-                            : "bg-slate-100 text-slate-700"
+                            ? "bg-white text-slate-900 ring-1 ring-inset ring-black/15"
+                            : "bg-slate-100 text-slate-600"
                         }`}
                       >
                         {c.status}

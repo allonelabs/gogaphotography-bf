@@ -116,7 +116,7 @@ export function ImageUploader({
             type="button"
             onClick={onClear}
             disabled={pending}
-            className="text-[10px] uppercase tracking-[0.18em] text-rose-700 hover:underline disabled:opacity-50"
+            className="text-[10px] uppercase tracking-[0.18em] text-slate-700 hover:underline disabled:opacity-50"
           >
             Remove
           </button>

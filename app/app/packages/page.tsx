@@ -92,7 +92,7 @@ export default async function PackagesPage() {
                   <span
                     className={`justify-self-center rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                       p.published
-                        ? "bg-emerald-50 text-emerald-700"
+                        ? "bg-slate-900 text-slate-900 font-medium"
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >

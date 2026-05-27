@@ -68,7 +68,7 @@ export default async function ChatbotIndex() {
                   {s.lead_id ? (
                     <Link
                       href={`/app/leads/${s.lead_id}`}
-                      className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-emerald-700 transition hover:bg-emerald-100"
+                      className="shrink-0 rounded-full bg-slate-900 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-slate-900 font-medium transition hover:bg-slate-900"
                     >
                       → Lead
                     </Link>

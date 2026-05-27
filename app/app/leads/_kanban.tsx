@@ -82,7 +82,7 @@ export function Kanban({ stages, labels, initial }: Props) {
               overStage === stage
                 ? "border-[var(--ink-900)] bg-slate-50"
                 : "border-black/5"
-            } ${isLost ? "border-rose-200/50" : ""}`}
+            } ${isLost ? "border-black/20" : ""}`}
             onDragOver={(e) => onColOver(stage, e)}
             onDragLeave={() => setOverStage(null)}
             onDrop={(e) => onColDrop(stage, e)}
@@ -90,7 +90,7 @@ export function Kanban({ stages, labels, initial }: Props) {
             <header className="flex items-baseline justify-between px-2 pb-2 pt-1">
               <span
                 className={`text-[10px] font-medium uppercase tracking-[0.22em] ${
-                  isLost ? "text-rose-700/70" : "text-[var(--ink-900)]"
+                  isLost ? "text-slate-700/70" : "text-[var(--ink-900)]"
                 }`}
               >
                 {labels[stage]}

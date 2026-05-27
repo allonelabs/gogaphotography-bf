@@ -192,7 +192,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         >
           {pending ? "Saving…" : isEdit ? "Save changes" : "Create package"}
         </button>
-        {err ? <span className="text-[13px] text-rose-700">{err}</span> : null}
+        {err ? <span className="text-[13px] text-slate-700">{err}</span> : null}
       </div>
     </form>
   );

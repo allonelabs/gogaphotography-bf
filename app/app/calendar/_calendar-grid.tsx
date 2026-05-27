@@ -16,12 +16,12 @@ export type CalendarItem = {
 };
 
 const STATUS_TONE: Record<string, string> = {
-  inquiry: "bg-slate-100 text-slate-700",
-  reserved: "bg-sky-100 text-sky-800",
-  confirmed: "bg-emerald-100 text-emerald-800",
-  completed: "bg-stone-100 text-stone-700",
-  cancelled: "bg-rose-100 text-rose-700",
-  no_show: "bg-amber-100 text-amber-800",
+  inquiry: "bg-slate-100 text-slate-600",
+  reserved: "bg-white text-slate-900 ring-1 ring-inset ring-black/15",
+  confirmed: "bg-slate-900 text-white",
+  completed: "bg-slate-200 text-slate-900",
+  cancelled: "bg-slate-100 text-slate-400 line-through",
+  no_show: "bg-slate-100 text-slate-400 line-through",
 };
 
 function pad(n: number): string {

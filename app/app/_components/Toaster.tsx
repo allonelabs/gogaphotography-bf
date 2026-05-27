@@ -46,9 +46,9 @@ export function ToasterProvider({ children }: { children: React.ReactNode }) {
             key={t.id}
             className={`pointer-events-auto min-w-[220px] max-w-[360px] rounded-xl px-4 py-2.5 text-[13px] shadow-[0_10px_28px_rgba(0,0,0,0.18)] ring-1 ${
               t.tone === "success"
-                ? "bg-emerald-50 text-emerald-900 ring-emerald-200"
+                ? "bg-slate-900 text-slate-900 ring-black/10"
                 : t.tone === "error"
-                  ? "bg-rose-50 text-rose-900 ring-rose-200"
+                  ? "bg-slate-200 text-slate-900 ring-black/10"
                   : "bg-white text-[var(--ink-900)] ring-black/10"
             }`}
           >

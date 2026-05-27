@@ -89,9 +89,9 @@ export function HeroForm({ initial }: { initial: Initial | null }) {
           {pending ? "Saving…" : "Save"}
         </button>
         {savedAt ? (
-          <span className="text-[12px] text-emerald-700">Saved.</span>
+          <span className="text-[12px] text-slate-900 font-medium">Saved.</span>
         ) : null}
-        {err ? <span className="text-[12px] text-rose-700">{err}</span> : null}
+        {err ? <span className="text-[12px] text-slate-700">{err}</span> : null}
       </div>
     </form>
   );

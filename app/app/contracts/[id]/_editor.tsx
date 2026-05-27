@@ -135,10 +135,10 @@ export function ContractEditor({ contract }: { contract: Contract }) {
               {pending ? "Saving…" : "Save body"}
             </button>
             {savedAt ? (
-              <span className="text-[12px] text-emerald-700">Saved.</span>
+              <span className="text-[12px] text-slate-900 font-medium">Saved.</span>
             ) : null}
             {err ? (
-              <span className="text-[12px] text-rose-700">{err}</span>
+              <span className="text-[12px] text-slate-700">{err}</span>
             ) : null}
           </div>
         ) : null}
@@ -156,11 +156,11 @@ export function ContractEditor({ contract }: { contract: Contract }) {
                 <span
                   className={`rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] ${
                     isSigned
-                      ? "bg-emerald-50 text-emerald-700"
+                      ? "bg-slate-900 text-slate-900 font-medium"
                       : isVoid
-                        ? "bg-rose-50 text-rose-700"
+                        ? "bg-slate-200 text-slate-700"
                         : contract.status === "sent"
-                          ? "bg-blue-50 text-blue-700"
+                          ? "bg-white text-slate-900 ring-1 ring-inset ring-black/15"
                           : "bg-slate-100 text-slate-700"
                   }`}
                 >
@@ -249,7 +249,7 @@ export function ContractEditor({ contract }: { contract: Contract }) {
           <button
             type="button"
             onClick={onVoid}
-            className="w-full rounded-full border border-rose-300 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50"
+            className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100"
           >
             Void contract
           </button>

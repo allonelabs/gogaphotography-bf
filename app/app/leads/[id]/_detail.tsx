@@ -140,7 +140,7 @@ export function LeadDetail({
               Notes
             </h3>
             {saved === "notes" ? (
-              <span className="text-[11px] text-emerald-700">Saved.</span>
+              <span className="text-[11px] text-slate-900 font-medium">Saved.</span>
             ) : null}
           </header>
           <textarea
@@ -257,7 +257,7 @@ export function LeadDetail({
             ))}
           </select>
           {saved === "stage" ? (
-            <p className="mt-1.5 text-[11px] text-emerald-700">Saved.</p>
+            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">Saved.</p>
           ) : null}
 
           <button
@@ -325,7 +325,7 @@ export function LeadDetail({
         <button
           type="button"
           onClick={onArchive}
-          className="w-full rounded-full border border-rose-300 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50"
+          className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100"
         >
           Archive lead
         </button>
@@ -473,7 +473,7 @@ function ConvertModal({
           />
         </label>
 
-        {err ? <p className="mb-3 text-[12px] text-rose-700">{err}</p> : null}
+        {err ? <p className="mb-3 text-[12px] text-slate-700">{err}</p> : null}
 
         <div className="flex justify-end gap-2">
           <button

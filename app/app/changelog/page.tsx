@@ -93,11 +93,11 @@ const ENTRIES: Entry[] = [
 function categoryTone(key: string): string {
   switch (key) {
     case "changelog.cat.feature":
-      return "bg-emerald-100/60 text-emerald-900 border-emerald-200/60";
+      return "bg-slate-900/60 text-slate-900 border-black/20";
     case "changelog.cat.infra":
-      return "bg-sky-100/60 text-sky-900 border-sky-200/60";
+      return "bg-slate-100/60 text-slate-900 border-black/20";
     case "changelog.cat.fix":
-      return "bg-amber-100/60 text-amber-900 border-amber-200/60";
+      return "bg-slate-100/60 text-slate-900 border-black/20";
     default:
       return "bg-slate-100/60 text-slate-900 border-slate-200/60";
   }

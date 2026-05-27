@@ -101,7 +101,7 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
             <span
               className={`justify-self-center rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
                 p.published
-                  ? "bg-emerald-50 text-emerald-700"
+                  ? "bg-slate-900 text-slate-900 font-medium"
                   : "bg-slate-100 text-slate-700"
               }`}
             >
@@ -188,7 +188,7 @@ function DeleteButton({
     <button
       type="button"
       disabled={pending}
-      className="rounded-full border border-rose-300 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50 disabled:opacity-50"
+      className="rounded-full border border-black/20 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"
       onClick={() => {
         if (
           !confirm(

@@ -253,7 +253,7 @@ export function DeliveryManager({
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 {p.favoritedAt ? (
-                  <span className="absolute left-1.5 top-1.5 rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-amber-900">
+                  <span className="absolute left-1.5 top-1.5 rounded-full bg-slate-100 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-900">
                     ★
                   </span>
                 ) : null}
@@ -316,7 +316,7 @@ export function DeliveryManager({
               <button
                 type="button"
                 onClick={onClearPassword}
-                className="w-full rounded-full border border-rose-300 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-rose-700 hover:bg-rose-50"
+                className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 hover:bg-slate-100"
               >
                 Remove password
               </button>

@@ -204,7 +204,7 @@ export function BookingDetail({
             ))}
           </select>
           {saved ? (
-            <p className="mt-1.5 text-[11px] text-emerald-700">Saved.</p>
+            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">Saved.</p>
           ) : null}
 
           <dl className="mt-4 space-y-2 text-[13px]">
@@ -262,7 +262,7 @@ export function BookingDetail({
         <button
           type="button"
           onClick={onDelete}
-          className="w-full rounded-full border border-rose-300 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-rose-700 transition hover:bg-rose-50"
+          className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100"
         >
           Delete booking
         </button>
@@ -311,7 +311,7 @@ function ContractButton({
       >
         {pending ? "Opening…" : "Create / open contract"}
       </button>
-      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+      {err ? <p className="mt-2 text-[12px] text-slate-700">{err}</p> : null}
     </section>
   );
 }
@@ -386,7 +386,7 @@ function DeliveryButton({
           </button>
         </>
       )}
-      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+      {err ? <p className="mt-2 text-[12px] text-slate-700">{err}</p> : null}
     </section>
   );
 }
@@ -437,7 +437,7 @@ function DepositActions({
       </h3>
       <p className="mb-3 text-[12px] text-[var(--ink-500)]">
         {isPaid ? (
-          <span className="text-emerald-700">
+          <span className="text-slate-900 font-medium">
             Paid — booking confirmed, lead advanced to “contract”.
           </span>
         ) : depositCents <= 0 ? (
@@ -485,7 +485,7 @@ function DepositActions({
         </>
       ) : null}
 
-      {err ? <p className="mt-2 text-[12px] text-rose-700">{err}</p> : null}
+      {err ? <p className="mt-2 text-[12px] text-slate-700">{err}</p> : null}
     </section>
   );
 }
@@ -517,7 +517,7 @@ function NotesEditor({
           Notes
         </h3>
         {saved ? (
-          <span className="text-[11px] text-emerald-700">Saved.</span>
+          <span className="text-[11px] text-slate-900 font-medium">Saved.</span>
         ) : null}
       </header>
       <textarea
