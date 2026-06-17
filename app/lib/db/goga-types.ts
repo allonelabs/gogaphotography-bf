@@ -4,6 +4,12 @@ import type {
   StoreOrderItemRow,
   StoreDownloadRow,
 } from "./store-types";
+import type {
+  BlogCategoryRow,
+  BlogTagRow,
+  BlogPostRow,
+  BlogPostTagRow,
+} from "./blog-types";
 
 export type GogaJson =
   | string
@@ -862,6 +868,30 @@ export type GogaDatabase = {
           last_downloaded_at?: string | null;
         };
         Update: Partial<StoreDownloadRow>;
+        Relationships: [];
+      };
+      blog_categories: {
+        Row: BlogCategoryRow;
+        Insert: Partial<BlogCategoryRow> & Pick<BlogCategoryRow, "slug">;
+        Update: Partial<BlogCategoryRow>;
+        Relationships: [];
+      };
+      blog_tags: {
+        Row: BlogTagRow;
+        Insert: Partial<BlogTagRow> & Pick<BlogTagRow, "slug">;
+        Update: Partial<BlogTagRow>;
+        Relationships: [];
+      };
+      blog_posts: {
+        Row: BlogPostRow;
+        Insert: Partial<BlogPostRow> & Pick<BlogPostRow, "slug">;
+        Update: Partial<BlogPostRow>;
+        Relationships: [];
+      };
+      blog_post_tags: {
+        Row: BlogPostTagRow;
+        Insert: BlogPostTagRow;
+        Update: Partial<BlogPostTagRow>;
         Relationships: [];
       };
     };
