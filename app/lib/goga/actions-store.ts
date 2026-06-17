@@ -6,6 +6,7 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { enqueueOutbound } from "@/app/lib/outbox/singleton";
 import { requireSession } from "./require-auth";
 import { buildDownloadEmail } from "./store-email";
+import { enqueuePin } from "./pinterest-queue";
 import type { StoreProductType } from "@/app/lib/db/store-types";
 
 const STORE_ORG_ID = 1;
@@ -93,22 +94,33 @@ export async function createStoreProduct(formData: FormData): Promise<void> {
   const file = formData.get("file") as File | null;
   const uploaded = file && file.size > 0 ? await uploadFile(file) : null;
 
-  const { error } = await sb.from("store_products").insert({
-    type,
-    title,
-    slug,
-    description: String(formData.get("description") ?? "").trim() || null,
-    price_cents: parseCents(formData.get("price")),
-    currency: (
-      String(formData.get("currency") ?? "GEL").trim() || "GEL"
-    ).toUpperCase(),
-    cover_image_path,
-    file_path: uploaded?.path ?? null,
-    file_size_bytes: uploaded?.size ?? null,
-    license_terms: String(formData.get("license_terms") ?? "").trim() || null,
-    published: formData.get("published") === "on",
-  });
+  const { data: created, error } = await sb
+    .from("store_products")
+    .insert({
+      type,
+      title,
+      slug,
+      description: String(formData.get("description") ?? "").trim() || null,
+      price_cents: parseCents(formData.get("price")),
+      currency: (
+        String(formData.get("currency") ?? "GEL").trim() || "GEL"
+      ).toUpperCase(),
+      cover_image_path,
+      file_path: uploaded?.path ?? null,
+      file_size_bytes: uploaded?.size ?? null,
+      license_terms: String(formData.get("license_terms") ?? "").trim() || null,
+      published: formData.get("published") === "on",
+    })
+    .select("id")
+    .single();
   if (error) throw new Error(`createStoreProduct: ${error.message}`);
+  if (formData.get("published") === "on" && created) {
+    try {
+      await enqueuePin("product", created.id);
+    } catch (e) {
+      console.error("enqueuePin product", e);
+    }
+  }
   revalidatePath("/app/store");
   revalidatePath("/store");
   redirect("/app/store");
@@ -146,6 +158,13 @@ export async function updateStoreProduct(
     .update(patch as import("@/app/lib/db/store-types").StoreProductRow)
     .eq("id", id);
   if (error) throw new Error(`updateStoreProduct: ${error.message}`);
+  if (formData.get("published") === "on") {
+    try {
+      await enqueuePin("product", id);
+    } catch (e) {
+      console.error("enqueuePin product", e);
+    }
+  }
   revalidatePath("/app/store");
   revalidatePath("/store");
   redirect("/app/store");

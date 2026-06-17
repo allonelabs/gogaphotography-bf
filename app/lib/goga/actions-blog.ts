@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { sanitizeBlogHtml } from "./blog-sanitize";
+import { enqueuePin } from "./pinterest-queue";
 
 function slugify(input: string): string {
   return input
@@ -104,6 +105,14 @@ export async function createPost(formData: FormData): Promise<void> {
   const tagIds = formData.getAll("tag_ids").map(String).filter(Boolean);
   await setPostTags(data.id, tagIds);
 
+  if (fields.status === "published") {
+    try {
+      await enqueuePin("blog", data.id);
+    } catch (e) {
+      console.error("enqueuePin blog", e);
+    }
+  }
+
   revalidatePath("/app/blog");
   revalidatePath("/blog");
   redirect("/app/blog");
@@ -132,6 +141,14 @@ export async function updatePost(
 
   const tagIds = formData.getAll("tag_ids").map(String).filter(Boolean);
   await setPostTags(id, tagIds);
+
+  if (fields.status === "published") {
+    try {
+      await enqueuePin("blog", id);
+    } catch (e) {
+      console.error("enqueuePin blog", e);
+    }
+  }
 
   revalidatePath("/app/blog");
   revalidatePath("/blog");
