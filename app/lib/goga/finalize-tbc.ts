@@ -18,6 +18,14 @@ export async function finalizeTbcPayment(payId: string): Promise<TbcOutcome> {
   const status = details.status;
   const bookingId = details.merchantPaymentId;
 
+  // Digital store orders are namespaced `store_<uuid>` — hand off to the
+  // store finalizer. Dynamic import avoids a circular import (the store
+  // finalizer imports the TbcOutcome type from this module).
+  if (typeof bookingId === "string" && bookingId.startsWith("store_")) {
+    const { finalizeTbcStorePayment } = await import("./finalize-store-tbc");
+    return finalizeTbcStorePayment(payId);
+  }
+
   console.log("[tbc/finalize]", { payId, status, bookingId });
 
   if (!bookingId) {
