@@ -1,12 +1,12 @@
 // app/components/app/BlogEditor.tsx
 "use client";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import { useState, useCallback } from "react";
 
-function Toolbar({ editor }: { editor: ReturnType<typeof useEditor> }) {
+function Toolbar({ editor }: { editor: Editor | null }) {
   const addImage = useCallback(async () => {
     if (!editor) return;
     const input = document.createElement("input");
