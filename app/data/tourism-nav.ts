@@ -112,6 +112,12 @@ export const tourismNav: NavConfig = {
       items: [
         { label: "Homepage hero", href: "/app/hero", icon: "sparkles" },
         {
+          label: "Blog",
+          labelKa: "ბლოგი",
+          href: "/app/blog",
+          icon: "pen-tool",
+        },
+        {
           label: "Pages",
           labelKa: "გვერდები",
           href: "/app/pages",
