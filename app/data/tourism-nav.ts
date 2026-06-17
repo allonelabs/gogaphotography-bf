@@ -140,6 +140,12 @@ export const tourismNav: NavConfig = {
     {
       label: "Inbox",
       items: [
+        {
+          label: "Messages",
+          labelKa: "მესიჯები",
+          href: "/app/messages",
+          icon: "message-circle",
+        },
         { label: "Contact form", href: "/app/contact", icon: "mail" },
         { label: "Chatbot", href: "/app/chatbot", icon: "bot" },
       ],

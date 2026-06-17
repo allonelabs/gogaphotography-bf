@@ -26,6 +26,7 @@ import {
   ShoppingBag,
   PenTool,
   Share2,
+  MessageCircle,
   User,
   Users,
 } from "lucide-react";
@@ -43,6 +44,7 @@ const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   "shopping-bag": ShoppingBag,
   "pen-tool": PenTool,
   "share-2": Share2,
+  "message-circle": MessageCircle,
   camera: Camera,
   grid: LayoutGrid,
   sparkles: Sparkles,
