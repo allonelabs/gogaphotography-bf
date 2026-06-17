@@ -118,6 +118,12 @@ export const tourismNav: NavConfig = {
           icon: "pen-tool",
         },
         {
+          label: "Pinterest",
+          labelKa: "Pinterest",
+          href: "/app/pinterest",
+          icon: "share-2",
+        },
+        {
           label: "Pages",
           labelKa: "გვერდები",
           href: "/app/pages",
