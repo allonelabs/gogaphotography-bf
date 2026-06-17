@@ -10,6 +10,7 @@ import type {
   BlogPostRow,
   BlogPostTagRow,
 } from "./blog-types";
+import type { PinterestSettingsRow, PinterestPinRow } from "./pinterest-types";
 
 export type GogaJson =
   | string
@@ -892,6 +893,19 @@ export type GogaDatabase = {
         Row: BlogPostTagRow;
         Insert: BlogPostTagRow;
         Update: Partial<BlogPostTagRow>;
+        Relationships: [];
+      };
+      pinterest_settings: {
+        Row: PinterestSettingsRow;
+        Insert: Partial<PinterestSettingsRow>;
+        Update: Partial<PinterestSettingsRow>;
+        Relationships: [];
+      };
+      pinterest_pins: {
+        Row: PinterestPinRow;
+        Insert: Partial<PinterestPinRow> &
+          Pick<PinterestPinRow, "content_type" | "content_id">;
+        Update: Partial<PinterestPinRow>;
         Relationships: [];
       };
     };
