@@ -11,6 +11,11 @@ import type {
   BlogPostTagRow,
 } from "./blog-types";
 import type { PinterestSettingsRow, PinterestPinRow } from "./pinterest-types";
+import type {
+  MetaSettingsRow,
+  MetaThreadRow,
+  MetaMessageRow,
+} from "./meta-types";
 
 export type GogaJson =
   | string
@@ -906,6 +911,26 @@ export type GogaDatabase = {
         Insert: Partial<PinterestPinRow> &
           Pick<PinterestPinRow, "content_type" | "content_id">;
         Update: Partial<PinterestPinRow>;
+        Relationships: [];
+      };
+      meta_settings: {
+        Row: MetaSettingsRow;
+        Insert: Partial<MetaSettingsRow>;
+        Update: Partial<MetaSettingsRow>;
+        Relationships: [];
+      };
+      meta_threads: {
+        Row: MetaThreadRow;
+        Insert: Partial<MetaThreadRow> &
+          Pick<MetaThreadRow, "channel" | "external_id">;
+        Update: Partial<MetaThreadRow>;
+        Relationships: [];
+      };
+      meta_messages: {
+        Row: MetaMessageRow;
+        Insert: Partial<MetaMessageRow> &
+          Pick<MetaMessageRow, "thread_id" | "direction" | "sender">;
+        Update: Partial<MetaMessageRow>;
         Relationships: [];
       };
     };
