@@ -23,6 +23,7 @@ import {
   ScrollText,
   Sparkles,
   Tag,
+  ShoppingBag,
   User,
   Users,
 } from "lucide-react";
@@ -37,6 +38,7 @@ const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   "scroll-text": ScrollText,
   image: ImageIcon,
   tag: Tag,
+  "shopping-bag": ShoppingBag,
   camera: Camera,
   grid: LayoutGrid,
   sparkles: Sparkles,

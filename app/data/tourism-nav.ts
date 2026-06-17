@@ -99,6 +99,12 @@ export const tourismNav: NavConfig = {
           href: "/app/services",
           icon: "grid",
         },
+        {
+          label: "Store",
+          labelKa: "მაღაზია",
+          href: "/app/store",
+          icon: "shopping-bag",
+        },
       ],
     },
     {
