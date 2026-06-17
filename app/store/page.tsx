@@ -1,7 +1,8 @@
 // app/store/page.tsx
 import Link from "next/link";
 import { listPublishedProducts } from "@/app/lib/goga/store-products";
-import { CartProvider, formatGel } from "./_cart";
+import { CartProvider } from "./_cart";
+import { formatGel } from "./_format";
 
 export const dynamic = "force-dynamic";
 

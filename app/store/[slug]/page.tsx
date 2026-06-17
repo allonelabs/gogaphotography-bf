@@ -1,7 +1,8 @@
 // app/store/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { getPublishedProductBySlug } from "@/app/lib/goga/store-products";
-import { CartProvider, formatGel } from "../_cart";
+import { CartProvider } from "../_cart";
+import { formatGel } from "../_format";
 import { AddToCart } from "../_add-to-cart";
 
 export const dynamic = "force-dynamic";

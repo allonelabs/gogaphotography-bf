@@ -1,7 +1,8 @@
 // app/store/checkout/page.tsx
 "use client";
 import { useState } from "react";
-import { CartProvider, useCart, formatGel } from "../_cart";
+import { CartProvider, useCart } from "../_cart";
+import { formatGel } from "../_format";
 
 function CheckoutInner() {
   const { items, remove, totalCents, clear } = useCart();

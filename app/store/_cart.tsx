@@ -59,7 +59,3 @@ export function useCart(): CartCtx {
   if (!c) throw new Error("useCart must be used inside CartProvider");
   return c;
 }
-
-export function formatGel(cents: number): string {
-  return `${(cents / 100).toFixed(2)} ₾`;
-}
