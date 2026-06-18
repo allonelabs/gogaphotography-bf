@@ -16,6 +16,7 @@ import type {
   MetaThreadRow,
   MetaMessageRow,
 } from "./meta-types";
+import type { PortfolioAlbumRow, ProjectAlbumRow } from "./portfolio-types";
 
 export type GogaJson =
   | string
@@ -931,6 +932,18 @@ export type GogaDatabase = {
         Insert: Partial<MetaMessageRow> &
           Pick<MetaMessageRow, "thread_id" | "direction" | "sender">;
         Update: Partial<MetaMessageRow>;
+        Relationships: [];
+      };
+      portfolio_albums: {
+        Row: PortfolioAlbumRow;
+        Insert: Partial<PortfolioAlbumRow> & Pick<PortfolioAlbumRow, "slug">;
+        Update: Partial<PortfolioAlbumRow>;
+        Relationships: [];
+      };
+      project_albums: {
+        Row: ProjectAlbumRow;
+        Insert: ProjectAlbumRow;
+        Update: Partial<ProjectAlbumRow>;
         Relationships: [];
       };
     };
