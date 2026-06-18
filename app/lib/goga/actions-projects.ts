@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
+import { setProjectAlbums } from "./portfolio-albums";
 
 function slugify(input: string): string {
   return input
@@ -56,6 +57,8 @@ export async function createProject(formData: FormData): Promise<void> {
     .select("id")
     .single();
   if (error) throw new Error(error.message);
+  const albumIds = formData.getAll("album_ids").map(String).filter(Boolean);
+  if (data) await setProjectAlbums(data.id, albumIds);
   revalidatePath("/app/projects");
   redirect(`/app/projects/${data.id}`);
 }
@@ -83,6 +86,8 @@ export async function updateProject(
   };
   const { error } = await sb.from("projects").update(update).eq("id", id);
   if (error) throw new Error(error.message);
+  const albumIds = formData.getAll("album_ids").map(String).filter(Boolean);
+  await setProjectAlbums(id, albumIds);
   revalidatePath("/app/projects");
   revalidatePath(`/app/projects/${id}`);
   revalidatePath(`/project/${slug}`);

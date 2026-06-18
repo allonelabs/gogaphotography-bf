@@ -5,6 +5,10 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ProjectForm } from "./_form";
 import { Gallery } from "./_gallery";
 import { DeleteProjectButton } from "./_delete";
+import {
+  listAlbums,
+  getProjectAlbumIds,
+} from "@/app/lib/goga/portfolio-albums";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +41,11 @@ export default async function EditProjectPage({ params }: Props) {
   ]);
 
   if (!project) notFound();
+
+  const [albums, selectedAlbumIds] = await Promise.all([
+    listAlbums(),
+    getProjectAlbumIds(id),
+  ]);
 
   const items = (images ?? []).map((i) => ({
     id: i.id,
@@ -80,7 +89,11 @@ export default async function EditProjectPage({ params }: Props) {
           </div>
         </header>
 
-        <ProjectForm initial={project} />
+        <ProjectForm
+          initial={project}
+          albums={albums}
+          selectedAlbumIds={selectedAlbumIds}
+        />
 
         <section className="mt-8">
           <header className="mb-3 flex items-baseline justify-between">

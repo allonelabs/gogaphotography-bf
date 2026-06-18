@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { ProjectForm } from "../[id]/_form";
+import { listAlbums } from "@/app/lib/goga/portfolio-albums";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "New project" };
 
-export default function NewProjectPage() {
+export default async function NewProjectPage() {
+  const albums = await listAlbums();
   return (
     <AppShell
       breadcrumb={[
@@ -34,7 +36,7 @@ export default function NewProjectPage() {
           </Link>
         </header>
 
-        <ProjectForm />
+        <ProjectForm albums={albums} />
       </div>
     </AppShell>
   );

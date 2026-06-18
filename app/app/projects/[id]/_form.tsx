@@ -16,7 +16,22 @@ type Initial = {
   published?: boolean | null;
 };
 
-export function ProjectForm({ initial }: { initial?: Initial }) {
+type AlbumOption = {
+  id: string;
+  slug: string;
+  name_en: string;
+  name_ka: string;
+};
+
+export function ProjectForm({
+  initial,
+  albums = [],
+  selectedAlbumIds = [],
+}: {
+  initial?: Initial;
+  albums?: AlbumOption[];
+  selectedAlbumIds?: string[];
+}) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
@@ -110,6 +125,26 @@ export function ProjectForm({ initial }: { initial?: Initial }) {
           />
         </Field>
       </div>
+
+      {albums.length > 0 ? (
+        <fieldset className="rounded-lg border border-black/10 p-3">
+          <legend className="text-[13px] text-[var(--ink-700)]">Albums</legend>
+          <div className="flex flex-wrap gap-3">
+            {albums.map((a) => (
+              <label key={a.id} className="flex items-center gap-1 text-[13px]">
+                <input
+                  type="checkbox"
+                  name="album_ids"
+                  value={a.id}
+                  defaultChecked={selectedAlbumIds.includes(a.id)}
+                  className="h-4 w-4 rounded border-black/20"
+                />
+                {a.name_en || a.name_ka || a.slug}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
 
       <label className="flex items-center gap-2 text-[13px] text-[var(--ink-700)]">
         <input
