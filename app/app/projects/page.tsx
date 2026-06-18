@@ -40,12 +40,20 @@ export default async function ProjectsPage() {
               {items.length} total · drag to reorder
             </p>
           </div>
-          <Link
-            href="/app/projects/new"
-            className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
-          >
-            New project
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/app/projects/albums"
+              className="text-[12px] uppercase tracking-[0.18em] text-[var(--ink-500)] underline"
+            >
+              Albums
+            </Link>
+            <Link
+              href="/app/projects/new"
+              className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
+            >
+              New project
+            </Link>
+          </div>
         </header>
 
         {items.length === 0 ? (
