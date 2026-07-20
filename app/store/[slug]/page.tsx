@@ -14,7 +14,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const p = await getPublishedProductBySlug(slug);
-  return { title: p ? `${p.title} — GOGA Photography` : "GOGA Photography" };
+  return { title: p ? p.title : "Store" };
 }
 
 function publicUrl(path: string | null): string | null {
