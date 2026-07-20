@@ -5,6 +5,8 @@ import { normalizeLang, pickLang } from "@/app/lib/goga/blog-lang";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: "Blog — GOGA Photography" };
+
 function coverUrl(path: string | null): string | null {
   if (!path) return null;
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/projects/${path}`;

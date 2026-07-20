@@ -6,6 +6,8 @@ import { formatGel } from "./_format";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: "Store — GOGA Photography" };
+
 function publicUrl(path: string | null): string | null {
   if (!path) return null;
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL;

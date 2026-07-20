@@ -7,6 +7,16 @@ import { AddToCart } from "../_add-to-cart";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const p = await getPublishedProductBySlug(slug);
+  return { title: p ? `${p.title} — GOGA Photography` : "GOGA Photography" };
+}
+
 function publicUrl(path: string | null): string | null {
   if (!path) return null;
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/projects/${path}`;
