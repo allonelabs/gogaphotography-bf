@@ -16,6 +16,7 @@ export type ProjectRow = {
   title_en: string;
   location_en: string | null;
   thumbUrl: string | null;
+  hasHero: boolean;
   published: boolean;
 };
 
@@ -96,6 +97,11 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
               <div className="truncate text-[12px] text-[var(--ink-500)]">
                 {p.location_en ? `${p.location_en} · ` : ""}/{p.slug}
               </div>
+              {p.published && !p.hasHero && (
+                <div className="truncate text-[11px] text-amber-700">
+                  No hero image — hidden from public albums
+                </div>
+              )}
             </Link>
 
             <span

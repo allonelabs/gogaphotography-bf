@@ -81,15 +81,22 @@ export async function POST(req: NextRequest) {
     .maybeSingle();
   if (!settings) return NextResponse.json({ ok: true });
 
-  if (settings.app_secret) {
-    const ok = validateSignature(
-      settings.app_secret,
-      raw,
-      req.headers.get("x-hub-signature-256"),
+  // Without an app secret we cannot authenticate the sender, so acknowledge
+  // (Meta retries on non-200) but never ingest events anyone could spoof.
+  if (!settings.app_secret) {
+    console.warn(
+      "meta webhook: dropping event — app_secret not configured in /app/messages/settings",
     );
-    if (!ok)
-      return NextResponse.json({ error: "bad signature" }, { status: 401 });
+    return NextResponse.json({ ok: true });
   }
+
+  const ok = validateSignature(
+    settings.app_secret,
+    raw,
+    req.headers.get("x-hub-signature-256"),
+  );
+  if (!ok)
+    return NextResponse.json({ error: "bad signature" }, { status: 401 });
 
   let body: unknown = null;
   try {

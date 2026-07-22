@@ -77,6 +77,7 @@ export default async function ProjectsPage() {
               title_en: p.title_en,
               location_en: p.location_en,
               thumbUrl: publicImageUrl(p.hero_image_path),
+              hasHero: !!p.hero_image_path,
               published: p.published,
             }))}
           />

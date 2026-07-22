@@ -1,13 +1,42 @@
 // app/app/projects/albums/page.tsx
 import { AppShell } from "@/app/components/app/AppShell";
-import { listAlbums } from "@/app/lib/goga/portfolio-albums";
+import {
+  listAlbums,
+  listAlbumReadiness,
+  type AlbumReadiness,
+} from "@/app/lib/goga/portfolio-albums";
 import { saveAlbum } from "@/app/lib/goga/actions-portfolio";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Portfolio albums" };
 
+function readinessBadge(r: AlbumReadiness | undefined): {
+  label: string;
+  cls: string;
+} {
+  if (!r || r.assigned === 0)
+    return { label: "empty", cls: "bg-slate-100 text-slate-500" };
+  if (r.live === 0)
+    return {
+      label: `${r.assigned} assigned · none live`,
+      cls: "bg-amber-100 text-amber-800",
+    };
+  if (r.liveWithHero === 0)
+    return {
+      label: `${r.live} live · no hero image — appears empty on site`,
+      cls: "bg-amber-100 text-amber-800",
+    };
+  return {
+    label: `${r.liveWithHero} live on site`,
+    cls: "bg-slate-900 text-white",
+  };
+}
+
 export default async function AlbumsPage() {
-  const albums = await listAlbums();
+  const [albums, readiness] = await Promise.all([
+    listAlbums(),
+    listAlbumReadiness(),
+  ]);
   return (
     <AppShell
       breadcrumb={[
@@ -24,10 +53,14 @@ export default async function AlbumsPage() {
         </h1>
         <p className="mb-4 text-[13px] text-[var(--ink-500)]">
           The fixed Prowed album set. Rename (KA/EN) or reorder; assign projects
-          to albums from each project&apos;s edit page.
+          to albums from each project&apos;s edit page. An album&apos;s card
+          always appears on the public portfolio, but it only gets a cover and
+          content once at least one assigned project is live with a hero image.
         </p>
         <ul className="space-y-1">
-          {albums.map((a) => (
+          {albums.map((a) => {
+            const badge = readinessBadge(readiness.get(a.id));
+            return (
             <li key={a.id}>
               <form
                 action={saveAlbum.bind(null, a.id)}
@@ -62,9 +95,15 @@ export default async function AlbumsPage() {
                 <button className="rounded-full bg-black px-3 py-1.5 text-xs text-white">
                   Save
                 </button>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.14em] ${badge.cls}`}
+                >
+                  {badge.label}
+                </span>
               </form>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </div>
     </AppShell>
