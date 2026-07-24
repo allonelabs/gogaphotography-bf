@@ -261,6 +261,27 @@ export async function deleteImage(imageId: string): Promise<void> {
   await sb.from("project_images").delete().eq("id", imageId);
   if (data.image_path) {
     await sb.storage.from("projects").remove([data.image_path]);
+
+    // If this image was the project's hero/cover, repoint the hero to the
+    // first remaining image (or clear it) — a dangling hero_image_path makes
+    // the project's cover break and drop off the public album grids.
+    const { data: proj } = await sb
+      .from("projects")
+      .select("hero_image_path")
+      .eq("id", data.project_id)
+      .single();
+    if (proj?.hero_image_path === data.image_path) {
+      const { data: rest } = await sb
+        .from("project_images")
+        .select("image_path")
+        .eq("project_id", data.project_id)
+        .order("sort_order", { ascending: true })
+        .limit(1);
+      await sb
+        .from("projects")
+        .update({ hero_image_path: rest?.[0]?.image_path ?? null })
+        .eq("id", data.project_id);
+    }
   }
   revalidatePath(`/app/projects/${data.project_id}`);
 }
