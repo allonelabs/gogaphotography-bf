@@ -13,6 +13,11 @@ const PAGES = [
     hint: "Text above the service tiles on /services.",
   },
   { slug: "faq", label: "FAQ", hint: "Frequently asked questions copy." },
+  {
+    slug: "photobook",
+    label: "Photobook / Magazine",
+    hint: "Content for /photobook-and-magazine — replaces the coming-soon teaser once filled. Add photos via an album named photobook.",
+  },
 ] as const;
 
 export default async function PagesIndex() {

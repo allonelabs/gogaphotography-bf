@@ -25,7 +25,7 @@ export async function updateHero(formData: FormData): Promise<void> {
 
 /* ============================= Pages ============================= */
 
-const KNOWN_PAGE_SLUGS = ["about", "services", "faq"] as const;
+const KNOWN_PAGE_SLUGS = ["about", "services", "faq", "photobook"] as const;
 type KnownSlug = (typeof KNOWN_PAGE_SLUGS)[number];
 
 function isKnownPageSlug(s: string): s is KnownSlug {
