@@ -6,6 +6,7 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { sanitizeBlogHtml } from "./blog-sanitize";
 import { enqueuePin } from "./pinterest-queue";
+import { COVER_THUMB_WIDTH, uploadThumb } from "./thumbs";
 
 function slugify(input: string): string {
   return input
@@ -44,6 +45,10 @@ async function uploadCover(file: File): Promise<string> {
     upsert: false,
   });
   if (error) throw new Error(`cover upload: ${error.message}`);
+
+  // api/blog.ts serves cover_url as the _thumb.webp and cover_full_url as the
+  // original; without this the Journal grid 400s on every new post's cover.
+  await uploadThumb(sb, "projects", path, buf, COVER_THUMB_WIDTH);
   return path;
 }
 

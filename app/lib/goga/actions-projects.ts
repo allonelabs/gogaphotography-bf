@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { setProjectAlbums } from "./portfolio-albums";
+import { GALLERY_THUMB_WIDTH, thumbPathFor, uploadThumb } from "./thumbs";
 
 function slugify(input: string): string {
   return input
@@ -106,7 +107,8 @@ export async function deleteProject(id: string): Promise<void> {
     .eq("id", id)
     .single();
   const paths: string[] = [];
-  for (const i of imgs ?? []) if (i.image_path) paths.push(i.image_path);
+  for (const i of imgs ?? [])
+    if (i.image_path) paths.push(i.image_path, thumbPathFor(i.image_path));
   if (proj?.hero_image_path) paths.push(proj.hero_image_path);
   if (paths.length > 0) {
     await sb.storage.from("projects").remove(paths);
@@ -139,14 +141,20 @@ export async function uploadProjectImage(
     throw new Error("file too large (50 MB max)");
 
   const imagePath = `${projectId}/${Date.now()}-${safeFilename(file.name)}`;
+  const buf = Buffer.from(await file.arrayBuffer());
   const { error: upErr } = await sb.storage
     .from("projects")
-    .upload(imagePath, file, {
+    .upload(imagePath, buf, {
       contentType: file.type || "image/jpeg",
       cacheControl: "31536000",
       upsert: false,
     });
   if (upErr) throw new Error(`storage: ${upErr.message}`);
+
+  // The public grids load a small webp next to the original, never the
+  // original itself. Generate it now — best-effort, so a format sharp can't
+  // read still leaves a working (if heavy) photo on the site.
+  await uploadThumb(sb, "projects", imagePath, buf, GALLERY_THUMB_WIDTH);
 
   const { data: existing } = await sb
     .from("project_images")
@@ -260,7 +268,11 @@ export async function deleteImage(imageId: string): Promise<void> {
   if (!data) return;
   await sb.from("project_images").delete().eq("id", imageId);
   if (data.image_path) {
-    await sb.storage.from("projects").remove([data.image_path]);
+    // remove() ignores paths that don't exist, so images predating thumbnail
+    // generation are fine here.
+    await sb.storage
+      .from("projects")
+      .remove([data.image_path, thumbPathFor(data.image_path)]);
 
     // If this image was the project's hero/cover, repoint the hero to the
     // first remaining image (or clear it) — a dangling hero_image_path makes

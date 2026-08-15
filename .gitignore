@@ -11,3 +11,4 @@ tsconfig.tsbuildinfo
 .vercel
 mcp-logs.txt
 wa-logs.txt
+.env*

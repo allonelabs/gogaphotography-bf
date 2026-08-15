@@ -6,6 +6,10 @@ const config: NextConfig = {
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
 
+  // sharp is a native module — let it resolve at runtime instead of being
+  // pulled through the bundler (upload thumbnail generation).
+  serverExternalPackages: ['sharp'],
+
   // Multi-zone: shell-zone IS the root domain (bf.allonelabs.com).
   // It rewrites /app/business/:id/:path* to business-zone.
   // assetPrefix not needed here since this zone IS the root.
