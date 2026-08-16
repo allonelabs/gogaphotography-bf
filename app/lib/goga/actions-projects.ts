@@ -154,7 +154,13 @@ export async function uploadProjectImage(
   // The public grids load a small webp next to the original, never the
   // original itself. Generate it now — best-effort, so a format sharp can't
   // read still leaves a working (if heavy) photo on the site.
-  await uploadThumb(sb, "projects", imagePath, buf, GALLERY_THUMB_WIDTH);
+  const dims = await uploadThumb(
+    sb,
+    "projects",
+    imagePath,
+    buf,
+    GALLERY_THUMB_WIDTH,
+  );
 
   const { data: existing } = await sb
     .from("project_images")
@@ -179,6 +185,24 @@ export async function uploadProjectImage(
       .remove([imagePath])
       .catch(() => {});
     throw new Error(error.message);
+  }
+
+  // Intrinsic size lets the site reserve the tile's height before the image
+  // loads (see goga_0009_project_image_dims.sql). Written separately and
+  // swallowed on failure so uploads keep working if that migration hasn't
+  // been applied yet — the tile just falls back to a default ratio.
+  if (dims?.width && dims?.height) {
+    // Cast: the generated Supabase types are from the schema before
+    // goga_0009 added these columns. Drop it once types are regenerated.
+    const rows = sb.from("project_images") as unknown as {
+      update: (v: Record<string, number>) => {
+        eq: (c: string, v: string) => Promise<{ error: { message: string } | null }>;
+      };
+    };
+    const { error: dimErr } = await rows
+      .update({ width: dims.width, height: dims.height })
+      .eq("id", data.id);
+    if (dimErr) console.warn("[thumbs] dims not stored:", dimErr.message);
   }
 
   const { data: proj } = await sb
