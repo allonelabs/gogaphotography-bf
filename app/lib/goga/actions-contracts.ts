@@ -168,12 +168,22 @@ export async function sendContract(id: string): Promise<{ ok: boolean }> {
     const from =
       process.env["CONTACT_FROM_ADDRESS"] ?? "no-reply@goga.photography";
     const pkg = c.bookings?.packages?.name_en ?? "your photography session";
-    await resend.emails.send({
+    // The Resend SDK reports API failures in the resolved value, it does not
+    // throw. Ignoring it marked the contract "sent" while the client never
+    // received anything — e.g. a from-domain that isn't verified fails every
+    // send with 403. Surface it instead: the editor shows thrown messages and
+    // the status below stays un-sent so the contract can be retried.
+    const { error: sendError } = await resend.emails.send({
       from: `GOGA Photography <${from}>`,
       to: c.signer_email,
       subject: `Contract for ${pkg}`,
       text: `Hi${c.signer_name ? " " + c.signer_name : ""},\n\nPlease review and sign the contract for ${pkg}${c.bookings?.shoot_date ? ` on ${c.bookings.shoot_date}` : ""}:\n\n${url}\n\nThanks,\nGoga`,
     });
+    if (sendError) {
+      throw new Error(
+        `email_not_sent: ${sendError.message ?? "unknown Resend error"}`,
+      );
+    }
   }
 
   await sb
