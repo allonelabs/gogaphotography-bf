@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { isKnownPageSlug } from "./page-slugs";
 import { requireSession } from "./require-auth";
 
 /* ============================= Hero ============================= */
@@ -24,13 +25,6 @@ export async function updateHero(formData: FormData): Promise<void> {
 }
 
 /* ============================= Pages ============================= */
-
-const KNOWN_PAGE_SLUGS = ["about", "services", "faq", "photobook"] as const;
-type KnownSlug = (typeof KNOWN_PAGE_SLUGS)[number];
-
-function isKnownPageSlug(s: string): s is KnownSlug {
-  return (KNOWN_PAGE_SLUGS as readonly string[]).includes(s);
-}
 
 export async function upsertPage(
   slug: string,

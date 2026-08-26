@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { isKnownPageSlug } from "@/app/lib/goga/page-slugs";
 import { PageForm } from "./_form";
 import { ImageUploader } from "@/app/app/_components/ImageUploader";
 
@@ -11,13 +12,14 @@ const LABELS: Record<string, string> = {
   about: "About",
   services: "Services intro",
   faq: "FAQ",
+  photobook: "Photobook",
 };
 
 type Props = { params: Promise<{ slug: string }> };
 
 export default async function EditPagePage({ params }: Props) {
   const { slug } = await params;
-  if (!["about", "services", "faq"].includes(slug)) notFound();
+  if (!isKnownPageSlug(slug)) notFound();
 
   const sb = gogaAdmin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -125,8 +125,17 @@ async function loadContent(
 }
 
 export async function GET(req: NextRequest) {
-  const auth = req.headers.get("authorization");
-  if (process.env.CRON_SECRET && auth !== `Bearer ${process.env.CRON_SECRET}`) {
+  // Fail closed: an unset CRON_SECRET must not leave the job callable by
+  // anyone (the previous `if (SECRET && ...)` skipped auth entirely when the
+  // var was absent). Mirrors the /api/widget gate. Note /api/outbox/drain
+  // still uses the fail-open shape and is safe only because its secret is
+  // set in prod.
+  const expected = process.env.CRON_SECRET;
+  if (!expected) {
+    console.error("[cron/pinterest] CRON_SECRET unset; rejecting");
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  if (req.headers.get("authorization") !== `Bearer ${expected}`) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   const settings = await getSettings();

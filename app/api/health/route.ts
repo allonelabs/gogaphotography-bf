@@ -24,8 +24,12 @@ async function checkSupabase(): Promise<CheckResult> {
     };
   try {
     // PostgREST root rejects auth; instead query a known small table.
-    // `organization` always has at least the seed orgs.
-    const res = await fetch(`${url}/rest/v1/organization?select=id&limit=1`, {
+    // `hero` is the single-tenant settings singleton (id=1) and is one of
+    // the few tables anon may SELECT under RLS — this probe uses the anon
+    // key. (Was `organization`: a BF tourism table absent from this DB, so
+    // the check reported a permanent false "degraded". `studio_info` is
+    // admin-only and 401s for anon, so it can't serve as the probe either.)
+    const res = await fetch(`${url}/rest/v1/hero?select=id&limit=1`, {
       headers: { apikey: anon, Authorization: `Bearer ${anon}` },
       signal: AbortSignal.timeout(3000),
     });
