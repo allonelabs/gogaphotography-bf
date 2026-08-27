@@ -52,13 +52,31 @@ The access tokens are stored, but `page_id` and `ig_user_id` are empty and no
 message has ever arrived (0 threads, 0 messages), so the webhook was never
 subscribed.
 
-1. <https://developers.facebook.com> → the existing app
-2. Link the **Facebook Page** for the studio
-3. Subscribe the webhook to `messages` and `messaging_postbacks`
-   - Callback URL: `https://gogaphotography-bf.vercel.app/api/meta/webhook`
-   - Verify token: the value already saved in the admin under Messages
-4. Copy the **Page ID** and **Instagram user ID** into the admin's Messages
-   settings
+Already done, no action needed:
+
+- The app is **GOGA Bot** (`1055886090265029`) and its Page token is valid and
+  does not expire.
+- The Page ID `537072563068657` has been filled into the admin.
+- The callback URL already answers Meta's verification handshake correctly —
+  tested by replaying the exact request Meta sends.
+
+What is missing is the subscription itself, which needs a permission the stored
+token does not have (`pages_manage_metadata`), so it has to be clicked by hand:
+
+1. <https://developers.facebook.com> → app **GOGA Bot** → **Messenger** →
+   **Settings**
+2. Under **Webhooks**, add the callback URL:
+   `https://gogaphotography-bf.vercel.app/api/meta/webhook`
+   - Verify token: the value saved in the admin under Messages → Settings
+   - Subscribe to the fields `messages` and `messaging_postbacks`
+3. Under **Access Tokens**, connect the studio's Facebook Page and press
+   **Add Subscriptions** for that Page
+4. For Instagram: **Instagram** → **API setup with Instagram login** → connect
+   the professional account, then paste its **Instagram user ID** into the
+   admin under Messages → Settings
+
+Until step 3 is done Meta accepts messages but delivers them nowhere, which is
+why the admin inbox has never shown a single conversation.
 
 ---
 
