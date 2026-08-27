@@ -85,12 +85,20 @@ why the admin inbox has never shown a single conversation.
 The Pinterest API has no password login; it uses OAuth, so an App ID and secret
 are required.
 
+Unlike Meta, there is nothing to recover here — no token, refresh token or
+connected account was ever stored, and no Pinterest event was ever logged, so
+the account has genuinely never been connected. All of it has to be created.
+
 1. <https://developer.pinterest.com> → log in → **Create app**
 2. Redirect URI, exactly:
    `https://gogaphotography-bf.vercel.app/api/pinterest/oauth/callback`
 3. Scopes: `boards:read`, `pins:read`, `pins:write`, `user_accounts:read`
 4. Send the **App ID** and **App secret** to the developer, who sets two Vercel
    variables. Goga then clicks **Connect** in the admin.
+
+Worth doing at some point: 10 pins are already queued and waiting, the oldest
+scheduled for July. They will publish once the connection exists. Nothing else
+depends on this, so it is the least urgent item here.
 
 ---
 
