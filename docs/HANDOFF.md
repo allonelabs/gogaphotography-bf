@@ -8,6 +8,8 @@ He cannot be reached remotely, so this is written to be worked straight down
 in one sitting at the office. Item 1 is the only one customers can see — do
 that one even if the rest get skipped.
 
+Georgian translation to hand him: `HANDOFF.ka.md`.
+
 ---
 
 ## 0. Email — DONE, nothing to do
