@@ -12,3 +12,6 @@ tsconfig.tsbuildinfo
 mcp-logs.txt
 wa-logs.txt
 .env*
+
+# local agent artifacts (screenshots, scratch)
+.gg/
