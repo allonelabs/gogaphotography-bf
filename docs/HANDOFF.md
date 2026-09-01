@@ -4,36 +4,35 @@ Everything in the code is done and deployed. The items below are blocked on
 accounts only Goga can sign into; each is a few minutes of clicking. Nothing
 here needs a developer.
 
-Send him the four sections as-is.
+He cannot be reached remotely, so this is written to be worked straight down
+in one sitting at the office. Item 1 is the only one customers can see — do
+that one even if the rest get skipped.
 
 ---
 
-## 1. Email — do this one first
+## 0. Email — DONE, nothing to do
 
-Fixes two things at once: contract emails currently fail, and new-booking
-alerts are wired but dormant.
+Sending runs through `alerts@allonelabs.com`, which was already verified in
+Resend. Contract emails, store receipts and the new booking and enquiry alerts
+all work and are deployed. `goga.photography` itself never needed verifying,
+which is why this section shrank from five steps to none.
 
-1. Log in at <https://resend.com> → **Domains** → **Add Domain**
-2. Enter `goga.photography`
-3. Resend shows three DNS records (DKIM, SPF, DMARC). Copy them.
-4. Add all three in Cloudflare: `goga.photography` → **DNS** → **Add record**
-5. Back in Resend, click **Verify**
+One loose end, 30 seconds while signed in: open **Resend → Logs** and confirm
+the two test sends to `info@goga.photography` read *Delivered* rather than
+*Bounced*. Same check from the other end: look in that mailbox, including
+spam, for "GOGA booking alerts — system test".
 
-Nothing else is needed afterwards — `ALERT_TO` and `RESEND_API_KEY` are already
-set in Vercel, so booking and enquiry alerts start arriving at
-`info@goga.photography` on their own.
-
-**Why it is broken today:** no domain is verified, so Resend rejects every send
-with `403 domain_not_verified`. Contracts can still be sent by copying the
-signing link out of the admin and messaging it to the client by hand.
+Optional: a full-access Resend API key would let the smoke test watch for
+bounces automatically. The key in use is send-only by design, so it cannot
+read logs.
 
 ---
 
-## 2. Domain — point the .ge name at the working site
+## 1. Domain — the only item customers can see
 
 Customers currently land on the old WordPress site, or on `gogaphotography.ge`
 whose TLS certificate expired on 27 July 2026 (browsers show a security
-warning).
+warning). Everything built here is invisible until this is done.
 
 1. Cloudflare → `gogaphotography.ge` → **DNS**
 2. Edit the `A` record for `@` → value `76.76.21.21`
@@ -44,9 +43,22 @@ minutes and the certificate is issued and renewed automatically.
 
 Safe to do: `gogaphotography.ge` has no MX records, so no email can break.
 
+**If the Cloudflare login is lost** — it is the blocker, not the registrar. Use
+<https://my.cloud9.ge> instead (log in with the email, not a username; reset at
+`/password/reset` goes to `gio.mikeladze@gmail.com`), open `gogaphotography.ge`
+→ Nameservers, and replace both `*.ns.cloudflare.com` entries with:
+
+```
+ns1.vercel-dns.com
+ns2.vercel-dns.com
+```
+
+That moves DNS to Vercel, where the developer can manage every record by API
+and no further logins are needed. Either route works; only one is required.
+
 ---
 
-## 3. Instagram and Messenger — never actually connected
+## 2. Instagram and Messenger — never actually connected
 
 The access tokens are stored, but `page_id` and `ig_user_id` are empty and no
 message has ever arrived (0 threads, 0 messages), so the webhook was never
@@ -80,7 +92,7 @@ why the admin inbox has never shown a single conversation.
 
 ---
 
-## 4. Pinterest — needs a developer app, not a password
+## 3. Pinterest — needs a developer app, not a password
 
 The Pinterest API has no password login; it uses OAuth, so an App ID and secret
 are required.
@@ -121,3 +133,13 @@ npm run smoke
 
 Checks the 21 real pages, the 7 admin-backed APIs, and that the leftover
 template pages stay out of Google. Non-zero exit means something is wrong.
+
+The repository is ~200 MB, so a clone often stalls. When only environment
+variables have changed and no file has, skip the clone entirely:
+
+```
+vercel redeploy <last-good-production-url> --scope allonelabs
+```
+
+That rebuilds the previous deployment with the current variables and cannot
+drop files, which is the failure mode above.
