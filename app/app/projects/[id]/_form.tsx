@@ -3,6 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createProject, updateProject } from "@/app/lib/goga/actions-projects";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
 type Initial = {
   id?: string;
@@ -50,6 +51,7 @@ export function ProjectForm({
           await createProject(fd);
         }
       } catch (e) {
+        rethrowIfRedirect(e);
         setErr(e instanceof Error ? e.message : "Save failed");
       }
     });

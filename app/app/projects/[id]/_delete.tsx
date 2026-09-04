@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteProject } from "@/app/lib/goga/actions-projects";
 import { useToast } from "@/app/app/_components/Toaster";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
 export function DeleteProjectButton({
   id,
@@ -32,6 +33,7 @@ export function DeleteProjectButton({
               toast.show("Project deleted", "success");
               router.push("/app/projects");
             } catch (e) {
+              rethrowIfRedirect(e);
               toast.show(
                 `Delete failed: ${e instanceof Error ? e.message : e}`,
                 "error",

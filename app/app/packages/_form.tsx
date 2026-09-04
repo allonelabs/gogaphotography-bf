@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createPackage, updatePackage } from "@/app/lib/goga/actions-packages";
 import { useToast } from "@/app/app/_components/Toaster";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
 type Initial = {
   id?: string;
@@ -46,6 +47,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
           toast.show("Package created", "success");
         }
       } catch (e) {
+        rethrowIfRedirect(e);
         const msg = e instanceof Error ? e.message : "Save failed";
         setErr(msg);
         toast.show(msg, "error");

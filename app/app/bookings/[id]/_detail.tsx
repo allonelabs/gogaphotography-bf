@@ -11,6 +11,7 @@ import { ensureContractForBooking } from "@/app/lib/goga/actions-contracts";
 import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
 import { createDepositCheckout } from "@/app/lib/goga/actions-payments";
 import { useToast } from "@/app/app/_components/Toaster";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
 type Booking = {
   id: string;
@@ -103,6 +104,7 @@ export function BookingDetail({
         setTimeout(() => setSaved(false), 1200);
         router.refresh();
       } catch (e) {
+        rethrowIfRedirect(e);
         setStatus(prev);
         toast.show(
           e instanceof Error ? e.message : "Status update failed",
@@ -289,6 +291,7 @@ function ContractButton({
         const { id } = await ensureContractForBooking(bookingId);
         router.push(`/app/contracts/${id}`);
       } catch (e) {
+        rethrowIfRedirect(e);
         setErr(e instanceof Error ? e.message : "Could not create contract");
       }
     });
@@ -334,6 +337,7 @@ function DeliveryButton({
         const { id } = await ensureDelivery(bookingId);
         router.push(`/app/deliveries/${id}`);
       } catch (e) {
+        rethrowIfRedirect(e);
         setErr(e instanceof Error ? e.message : "Could not create delivery");
       }
     });
@@ -425,6 +429,7 @@ function DepositActions({
         } catch {}
         window.open(url, "_blank", "noopener,noreferrer");
       } catch (e) {
+        rethrowIfRedirect(e);
         setErr(e instanceof Error ? e.message : "Could not create checkout");
       }
     });

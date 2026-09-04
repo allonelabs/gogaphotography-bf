@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createService, updateService } from "@/app/lib/goga/actions-content";
 import { useToast } from "@/app/app/_components/Toaster";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
 type Initial = {
   id?: string;
@@ -37,6 +38,7 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
           toast.show("Service created", "success");
         }
       } catch (e) {
+        rethrowIfRedirect(e);
         const msg = e instanceof Error ? e.message : "Save failed";
         setErr(msg);
         toast.show(msg, "error");

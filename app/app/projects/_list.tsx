@@ -4,6 +4,7 @@ import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/app/app/_components/Toaster";
 import Link from "next/link";
+import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 import {
   reorderProjects,
   togglePublish,
@@ -208,6 +209,7 @@ function DeleteButton({
             onDeleted();
             router.refresh();
           } catch (e) {
+            rethrowIfRedirect(e);
             toast.show(
               `Delete failed: ${e instanceof Error ? e.message : e}`,
               "error",
