@@ -79,9 +79,9 @@ export async function createBookingFromLead(input: {
     },
   });
 
-  revalidatePath("/app/bookings");
-  revalidatePath("/app/leads");
-  revalidatePath(`/app/leads/${input.leadId}`);
+  revalidatePath("/admin/bookings");
+  revalidatePath("/admin/leads");
+  revalidatePath(`/admin/leads/${input.leadId}`);
   return { id: data.id };
 }
 
@@ -109,8 +109,8 @@ export async function setBookingStatus(
     entityId: id,
     payload: { from: prior?.status ?? null, to: status },
   });
-  revalidatePath("/app/bookings");
-  revalidatePath(`/app/bookings/${id}`);
+  revalidatePath("/admin/bookings");
+  revalidatePath(`/admin/bookings/${id}`);
 }
 
 export async function deleteBooking(id: string): Promise<void> {
@@ -120,8 +120,8 @@ export async function deleteBooking(id: string): Promise<void> {
     entityType: "booking",
     entityId: id,
   });
-  revalidatePath("/app/bookings");
-  redirect("/app/bookings");
+  revalidatePath("/admin/bookings");
+  redirect("/admin/bookings");
 }
 
 export async function updateBookingNotes(
@@ -137,5 +137,5 @@ export async function updateBookingNotes(
     entityType: "booking",
     entityId: id,
   });
-  revalidatePath(`/app/bookings/${id}`);
+  revalidatePath(`/admin/bookings/${id}`);
 }

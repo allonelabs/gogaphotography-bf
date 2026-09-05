@@ -2228,7 +2228,7 @@ async function handleSavePost(
       postId: newPost.id,
       postSlug: newPost.slug,
       status: newPost.status,
-      openAt: `/app/business/${slug}/s/content`,
+      openAt: `/admin/business/${slug}/s/content`,
     },
   };
 }
@@ -2310,7 +2310,7 @@ async function handleSaveSocialPost(
       postId: newPost.id,
       platforms,
       status: newPost.status,
-      openAt: `/app/business/${slug}/s/social`,
+      openAt: `/admin/business/${slug}/s/social`,
     },
   };
 }
@@ -2417,7 +2417,7 @@ async function handleSchedulePost(
       platforms,
       status: newPost.status,
       scheduledAt: newPost.scheduledAt,
-      openAt: `/app/business/${slug}/s/social`,
+      openAt: `/admin/business/${slug}/s/social`,
     },
   };
 }
@@ -2497,7 +2497,7 @@ async function handleAddContact(
       data: {
         email,
         merged: true,
-        openAt: `/app/business/${slug}/s/customers`,
+        openAt: `/admin/business/${slug}/s/customers`,
       },
     };
   }
@@ -2507,7 +2507,7 @@ async function handleAddContact(
   return {
     ok: true,
     summary: `Added ${name || email} to your contacts. Find them under Customers.`,
-    data: { email, merged: false, openAt: `/app/business/${slug}/s/customers` },
+    data: { email, merged: false, openAt: `/admin/business/${slug}/s/customers` },
   };
 }
 

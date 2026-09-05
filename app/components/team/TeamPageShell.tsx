@@ -57,9 +57,9 @@ export function TeamPageShell({
   return (
     <AppShell
       breadcrumb={[
-        { label: 'Overview', href: '/app' },
-        { label: businessName, href: `/app/business/${spawnId}` },
-        { label: 'Team', href: `/app/business/${spawnId}/s/team` },
+        { label: 'Overview', href: '/admin' },
+        { label: businessName, href: `/admin/business/${spawnId}` },
+        { label: 'Team', href: `/admin/business/${spawnId}/s/team` },
         { label: pageLabel },
       ]}
       chatScope={chatScope}

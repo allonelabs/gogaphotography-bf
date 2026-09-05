@@ -118,9 +118,9 @@ export async function createPost(formData: FormData): Promise<void> {
     }
   }
 
-  revalidatePath("/app/blog");
+  revalidatePath("/admin/blog");
   revalidatePath("/blog");
-  redirect("/app/blog");
+  redirect("/admin/blog");
 }
 
 export async function updatePost(
@@ -155,16 +155,16 @@ export async function updatePost(
     }
   }
 
-  revalidatePath("/app/blog");
+  revalidatePath("/admin/blog");
   revalidatePath("/blog");
-  redirect("/app/blog");
+  redirect("/admin/blog");
 }
 
 export async function deletePost(id: string): Promise<void> {
   await requireSession();
   const { error } = await gogaAdmin().from("blog_posts").delete().eq("id", id);
   if (error) throw new Error(`deletePost: ${error.message}`);
-  revalidatePath("/app/blog");
+  revalidatePath("/admin/blog");
   revalidatePath("/blog");
 }
 
@@ -180,13 +180,13 @@ export async function createCategory(formData: FormData): Promise<void> {
     .from("blog_categories")
     .insert({ slug, name_en, name_ka });
   if (error) throw new Error(`createCategory: ${error.message}`);
-  revalidatePath("/app/blog/taxonomy");
+  revalidatePath("/admin/blog/taxonomy");
 }
 
 export async function deleteCategory(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("blog_categories").delete().eq("id", id);
-  revalidatePath("/app/blog/taxonomy");
+  revalidatePath("/admin/blog/taxonomy");
 }
 
 export async function createTag(formData: FormData): Promise<void> {
@@ -200,11 +200,11 @@ export async function createTag(formData: FormData): Promise<void> {
     .from("blog_tags")
     .insert({ slug, name_en, name_ka });
   if (error) throw new Error(`createTag: ${error.message}`);
-  revalidatePath("/app/blog/taxonomy");
+  revalidatePath("/admin/blog/taxonomy");
 }
 
 export async function deleteTag(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("blog_tags").delete().eq("id", id);
-  revalidatePath("/app/blog/taxonomy");
+  revalidatePath("/admin/blog/taxonomy");
 }

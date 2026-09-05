@@ -121,7 +121,7 @@ export function buildAutomationFeatures(
     expiredAuth: number;
   },
 ): FeatureItem[] {
-  const root = `/app/business/${spawnId}/s/automations`;
+  const root = `/admin/business/${spawnId}/s/automations`;
   return [
     // Workflows
     { k: '01', label: 'Workflow library',  href: `${root}/workflows`,                                     badge: counts.workflows,    group: 'workflows' },

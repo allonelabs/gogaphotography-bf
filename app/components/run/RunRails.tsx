@@ -197,7 +197,7 @@ function buildTodayItems(detail: SpawnDetail | null): TodayItem[] {
   return detail.cells.recent.slice(0, 8).map((c) => ({
     text: cellRefToOperatorSentence(c.cellRef, c.source),
     href: c.cellRef
-      ? `/app/business/${detail.id}/cells/${encodeURIComponent(c.cellRef)}`
+      ? `/admin/business/${detail.id}/cells/${encodeURIComponent(c.cellRef)}`
       : null,
     when: formatRelativeTime(c.composedAt),
     kind:
@@ -239,7 +239,7 @@ function buildAttentionItems(businessId: string, detail: SpawnDetail | null): At
   if (validateFailed > 0) {
     out.push({
       text: `${validateFailed} ${validateFailed === 1 ? 'item' : 'items'} need review — generation didn't pass validation`,
-      href: `/app/business/${businessId}/cells?filter=validate-failed`,
+      href: `/admin/business/${businessId}/cells?filter=validate-failed`,
       severity: 'urgent',
       hint: 'Open the affected items and either pin the previous version or regenerate',
     });
@@ -252,7 +252,7 @@ function buildAttentionItems(businessId: string, detail: SpawnDetail | null): At
   if (fallbackPct > 5) {
     out.push({
       text: `${Math.round(fallbackPct)}% of content is placeholder — likely missing API key or the brief was thin`,
-      href: `/app/business/${businessId}/cells?filter=fallback`,
+      href: `/admin/business/${businessId}/cells?filter=fallback`,
       severity: 'review',
       hint: 'Check the spawn brief and re-run with the API key set',
     });
@@ -263,7 +263,7 @@ function buildAttentionItems(businessId: string, detail: SpawnDetail | null): At
   if (proposalCount > 0) {
     out.push({
       text: `${proposalCount} improvement ${proposalCount === 1 ? 'suggestion is' : 'suggestions are'} waiting`,
-      href: `/app/business/${businessId}/proposals`,
+      href: `/admin/business/${businessId}/proposals`,
       severity: 'review',
     });
   }
@@ -273,7 +273,7 @@ function buildAttentionItems(businessId: string, detail: SpawnDetail | null): At
   if (typeof matrixHealth === 'number' && matrixHealth < 80) {
     out.push({
       text: `Matrix health is ${matrixHealth}/100 — some connections aren't firing as expected`,
-      href: `/app/business/${businessId}/matrix`,
+      href: `/admin/business/${businessId}/matrix`,
       severity: matrixHealth < 60 ? 'urgent' : 'review',
     });
   }

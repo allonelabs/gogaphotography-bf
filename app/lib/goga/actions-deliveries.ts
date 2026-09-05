@@ -44,8 +44,8 @@ export async function ensureDelivery(
     .select("id, token")
     .single();
   if (error || !data) throw new Error(error?.message ?? "insert_failed");
-  revalidatePath(`/app/bookings/${bookingId}`);
-  revalidatePath("/app/deliveries");
+  revalidatePath(`/admin/bookings/${bookingId}`);
+  revalidatePath("/admin/deliveries");
   return { id: data.id, token: data.token, created: true };
 }
 
@@ -60,7 +60,7 @@ export async function setDeliveryPassword(
     .from("deliveries")
     .update({ password_hash: hash })
     .eq("id", deliveryId);
-  revalidatePath(`/app/deliveries/${deliveryId}`);
+  revalidatePath(`/admin/deliveries/${deliveryId}`);
 }
 
 export async function clearDeliveryPassword(deliveryId: string): Promise<void> {
@@ -69,7 +69,7 @@ export async function clearDeliveryPassword(deliveryId: string): Promise<void> {
     .from("deliveries")
     .update({ password_hash: null })
     .eq("id", deliveryId);
-  revalidatePath(`/app/deliveries/${deliveryId}`);
+  revalidatePath(`/admin/deliveries/${deliveryId}`);
 }
 
 export async function updateDeliveryMeta(
@@ -83,7 +83,7 @@ export async function updateDeliveryMeta(
 ): Promise<void> {
   await requireSession();
   await gogaAdmin().from("deliveries").update(patch).eq("id", deliveryId);
-  revalidatePath(`/app/deliveries/${deliveryId}`);
+  revalidatePath(`/admin/deliveries/${deliveryId}`);
 }
 
 export async function uploadDeliveryImage(
@@ -135,7 +135,7 @@ export async function uploadDeliveryImage(
     throw new Error(error.message);
   }
 
-  revalidatePath(`/app/deliveries/${deliveryId}`);
+  revalidatePath(`/admin/deliveries/${deliveryId}`);
   return { id: data.id, imagePath };
 }
 
@@ -152,7 +152,7 @@ export async function deleteDeliveryImage(imageId: string): Promise<void> {
   if (data.image_path) {
     await sb.storage.from("deliveries").remove([data.image_path]);
   }
-  revalidatePath(`/app/deliveries/${data.delivery_id}`);
+  revalidatePath(`/admin/deliveries/${data.delivery_id}`);
 }
 
 export async function archiveDelivery(deliveryId: string): Promise<void> {
@@ -161,5 +161,5 @@ export async function archiveDelivery(deliveryId: string): Promise<void> {
     .from("deliveries")
     .update({ archived: true })
     .eq("id", deliveryId);
-  revalidatePath("/app/deliveries");
+  revalidatePath("/admin/deliveries");
 }

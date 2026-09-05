@@ -58,16 +58,16 @@ const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   "help-circle": HelpCircle,
 };
 
-// href → translation key (e.g. "/app/avia" → "nav.avia",
-// "/app/juridical-form" → "nav.juridical_form",
-// "/app/reports/hotel-directory" → "nav.hotel_directory")
+// href → translation key (e.g. "/admin/avia" → "nav.avia",
+// "/admin/juridical-form" → "nav.juridical_form",
+// "/admin/reports/hotel-directory" → "nav.hotel_directory")
 const HREF_KEY_OVERRIDE: Record<string, TranslationKey> = {
-  "/app/reports/hotel-directory": "nav.hotel_directory",
-  "/app/reports/hotel-price": "nav.hotel_price",
+  "/admin/reports/hotel-directory": "nav.hotel_directory",
+  "/admin/reports/hotel-price": "nav.hotel_price",
 };
 
 function navKey(href: string): TranslationKey {
-  if (href === "/app") return "nav.home";
+  if (href === "/admin") return "nav.home";
   if (HREF_KEY_OVERRIDE[href]) return HREF_KEY_OVERRIDE[href];
   const slug = href
     .replace(/^\/app\//, "")
@@ -91,10 +91,10 @@ const SUB_KEY: Record<string, TranslationKey> = {
 };
 
 const FOOTER_KEY: Record<string, TranslationKey> = {
-  "/app/account": "nav.account",
-  "/app/organization": "nav.organization",
-  "/app/billing": "nav.billing",
-  "/app/help": "nav.help",
+  "/admin/account": "nav.account",
+  "/admin/organization": "nav.organization",
+  "/admin/billing": "nav.billing",
+  "/admin/help": "nav.help",
 };
 
 function Icon({ name }: { name: string }) {

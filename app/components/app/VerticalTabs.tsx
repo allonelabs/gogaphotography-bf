@@ -25,7 +25,7 @@ export function VerticalTabs({
     <div className="overflow-x-auto border-b border-[var(--allonce-line)]">
       <nav className="-mb-px flex min-w-max gap-1">
         {TABS.map((tab) => {
-          const href = `/app/${slug}/${id}${tab.segment ? `/${tab.segment}` : ""}`;
+          const href = `/admin/${slug}/${id}${tab.segment ? `/${tab.segment}` : ""}`;
           const active =
             tab.segment === ""
               ? pathname === href

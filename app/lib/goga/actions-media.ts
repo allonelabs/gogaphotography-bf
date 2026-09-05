@@ -154,18 +154,18 @@ export async function uploadSurfaceImage(formData: FormData): Promise<{
   // Revalidate likely admin paths
   switch (cfg.table) {
     case "hero":
-      revalidatePath("/app/hero");
+      revalidatePath("/admin/hero");
       break;
     case "packages":
-      revalidatePath("/app/packages");
-      revalidatePath(`/app/packages/${rowId}`);
+      revalidatePath("/admin/packages");
+      revalidatePath(`/admin/packages/${rowId}`);
       break;
     case "services":
-      revalidatePath("/app/services");
-      revalidatePath(`/app/services/${rowId}`);
+      revalidatePath("/admin/services");
+      revalidatePath(`/admin/services/${rowId}`);
       break;
     case "pages":
-      revalidatePath("/app/pages");
+      revalidatePath("/admin/pages");
       break;
   }
 
@@ -226,18 +226,18 @@ export async function clearSurfaceImage(
 
   switch (cfg.table) {
     case "hero":
-      revalidatePath("/app/hero");
+      revalidatePath("/admin/hero");
       break;
     case "packages":
-      revalidatePath("/app/packages");
-      revalidatePath(`/app/packages/${rowId}`);
+      revalidatePath("/admin/packages");
+      revalidatePath(`/admin/packages/${rowId}`);
       break;
     case "services":
-      revalidatePath("/app/services");
-      revalidatePath(`/app/services/${rowId}`);
+      revalidatePath("/admin/services");
+      revalidatePath(`/admin/services/${rowId}`);
       break;
     case "pages":
-      revalidatePath("/app/pages");
+      revalidatePath("/admin/pages");
       break;
   }
 }

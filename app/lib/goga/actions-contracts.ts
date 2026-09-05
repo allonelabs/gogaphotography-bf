@@ -116,8 +116,8 @@ export async function ensureContractForBooking(
     payload: { bookingId },
   });
 
-  revalidatePath(`/app/bookings/${bookingId}`);
-  revalidatePath("/app/contracts");
+  revalidatePath(`/admin/bookings/${bookingId}`);
+  revalidatePath("/admin/contracts");
   return { id: data.id, token: data.token, created: true };
 }
 
@@ -136,7 +136,7 @@ export async function updateContractBody(
     throw new Error("cannot_edit_signed");
   }
   await sb.from("contracts").update(patch).eq("id", id);
-  revalidatePath(`/app/contracts/${id}`);
+  revalidatePath(`/admin/contracts/${id}`);
 }
 
 export async function sendContract(id: string): Promise<{ ok: boolean }> {
@@ -196,8 +196,8 @@ export async function sendContract(id: string): Promise<{ ok: boolean }> {
     payload: { to: c.signer_email, emailed: !!key },
   });
 
-  revalidatePath(`/app/contracts/${id}`);
-  revalidatePath("/app/contracts");
+  revalidatePath(`/admin/contracts/${id}`);
+  revalidatePath("/admin/contracts");
   return { ok: true };
 }
 
@@ -208,6 +208,6 @@ export async function voidContract(id: string): Promise<void> {
     entityType: "contract",
     entityId: id,
   });
-  revalidatePath(`/app/contracts/${id}`);
-  revalidatePath("/app/contracts");
+  revalidatePath(`/admin/contracts/${id}`);
+  revalidatePath("/admin/contracts");
 }

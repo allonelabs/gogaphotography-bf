@@ -33,11 +33,11 @@ export function CourseActions({ spawnId, courseId, status }: Props) {
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; courseId?: string; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error ?? `request failed (${res.status})`);
       if (action === 'delete') {
-        router.push(`/app/business/${spawnId}/s/team/courses`);
+        router.push(`/admin/business/${spawnId}/s/team/courses`);
         return;
       }
       if (action === 'duplicate' && data.courseId) {
-        router.push(`/app/business/${spawnId}/s/team/courses/${data.courseId}`);
+        router.push(`/admin/business/${spawnId}/s/team/courses/${data.courseId}`);
         return;
       }
       router.refresh();

@@ -28,7 +28,7 @@ export function AddLessonButton({ spawnId, courseId }: Props) {
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; lessonId?: string; error?: string };
       if (!res.ok || !data.ok || !data.lessonId) throw new Error(data.error ?? `request failed (${res.status})`);
-      router.push(`/app/business/${spawnId}/s/team/courses/${courseId}/lessons/${data.lessonId}`);
+      router.push(`/admin/business/${spawnId}/s/team/courses/${courseId}/lessons/${data.lessonId}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'add failed');
       setBusy(false);

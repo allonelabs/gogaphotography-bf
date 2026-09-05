@@ -21,7 +21,7 @@ export async function updateHero(formData: FormData): Promise<void> {
     .eq("id", 1);
   if (error) throw new Error(error.message);
   revalidatePath("/");
-  revalidatePath("/app/hero");
+  revalidatePath("/admin/hero");
 }
 
 /* ============================= Pages ============================= */
@@ -47,7 +47,7 @@ export async function upsertPage(
   revalidatePath("/about-me");
   revalidatePath("/services");
   revalidatePath("/faq");
-  revalidatePath(`/app/pages/${slug}`);
+  revalidatePath(`/admin/pages/${slug}`);
 }
 
 /* ============================= Services ============================= */
@@ -82,8 +82,8 @@ export async function createService(formData: FormData): Promise<void> {
     .single();
   if (error) throw new Error(error.message);
 
-  revalidatePath("/app/services");
-  redirect(`/app/services/${data.id}`);
+  revalidatePath("/admin/services");
+  redirect(`/admin/services/${data.id}`);
 }
 
 export async function updateService(
@@ -109,15 +109,15 @@ export async function updateService(
     })
     .eq("id", id);
   if (error) throw new Error(error.message);
-  revalidatePath("/app/services");
-  revalidatePath(`/app/services/${id}`);
+  revalidatePath("/admin/services");
+  revalidatePath(`/admin/services/${id}`);
   revalidatePath("/services");
 }
 
 export async function deleteService(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("services").delete().eq("id", id);
-  revalidatePath("/app/services");
+  revalidatePath("/admin/services");
 }
 
 export async function toggleServicePublished(id: string): Promise<void> {
@@ -130,6 +130,6 @@ export async function toggleServicePublished(id: string): Promise<void> {
     .single();
   if (!data) throw new Error("not_found");
   await sb.from("services").update({ published: !data.published }).eq("id", id);
-  revalidatePath("/app/services");
-  revalidatePath(`/app/services/${id}`);
+  revalidatePath("/admin/services");
+  revalidatePath(`/admin/services/${id}`);
 }

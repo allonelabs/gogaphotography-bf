@@ -57,5 +57,5 @@ export async function updateStudioInfo(formData: FormData): Promise<void> {
       ),
     },
   });
-  revalidatePath("/app/studio");
+  revalidatePath("/admin/studio");
 }

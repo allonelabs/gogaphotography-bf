@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Bare layout for the public sign flow. Lives outside `/app` so it has no
+ * Bare layout for the public sign flow. Lives outside `/admin` so it has no
  * admin chrome — clients see only the contract and the signing form.
  *
  * The root layout.tsx already provides <html>/<body>, so this just passes

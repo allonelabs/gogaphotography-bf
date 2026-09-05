@@ -121,9 +121,9 @@ export async function createStoreProduct(formData: FormData): Promise<void> {
       console.error("enqueuePin product", e);
     }
   }
-  revalidatePath("/app/store");
+  revalidatePath("/admin/store");
   revalidatePath("/store");
-  redirect("/app/store");
+  redirect("/admin/store");
 }
 
 export async function updateStoreProduct(
@@ -165,9 +165,9 @@ export async function updateStoreProduct(
       console.error("enqueuePin product", e);
     }
   }
-  revalidatePath("/app/store");
+  revalidatePath("/admin/store");
   revalidatePath("/store");
-  redirect("/app/store");
+  redirect("/admin/store");
 }
 
 export async function deleteStoreProduct(id: string): Promise<void> {
@@ -177,7 +177,7 @@ export async function deleteStoreProduct(id: string): Promise<void> {
     .delete()
     .eq("id", id);
   if (error) throw new Error(`deleteStoreProduct: ${error.message}`);
-  revalidatePath("/app/store");
+  revalidatePath("/admin/store");
   revalidatePath("/store");
 }
 
@@ -218,7 +218,7 @@ export async function resendDownloadEmail(orderId: string): Promise<void> {
       html: email.html,
     },
   });
-  revalidatePath("/app/store/orders");
+  revalidatePath("/admin/store/orders");
 }
 
 export async function markRefunded(orderId: string): Promise<void> {
@@ -227,5 +227,5 @@ export async function markRefunded(orderId: string): Promise<void> {
     .from("store_orders")
     .update({ status: "refunded" })
     .eq("id", orderId);
-  revalidatePath("/app/store/orders");
+  revalidatePath("/admin/store/orders");
 }

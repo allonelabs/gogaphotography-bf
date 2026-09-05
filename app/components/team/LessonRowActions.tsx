@@ -55,7 +55,7 @@ export function LessonRowActions({ spawnId, courseId, lessonId, total }: Props) 
         </span>
       )}
       <Link
-        href={`/app/business/${spawnId}/s/team/courses/${courseId}/lessons/${lessonId}`}
+        href={`/admin/business/${spawnId}/s/team/courses/${courseId}/lessons/${lessonId}`}
         className="inline-flex h-8 items-center rounded-md border border-[var(--allonce-line)] bg-white px-3 text-[11px] font-medium hover:bg-[var(--allonce-bg-soft)]"
       >
         Edit

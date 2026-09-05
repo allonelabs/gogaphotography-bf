@@ -29,9 +29,9 @@ export function AutomationPageShell({
   return (
     <AppShell
       breadcrumb={[
-        { label: 'Overview', href: '/app' },
-        { label: businessName, href: `/app/business/${spawnId}` },
-        { label: 'Automations', href: `/app/business/${spawnId}/s/automations` },
+        { label: 'Overview', href: '/admin' },
+        { label: businessName, href: `/admin/business/${spawnId}` },
+        { label: 'Automations', href: `/admin/business/${spawnId}/s/automations` },
         { label: pageLabel },
       ]}
       chatScope={{ level: 'tool', business: spawnId, tool: 'automation-forge' }}

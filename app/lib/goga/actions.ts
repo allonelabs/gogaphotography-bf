@@ -29,8 +29,8 @@ export async function setLeadStage(
     entityId: leadId,
     payload: { from: prior?.stage ?? null, to: stage },
   });
-  revalidatePath("/app/leads");
-  revalidatePath(`/app/leads/${leadId}`);
+  revalidatePath("/admin/leads");
+  revalidatePath(`/admin/leads/${leadId}`);
 }
 
 export async function updateLeadNotes(
@@ -47,7 +47,7 @@ export async function updateLeadNotes(
     entityType: "lead",
     entityId: leadId,
   });
-  revalidatePath(`/app/leads/${leadId}`);
+  revalidatePath(`/admin/leads/${leadId}`);
 }
 
 export async function archiveLead(leadId: string): Promise<void> {
@@ -61,5 +61,5 @@ export async function archiveLead(leadId: string): Promise<void> {
     entityType: "lead",
     entityId: leadId,
   });
-  revalidatePath("/app/leads");
+  revalidatePath("/admin/leads");
 }

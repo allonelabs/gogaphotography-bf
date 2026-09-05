@@ -174,7 +174,7 @@ export function RosterTable({ spawnId, members, courses }: Props) {
                   </td>
                   <td>
                     <Link
-                      href={`/app/business/${spawnId}/s/team/members/${m.id}`}
+                      href={`/admin/business/${spawnId}/s/team/members/${m.id}`}
                       className="flex items-center gap-2.5 transition hover:underline"
                     >
                       <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-[var(--lms-primary,var(--allonce-ink))] text-[10px] font-semibold text-white">

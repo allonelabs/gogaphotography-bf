@@ -75,7 +75,7 @@ export async function createDepositCheckout(
     payload: { payId, amount: totalAmount, currency: booking.currency },
   });
 
-  revalidatePath(`/app/bookings/${booking.id}`);
+  revalidatePath(`/admin/bookings/${booking.id}`);
   return { url: redirectUrl, payId };
 }
 
@@ -109,5 +109,5 @@ export async function cancelDepositCheckout(bookingId: string): Promise<void> {
     entityId: bookingId,
     payload: { payId: booking.stripe_session_id },
   });
-  revalidatePath(`/app/bookings/${bookingId}`);
+  revalidatePath(`/admin/bookings/${bookingId}`);
 }

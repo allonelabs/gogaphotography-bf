@@ -117,7 +117,7 @@ export function WorkflowCanvas({ spawnId, catalog, initialDraft, existingWorkflo
         setIssues(data.issues ?? []);
         throw new Error(data.error ?? `request failed (${res.status})`);
       }
-      router.push(`/app/business/${spawnId}/s/automations/workflows/${data.workflowId}`);
+      router.push(`/admin/business/${spawnId}/s/automations/workflows/${data.workflowId}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'save failed');
       setBusy(null);

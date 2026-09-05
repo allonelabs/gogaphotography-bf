@@ -22,7 +22,7 @@ export async function savePinterestSettings(formData: FormData): Promise<void> {
     board_map = {};
   }
   await saveSettings({ pins_per_run, enabled, default_board_id, board_map });
-  revalidatePath("/app/pinterest");
+  revalidatePath("/admin/pinterest");
 }
 
 export async function disconnectPinterest(): Promise<void> {
@@ -33,13 +33,13 @@ export async function disconnectPinterest(): Promise<void> {
     token_expires_at: null,
     connected_account: null,
   });
-  revalidatePath("/app/pinterest");
+  revalidatePath("/admin/pinterest");
 }
 
 export async function backfillPins(): Promise<void> {
   await requireSession();
   await enqueueAllEligible();
-  revalidatePath("/app/pinterest");
+  revalidatePath("/admin/pinterest");
 }
 
 export async function skipPin(id: string): Promise<void> {
@@ -48,7 +48,7 @@ export async function skipPin(id: string): Promise<void> {
     .from("pinterest_pins")
     .update({ status: "skipped" })
     .eq("id", id);
-  revalidatePath("/app/pinterest");
+  revalidatePath("/admin/pinterest");
 }
 
 export async function requeuePin(id: string): Promise<void> {
@@ -61,5 +61,5 @@ export async function requeuePin(id: string): Promise<void> {
       scheduled_for: new Date().toISOString(),
     })
     .eq("id", id);
-  revalidatePath("/app/pinterest");
+  revalidatePath("/admin/pinterest");
 }

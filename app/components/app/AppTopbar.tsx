@@ -82,7 +82,7 @@ export function AppTopbar({
             )}
           </button>
         )}
-        <Link href="/app" className="flex items-center pr-1">
+        <Link href="/admin" className="flex items-center pr-1">
           <AllOnceLogo size="lg" variant="mark" />
         </Link>
 

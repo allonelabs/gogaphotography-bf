@@ -11,5 +11,5 @@ export async function saveAlbum(id: string, formData: FormData): Promise<void> {
     name_ka: String(formData.get("name_ka") ?? "").trim(),
     sort_order: parseInt(String(formData.get("sort_order") ?? "0"), 10) || 0,
   });
-  revalidatePath("/app/projects/albums");
+  revalidatePath("/admin/projects/albums");
 }

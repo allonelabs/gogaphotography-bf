@@ -33,7 +33,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (state === 'out') {
-      const next = encodeURIComponent(pathname ?? '/app');
+      const next = encodeURIComponent(pathname ?? '/admin');
       window.location.replace(`/admin/login?next=${next}`);
     }
   }, [state, pathname]);

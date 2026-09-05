@@ -266,7 +266,7 @@ const en = {
   "changelog.cat.fix": "Fix",
   "changelog.e.10.title": "Booking calendar + AI memory",
   "changelog.e.10.body":
-    "/app/calendar shows a hotels × days grid colored by order status — click a span to open the order. The chat assistant also gained long-term per-org memory: tell it 'we always quote in USD' once and every future conversation knows.",
+    "/admin/calendar shows a hotels × days grid colored by order status — click a span to open the order. The chat assistant also gained long-term per-org memory: tell it 'we always quote in USD' once and every future conversation knows.",
   "changelog.e.9.title": "Chat browses the web + generates images",
   "changelog.e.9.body":
     "fetch_url tool — chat reads any public URL (Booking.com reviews, supplier portals, etc.). generate_image tool — Vertex Imagen for marketing visuals. Both gated by permission.",
@@ -284,7 +284,7 @@ const en = {
     "Bridge-outbox pattern from BF — durable async event delivery with retry and replay safety. Resend email pipeline. Stripe payment intents (gated). Automation rules engine with admin UI.",
   "changelog.e.4.title": "Live ops dashboard",
   "changelog.e.4.body":
-    "/app/dashboard shows hotels/orders/balance/per-vertical counts + the latest 10 audit log entries.",
+    "/admin/dashboard shows hotels/orders/balance/per-vertical counts + the latest 10 audit log entries.",
   "changelog.e.3.title": "Excel template parity + Stripe scaffold",
   "changelog.e.3.body":
     "Hotel Excel import matches the legacy 25-column template. Payment intent infrastructure ready for when Stripe credentials are provided.",
@@ -1606,7 +1606,7 @@ const ka: Partial<Record<TranslationKey, string>> = {
   "changelog.cat.fix": "შესწორება",
   "changelog.e.10.title": "ჯავშნების კალენდარი + AI მეხსიერება",
   "changelog.e.10.body":
-    "/app/calendar გვიჩვენებს სასტუმროები × დღეების ბადეს შეფერილს შეკვეთის სტატუსით — დააწკაპუნე შეკვეთის გასახსნელად. ჩატ-ასისტენტმა მიიღო ორგანიზაციის გრძელვადიანი მეხსიერებაც: უთხარი ერთხელ 'ყოველთვის USD-ში ვაფასებთ' და ყველა მომავალი საუბარი იცის.",
+    "/admin/calendar გვიჩვენებს სასტუმროები × დღეების ბადეს შეფერილს შეკვეთის სტატუსით — დააწკაპუნე შეკვეთის გასახსნელად. ჩატ-ასისტენტმა მიიღო ორგანიზაციის გრძელვადიანი მეხსიერებაც: უთხარი ერთხელ 'ყოველთვის USD-ში ვაფასებთ' და ყველა მომავალი საუბარი იცის.",
   "changelog.e.9.title": "ჩატი კითხულობს ვებს + ქმნის სურათებს",
   "changelog.e.9.body":
     "fetch_url — ჩატი კითხულობს ნებისმიერ საჯარო URL-ს (Booking.com შეფასებები, მომწოდებლის პორტალები). generate_image — Vertex Imagen მარკეტინგული ვიზუალისთვის. ორივეს უფლება სჭირდება.",
@@ -1624,7 +1624,7 @@ const ka: Partial<Record<TranslationKey, string>> = {
     "Bridge-outbox შაბლონი BF-დან — საიმედო ასინქრონული მოვლენების მიწოდება retry-ით. Resend მეილის pipeline. Stripe payment intents. ავტომატიზაციის წესების ძრავი ადმინ UI-თ.",
   "changelog.e.4.title": "ცოცხალი ოპერაციული დაფა",
   "changelog.e.4.body":
-    "/app/dashboard აჩვენებს სასტუმროების/შეკვეთების/ბალანსის რაოდენობას + ბოლო 10 აუდიტის ჩანაწერს.",
+    "/admin/dashboard აჩვენებს სასტუმროების/შეკვეთების/ბალანსის რაოდენობას + ბოლო 10 აუდიტის ჩანაწერს.",
   "changelog.e.3.title": "Excel შაბლონის თავსებადობა + Stripe სკაფოლდი",
   "changelog.e.3.body":
     "სასტუმროების Excel-იმპორტი ემთხვევა Legacy-ის 25-სვეტიან შაბლონს. Payment intent ინფრასტრუქტურა მზადაა Stripe-ის გასაღების მისაცემად.",

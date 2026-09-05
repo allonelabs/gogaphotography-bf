@@ -73,7 +73,7 @@ export function CreateCourseForm({ spawnId, existingCourses }: Props) {
         throw new Error(data.error ?? `request failed (${res.status})`);
       }
       setProgress(`created · source=${data.source ?? 'unknown'}`);
-      router.push(`/app/business/${spawnId}/s/team/courses/${data.courseId}`);
+      router.push(`/admin/business/${spawnId}/s/team/courses/${data.courseId}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'unknown error');
       setSubmitting(false);

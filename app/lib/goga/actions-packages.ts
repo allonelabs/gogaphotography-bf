@@ -71,8 +71,8 @@ export async function createPackage(formData: FormData): Promise<void> {
     .single();
   if (error) throw new Error(error.message);
 
-  revalidatePath("/app/packages");
-  redirect(`/app/packages/${data.id}`);
+  revalidatePath("/admin/packages");
+  redirect(`/admin/packages/${data.id}`);
 }
 
 export async function updatePackage(
@@ -90,14 +90,14 @@ export async function updatePackage(
   const { error } = await sb.from("packages").update(update).eq("id", id);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/app/packages");
-  revalidatePath(`/app/packages/${id}`);
+  revalidatePath("/admin/packages");
+  revalidatePath(`/admin/packages/${id}`);
 }
 
 export async function deletePackage(id: string): Promise<void> {
   await requireSession();
   await gogaAdmin().from("packages").delete().eq("id", id);
-  revalidatePath("/app/packages");
+  revalidatePath("/admin/packages");
 }
 
 export async function togglePackagePublished(id: string): Promise<void> {
@@ -110,6 +110,6 @@ export async function togglePackagePublished(id: string): Promise<void> {
     .single();
   if (!data) throw new Error("not_found");
   await sb.from("packages").update({ published: !data.published }).eq("id", id);
-  revalidatePath("/app/packages");
-  revalidatePath(`/app/packages/${id}`);
+  revalidatePath("/admin/packages");
+  revalidatePath(`/admin/packages/${id}`);
 }

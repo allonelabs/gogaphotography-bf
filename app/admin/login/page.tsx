@@ -11,12 +11,14 @@ export default async function AdminLoginPage({ searchParams }: Props) {
   const session = await auth();
   const { next } = await searchParams;
   // Require a same-origin path: must start with "/", must not start with "//"
-  // (protocol-relative), and the only safe scope here is "/app" or "/app/…".
+  // (protocol-relative), and the only safe scope here is "/admin" or "/admin/…".
+  // Still accept /app here: a bookmarked login link carries ?next=/app/...
+  // and the redirect in next.config.ts maps it onward to /admin.
   const safeNext =
     typeof next === "string" &&
-    /^\/app(\/|$)/.test(next) &&
+    /^\/(admin|app)(\/|$)/.test(next) &&
     !next.startsWith("//");
-  const target = safeNext ? next : "/app";
+  const target = safeNext ? next : "/admin";
   if (session?.user?.email) {
     redirect(target);
   }

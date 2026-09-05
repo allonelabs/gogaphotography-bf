@@ -78,7 +78,7 @@ export async function GET(req: Request) {
       id: `lead:${r.id}`,
       label: r.name ?? r.email ?? "(no name)",
       hint: bits.join(" · ") || "Lead",
-      href: `/app/leads/${r.id}`,
+      href: `/admin/leads/${r.id}`,
       group: "Leads",
     });
   }
@@ -91,7 +91,7 @@ export async function GET(req: Request) {
       id: `booking:${r.id}`,
       label: r.client_name ?? r.client_email ?? "(booking)",
       hint: bits.join(" · ") || "Booking",
-      href: `/app/bookings/${r.id}`,
+      href: `/admin/bookings/${r.id}`,
       group: "Bookings",
     });
   }
@@ -100,7 +100,7 @@ export async function GET(req: Request) {
       id: `package:${r.id}`,
       label: r.name_en ?? r.slug,
       hint: r.slug,
-      href: `/app/packages/${r.id}`,
+      href: `/admin/packages/${r.id}`,
       group: "Packages",
     });
   }
@@ -109,7 +109,7 @@ export async function GET(req: Request) {
       id: `project:${r.id}`,
       label: r.title_en ?? r.slug,
       hint: r.slug,
-      href: `/app/projects/${r.id}`,
+      href: `/admin/projects/${r.id}`,
       group: "Projects",
     });
   }
@@ -121,7 +121,7 @@ export async function GET(req: Request) {
       id: `contract:${r.id}`,
       label: r.signer_name ?? r.bookings?.client_name ?? "(contract)",
       hint: bits.join(" · ") || "Contract",
-      href: `/app/contracts/${r.id}`,
+      href: `/admin/contracts/${r.id}`,
       group: "Contracts",
     });
   }

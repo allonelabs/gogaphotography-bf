@@ -23,7 +23,7 @@ export async function saveMetaSettings(formData: FormData): Promise<void> {
     .from("meta_settings")
     .update(patch as MetaSettingsRow)
     .eq("id", 1);
-  revalidatePath("/app/messages/settings");
+  revalidatePath("/admin/messages/settings");
 }
 
 export async function toggleHandoff(
@@ -32,7 +32,7 @@ export async function toggleHandoff(
 ): Promise<void> {
   await requireSession();
   await setHandoff(threadId, handoff);
-  revalidatePath(`/app/messages/${threadId}`);
+  revalidatePath(`/admin/messages/${threadId}`);
 }
 
 export async function sendManualReply(
@@ -57,5 +57,5 @@ export async function sendManualReply(
     );
     await addMessage(threadId, "out", "agent", text, sent.messageId);
   }
-  revalidatePath(`/app/messages/${threadId}`);
+  revalidatePath(`/admin/messages/${threadId}`);
 }

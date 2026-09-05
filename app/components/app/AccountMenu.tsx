@@ -118,22 +118,22 @@ export function AccountMenu() {
 
           <div className="py-1.5">
             <MenuItem
-              href="/app/account"
+              href="/admin/account"
               onClick={() => setOpen(false)}
               label="Account settings"
             />
             <MenuItem
-              href="/app/organization"
+              href="/admin/organization"
               onClick={() => setOpen(false)}
               label="Organization settings"
             />
             <MenuItem
-              href="/app/billing"
+              href="/admin/billing"
               onClick={() => setOpen(false)}
               label="Billing"
             />
             <MenuItem
-              href="/app/account/api-keys"
+              href="/admin/account/api-keys"
               onClick={() => setOpen(false)}
               label="API keys"
             />
@@ -141,12 +141,12 @@ export function AccountMenu() {
 
           <div className="border-t border-[var(--allonce-line-soft)] py-1.5">
             <MenuItem
-              href="/app/help"
+              href="/admin/help"
               onClick={() => setOpen(false)}
               label="Help & docs"
             />
             <MenuItem
-              href="/app/status"
+              href="/admin/status"
               onClick={() => setOpen(false)}
               label="System status"
             />

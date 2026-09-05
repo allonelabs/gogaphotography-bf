@@ -60,8 +60,8 @@ export async function createProject(formData: FormData): Promise<void> {
   if (error) throw new Error(error.message);
   const albumIds = formData.getAll("album_ids").map(String).filter(Boolean);
   if (data) await setProjectAlbums(data.id, albumIds);
-  revalidatePath("/app/projects");
-  redirect(`/app/projects/${data.id}`);
+  revalidatePath("/admin/projects");
+  redirect(`/admin/projects/${data.id}`);
 }
 
 export async function updateProject(
@@ -89,8 +89,8 @@ export async function updateProject(
   if (error) throw new Error(error.message);
   const albumIds = formData.getAll("album_ids").map(String).filter(Boolean);
   await setProjectAlbums(id, albumIds);
-  revalidatePath("/app/projects");
-  revalidatePath(`/app/projects/${id}`);
+  revalidatePath("/admin/projects");
+  revalidatePath(`/admin/projects/${id}`);
   revalidatePath(`/project/${slug}`);
 }
 
@@ -114,8 +114,8 @@ export async function deleteProject(id: string): Promise<void> {
     await sb.storage.from("projects").remove(paths);
   }
   await sb.from("projects").delete().eq("id", id);
-  revalidatePath("/app/projects");
-  redirect("/app/projects");
+  revalidatePath("/admin/projects");
+  redirect("/admin/projects");
 }
 
 /* -------------------- Gallery -------------------- */
@@ -217,7 +217,7 @@ export async function uploadProjectImage(
       .eq("id", projectId);
   }
 
-  revalidatePath(`/app/projects/${projectId}`);
+  revalidatePath(`/admin/projects/${projectId}`);
   return { id: data.id, imagePath };
 }
 
@@ -230,7 +230,7 @@ export async function setHeroImage(
     .from("projects")
     .update({ hero_image_path: imagePath })
     .eq("id", projectId);
-  revalidatePath(`/app/projects/${projectId}`);
+  revalidatePath(`/admin/projects/${projectId}`);
 }
 
 export async function reorderImages(
@@ -248,7 +248,7 @@ export async function reorderImages(
         .eq("project_id", projectId),
     ),
   );
-  revalidatePath(`/app/projects/${projectId}`);
+  revalidatePath(`/admin/projects/${projectId}`);
 }
 
 export async function updateImageCaption(
@@ -263,7 +263,7 @@ export async function updateImageCaption(
     .eq("id", imageId)
     .select("project_id")
     .single();
-  if (data?.project_id) revalidatePath(`/app/projects/${data.project_id}`);
+  if (data?.project_id) revalidatePath(`/admin/projects/${data.project_id}`);
 }
 
 export async function updateImageAlt(
@@ -278,7 +278,7 @@ export async function updateImageAlt(
     .eq("id", imageId)
     .select("project_id")
     .single();
-  if (data?.project_id) revalidatePath(`/app/projects/${data.project_id}`);
+  if (data?.project_id) revalidatePath(`/admin/projects/${data.project_id}`);
 }
 
 export async function deleteImage(imageId: string): Promise<void> {
@@ -319,7 +319,7 @@ export async function deleteImage(imageId: string): Promise<void> {
         .eq("id", data.project_id);
     }
   }
-  revalidatePath(`/app/projects/${data.project_id}`);
+  revalidatePath(`/admin/projects/${data.project_id}`);
 }
 
 export async function togglePublish(id: string): Promise<void> {
@@ -332,8 +332,8 @@ export async function togglePublish(id: string): Promise<void> {
     .single();
   if (!data) throw new Error("not_found");
   await sb.from("projects").update({ published: !data.published }).eq("id", id);
-  revalidatePath("/app/projects");
-  revalidatePath(`/app/projects/${id}`);
+  revalidatePath("/admin/projects");
+  revalidatePath(`/admin/projects/${id}`);
 }
 
 export async function reorderProjects(orderedIds: string[]): Promise<void> {
@@ -344,5 +344,5 @@ export async function reorderProjects(orderedIds: string[]): Promise<void> {
       sb.from("projects").update({ sort_order: idx }).eq("id", id),
     ),
   );
-  revalidatePath("/app/projects");
+  revalidatePath("/admin/projects");
 }

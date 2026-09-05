@@ -73,7 +73,7 @@ export function WorkflowFromPromptForm({ spawnId }: Props) {
       if (!res.ok || !data.ok || !data.workflowId) {
         throw new Error(data.error ?? `request failed (${res.status})`);
       }
-      router.push(`/app/business/${spawnId}/s/automations/workflows/${data.workflowId}`);
+      router.push(`/admin/business/${spawnId}/s/automations/workflows/${data.workflowId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'publish failed');
       setBusy(null);

@@ -5,5 +5,5 @@ export const dynamic = "force-dynamic";
 
 export default async function RootPage() {
   const session = await auth();
-  redirect(session?.user?.email ? "/app" : "/admin/login");
+  redirect(session?.user?.email ? "/admin" : "/admin/login");
 }

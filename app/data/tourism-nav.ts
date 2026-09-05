@@ -35,7 +35,7 @@ export interface NavConfig {
  * pattern travelplace-bf used when it forked BF.)
  */
 export const tourismNav: NavConfig = {
-  top: { label: "Home", href: "/app", icon: "home" },
+  top: { label: "Home", href: "/admin", icon: "home" },
   sections: [
     {
       label: "Pipeline",
@@ -43,37 +43,37 @@ export const tourismNav: NavConfig = {
         {
           label: "Dashboard",
           labelKa: "მთავარი",
-          href: "/app/dashboard",
+          href: "/admin/dashboard",
           icon: "layout-dashboard",
         },
         {
           label: "Leads",
           labelKa: "კლიენტები",
-          href: "/app/leads",
+          href: "/admin/leads",
           icon: "users",
         },
         {
           label: "Bookings",
           labelKa: "ჯავშნები",
-          href: "/app/bookings",
+          href: "/admin/bookings",
           icon: "book",
         },
         {
           label: "Calendar",
           labelKa: "კალენდარი",
-          href: "/app/calendar",
+          href: "/admin/calendar",
           icon: "calendar",
         },
         {
           label: "Contracts",
           labelKa: "ხელშეკრულებები",
-          href: "/app/contracts",
+          href: "/admin/contracts",
           icon: "scroll-text",
         },
         {
           label: "Deliveries",
           labelKa: "მიწოდებები",
-          href: "/app/deliveries",
+          href: "/admin/deliveries",
           icon: "image",
         },
       ],
@@ -84,25 +84,25 @@ export const tourismNav: NavConfig = {
         {
           label: "Packages",
           labelKa: "პაკეტები",
-          href: "/app/packages",
+          href: "/admin/packages",
           icon: "tag",
         },
         {
           label: "Projects",
           labelKa: "პროექტები",
-          href: "/app/projects",
+          href: "/admin/projects",
           icon: "camera",
         },
         {
           label: "Services",
           labelKa: "სერვისები",
-          href: "/app/services",
+          href: "/admin/services",
           icon: "grid",
         },
         {
           label: "Store",
           labelKa: "მაღაზია",
-          href: "/app/store",
+          href: "/admin/store",
           icon: "shopping-bag",
         },
       ],
@@ -110,29 +110,29 @@ export const tourismNav: NavConfig = {
     {
       label: "Site",
       items: [
-        { label: "Homepage hero", href: "/app/hero", icon: "sparkles" },
+        { label: "Homepage hero", href: "/admin/hero", icon: "sparkles" },
         {
           label: "Blog",
           labelKa: "ბლოგი",
-          href: "/app/blog",
+          href: "/admin/blog",
           icon: "pen-tool",
         },
         {
           label: "Pinterest",
           labelKa: "Pinterest",
-          href: "/app/pinterest",
+          href: "/admin/pinterest",
           icon: "share-2",
         },
         {
           label: "Pages",
           labelKa: "გვერდები",
-          href: "/app/pages",
+          href: "/admin/pages",
           icon: "file-text",
         },
         {
           label: "Studio info",
           labelKa: "სტუდიის ინფო",
-          href: "/app/studio",
+          href: "/admin/studio",
           icon: "user",
         },
       ],
@@ -143,11 +143,11 @@ export const tourismNav: NavConfig = {
         {
           label: "Messages",
           labelKa: "მესიჯები",
-          href: "/app/messages",
+          href: "/admin/messages",
           icon: "message-circle",
         },
-        { label: "Contact form", href: "/app/contact", icon: "mail" },
-        { label: "Chatbot", href: "/app/chatbot", icon: "bot" },
+        { label: "Contact form", href: "/admin/contact", icon: "mail" },
+        { label: "Chatbot", href: "/admin/chatbot", icon: "bot" },
       ],
     },
     {
@@ -156,7 +156,7 @@ export const tourismNav: NavConfig = {
         {
           label: "Audit",
           labelKa: "აუდიტი",
-          href: "/app/audit",
+          href: "/admin/audit",
           icon: "clipboard-list",
         },
       ],
@@ -173,6 +173,6 @@ export const tourismFooter: Array<{
   href: string;
   icon?: string;
 }> = [
-  { label: "Account", href: "/app/account", icon: "user" },
-  { label: "Help", href: "/app/help", icon: "help-circle" },
+  { label: "Account", href: "/admin/account", icon: "user" },
+  { label: "Help", href: "/admin/help", icon: "help-circle" },
 ];

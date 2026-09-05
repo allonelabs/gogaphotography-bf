@@ -10,16 +10,10 @@ const config: NextConfig = {
   // pulled through the bundler (upload thumbnail generation).
   serverExternalPackages: ['sharp'],
 
-  // Multi-zone: shell-zone IS the root domain (bf.allonelabs.com).
-  // It rewrites /app/business/:id/:path* to business-zone.
-  // assetPrefix not needed here since this zone IS the root.
-  async rewrites() {
-    const businessZone = process.env.BUSINESS_ZONE_URL ?? 'https://business-forge-zone-business.vercel.app';
-    return [
-      { source: '/app/business/:id', destination: `${businessZone}/app/business/:id` },
-      { source: '/app/business/:id/:path*', destination: `${businessZone}/app/business/:id/:path*` },
-    ];
-  },
+  // The Business Forge multi-zone rewrite went with the /app -> /admin move.
+  // It forwarded /app/business/* to a separate deployment this single-tenant
+  // studio never had, and leaving it would shadow the /app redirect below for
+  // those paths — sending anyone on an old link to a zone that never answers.
 
   // Landing page was lifted from a static-HTML site and still has hard-coded
   // /index.html and /signin/index.html hrefs (logo + sign-in link). Without
@@ -29,6 +23,14 @@ const config: NextConfig = {
     return [
       { source: '/index.html', destination: '/', permanent: true },
       { source: '/signin/index.html', destination: '/signin', permanent: true },
+
+      // The admin moved from /app to /admin. Bookmarks, the callback URL
+      // saved in a password manager and links pasted into chats all still
+      // point at /app, so keep them working instead of 404ing. Permanent
+      // emits 308, which preserves the request method — these paths sit
+      // behind form posts, and a 301 would silently rewrite POST to GET.
+      { source: '/app', destination: '/admin', permanent: true },
+      { source: '/app/:path*', destination: '/admin/:path*', permanent: true },
     ];
   },
 

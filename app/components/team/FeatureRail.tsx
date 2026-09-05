@@ -142,7 +142,7 @@ export function buildTeamFeatures(
     certificates: number;
   },
 ): FeatureItem[] {
-  const root = `/app/business/${spawnId}/s/team`;
+  const root = `/admin/business/${spawnId}/s/team`;
   return [
     // People
     { k: '01', label: 'Roster',         href: `${root}/members`,         badge: counts.members,     group: 'people' },
