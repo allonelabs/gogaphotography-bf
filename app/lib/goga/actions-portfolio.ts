@@ -9,6 +9,7 @@ export async function saveAlbum(id: string, formData: FormData): Promise<void> {
   await updateAlbum(id, {
     name_en: String(formData.get("name_en") ?? "").trim(),
     name_ka: String(formData.get("name_ka") ?? "").trim(),
+    name_ru: String(formData.get("name_ru") ?? "").trim(),
     sort_order: parseInt(String(formData.get("sort_order") ?? "0"), 10) || 0,
   });
   revalidatePath("/admin/projects/albums");

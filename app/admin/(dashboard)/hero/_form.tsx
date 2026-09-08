@@ -7,8 +7,12 @@ import { updateHero } from "@/app/lib/goga/actions-content";
 type Initial = {
   headline_en: string | null;
   headline_ka: string | null;
+
+  headline_ru?: string | null;
   subtitle_en: string | null;
   subtitle_ka: string | null;
+
+  subtitle_ru?: string | null;
 };
 
 export function HeroForm({ initial }: { initial: Initial | null }) {
@@ -41,7 +45,7 @@ export function HeroForm({ initial }: { initial: Initial | null }) {
       onSubmit={onSubmit}
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Headline (EN)">
           <input
             name="headline_en"
@@ -58,9 +62,17 @@ export function HeroForm({ initial }: { initial: Initial | null }) {
             className={inputCls}
           />
         </Field>
+        <Field label="Headline (RU)">
+          <input
+            name="headline_ru"
+            defaultValue={initial?.headline_ka ?? ""}
+            placeholder="GOGA Photography"
+            className={inputCls}
+          />
+        </Field>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Subtitle (EN)">
           <textarea
             name="subtitle_en"
@@ -73,6 +85,14 @@ export function HeroForm({ initial }: { initial: Initial | null }) {
         <Field label="Subtitle (KA)">
           <textarea
             name="subtitle_ka"
+            defaultValue={initial?.subtitle_ka ?? ""}
+            rows={3}
+            className={inputCls}
+          />
+        </Field>
+        <Field label="Subtitle (RU)">
+          <textarea
+            name="subtitle_ru"
             defaultValue={initial?.subtitle_ka ?? ""}
             rows={3}
             className={inputCls}

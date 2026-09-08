@@ -10,8 +10,12 @@ type Initial = {
   id?: string;
   title_en?: string | null;
   title_ka?: string | null;
+
+  title_ru?: string | null;
   description_en?: string | null;
   description_ka?: string | null;
+
+  description_ru?: string | null;
   price?: string | null;
   published?: boolean | null;
 };
@@ -54,7 +58,7 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
       onSubmit={onSubmit}
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Title (EN)">
           <input
             name="title_en"
@@ -71,9 +75,16 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
+        <Field label="Title (RU)">
+          <input
+            name="title_ru"
+            defaultValue={initial?.title_ka ?? ""}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Description (EN)">
           <textarea
             name="description_en"
@@ -85,6 +96,14 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
         <Field label="Description (KA)">
           <textarea
             name="description_ka"
+            defaultValue={initial?.description_ka ?? ""}
+            rows={5}
+            className={inputCls}
+          />
+        </Field>
+        <Field label="Description (RU)">
+          <textarea
+            name="description_ru"
             defaultValue={initial?.description_ka ?? ""}
             rows={5}
             className={inputCls}

@@ -8,8 +8,12 @@ import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 type Initial = {
   title_en: string;
   title_ka: string;
+
+  title_ru?: string | null;
   body_en: string;
   body_ka: string;
+
+  body_ru?: string | null;
 };
 
 export function PageForm({
@@ -54,7 +58,7 @@ export function PageForm({
       onSubmit={onSubmit}
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Title (EN)">
           <input
             name="title_en"
@@ -69,9 +73,16 @@ export function PageForm({
             className={inputCls}
           />
         </Field>
+        <Field label="Title (RU)">
+          <input
+            name="title_ru"
+            defaultValue={initial.title_ru ?? ""}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Body (EN) · markdown">
           <textarea
             name="body_en"
@@ -85,6 +96,15 @@ export function PageForm({
           <textarea
             name="body_ka"
             defaultValue={initial.body_ka}
+            rows={14}
+            className={monoCls}
+            style={{ minHeight: 280 }}
+          />
+        </Field>
+        <Field label="Body (RU) · markdown">
+          <textarea
+            name="body_ru"
+            defaultValue={initial.body_ru ?? ""}
             rows={14}
             className={monoCls}
             style={{ minHeight: 280 }}

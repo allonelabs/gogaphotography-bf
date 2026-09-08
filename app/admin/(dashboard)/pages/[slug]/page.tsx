@@ -25,14 +25,18 @@ export default async function EditPagePage({ params }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = (await (sb as any)
     .from("pages")
-    .select("title_en, title_ka, body_en, body_ka, og_image_path")
+    .select("title_en, title_ka, title_ru, body_en, body_ka, body_ru, og_image_path")
     .eq("slug", slug)
     .maybeSingle()) as {
     data: {
       title_en: string | null;
       title_ka: string | null;
+
+      title_ru: string | null;
       body_en: string | null;
       body_ka: string | null;
+
+      body_ru: string | null;
       og_image_path: string | null;
     } | null;
   };
@@ -81,8 +85,12 @@ export default async function EditPagePage({ params }: Props) {
           initial={{
             title_en: data?.title_en ?? "",
             title_ka: data?.title_ka ?? "",
+
+            title_ru: data?.title_ru ?? "",
             body_en: data?.body_en ?? "",
             body_ka: data?.body_ka ?? "",
+
+            body_ru: data?.body_ru ?? "",
           }}
         />
       </div>

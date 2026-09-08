@@ -4,6 +4,7 @@ export type PortfolioAlbumRow = {
   slug: string;
   name_en: string;
   name_ka: string;
+  name_ru: string | null;
   sort_order: number;
   created_at: string;
 };

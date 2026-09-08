@@ -46,10 +46,13 @@ export async function createProject(formData: FormData): Promise<void> {
     slug,
     title_en,
     title_ka: String(formData.get("title_ka") ?? "").trim() || null,
+    title_ru: String(formData.get("title_ru") ?? "").trim() || null,
     location_en: String(formData.get("location_en") ?? "").trim() || null,
     location_ka: String(formData.get("location_ka") ?? "").trim() || null,
+    location_ru: String(formData.get("location_ru") ?? "").trim() || null,
     description_en: String(formData.get("description_en") ?? "").trim() || null,
     description_ka: String(formData.get("description_ka") ?? "").trim() || null,
+    description_ru: String(formData.get("description_ru") ?? "").trim() || null,
     published: formData.get("published") === "on",
   };
   const { data, error } = await sb
@@ -79,10 +82,13 @@ export async function updateProject(
     slug,
     title_en,
     title_ka: String(formData.get("title_ka") ?? "").trim() || null,
+    title_ru: String(formData.get("title_ru") ?? "").trim() || null,
     location_en: String(formData.get("location_en") ?? "").trim() || null,
     location_ka: String(formData.get("location_ka") ?? "").trim() || null,
+    location_ru: String(formData.get("location_ru") ?? "").trim() || null,
     description_en: String(formData.get("description_en") ?? "").trim() || null,
     description_ka: String(formData.get("description_ka") ?? "").trim() || null,
+    description_ru: String(formData.get("description_ru") ?? "").trim() || null,
     published: formData.get("published") === "on",
   };
   const { error } = await sb.from("projects").update(update).eq("id", id);

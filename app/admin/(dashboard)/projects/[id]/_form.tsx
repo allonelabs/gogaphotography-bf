@@ -10,10 +10,16 @@ type Initial = {
   slug?: string | null;
   title_en?: string | null;
   title_ka?: string | null;
+
+  title_ru?: string | null;
   location_en?: string | null;
   location_ka?: string | null;
+
+  location_ru?: string | null;
   description_en?: string | null;
   description_ka?: string | null;
+
+  description_ru?: string | null;
   published?: boolean | null;
 };
 
@@ -22,6 +28,8 @@ type AlbumOption = {
   slug: string;
   name_en: string;
   name_ka: string;
+
+  name_ru?: string | null;
 };
 
 export function ProjectForm({
@@ -65,7 +73,7 @@ export function ProjectForm({
       onSubmit={onSubmit}
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Title (EN)">
           <input
             name="title_en"
@@ -81,9 +89,16 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
+        <Field label="Title (RU)">
+          <input
+            name="title_ru"
+            defaultValue={initial?.title_ka ?? ""}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Location (EN)">
           <input
             name="location_en"
@@ -99,6 +114,13 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
+        <Field label="Location (RU)">
+          <input
+            name="location_ru"
+            defaultValue={initial?.location_ka ?? ""}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
       <Field label="Slug — leave blank to auto-generate">
@@ -109,7 +131,7 @@ export function ProjectForm({
         />
       </Field>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Description (EN)">
           <textarea
             name="description_en"
@@ -121,6 +143,14 @@ export function ProjectForm({
         <Field label="Description (KA)">
           <textarea
             name="description_ka"
+            defaultValue={initial?.description_ka ?? ""}
+            rows={4}
+            className={inputCls}
+          />
+        </Field>
+        <Field label="Description (RU)">
+          <textarea
+            name="description_ru"
             defaultValue={initial?.description_ka ?? ""}
             rows={4}
             className={inputCls}

@@ -11,10 +11,16 @@ type Initial = {
   slug?: string | null;
   name_en?: string | null;
   name_ka?: string | null;
+
+  name_ru?: string | null;
   short_desc_en?: string | null;
   short_desc_ka?: string | null;
+
+  short_desc_ru?: string | null;
   deliverables_en?: string | null;
   deliverables_ka?: string | null;
+
+  deliverables_ru?: string | null;
   base_price_cents?: number | null;
   currency?: string | null;
   duration_hours?: number | null;
@@ -63,7 +69,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
       onSubmit={onSubmit}
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Name (EN)">
           <input
             name="name_en"
@@ -80,6 +86,13 @@ export function PackageForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
+        <Field label="Name (RU)">
+          <input
+            name="name_ru"
+            defaultValue={initial?.name_ka ?? ""}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
       <Field label="Slug (URL — leave blank to auto-generate)">
@@ -91,7 +104,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         />
       </Field>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Short description (EN)">
           <textarea
             name="short_desc_en"
@@ -108,9 +121,17 @@ export function PackageForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
+        <Field label="Short description (RU)">
+          <textarea
+            name="short_desc_ru"
+            defaultValue={initial?.short_desc_ka ?? ""}
+            rows={3}
+            className={inputCls}
+          />
+        </Field>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <Field label="Deliverables (EN) — one per line">
           <textarea
             name="deliverables_en"
@@ -125,6 +146,14 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         <Field label="Deliverables (KA)">
           <textarea
             name="deliverables_ka"
+            defaultValue={initial?.deliverables_ka ?? ""}
+            rows={4}
+            className={inputCls}
+          />
+        </Field>
+        <Field label="Deliverables (RU)">
+          <textarea
+            name="deliverables_ru"
             defaultValue={initial?.deliverables_ka ?? ""}
             rows={4}
             className={inputCls}

@@ -9,7 +9,7 @@ export default async function HeroPage() {
   const sb = gogaAdmin();
   const { data } = await sb
     .from("hero")
-    .select("headline_en, headline_ka, subtitle_en, subtitle_ka")
+    .select("headline_en, headline_ka, headline_ru, subtitle_en, subtitle_ka, subtitle_ru")
     .eq("id", 1)
     .single();
 

@@ -25,10 +25,13 @@ function readFields(fd: FormData) {
   return {
     name_en: String(fd.get("name_en") ?? "").trim(),
     name_ka: String(fd.get("name_ka") ?? "").trim() || null,
+    name_ru: String(fd.get("name_ru") ?? "").trim() || null,
     short_desc_en: String(fd.get("short_desc_en") ?? "").trim() || null,
     short_desc_ka: String(fd.get("short_desc_ka") ?? "").trim() || null,
+    short_desc_ru: String(fd.get("short_desc_ru") ?? "").trim() || null,
     deliverables_en: String(fd.get("deliverables_en") ?? "").trim() || null,
     deliverables_ka: String(fd.get("deliverables_ka") ?? "").trim() || null,
+    deliverables_ru: String(fd.get("deliverables_ru") ?? "").trim() || null,
     base_price_cents: parseCents(fd.get("base_price")),
     currency: (
       String(fd.get("currency") ?? "EUR").trim() || "EUR"

@@ -38,9 +38,11 @@ export type GogaDatabase = {
         Row: {
           description_en: string | null;
           description_ka: string | null;
+          description_ru: string | null;
           id: string;
           name_en: string;
           name_ka: string | null;
+          name_ru: string | null;
           price_cents: number;
           published: boolean;
           slug: string;
@@ -50,9 +52,11 @@ export type GogaDatabase = {
         Insert: {
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           id?: string;
           name_en: string;
           name_ka?: string | null;
+          name_ru?: string | null;
           price_cents?: number;
           published?: boolean;
           slug: string;
@@ -62,9 +66,11 @@ export type GogaDatabase = {
         Update: {
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           id?: string;
           name_en?: string;
           name_ka?: string | null;
+          name_ru?: string | null;
           price_cents?: number;
           published?: boolean;
           slug?: string;
@@ -333,6 +339,7 @@ export type GogaDatabase = {
         Row: {
           body_en: string | null;
           body_ka: string | null;
+          body_ru: string | null;
           booking_id: string;
           created_at: string;
           id: string;
@@ -350,6 +357,7 @@ export type GogaDatabase = {
         Insert: {
           body_en?: string | null;
           body_ka?: string | null;
+          body_ru?: string | null;
           booking_id: string;
           created_at?: string;
           id?: string;
@@ -367,6 +375,7 @@ export type GogaDatabase = {
         Update: {
           body_en?: string | null;
           body_ka?: string | null;
+          body_ru?: string | null;
           booking_id?: string;
           created_at?: string;
           id?: string;
@@ -492,25 +501,31 @@ export type GogaDatabase = {
         Row: {
           headline_en: string | null;
           headline_ka: string | null;
+          headline_ru: string | null;
           id: number;
           subtitle_en: string | null;
           subtitle_ka: string | null;
+          subtitle_ru: string | null;
           updated_at: string;
         };
         Insert: {
           headline_en?: string | null;
           headline_ka?: string | null;
+          headline_ru?: string | null;
           id?: number;
           subtitle_en?: string | null;
           subtitle_ka?: string | null;
+          subtitle_ru?: string | null;
           updated_at?: string;
         };
         Update: {
           headline_en?: string | null;
           headline_ka?: string | null;
+          headline_ru?: string | null;
           id?: number;
           subtitle_en?: string | null;
           subtitle_ka?: string | null;
+          subtitle_ru?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -617,14 +632,17 @@ export type GogaDatabase = {
           currency: string;
           deliverables_en: string | null;
           deliverables_ka: string | null;
+          deliverables_ru: string | null;
           deposit_pct: number;
           duration_hours: number | null;
           id: string;
           name_en: string;
           name_ka: string | null;
+          name_ru: string | null;
           published: boolean;
           short_desc_en: string | null;
           short_desc_ka: string | null;
+          short_desc_ru: string | null;
           slug: string;
           sort_order: number;
           updated_at: string;
@@ -635,14 +653,17 @@ export type GogaDatabase = {
           currency?: string;
           deliverables_en?: string | null;
           deliverables_ka?: string | null;
+          deliverables_ru?: string | null;
           deposit_pct?: number;
           duration_hours?: number | null;
           id?: string;
           name_en: string;
           name_ka?: string | null;
+          name_ru?: string | null;
           published?: boolean;
           short_desc_en?: string | null;
           short_desc_ka?: string | null;
+          short_desc_ru?: string | null;
           slug: string;
           sort_order?: number;
           updated_at?: string;
@@ -653,14 +674,17 @@ export type GogaDatabase = {
           currency?: string;
           deliverables_en?: string | null;
           deliverables_ka?: string | null;
+          deliverables_ru?: string | null;
           deposit_pct?: number;
           duration_hours?: number | null;
           id?: string;
           name_en?: string;
           name_ka?: string | null;
+          name_ru?: string | null;
           published?: boolean;
           short_desc_en?: string | null;
           short_desc_ka?: string | null;
+          short_desc_ru?: string | null;
           slug?: string;
           sort_order?: number;
           updated_at?: string;
@@ -671,25 +695,31 @@ export type GogaDatabase = {
         Row: {
           body_en: string | null;
           body_ka: string | null;
+          body_ru: string | null;
           slug: string;
           title_en: string | null;
           title_ka: string | null;
+          title_ru: string | null;
           updated_at: string;
         };
         Insert: {
           body_en?: string | null;
           body_ka?: string | null;
+          body_ru?: string | null;
           slug: string;
           title_en?: string | null;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Update: {
           body_en?: string | null;
           body_ka?: string | null;
+          body_ru?: string | null;
           slug?: string;
           title_en?: string | null;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -764,45 +794,54 @@ export type GogaDatabase = {
           created_at: string;
           description_en: string | null;
           description_ka: string | null;
+          description_ru: string | null;
           hero_image_path: string | null;
           id: string;
           location_en: string | null;
           location_ka: string | null;
+          location_ru: string | null;
           published: boolean;
           slug: string;
           sort_order: number;
           title_en: string;
           title_ka: string | null;
+          title_ru: string | null;
           updated_at: string;
         };
         Insert: {
           created_at?: string;
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           hero_image_path?: string | null;
           id?: string;
           location_en?: string | null;
           location_ka?: string | null;
+          location_ru?: string | null;
           published?: boolean;
           slug: string;
           sort_order?: number;
           title_en: string;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Update: {
           created_at?: string;
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           hero_image_path?: string | null;
           id?: string;
           location_en?: string | null;
           location_ka?: string | null;
+          location_ru?: string | null;
           published?: boolean;
           slug?: string;
           sort_order?: number;
           title_en?: string;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -811,34 +850,40 @@ export type GogaDatabase = {
         Row: {
           description_en: string | null;
           description_ka: string | null;
+          description_ru: string | null;
           id: string;
           price: string | null;
           published: boolean;
           sort_order: number;
           title_en: string;
           title_ka: string | null;
+          title_ru: string | null;
           updated_at: string;
         };
         Insert: {
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           id?: string;
           price?: string | null;
           published?: boolean;
           sort_order?: number;
           title_en: string;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Update: {
           description_en?: string | null;
           description_ka?: string | null;
+          description_ru?: string | null;
           id?: string;
           price?: string | null;
           published?: boolean;
           sort_order?: number;
           title_en?: string;
           title_ka?: string | null;
+          title_ru?: string | null;
           updated_at?: string;
         };
         Relationships: [];

@@ -67,8 +67,10 @@ function readPostFields(fd: FormData) {
   const publishedRaw = String(fd.get("published_at") ?? "").trim();
   return {
     title_ka: String(fd.get("title_ka") ?? "").trim(),
+    title_ru: String(fd.get("title_ru") ?? "").trim(),
     title_en: String(fd.get("title_en") ?? "").trim(),
     excerpt_ka: String(fd.get("excerpt_ka") ?? "").trim(),
+    excerpt_ru: String(fd.get("excerpt_ru") ?? "").trim(),
     excerpt_en: String(fd.get("excerpt_en") ?? "").trim(),
     body_ka: sanitizeBlogHtml(String(fd.get("body_ka") ?? "")),
     body_en: sanitizeBlogHtml(String(fd.get("body_en") ?? "")),

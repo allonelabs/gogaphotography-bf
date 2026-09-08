@@ -5,6 +5,7 @@ export type BlogCategoryRow = {
   id: string;
   slug: string;
   name_ka: string;
+  name_ru: string | null;
   name_en: string;
   created_at: string;
 };
@@ -13,6 +14,7 @@ export type BlogTagRow = {
   id: string;
   slug: string;
   name_ka: string;
+  name_ru: string | null;
   name_en: string;
   created_at: string;
 };
@@ -21,10 +23,13 @@ export type BlogPostRow = {
   id: string;
   slug: string;
   title_ka: string;
+  title_ru: string | null;
   title_en: string;
   excerpt_ka: string;
+  excerpt_ru: string | null;
   excerpt_en: string;
   body_ka: string;
+  body_ru: string | null;
   body_en: string;
   cover_image_path: string | null;
   category_id: string | null;

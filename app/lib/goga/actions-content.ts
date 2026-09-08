@@ -37,8 +37,10 @@ export async function upsertPage(
     slug,
     title_en: String(formData.get("title_en") ?? "").trim() || null,
     title_ka: String(formData.get("title_ka") ?? "").trim() || null,
+    title_ru: String(formData.get("title_ru") ?? "").trim() || null,
     body_en: String(formData.get("body_en") ?? "").trim() || null,
     body_ka: String(formData.get("body_ka") ?? "").trim() || null,
+    body_ru: String(formData.get("body_ru") ?? "").trim() || null,
   };
   const { error } = await sb
     .from("pages")
@@ -70,10 +72,13 @@ export async function createService(formData: FormData): Promise<void> {
     .insert({
       title_en,
       title_ka: String(formData.get("title_ka") ?? "").trim() || null,
+      title_ru: String(formData.get("title_ru") ?? "").trim() || null,
       description_en:
         String(formData.get("description_en") ?? "").trim() || null,
       description_ka:
         String(formData.get("description_ka") ?? "").trim() || null,
+      description_ru:
+        String(formData.get("description_ru") ?? "").trim() || null,
       price: String(formData.get("price") ?? "").trim() || null,
       published: formData.get("published") === "on",
       sort_order: nextOrder,
@@ -100,10 +105,13 @@ export async function updateService(
     .update({
       title_en,
       title_ka: String(formData.get("title_ka") ?? "").trim() || null,
+      title_ru: String(formData.get("title_ru") ?? "").trim() || null,
       description_en:
         String(formData.get("description_en") ?? "").trim() || null,
       description_ka:
         String(formData.get("description_ka") ?? "").trim() || null,
+      description_ru:
+        String(formData.get("description_ru") ?? "").trim() || null,
       price: String(formData.get("price") ?? "").trim() || null,
       published: formData.get("published") === "on",
     })
