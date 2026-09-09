@@ -29,8 +29,15 @@ const GEO = /[\u10A0-\u10FF]/;
   for (const [key, rec] of Object.entries(t)) {
     const [id, lang] = key.split(":");
     if (lang === "ru" && !hasRu) continue;
-    const bad = ["title", "excerpt", "body"].filter((f) => GEO.test(rec[f] || ""));
-    if (bad.length) { console.log(`  ! skip ${rec.slug} [${lang}] - Georgian left in ${bad.join(",")}`); continue; }
+    // Same rule the translator uses: bodies are WordPress HTML and keep
+    // Georgian inside alt text and image filenames, which is correct. Only a
+    // title that is still entirely Georgian, or a body that kept most of the
+    // original's Georgian, means the translation actually failed.
+    const geoCount = (s) => (String(s || "").match(/[Ⴀ-ჿ]/g) || []).length;
+    const bad = [];
+    if (GEO.test(rec.title)) bad.push("title");
+    if (geoCount(rec.body) > 400) bad.push(`body (${geoCount(rec.body)} Georgian chars)`);
+    if (bad.length) { console.log(`  ! skip ${rec.slug} [${lang}] - ${bad.join(", ")}`); continue; }
     const patch = byPost.get(id) || { slug: rec.slug, patch: {} };
     for (const f of ["title", "excerpt", "body"]) if (rec[f]) patch.patch[`${f}_${lang}`] = rec[f];
     byPost.set(id, patch);

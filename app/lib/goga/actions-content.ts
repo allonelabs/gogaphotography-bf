@@ -13,11 +13,20 @@ export async function updateHero(formData: FormData): Promise<void> {
   const sb = gogaAdmin();
   const headline_en = String(formData.get("headline_en") ?? "").trim() || null;
   const headline_ka = String(formData.get("headline_ka") ?? "").trim() || null;
+  const headline_ru = String(formData.get("headline_ru") ?? "").trim() || null;
   const subtitle_en = String(formData.get("subtitle_en") ?? "").trim() || null;
   const subtitle_ka = String(formData.get("subtitle_ka") ?? "").trim() || null;
+  const subtitle_ru = String(formData.get("subtitle_ru") ?? "").trim() || null;
   const { error } = await sb
     .from("hero")
-    .update({ headline_en, headline_ka, subtitle_en, subtitle_ka })
+    .update({
+      headline_en,
+      headline_ka,
+      headline_ru,
+      subtitle_en,
+      subtitle_ka,
+      subtitle_ru,
+    })
     .eq("id", 1);
   if (error) throw new Error(error.message);
   revalidatePath("/");

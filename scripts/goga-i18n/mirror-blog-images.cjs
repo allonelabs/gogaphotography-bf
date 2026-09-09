@@ -77,7 +77,14 @@ async function mirror(url, cache) {
       try { map.set(u, await mirror(u, cache)); images++; }
       catch (e) { console.log(`  ! ${p.slug}: ${u.slice(-42)} -> ${e.message}`); failed++; ok = false; }
     }
-    if (!ok) { console.log(`  skipping ${p.slug} - not all images stored`); continue; }
+    // All-or-nothing was too strict. Three posts embed images that are
+    // already dead on the WordPress box - they 301 to an HTML page, so they
+    // are broken on the live site today and cannot be mirrored. Refusing to
+    // rewrite those posts left 109 perfectly good images pointing at a host
+    // that stops answering the moment DNS moves. Rewrite what was stored and
+    // leave the dead ones exactly as they are: no worse than now, and every
+    // working image survives the cutover.
+    if (!ok && !map.size) { console.log(`  skipping ${p.slug} - no images could be stored`); continue; }
 
     const patch = {};
     for (const f of fields) {
