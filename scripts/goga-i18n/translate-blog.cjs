@@ -77,9 +77,21 @@ ${text}`;
         rec[field] = await gen(src, lang, label, 0);
       }
       // Reject anything that still carries Georgian script or collapsed to a stub.
+      // Judge by how much Georgian is LEFT, not whether any survives. Bodies
+      // are WordPress HTML and carry Georgian inside alt text, image file
+      // names and titles that a translator is right to leave alone - one
+      // rejected post had 36 Georgian characters in 15,194, i.e. 99.8%
+      // translated, and was thrown away by a test for "any". Compare against
+      // the source instead: a real failure echoes the original back and keeps
+      // most of its Georgian.
+      const geoCount = (s) => (String(s || "").match(/[Ⴀ-ჿ]/g) || []).length;
+      const srcGeo = geoCount(p.body_ka);
+      const outGeo = geoCount(rec.body);
       const bad = [];
       if (GEO.test(rec.title)) bad.push("title still Georgian");
-      if (GEO.test(rec.body)) bad.push("body still Georgian");
+      if (srcGeo && outGeo > srcGeo * 0.15)
+        bad.push(`body still Georgian (${outGeo}/${srcGeo} chars remain)`);
+      // A truncated answer is a different failure and stays a hard reject.
       if (p.body_ka && rec.body.length < p.body_ka.length * 0.25) bad.push(`body too short (${rec.body.length} vs ${p.body_ka.length})`);
       if (bad.length) { console.log(`  ! ${p.slug} [${lang}] REJECTED: ${bad.join(", ")}`); continue; }
       done[key] = rec;
