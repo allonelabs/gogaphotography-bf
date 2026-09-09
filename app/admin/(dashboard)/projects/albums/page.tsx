@@ -84,6 +84,14 @@ export default async function AlbumsPage() {
                   />
                 </label>
                 <label className="text-xs">
+                  RU
+                  <input
+                    name="name_ru"
+                    defaultValue={a.name_ru ?? ""}
+                    className="ml-1 rounded border border-black/10 px-2 py-1 text-sm"
+                  />
+                </label>
+                <label className="text-xs">
                   #
                   <input
                     name="sort_order"
