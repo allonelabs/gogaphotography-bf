@@ -26,7 +26,15 @@ node scripts/goga-i18n/translate-blog.cjs 0 en,ru  # writes a JSON file only
 #   -- apply supabase/migrations/goga_0010_russian.sql before the next step --
 node scripts/goga-i18n/apply-translations.cjs --apply
 node scripts/goga-i18n/mirror-blog-images.cjs --apply
+node scripts/goga-i18n/prune-dead-images.cjs --apply   # the 5 already 404
 ```
+
+`mirror-blog-images` cannot rescue an image the old host has already deleted.
+Five were in that state; `prune-dead-images` removes the markup citing them -
+the whole `<figure>` when it is the `<img src>`, since an orphaned caption helps
+nobody, and just the one candidate when it sits inside a `srcset`. It re-fetches
+every URL and requires a hard 404 before touching anything, so a live image is
+never removed on a bad network day. Zero rows now reference the old host.
 
 Then put the `_ru` columns back into the `select=` lists in the site's `api/`
 handlers - they were removed because PostgREST rejects an entire query for one
