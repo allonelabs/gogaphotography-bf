@@ -23,8 +23,14 @@ export async function generateMetadata({
   const lang = normalizeLang((await searchParams).lang);
   const post = await getPublishedPostBySlug(slug);
   if (!post) return { title: "Not found" };
-  const title = pickLang(post.title_ka, post.title_en, lang);
-  const description = pickLang(post.excerpt_ka, post.excerpt_en, lang);
+  const title = pickLang(
+    { ka: post.title_ka, en: post.title_en, ru: post.title_ru },
+    lang,
+  );
+  const description = pickLang(
+    { ka: post.excerpt_ka, en: post.excerpt_en, ru: post.excerpt_ru },
+    lang,
+  );
   const image = coverUrl(post.cover_image_path) ?? undefined;
   return {
     title,
@@ -56,8 +62,13 @@ export default async function BlogPostPage({
   const post = await getPublishedPostBySlug(slug);
   if (!post) notFound();
 
-  const title = pickLang(post.title_ka, post.title_en, lang);
-  const bodyHtml = sanitizeBlogHtml(pickLang(post.body_ka, post.body_en, lang));
+  const title = pickLang(
+    { ka: post.title_ka, en: post.title_en, ru: post.title_ru },
+    lang,
+  );
+  const bodyHtml = sanitizeBlogHtml(
+    pickLang({ ka: post.body_ka, en: post.body_en, ru: post.body_ru }, lang),
+  );
   const cover = coverUrl(post.cover_image_path);
   const jsonLd = {
     "@context": "https://schema.org",

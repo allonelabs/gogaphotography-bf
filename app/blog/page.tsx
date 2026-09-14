@@ -23,9 +23,11 @@ export default async function BlogIndex({
     listPublishedPosts({ categorySlug: sp.category, tagSlug: sp.tag }),
     listCategories(),
   ]);
+  // Georgian is the default, so only the other languages need carrying.
+  const keepLang = lang === "ka" ? "" : `?lang=${lang}`;
   const qs = (extra: Record<string, string>) =>
     new URLSearchParams({
-      ...(lang === "en" ? { lang: "en" } : {}),
+      ...(lang === "ka" ? {} : { lang }),
       ...extra,
     }).toString();
 
@@ -43,10 +45,7 @@ export default async function BlogIndex({
         </Link>
       </div>
       <div className="mb-6 flex flex-wrap gap-2 text-sm">
-        <Link
-          href={`/blog${lang === "en" ? "?lang=en" : ""}`}
-          className="rounded-full border px-3 py-1"
-        >
+        <Link href={`/blog${keepLang}`} className="rounded-full border px-3 py-1">
           {lang === "ka" ? "ყველა" : "All"}
         </Link>
         {categories.map((c) => (
@@ -55,7 +54,10 @@ export default async function BlogIndex({
             href={`/blog?${qs({ category: c.slug })}`}
             className="rounded-full border px-3 py-1"
           >
-            {pickLang(c.name_ka, c.name_en, lang) || c.slug}
+            {pickLang(
+              { ka: c.name_ka, en: c.name_en, ru: c.name_ru },
+              lang,
+            ) || c.slug}
           </Link>
         ))}
       </div>
@@ -63,7 +65,7 @@ export default async function BlogIndex({
         {posts.map((p) => (
           <Link
             key={p.id}
-            href={`/blog/${p.slug}${lang === "en" ? "?lang=en" : ""}`}
+            href={`/blog/${p.slug}${keepLang}`}
             className="group block"
           >
             <div className="aspect-[4/3] overflow-hidden rounded-lg bg-neutral-100">
@@ -77,10 +79,16 @@ export default async function BlogIndex({
               )}
             </div>
             <h2 className="mt-3 text-lg font-medium">
-              {pickLang(p.title_ka, p.title_en, lang)}
+              {pickLang(
+                { ka: p.title_ka, en: p.title_en, ru: p.title_ru },
+                lang,
+              )}
             </h2>
             <p className="mt-1 text-sm text-neutral-600">
-              {pickLang(p.excerpt_ka, p.excerpt_en, lang)}
+              {pickLang(
+                { ka: p.excerpt_ka, en: p.excerpt_en, ru: p.excerpt_ru },
+                lang,
+              )}
             </p>
           </Link>
         ))}
