@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getPublishedPostBySlug } from "@/app/lib/goga/blog";
 import { sanitizeBlogHtml } from "@/app/lib/goga/blog-sanitize";
 import { normalizeLang, pickLang } from "@/app/lib/goga/blog-lang";
+import { BlogLangSwitch } from "../_lang-switch";
 
 export const dynamic = "force-dynamic";
 
@@ -85,6 +86,9 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <div className="mb-6 flex justify-end">
+        <BlogLangSwitch path={`/blog/${slug}`} current={lang} />
+      </div>
       {cover && (
         // eslint-disable-next-line @next/next/no-img-element
         <img

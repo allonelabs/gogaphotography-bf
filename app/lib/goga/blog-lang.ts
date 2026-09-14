@@ -1,7 +1,15 @@
 // app/lib/goga/blog-lang.ts
 export type LangChoice = "ka" | "en" | "ru";
 
-const LANGS: readonly LangChoice[] = ["ka", "en", "ru"];
+/** Offer order in the switcher: Georgian first, it is the studio's own language. */
+export const LANGS: readonly LangChoice[] = ["ka", "en", "ru"];
+
+/** Endonyms — a reader looking for Russian scans for "Русский", not "Russian". */
+export const LANG_LABEL: Record<LangChoice, string> = {
+  ka: "ქართული",
+  en: "English",
+  ru: "Русский",
+};
 
 export function normalizeLang(raw: string | undefined | null): LangChoice {
   return LANGS.includes(raw as LangChoice) ? (raw as LangChoice) : "ka";
@@ -25,4 +33,23 @@ export function pickLang(fields: LangFields, lang: LangChoice): string {
     if (value && value.trim().length > 0) return value;
   }
   return "";
+}
+
+/**
+ * URL for `path` in `lang`, carrying `keep` (the active category/tag filter)
+ * through the switch so changing language never drops the reader's filter.
+ *
+ * Georgian is the default, so it is expressed as the *absence* of `lang` —
+ * one canonical URL per page instead of two that serve identical bytes.
+ */
+export function langHref(
+  path: string,
+  lang: LangChoice,
+  keep: Record<string, string | undefined> = {},
+): string {
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(keep)) if (v) qs.set(k, v);
+  if (lang !== "ka") qs.set("lang", lang);
+  const query = qs.toString();
+  return query ? `${path}?${query}` : path;
 }

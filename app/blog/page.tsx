@@ -1,7 +1,8 @@
 // app/blog/page.tsx
 import Link from "next/link";
 import { listPublishedPosts, listCategories } from "@/app/lib/goga/blog";
-import { normalizeLang, pickLang } from "@/app/lib/goga/blog-lang";
+import { langHref, normalizeLang, pickLang } from "@/app/lib/goga/blog-lang";
+import { BlogLangSwitch } from "./_lang-switch";
 
 export const dynamic = "force-dynamic";
 
@@ -23,13 +24,6 @@ export default async function BlogIndex({
     listPublishedPosts({ categorySlug: sp.category, tagSlug: sp.tag }),
     listCategories(),
   ]);
-  // Georgian is the default, so only the other languages need carrying.
-  const keepLang = lang === "ka" ? "" : `?lang=${lang}`;
-  const qs = (extra: Record<string, string>) =>
-    new URLSearchParams({
-      ...(lang === "ka" ? {} : { lang }),
-      ...extra,
-    }).toString();
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -37,21 +31,23 @@ export default async function BlogIndex({
         <h1 className="text-3xl font-semibold">
           {lang === "ka" ? "ბლოგი" : "Blog"}
         </h1>
-        <Link
-          href={`/blog${lang === "ka" ? "?lang=en" : ""}`}
-          className="text-sm underline"
-        >
-          {lang === "ka" ? "English" : "ქართული"}
-        </Link>
+        <BlogLangSwitch
+          path="/blog"
+          current={lang}
+          keep={{ category: sp.category, tag: sp.tag }}
+        />
       </div>
       <div className="mb-6 flex flex-wrap gap-2 text-sm">
-        <Link href={`/blog${keepLang}`} className="rounded-full border px-3 py-1">
+        <Link
+          href={langHref("/blog", lang)}
+          className="rounded-full border px-3 py-1"
+        >
           {lang === "ka" ? "ყველა" : "All"}
         </Link>
         {categories.map((c) => (
           <Link
             key={c.id}
-            href={`/blog?${qs({ category: c.slug })}`}
+            href={langHref("/blog", lang, { category: c.slug })}
             className="rounded-full border px-3 py-1"
           >
             {pickLang(
@@ -65,7 +61,7 @@ export default async function BlogIndex({
         {posts.map((p) => (
           <Link
             key={p.id}
-            href={`/blog/${p.slug}${keepLang}`}
+            href={langHref(`/blog/${p.slug}`, lang)}
             className="group block"
           >
             <div className="aspect-[4/3] overflow-hidden rounded-lg bg-neutral-100">
