@@ -19,11 +19,6 @@
 //   - refuses to write a body whose <figure> tags no longer balance
 const fs = require("fs");
 
-const APPLY = process.argv.includes("--apply");
-const env = fs.readFileSync(".env.pulled", "utf8").split("\n");
-const get = (k) => { const l = env.find((x) => x.startsWith(k + "=")); return l ? l.slice(k.length + 1).trim().replace(/^"|"$/g, "") : null; };
-const SB = get("NEXT_PUBLIC_SUPABASE_URL"), KEY = get("SUPABASE_SERVICE_ROLE_KEY");
-const H = { apikey: KEY, Authorization: "Bearer " + KEY };
 const DEAD = /https?:\/\/goga\.photography\/wp-content\/uploads\/[^\s"'<>,)]+/g;
 
 const count = (s, re) => (s.match(re) || []).length;
@@ -58,6 +53,16 @@ function dropSrcsetCandidate(body, url) {
     return kept.length ? `srcset="${kept.join(", ")}"` : "";
   });
 }
+
+// Importable for tests; the network/credential half only runs as a script.
+module.exports = { dropFigure, dropSrcsetCandidate, DEAD };
+if (require.main !== module) return;
+
+const APPLY = process.argv.includes("--apply");
+const env = fs.readFileSync(".env.pulled", "utf8").split("\n");
+const get = (k) => { const l = env.find((x) => x.startsWith(k + "=")); return l ? l.slice(k.length + 1).trim().replace(/^"|"$/g, "") : null; };
+const SB = get("NEXT_PUBLIC_SUPABASE_URL"), KEY = get("SUPABASE_SERVICE_ROLE_KEY");
+const H = { apikey: KEY, Authorization: "Bearer " + KEY };
 
 (async () => {
   const probe = await (await fetch(SB + "/rest/v1/blog_posts?select=*&limit=1", { headers: H })).json();
