@@ -110,6 +110,18 @@ export const tourismNav: NavConfig = {
     {
       label: "Site",
       items: [
+        {
+          label: "Analytics",
+          labelKa: "\u10e1\u10e2\u10d0\u10e2\u10d8\u10e1\u10e2\u10d8\u10d9\u10d0",
+          href: "/admin/analytics",
+          icon: "bar-chart-2",
+        },
+        {
+          label: "SEO",
+          labelKa: "SEO \u10d0\u10dc\u10d0\u10da\u10d8\u10d6\u10d8",
+          href: "/admin/seo",
+          icon: "search",
+        },
         { label: "Homepage hero", href: "/admin/hero", icon: "sparkles" },
         {
           label: "Blog",
