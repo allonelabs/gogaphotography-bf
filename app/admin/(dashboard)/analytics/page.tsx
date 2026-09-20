@@ -1,12 +1,19 @@
+import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
+import {
+  AreaChart,
+  BarList,
+  Card,
+  DonutSplit,
+  Sparkline,
+  type Point,
+} from "@/app/components/app/Charts";
 import {
   getTotals,
   getBreakdown,
   getDaily,
   errorMessage,
-  MAX_RANGE_DAYS,
   type AnalyticsError,
-  type Breakdown,
 } from "@/app/lib/goga/analytics";
 
 export const dynamic = "force-dynamic";
@@ -14,75 +21,73 @@ export const metadata = { title: "Analytics" };
 
 const RANGES = [7, 14, 30] as const;
 
-function Panel({
-  title,
-  subtitle,
-  rows,
-  empty,
+/** Prettier axis label than a raw ISO date. */
+function dayLabel(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? iso
+    : d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
+/** Page paths read better without the origin; "/" is worth naming. */
+function pathLabel(p: string): string {
+  if (!p || p === "/") return "Home";
+  return p.replace(/\/$/, "");
+}
+
+function Stat({
+  label,
+  value,
+  hint,
+  spark,
 }: {
-  title: string;
-  subtitle: string;
-  rows: Breakdown[];
-  empty: string;
+  label: string;
+  value: number;
+  hint: string;
+  spark?: number[];
 }) {
-  const top = rows[0]?.pageviews ?? 0;
   return (
-    <section className="rounded-lg border border-[var(--line-200)] p-4">
-      <header className="mb-3">
-        <h2 className="text-[13px] font-semibold text-[var(--ink-900)]">{title}</h2>
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-          {subtitle}
-        </p>
-      </header>
-      {rows.length === 0 ? (
-        <p className="text-[13px] text-[var(--ink-500)]">{empty}</p>
-      ) : (
-        <ol className="space-y-2">
-          {rows.map((r) => (
-            <li key={r.key} className="text-[13px]">
-              <div className="flex items-baseline justify-between gap-3">
-                <span className="truncate text-[var(--ink-900)]" title={r.key}>
-                  {r.key || "—"}
-                </span>
-                <span className="shrink-0 tabular-nums text-[var(--ink-500)]">
-                  {r.pageviews.toLocaleString()}
-                </span>
-              </div>
-              {/* Bar width is relative to the top row, so the shape of the
-                  distribution is readable without axes. */}
-              <div className="mt-1 h-1 rounded bg-[var(--line-200)]">
-                <div
-                  className="h-1 rounded bg-[var(--ink-900)]"
-                  style={{ width: top > 0 ? `${Math.max(2, (r.pageviews / top) * 100)}%` : "0%" }}
-                />
-              </div>
-            </li>
-          ))}
-        </ol>
-      )}
-    </section>
+    <div className="rounded-2xl bg-white p-4 ring-1 ring-black/5">
+      <div className="text-[10px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
+        {label}
+      </div>
+      <div className="mt-2 flex items-end justify-between gap-3">
+        <div
+          className="font-mono text-[26px] tabular-nums leading-none text-[var(--ink-900)]"
+          style={{ fontVariationSettings: '"wght" 540, "opsz" 36' }}
+        >
+          {value.toLocaleString()}
+        </div>
+        {spark && spark.length > 1 ? (
+          <Sparkline values={spark} label={`${label} trend over the period`} />
+        ) : null}
+      </div>
+      <div className="mt-1.5 text-[11px] text-[var(--ink-500)]">{hint}</div>
+    </div>
   );
 }
 
 function NotConnected({ error }: { error: AnalyticsError }) {
+  const actionable = error.kind === "unconfigured" || error.kind === "not_enabled";
   return (
-    <div className="rounded-lg border border-[var(--line-200)] p-5">
-      <h2 className="text-[13px] font-semibold text-[var(--ink-900)]">
+    <div className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
+      <h2 className="text-[13px] font-medium text-[var(--ink-900)]">
         Traffic data is not flowing yet
       </h2>
       <p className="mt-1 max-w-prose text-[13px] text-[var(--ink-500)]">
         {errorMessage(error)}
       </p>
-      {error.kind === "unconfigured" || error.kind === "not_enabled" ? (
+      {actionable ? (
         <ol className="mt-4 max-w-prose list-decimal space-y-1.5 pl-5 text-[13px] text-[var(--ink-500)]">
           <li>
-            Enable <strong>Web Analytics</strong> on the{" "}
-            <code className="text-[12px]">gogaphotography</code> project in Vercel.
+            Turn on <strong className="text-[var(--ink-900)]">Web Analytics</strong> for
+            the site project in Vercel. It is a dashboard switch, with no API to
+            do it from here.
           </li>
           <li>
-            Create a team-scoped access token and set <code className="text-[12px]">VERCEL_TOKEN</code>,{" "}
-            <code className="text-[12px]">VERCEL_PROJECT_ID</code> and{" "}
-            <code className="text-[12px]">VERCEL_TEAM_ID</code> on this project.
+            Create a team-scoped access token and set{" "}
+            <code className="font-mono text-[12px]">VERCEL_TOKEN</code> on this
+            project. The project and team IDs are already set.
           </li>
           <li>Redeploy. Figures appear once real visitors arrive.</li>
         </ol>
@@ -109,39 +114,69 @@ export default async function AnalyticsPage({
     getBreakdown("deviceType", days),
   ]);
 
-  const peak = daily.ok ? Math.max(1, ...daily.data.map((d) => d.pageviews)) : 1;
+  const series: Point[] = daily.ok
+    ? daily.data.map((d) => ({
+        label: dayLabel(d.key),
+        value: d.pageviews,
+        secondary: d.visitors,
+      }))
+    : [];
+
+  const toPoints = (
+    r: typeof countries,
+    map: (k: string) => string = (k) => k,
+  ): Point[] => (r.ok ? r.data.map((d) => ({ label: map(d.key), value: d.pageviews })) : []);
 
   return (
     <AppShell
       breadcrumb={[{ label: "Site" }, { label: "Analytics" }]}
       chatScope={{ level: "tool", tool: "analytics" }}
       chatScopeLabel="Analytics"
+      chatStarters={[
+        "Which page got the most visits this week?",
+        "Where are my visitors coming from?",
+        "Are people finding the site on their phone?",
+      ]}
     >
       <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
-        <header className="flex flex-wrap items-end justify-between gap-3">
+        <header className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
+            <h1
+              className="text-[var(--ink-900)]"
+              style={{
+                fontSize: "clamp(28px, 3.4vw, 40px)",
+                fontWeight: 500,
+                letterSpacing: "-0.022em",
+                lineHeight: 1.05,
+              }}
+            >
               Analytics
             </h1>
-            <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              ვინ სტუმრობს საიტს · who visits the site
+            <p className="mt-1.5 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
+              ვინ სტუმრობს საიტს
             </p>
           </div>
-          <nav className="flex gap-1" aria-label="Date range">
-            {RANGES.map((r) => (
-              <a
-                key={r}
-                href={`/admin/analytics?days=${r}`}
-                aria-current={r === days ? "true" : undefined}
-                className={
-                  r === days
-                    ? "rounded-full bg-[var(--ink-900)] px-3 py-1 text-[12px] text-white"
-                    : "rounded-full border border-[var(--line-200)] px-3 py-1 text-[12px] text-[var(--ink-500)]"
-                }
-              >
-                {r}d
-              </a>
-            ))}
+          <nav
+            aria-label="Date range"
+            className="flex gap-1 rounded-full bg-white p-1 ring-1 ring-black/5"
+          >
+            {RANGES.map((r) => {
+              const active = r === days;
+              return (
+                <Link
+                  key={r}
+                  href={`/admin/analytics?days=${r}`}
+                  aria-current={active ? "page" : undefined}
+                  className={
+                    active
+                      ? "rounded-full bg-[var(--ao-accent)] px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white"
+                      : "rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--ink-500)] transition-colors hover:bg-[var(--bg-sunken)] hover:text-[var(--ink-900)]"
+                  }
+                >
+                  {r}d
+                </Link>
+              );
+            })}
           </nav>
         </header>
 
@@ -149,75 +184,72 @@ export default async function AnalyticsPage({
           <NotConnected error={totals.error} />
         ) : (
           <>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {[
-                ["Visitors", totals.data.visitors, "unique people"],
-                ["Page views", totals.data.pageviews, "pages opened"],
-              ].map(([label, value, hint]) => (
-                <div key={String(label)} className="rounded-lg border border-[var(--line-200)] p-4">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                    {label}
-                  </p>
-                  <p className="mt-1 text-2xl font-semibold tabular-nums text-[var(--ink-900)]">
-                    {Number(value).toLocaleString()}
-                  </p>
-                  <p className="text-[12px] text-[var(--ink-500)]">
-                    {hint} · last {days} days
-                  </p>
-                </div>
-              ))}
-            </div>
+            <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <Stat
+                label="Visitors"
+                value={totals.data.visitors}
+                hint={`unique people, last ${days} days`}
+                spark={series.map((p) => p.secondary ?? 0)}
+              />
+              <Stat
+                label="Page views"
+                value={totals.data.pageviews}
+                hint={`pages opened, last ${days} days`}
+                spark={series.map((p) => p.value)}
+              />
+              <Stat
+                label="Views per visitor"
+                value={
+                  totals.data.visitors > 0
+                    ? Math.round((totals.data.pageviews / totals.data.visitors) * 10) / 10
+                    : 0
+                }
+                hint="how deep people go"
+              />
+              <Stat
+                label="Busiest day"
+                value={series.length ? Math.max(...series.map((p) => p.value)) : 0}
+                hint={
+                  series.length
+                    ? (series.find(
+                        (p) => p.value === Math.max(...series.map((q) => q.value)),
+                      )?.label ?? "—")
+                    : "no data yet"
+                }
+              />
+            </section>
 
-            {daily.ok && daily.data.length > 0 ? (
-              <section className="rounded-lg border border-[var(--line-200)] p-4">
-                <h2 className="mb-3 text-[13px] font-semibold text-[var(--ink-900)]">
-                  Daily page views
-                </h2>
-                <div className="flex h-28 items-end gap-1">
-                  {daily.data.map((d) => (
-                    <div
-                      key={d.key}
-                      title={`${d.key}: ${d.pageviews} views, ${d.visitors} visitors`}
-                      className="flex-1 rounded-t bg-[var(--ink-900)]"
-                      style={{ height: `${Math.max(2, (d.pageviews / peak) * 100)}%` }}
-                    />
-                  ))}
-                </div>
-              </section>
-            ) : null}
+            <Card title="Traffic" hint={`page views per day, last ${days} days`}>
+              <AreaChart points={series} label="Page views" />
+            </Card>
 
             <div className="grid gap-3 lg:grid-cols-2">
-              <Panel
-                title="Top pages"
-                subtitle="most opened"
-                rows={pages.ok ? pages.data : []}
-                empty="No page data yet."
-              />
-              <Panel
-                title="Countries"
-                subtitle="where visitors are"
-                rows={countries.ok ? countries.data : []}
-                empty="No country data yet."
-              />
-              <Panel
-                title="Referrers"
-                subtitle="how they found the site"
-                rows={referrers.ok ? referrers.data : []}
-                empty="No referrer data yet — direct visits show nothing here."
-              />
-              <Panel
-                title="Devices"
-                subtitle="phone vs desktop"
-                rows={devices.ok ? devices.data : []}
-                empty="No device data yet."
-              />
+              <Card title="Top pages" hint="what people actually open">
+                <BarList
+                  points={toPoints(pages, pathLabel)}
+                  empty="No page data yet."
+                />
+              </Card>
+              <Card title="Countries" hint="where visitors are">
+                <BarList points={toPoints(countries)} empty="No country data yet." />
+              </Card>
+              <Card title="Referrers" hint="how they found the site">
+                <BarList
+                  points={toPoints(referrers)}
+                  empty="Nothing yet. Visits typed straight into the address bar show up as direct, not here."
+                />
+              </Card>
+              <Card title="Devices" hint="phone against desktop">
+                <DonutSplit points={toPoints(devices)} />
+              </Card>
             </div>
 
-            <p className="max-w-prose text-[12px] text-[var(--ink-500)]">
-              Visitors are counted by a hash of the request that resets daily, not
-              by a cookie — so there is no consent banner, and no individual can be
-              identified or followed between days. The free plan keeps{" "}
-              {MAX_RANGE_DAYS} days of history.
+            <p className="max-w-prose text-[11px] leading-relaxed text-[var(--ink-500)]">
+              Visitors are counted from a hash of each request that resets every
+              day, so there are no cookies and no consent banner, and the same
+              person on two days counts twice. These figures are totals by page,
+              country and device. They cannot tell you which named person
+              visited, and nothing here identifies anyone.
             </p>
           </>
         )}
