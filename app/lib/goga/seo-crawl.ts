@@ -34,9 +34,25 @@ function visibleText(html: string): string {
 
 export function parsePage(url: string, html: string, focusKeyword?: string | null): PageFacts {
   const imgs = html.match(/<img\b[^>]*>/gi) ?? [];
-  // An alt="" is valid HTML for a decorative image, but for SEO it carries
-  // nothing - so only a non-empty alt counts here.
-  const withAlt = imgs.filter((t) => /\balt\s*=\s*["'][^"']+["']/i.test(t)).length;
+  // Two ways for an image to be correct, not one.
+  //
+  // Real alt text is the usual answer. But WCAG 1.1.1 requires a *decorative*
+  // image to carry an empty alt so assistive tech skips it, and an author who
+  // has said so explicitly - aria-hidden or role="presentation" - has done the
+  // right thing. Counting those as failures would push whoever is reading this
+  // report toward describing spacer graphics, which makes a screen reader read
+  // out noise. So the check is "handled", not "has words".
+  const described = (t: string) => /\balt\s*=\s*["'][^"']+["']/i.test(t);
+  const decorative = (t: string) =>
+    /\balt\s*=\s*["']["']/i.test(t) &&
+    /\baria-hidden\s*=\s*["']true["']|\brole\s*=\s*["']presentation["']|\brole\s*=\s*["']none["']/i.test(t);
+  // A tag still holding a JavaScript expression - alt="'+altFor(im)+'" - is a
+  // template inside a script, not an image on the page. This reads raw HTML and
+  // cannot run the script, so counting it would report a permanent failure for
+  // an image that is correctly described the moment a browser renders it.
+  const template = (t: string) => /['"]\s*\+|\+\s*['"]|\$\{/.test(t);
+  const real = imgs.filter((t) => !template(t));
+  const withAlt = real.filter((t) => described(t) || decorative(t)).length;
 
   return {
     url,
@@ -48,7 +64,7 @@ export function parsePage(url: string, html: string, focusKeyword?: string | nul
     hasOpenGraph: /<meta[^>]+property=["']og:(title|image|description)["']/i.test(html),
     hasTwitterCard: /<meta[^>]+name=["']twitter:/i.test(html),
     hasSchema: /<script[^>]+type=["']application\/ld\+json["']/i.test(html),
-    imgCount: imgs.length,
+    imgCount: real.length,
     imgWithAlt: withAlt,
   };
 }

@@ -53,7 +53,16 @@ export interface PageFacts {
   hasOpenGraph?: boolean;
   hasTwitterCard?: boolean;
   hasSchema?: boolean;
-  /** Total <img> count and how many carry a non-empty alt. */
+  /**
+   * Images that still need alt text, and the total counted.
+   *
+   * `imgWithAlt` counts images that are *correctly handled*, which is not the
+   * same as images carrying words. WCAG 1.1.1 requires a decorative image to
+   * have an empty alt so assistive tech skips it: forcing a description onto a
+   * spacer or a rotate-your-phone overlay makes a screen reader read out noise
+   * and is a regression, not a fix. So an image passes if it has real alt text
+   * OR is explicitly marked decorative.
+   */
   imgCount?: number;
   imgWithAlt?: number;
 }
@@ -232,7 +241,7 @@ export function scorePage(facts: PageFacts): SeoResult {
     "Images have alt text",
     5,
     imgCount === 0 || imgWithAlt >= imgCount,
-    `${imgCount - imgWithAlt} of ${imgCount} images have no alt text.`,
+    `${imgCount - imgWithAlt} of ${imgCount} images have neither alt text nor a decorative marker.`,
   );
 
   const earned = checks.reduce((n, c) => n + c.points, 0);

@@ -143,6 +143,14 @@ describe("tags and images", () => {
     expect(c.pass).toBe(false);
     expect(c.detail).toContain("3 of 10");
   });
+
+  it("treats a correctly-marked decorative image as handled, not missing", () => {
+    // WCAG 1.1.1: a decorative image must have an empty alt so a screen reader
+    // skips it. If this counted as a failure the report would push the author
+    // into describing spacer graphics, which is a regression dressed as a fix.
+    const c = check({ ...perfect, imgCount: 10, imgWithAlt: 10 }, "images_have_alt");
+    expect(c.pass).toBe(true);
+  });
 });
 
 describe("score arithmetic", () => {
