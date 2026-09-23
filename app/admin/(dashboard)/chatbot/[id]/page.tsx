@@ -2,10 +2,27 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { DeleteSessionButton } from "./_delete";
 
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
+
+const LOCALE_NAME: Record<string, string> = {
+  ka: "Georgian",
+  en: "English",
+  ru: "Russian",
+};
+
+// The site's /api/chat stamps `{ error: true }` on a reply the model never
+// produced — the "we're busy" fallback the visitor saw instead of an answer.
+function isFailedReply(toolCalls: unknown): boolean {
+  return (
+    typeof toolCalls === "object" &&
+    toolCalls !== null &&
+    (toolCalls as { error?: unknown }).error === true
+  );
+}
 
 export default async function ChatbotTranscriptPage({ params }: Props) {
   const { id } = await params;
@@ -50,6 +67,7 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                 → Lead
               </Link>
             ) : null}
+            <DeleteSessionButton id={session.id} />
             <Link
               href="/admin/chatbot"
               className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
@@ -69,8 +87,8 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                 ? new Date(session.started_at).toLocaleString()
                 : ""}
             </dd>
-            <dt className="text-[var(--ink-400)]">Locale</dt>
-            <dd>{session.locale ?? "en"}</dd>
+            <dt className="text-[var(--ink-400)]">Language</dt>
+            <dd>{LOCALE_NAME[session.locale ?? ""] ?? session.locale ?? "—"}</dd>
             {session.ip ? (
               <>
                 <dt className="text-[var(--ink-400)]">IP</dt>
@@ -103,6 +121,7 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
               );
             }
             const isUser = m.role === "user";
+            const failed = !isUser && isFailedReply(m.tool_calls);
             return (
               <div
                 key={m.id}
@@ -117,7 +136,8 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                     isUser ? "text-white/55" : "text-[var(--ink-500)]"
                   }`}
                 >
-                  {isUser ? "Visitor" : "Goga Assistant"} ·{" "}
+                  {isUser ? "Visitor" : "Assistant"}
+                  {failed ? " · failed to answer" : ""} ·{" "}
                   {m.created_at
                     ? new Date(m.created_at).toLocaleTimeString()
                     : ""}

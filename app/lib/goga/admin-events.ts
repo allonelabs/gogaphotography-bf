@@ -44,7 +44,8 @@ export type AdminEventKind =
   | "service.published"
   | "service.unpublished"
   | "hero.updated"
-  | "page.updated";
+  | "page.updated"
+  | "chatbot.session_deleted";
 
 /**
  * Append an audit row. Best-effort: a failed insert logs but never

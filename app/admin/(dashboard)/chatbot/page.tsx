@@ -10,12 +10,29 @@ function fmt(iso: string | null): string {
   return new Date(iso).toLocaleString();
 }
 
+const PREVIEW_CHARS = 140;
+
+function preview(text: string): string {
+  const oneLine = text.replace(/\s+/g, " ").trim();
+  return oneLine.length > PREVIEW_CHARS
+    ? `${oneLine.slice(0, PREVIEW_CHARS - 1)}…`
+    : oneLine;
+}
+
 export default async function ChatbotIndex() {
   const sb = gogaAdmin();
+  // Each row leads with the visitor's opening question — that, not a token
+  // fragment, is what tells Goga which conversation is worth opening. The
+  // embedded filter/order/limit apply to the messages, not the sessions.
   const { data } = await sb
     .from("chatbot_sessions")
-    .select("id, session_token, locale, lead_id, started_at, message_count, ip")
+    .select(
+      "id, session_token, locale, lead_id, started_at, message_count, ip, chatbot_messages(content)",
+    )
+    .eq("chatbot_messages.role", "user")
     .order("started_at", { ascending: false })
+    .order("created_at", { referencedTable: "chatbot_messages", ascending: true })
+    .limit(1, { referencedTable: "chatbot_messages" })
     .limit(200);
   const sessions = data ?? [];
 
@@ -51,8 +68,14 @@ export default async function ChatbotIndex() {
               >
                 <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-4 px-5 py-4">
                   <Link href={`/admin/chatbot/${s.id}`} className="min-w-0">
-                    <div className="text-[14px] font-medium text-[var(--ink-900)]">
-                      Session {s.session_token.slice(0, 8)}…
+                    <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
+                      {s.chatbot_messages[0]?.content ? (
+                        `“${preview(s.chatbot_messages[0].content)}”`
+                      ) : (
+                        <span className="text-[var(--ink-500)]">
+                          Session {s.session_token.slice(0, 8)}…
+                        </span>
+                      )}
                     </div>
                     <div className="text-[12px] text-[var(--ink-500)]">
                       {fmt(s.started_at)}
@@ -68,7 +91,7 @@ export default async function ChatbotIndex() {
                   {s.lead_id ? (
                     <Link
                       href={`/admin/leads/${s.lead_id}`}
-                      className="shrink-0 rounded-full bg-slate-900 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-slate-900 font-medium transition hover:bg-slate-900"
+                      className="shrink-0 rounded-full bg-slate-900 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-white transition hover:bg-slate-700"
                     >
                       → Lead
                     </Link>
