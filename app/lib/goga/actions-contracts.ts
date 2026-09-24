@@ -85,6 +85,9 @@ export async function ensureContractForBooking(
   );
   const today = new Date().toISOString().slice(0, 10);
 
+  // An empty location would leave "at ." in the rendered sentence.
+  const TO_BE_AGREED = { en: "to be agreed", ka: "შეთანხმდება", ru: "уточняется" } as const;
+
   function bodyFor(
     locale: "en" | "ka" | "ru",
     raw: string | undefined,
@@ -102,8 +105,9 @@ export async function ensureContractForBooking(
       client_email: bk.client_email ?? "",
       client_phone: bk.client_phone ?? "",
       shoot_date: bk.shoot_date,
-      shoot_time: bk.shoot_time ?? "",
-      location: bk.location ?? "",
+      // Postgres `time` comes back as HH:MM:SS; the contract reads HH:MM.
+      shoot_time: (bk.shoot_time ?? "").slice(0, 5),
+      location: bk.location?.trim() || TO_BE_AGREED[locale],
       package: pkgName,
       duration_hours: bk.duration_hours ?? "",
       addons: describeAddons(resolvedAddons, bk.currency, locale),
