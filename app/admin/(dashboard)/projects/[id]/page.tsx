@@ -35,7 +35,7 @@ export default async function EditProjectPage({ params }: Props) {
       .single(),
     sb
       .from("project_images")
-      .select("id, image_path, caption, alt_text, sort_order")
+      .select("id, image_path, caption, caption_ka, caption_ru, alt_text, sort_order")
       .eq("project_id", id)
       .order("sort_order", { ascending: true }),
   ]);
@@ -52,6 +52,8 @@ export default async function EditProjectPage({ params }: Props) {
     imagePath: i.image_path,
     url: publicImageUrl(i.image_path) ?? "",
     caption: i.caption ?? "",
+    captionKa: i.caption_ka ?? "",
+    captionRu: i.caption_ru ?? "",
     altText: i.alt_text ?? "",
     sortOrder: i.sort_order,
   }));

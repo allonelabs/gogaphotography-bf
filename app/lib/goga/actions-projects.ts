@@ -257,15 +257,31 @@ export async function reorderImages(
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
+export type CaptionLang = "en" | "ka" | "ru";
+
+// `caption` is the English column; the other two arrived with goga_0012.
+function captionPatch(
+  lang: CaptionLang,
+  value: string | null,
+):
+  | { caption: string | null }
+  | { caption_ka: string | null }
+  | { caption_ru: string | null } {
+  if (lang === "ka") return { caption_ka: value };
+  if (lang === "ru") return { caption_ru: value };
+  return { caption: value };
+}
+
 export async function updateImageCaption(
   imageId: string,
   caption: string,
+  lang: CaptionLang = "en",
 ): Promise<void> {
   await requireSession();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("project_images")
-    .update({ caption: caption.trim() || null })
+    .update(captionPatch(lang, caption.trim() || null))
     .eq("id", imageId)
     .select("project_id")
     .single();

@@ -9,6 +9,7 @@ import {
   updateImageCaption,
   updateImageAlt,
   deleteImage,
+  type CaptionLang,
 } from "@/app/lib/goga/actions-projects";
 
 type Img = {
@@ -16,9 +17,20 @@ type Img = {
   imagePath: string;
   url: string;
   caption: string;
+  captionKa: string;
+  captionRu: string;
   altText: string;
   sortOrder: number;
 };
+
+// One box per language. The site shows the caption for the visitor's
+// language and falls back EN when a language is empty, so a photo with only
+// the English box filled still gets a caption everywhere.
+const CAPTION_BOXES: { lang: CaptionLang; key: "caption" | "captionKa" | "captionRu"; placeholder: string }[] = [
+  { lang: "en", key: "caption", placeholder: "Caption — English" },
+  { lang: "ka", key: "captionKa", placeholder: "წარწერა — ქართული" },
+  { lang: "ru", key: "captionRu", placeholder: "Подпись — русский" },
+];
 
 type Uploading = {
   tempId: string;
@@ -70,6 +82,8 @@ export function Gallery({
               imagePath,
               url: previewUrl,
               caption: "",
+              captionKa: "",
+              captionRu: "",
               altText: "",
               sortOrder: cur.length,
             },
@@ -147,11 +161,12 @@ export function Gallery({
 
   async function onCaptionBlur(
     imageId: string,
+    lang: CaptionLang,
     value: string,
     original: string,
   ) {
     if (value === original) return;
-    await updateImageCaption(imageId, value);
+    await updateImageCaption(imageId, value, lang);
   }
 
   async function onAltBlur(imageId: string, value: string, original: string) {
@@ -257,14 +272,23 @@ export function Gallery({
                   className="h-[72px] w-24 rounded-lg bg-slate-100 object-cover"
                 />
                 <div className="space-y-1.5">
-                  <input
-                    defaultValue={img.caption}
-                    placeholder="Caption (shown on the public site)"
-                    onBlur={(e) =>
-                      void onCaptionBlur(img.id, e.target.value, img.caption)
-                    }
-                    className="block w-full rounded-lg border border-black/10 bg-white px-2.5 py-1.5 text-[12px] outline-none focus:border-[var(--ink-900)]"
-                  />
+                  {CAPTION_BOXES.map((box) => (
+                    <input
+                      key={box.lang}
+                      lang={box.lang}
+                      defaultValue={img[box.key]}
+                      placeholder={box.placeholder}
+                      onBlur={(e) =>
+                        void onCaptionBlur(
+                          img.id,
+                          box.lang,
+                          e.target.value,
+                          img[box.key],
+                        )
+                      }
+                      className="block w-full rounded-lg border border-black/10 bg-white px-2.5 py-1.5 text-[12px] outline-none focus:border-[var(--ink-900)]"
+                    />
+                  ))}
                   <input
                     defaultValue={img.altText}
                     placeholder="Alt text (screen readers + image search)"

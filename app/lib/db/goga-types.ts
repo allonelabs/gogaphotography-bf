@@ -755,6 +755,8 @@ export type GogaDatabase = {
         Row: {
           alt_text: string | null;
           caption: string | null;
+          caption_ka: string | null;
+          caption_ru: string | null;
           created_at: string;
           id: string;
           image_path: string;
@@ -764,6 +766,8 @@ export type GogaDatabase = {
         Insert: {
           alt_text?: string | null;
           caption?: string | null;
+          caption_ka?: string | null;
+          caption_ru?: string | null;
           created_at?: string;
           id?: string;
           image_path: string;
@@ -773,6 +777,8 @@ export type GogaDatabase = {
         Update: {
           alt_text?: string | null;
           caption?: string | null;
+          caption_ka?: string | null;
+          caption_ru?: string | null;
           created_at?: string;
           id?: string;
           image_path?: string;
