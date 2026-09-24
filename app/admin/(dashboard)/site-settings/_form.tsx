@@ -11,6 +11,7 @@ type Settings = {
   caption_mode: "cursor" | "bottom" | "off";
   lightbox_captions: boolean;
   calculator_enabled: boolean;
+  faq_photos: boolean;
 };
 
 export function SiteSettingsForm({ initial }: { initial: Settings }) {
@@ -56,6 +57,12 @@ export function SiteSettingsForm({ initial }: { initial: Settings }) {
         hint="Enable the add-ons + extra-hours calculator on /book and /services."
         checked={state.calculator_enabled}
         onChange={(v) => setState((s) => ({ ...s, calculator_enabled: v }))}
+      />
+      <Toggle
+        label="FAQ photos"
+        hint="Scatter a few very small photos around an answer when a question is opened. Photos come from the “FAQ page” album (homepage photos until you add some)."
+        checked={state.faq_photos}
+        onChange={(v) => setState((s) => ({ ...s, faq_photos: v }))}
       />
 
       <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">

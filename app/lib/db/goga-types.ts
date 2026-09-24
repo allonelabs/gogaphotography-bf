@@ -1118,6 +1118,7 @@ export type GogaDatabase = {
         Row: {
           calculator_enabled: boolean;
           caption_mode: string;
+          faq_photos: boolean;
           id: number;
           lightbox_captions: boolean;
           page_transitions: boolean;
@@ -1127,6 +1128,7 @@ export type GogaDatabase = {
         Insert: {
           calculator_enabled?: boolean;
           caption_mode?: string;
+          faq_photos?: boolean;
           id?: number;
           lightbox_captions?: boolean;
           page_transitions?: boolean;
@@ -1136,6 +1138,7 @@ export type GogaDatabase = {
         Update: {
           calculator_enabled?: boolean;
           caption_mode?: string;
+          faq_photos?: boolean;
           id?: number;
           lightbox_captions?: boolean;
           page_transitions?: boolean;

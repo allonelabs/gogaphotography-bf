@@ -10,7 +10,7 @@ export default async function SiteSettingsPage() {
   const { data } = await sb
     .from("site_settings")
     .select(
-      "page_transitions, reveal_animations, caption_mode, lightbox_captions, calculator_enabled",
+      "page_transitions, reveal_animations, caption_mode, lightbox_captions, calculator_enabled, faq_photos",
     )
     .eq("id", 1)
     .maybeSingle();
@@ -41,6 +41,7 @@ export default async function SiteSettingsPage() {
               (data?.caption_mode as "cursor" | "bottom" | "off") ?? "cursor",
             lightbox_captions: data?.lightbox_captions ?? true,
             calculator_enabled: data?.calculator_enabled ?? true,
+            faq_photos: data?.faq_photos ?? true,
           }}
         />
       </div>

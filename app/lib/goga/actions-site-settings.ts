@@ -10,6 +10,7 @@ export async function updateSiteSettings(patch: {
   caption_mode: "cursor" | "bottom" | "off";
   lightbox_captions: boolean;
   calculator_enabled: boolean;
+  faq_photos: boolean;
 }): Promise<void> {
   await requireSession();
   const sb = gogaAdmin();
