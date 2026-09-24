@@ -65,10 +65,22 @@ export const tourismNav: NavConfig = {
           icon: "calendar",
         },
         {
+          label: "Availability",
+          labelKa: "ხელმისაწვდომობა",
+          href: "/admin/availability",
+          icon: "clock",
+        },
+        {
           label: "Contracts",
           labelKa: "ხელშეკრულებები",
           href: "/admin/contracts",
           icon: "scroll-text",
+        },
+        {
+          label: "Contract template",
+          labelKa: "ხელშეკრულების შაბლონი",
+          href: "/admin/contract-template",
+          icon: "file-signature",
         },
         {
           label: "Deliveries",
@@ -86,6 +98,12 @@ export const tourismNav: NavConfig = {
           labelKa: "პაკეტები",
           href: "/admin/packages",
           icon: "tag",
+        },
+        {
+          label: "Add-ons",
+          labelKa: "დამატებები",
+          href: "/admin/addons",
+          icon: "plus-circle",
         },
         {
           label: "Projects",
@@ -112,7 +130,8 @@ export const tourismNav: NavConfig = {
       items: [
         {
           label: "Analytics",
-          labelKa: "\u10e1\u10e2\u10d0\u10e2\u10d8\u10e1\u10e2\u10d8\u10d9\u10d0",
+          labelKa:
+            "\u10e1\u10e2\u10d0\u10e2\u10d8\u10e1\u10e2\u10d8\u10d9\u10d0",
           href: "/admin/analytics",
           icon: "bar-chart-2",
         },
@@ -146,6 +165,24 @@ export const tourismNav: NavConfig = {
           labelKa: "სტუდიის ინფო",
           href: "/admin/studio",
           icon: "user",
+        },
+        {
+          label: "Automations",
+          labelKa: "ავტომატიზაცია",
+          href: "/admin/automations",
+          icon: "zap",
+        },
+        {
+          label: "Photo captions",
+          labelKa: "ფოტოს წარწერები",
+          href: "/admin/photo-captions",
+          icon: "type",
+        },
+        {
+          label: "Site settings",
+          labelKa: "საიტის პარამეტრები",
+          href: "/admin/site-settings",
+          icon: "sliders",
         },
       ],
     },
