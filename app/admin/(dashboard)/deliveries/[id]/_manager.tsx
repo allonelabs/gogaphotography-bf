@@ -14,7 +14,9 @@ import {
   updateDeliveryMeta,
   uploadDeliveryImage,
   deleteDeliveryImage,
+  notifyClientDelivery,
 } from "@/app/lib/goga/actions-deliveries";
+import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 
 type Delivery = {
   id: string;
@@ -26,6 +28,8 @@ type Delivery = {
   downloadsEnabled: boolean;
   viewCount: number;
   lastViewedAt: string | null;
+  clientEmail: string | null;
+  notifiedAt: string | null;
 };
 
 type Item = {
@@ -53,12 +57,32 @@ export function DeliveryManager({
   items: Item[];
 }) {
   const router = useRouter();
+  const toast = useToast();
   const [, start] = useTransition();
+  const [notifyPending, startNotify] = useTransition();
   const [photos, setPhotos] = useState<Item[]>(items);
   const [uploading, setUploading] = useState<Uploading[]>([]);
   const [dragOver, setDragOver] = useState(false);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  function onNotify() {
+    if (
+      !confirm(
+        `Send the "photos are ready" email to ${delivery.clientEmail ?? "the client"}?`,
+      )
+    )
+      return;
+    startNotify(async () => {
+      try {
+        await notifyClientDelivery(delivery.id);
+        toast.show("Client notified", "success");
+        router.refresh();
+      } catch (e) {
+        toast.show(e instanceof Error ? e.message : "Notify failed", "error");
+      }
+    });
+  }
 
   const galleryUrl =
     typeof window !== "undefined"
@@ -301,6 +325,26 @@ export function DeliveryManager({
               ? ` · last ${new Date(delivery.lastViewedAt).toLocaleString()}`
               : ""}
           </p>
+          <button
+            type="button"
+            onClick={onNotify}
+            disabled={notifyPending || !delivery.clientEmail}
+            title={
+              delivery.clientEmail
+                ? undefined
+                : "No client email on this booking"
+            }
+            className="mt-3 w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
+          >
+            {notifyPending ? "Sending…" : "Notify client"}
+          </button>
+          {delivery.notifiedAt ? (
+            <p className="mt-1.5 text-[11px] text-[var(--ink-500)]">
+              Notified {new Date(delivery.notifiedAt).toLocaleString()} — the
+              automation log is idempotent, so a repeat click won&apos;t resend
+              the email.
+            </p>
+          ) : null}
         </section>
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">

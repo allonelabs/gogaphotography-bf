@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { isTbcConfigured } from "@/app/lib/tbc";
+import { resolveBookingAddons } from "@/app/lib/goga/booking-addons";
 import { BookingDetail } from "./_detail";
 
 export const dynamic = "force-dynamic";
@@ -18,14 +19,16 @@ export default async function BookingDetailPage({ params }: Props) {
       `id, lead_id, package_id, shoot_date, shoot_time, duration_hours, location,
        subtotal_cents, deposit_cents, total_cents, currency, status, deposit_status,
        stripe_session_id, contract_status, client_name, client_email, client_phone,
-       notes, created_at,
-       packages(name_en, slug),
+       notes, created_at, extra_hours, addons,
+       packages(name_en, slug, extra_hour_cents),
        deliveries(id, token, password_hash, view_count, archived,
                    delivery_images(count))`,
     )
     .eq("id", id)
     .single();
   if (!data) notFound();
+
+  const resolvedAddons = await resolveBookingAddons(data.addons);
 
   const delivery = (data.deliveries ?? []).find((d) => !d.archived) ?? null;
   const deliverySummary = delivery
@@ -101,6 +104,13 @@ export default async function BookingDetailPage({ params }: Props) {
             notes: data.notes,
             createdAt: data.created_at,
             packageName: data.packages?.name_en ?? null,
+            extraHours: data.extra_hours ?? 0,
+            extraHourCents: data.packages?.extra_hour_cents ?? 0,
+            addons: resolvedAddons.map((a) => ({
+              id: a.id,
+              name: a.name_en,
+              priceCents: a.price_cents,
+            })),
           }}
           delivery={deliverySummary}
           paymentsReady={isTbcConfigured()}

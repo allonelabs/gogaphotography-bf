@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { logAdminEvent } from "./admin-events";
+import { computeBookingTotal } from "./pricing";
 
 export async function createBookingFromLead(input: {
   leadId: string;
@@ -12,19 +13,44 @@ export async function createBookingFromLead(input: {
   shootDate: string;
   shootTime?: string | null;
   location?: string | null;
+  addonIds?: string[];
+  extraHours?: number;
 }): Promise<{ id: string }> {
   await requireSession();
   const sb = gogaAdmin();
 
   const { data: pkg, error: pkgErr } = await sb
     .from("packages")
-    .select("base_price_cents, currency, duration_hours, deposit_pct")
+    .select(
+      "base_price_cents, currency, duration_hours, deposit_pct, extra_hour_cents, max_extra_hours",
+    )
     .eq("id", input.packageId)
     .single();
   if (pkgErr || !pkg) throw new Error("package not found");
 
-  const subtotal = pkg.base_price_cents;
-  const deposit = Math.round((subtotal * pkg.deposit_pct) / 100);
+  const addonIds = input.addonIds ?? [];
+  const { data: addons } = addonIds.length
+    ? await sb
+        .from("addons")
+        .select("id, name_en, name_ka, name_ru, price_cents")
+        .in("id", addonIds)
+    : { data: [] };
+  const resolvedAddons = addons ?? [];
+
+  // Clamp to what the package actually allows — a stale client (or a
+  // tampered request) can't push extra hours past max_extra_hours.
+  const extraHours = Math.max(
+    0,
+    Math.min(input.extraHours ?? 0, pkg.max_extra_hours),
+  );
+
+  const { subtotalCents, totalCents, depositCents } = computeBookingTotal({
+    basePriceCents: pkg.base_price_cents,
+    extraHours,
+    extraHourCents: pkg.extra_hour_cents,
+    addonCents: resolvedAddons.map((a) => a.price_cents),
+    depositPct: pkg.deposit_pct,
+  });
 
   const { data: lead } = await sb
     .from("leads")
@@ -42,9 +68,11 @@ export async function createBookingFromLead(input: {
       shoot_time: input.shootTime ?? null,
       duration_hours: pkg.duration_hours,
       location: input.location ?? null,
-      subtotal_cents: subtotal,
-      deposit_cents: deposit,
-      total_cents: subtotal,
+      extra_hours: extraHours,
+      addons: resolvedAddons,
+      subtotal_cents: subtotalCents,
+      deposit_cents: depositCents,
+      total_cents: totalCents,
       currency: pkg.currency,
       status: "reserved",
       client_name: lead?.name ?? null,
@@ -76,6 +104,8 @@ export async function createBookingFromLead(input: {
       leadId: input.leadId,
       packageId: input.packageId,
       shootDate: input.shootDate,
+      extraHours,
+      addonIds,
     },
   });
 

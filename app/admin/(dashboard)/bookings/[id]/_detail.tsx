@@ -12,6 +12,9 @@ import { ensureDelivery } from "@/app/lib/goga/actions-deliveries";
 import { createDepositCheckout } from "@/app/lib/goga/actions-payments";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
+import { formatMoney } from "@/app/lib/goga/money";
+
+type BookingAddon = { id: string; name: string; priceCents: number };
 
 type Booking = {
   id: string;
@@ -24,6 +27,9 @@ type Booking = {
   depositCents: number;
   totalCents: number;
   currency: string;
+  extraHours: number;
+  extraHourCents: number;
+  addons: BookingAddon[];
   status:
     | "inquiry"
     | "reserved"
@@ -57,18 +63,6 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: "Cancelled",
   no_show: "No-show",
 };
-
-function fmtMoney(cents: number, currency: string): string {
-  try {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 2,
-    }).format(cents / 100);
-  } catch {
-    return `${(cents / 100).toFixed(2)} ${currency}`;
-  }
-}
 
 type DeliverySummary = {
   id: string;
@@ -171,17 +165,42 @@ export function BookingDetail({
           </h3>
           <dl className="grid grid-cols-[120px_1fr] gap-y-2 text-[14px]">
             <dt className="text-[var(--ink-400)]">Subtotal</dt>
-            <dd>{fmtMoney(booking.subtotalCents, booking.currency)}</dd>
+            <dd>{formatMoney(booking.subtotalCents, booking.currency)}</dd>
+            {booking.extraHours > 0 ? (
+              <>
+                <dt className="text-[var(--ink-400)]">Extra hours</dt>
+                <dd>
+                  {booking.extraHours}h ×{" "}
+                  {formatMoney(booking.extraHourCents, booking.currency)}
+                </dd>
+              </>
+            ) : null}
+            {booking.addons.length > 0 ? (
+              <>
+                <dt className="text-[var(--ink-400)]">Add-ons</dt>
+                <dd>
+                  <ul className="space-y-0.5">
+                    {booking.addons.map((a) => (
+                      <li key={a.id}>
+                        {a.name} — {formatMoney(a.priceCents, booking.currency)}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </>
+            ) : null}
             <dt className="text-[var(--ink-400)]">Deposit</dt>
             <dd>
-              {fmtMoney(booking.depositCents, booking.currency)}{" "}
+              {formatMoney(booking.depositCents, booking.currency)}{" "}
               <span className="text-[var(--ink-500)]">
                 · {booking.depositStatus}
               </span>
             </dd>
             <dt className="text-[var(--ink-400)]">Total due</dt>
             <dd>
-              <strong>{fmtMoney(booking.totalCents, booking.currency)}</strong>
+              <strong>
+                {formatMoney(booking.totalCents, booking.currency)}
+              </strong>
             </dd>
           </dl>
         </section>
@@ -206,7 +225,9 @@ export function BookingDetail({
             ))}
           </select>
           {saved ? (
-            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">Saved.</p>
+            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">
+              Saved.
+            </p>
           ) : null}
 
           <dl className="mt-4 space-y-2 text-[13px]">
@@ -453,7 +474,7 @@ function DepositActions({
           <>
             Charge:{" "}
             <strong className="text-[var(--ink-900)]">
-              {fmtMoney(depositCents, currency)}
+              {formatMoney(depositCents, currency)}
             </strong>
           </>
         )}
@@ -478,7 +499,7 @@ function DepositActions({
                 ? "Creating link…"
                 : isPending
                   ? "Resend deposit link"
-                  : `Send deposit link · ${fmtMoney(depositCents, currency)}`}
+                  : `Send deposit link · ${formatMoney(depositCents, currency)}`}
           </button>
           {link ? (
             <p className="mt-2 text-[11px] text-[var(--ink-500)]">

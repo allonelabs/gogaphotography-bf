@@ -13,20 +13,35 @@ type Contract = {
   token: string;
   bodyEn: string;
   bodyKa: string;
+  bodyRu: string;
   status: "draft" | "sent" | "signed" | "void";
   signerName: string | null;
   signerEmail: string | null;
   signedAt: string | null;
   signedIp: string | null;
+  signedLocale: string | null;
   sentAt: string | null;
   signatureUrl: string | null;
 };
 
-export function ContractEditor({ contract }: { contract: Contract }) {
+export function ContractEditor({
+  contract,
+  publicSignUrl,
+}: {
+  contract: Contract;
+  /**
+   * The link `sendContract` actually emails — the public static site's
+   * `/sign?t=` page (PUBLIC_SITE_URL). Computed server-side since that env
+   * var isn't NEXT_PUBLIC_-prefixed. The admin's own `/sign/<token>` route
+   * still works, it's just no longer what's shown/copied here.
+   */
+  publicSignUrl: string;
+}) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [bodyEn, setBodyEn] = useState(contract.bodyEn);
   const [bodyKa, setBodyKa] = useState(contract.bodyKa);
+  const [bodyRu, setBodyRu] = useState(contract.bodyRu);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -34,10 +49,7 @@ export function ContractEditor({ contract }: { contract: Contract }) {
   const isSigned = contract.status === "signed";
   const isVoid = contract.status === "void";
 
-  const signUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/sign/${contract.token}`
-      : `/sign/${contract.token}`;
+  const signUrl = publicSignUrl;
 
   async function onSaveBody(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,6 +59,7 @@ export function ContractEditor({ contract }: { contract: Contract }) {
         await updateContractBody(contract.id, {
           body_en: bodyEn,
           body_ka: bodyKa || null,
+          body_ru: bodyRu || null,
         });
         setSavedAt(Date.now());
         router.refresh();
@@ -125,6 +138,16 @@ export function ContractEditor({ contract }: { contract: Contract }) {
           />
         </Field>
 
+        <Field label="Contract body (Russian) — optional">
+          <textarea
+            value={bodyRu}
+            onChange={(e) => setBodyRu(e.target.value)}
+            rows={10}
+            disabled={isSigned || isVoid}
+            className={monoCls}
+          />
+        </Field>
+
         {!isSigned && !isVoid ? (
           <div className="flex items-center gap-3">
             <button
@@ -135,7 +158,9 @@ export function ContractEditor({ contract }: { contract: Contract }) {
               {pending ? "Saving…" : "Save body"}
             </button>
             {savedAt ? (
-              <span className="text-[12px] text-slate-900 font-medium">Saved.</span>
+              <span className="text-[12px] text-slate-900 font-medium">
+                Saved.
+              </span>
             ) : null}
             {err ? (
               <span className="text-[12px] text-slate-700">{err}</span>
@@ -194,6 +219,10 @@ export function ContractEditor({ contract }: { contract: Contract }) {
                   value={new Date(contract.signedAt).toLocaleString()}
                 />
                 <Row label="IP" value={contract.signedIp ?? "—"} />
+                <Row
+                  label="Locale"
+                  value={(contract.signedLocale ?? "en").toUpperCase()}
+                />
               </>
             ) : null}
           </dl>

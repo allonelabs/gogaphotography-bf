@@ -21,6 +21,7 @@ export default async function LeadDetailPage({ params }: Props) {
     { data: lead },
     { data: events },
     { data: packages },
+    { data: addons },
     { data: bookings },
   ] = await Promise.all([
     sb
@@ -38,7 +39,14 @@ export default async function LeadDetailPage({ params }: Props) {
       .limit(40),
     sb
       .from("packages")
-      .select("id, name_en, base_price_cents, currency")
+      .select(
+        "id, name_en, base_price_cents, currency, deposit_pct, extra_hour_cents, max_extra_hours",
+      )
+      .eq("published", true)
+      .order("sort_order", { ascending: true }),
+    sb
+      .from("addons")
+      .select("id, name_en, price_cents")
       .eq("published", true)
       .order("sort_order", { ascending: true }),
     sb
@@ -148,6 +156,14 @@ export default async function LeadDetailPage({ params }: Props) {
             name: p.name_en,
             priceCents: p.base_price_cents,
             currency: p.currency,
+            depositPct: p.deposit_pct,
+            extraHourCents: p.extra_hour_cents,
+            maxExtraHours: p.max_extra_hours,
+          }))}
+          addons={(addons ?? []).map((a) => ({
+            id: a.id,
+            name: a.name_en,
+            priceCents: a.price_cents,
           }))}
           relatedBookings={relatedBookings}
         />

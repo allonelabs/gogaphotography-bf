@@ -12,6 +12,8 @@ import {
   Calendar,
   Camera,
   ClipboardList,
+  Clock,
+  FileSignature,
   FileText,
   Globe,
   HelpCircle,
@@ -20,15 +22,19 @@ import {
   LayoutDashboard,
   LayoutGrid,
   Mail,
+  PlusCircle,
   ScrollText,
+  Sliders,
   Sparkles,
   Tag,
   ShoppingBag,
   PenTool,
   Share2,
   MessageCircle,
+  Type,
   User,
   Users,
+  Zap,
 } from "lucide-react";
 import type { ComponentType, SVGProps } from "react";
 
@@ -56,6 +62,12 @@ const ICONS: Record<string, ComponentType<SVGProps<SVGSVGElement>>> = {
   "bar-chart-3": BarChart3,
   user: User,
   "help-circle": HelpCircle,
+  "plus-circle": PlusCircle,
+  clock: Clock,
+  "file-signature": FileSignature,
+  zap: Zap,
+  type: Type,
+  sliders: Sliders,
 };
 
 // href → translation key (e.g. "/admin/avia" → "nav.avia",

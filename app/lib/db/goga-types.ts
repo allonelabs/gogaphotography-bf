@@ -140,6 +140,7 @@ export type GogaDatabase = {
           deposit_cents: number;
           deposit_status: GogaDatabase["public"]["Enums"]["deposit_status"];
           duration_hours: number | null;
+          extra_hours: number;
           id: string;
           lead_id: string | null;
           location: string | null;
@@ -166,6 +167,7 @@ export type GogaDatabase = {
           deposit_cents?: number;
           deposit_status?: GogaDatabase["public"]["Enums"]["deposit_status"];
           duration_hours?: number | null;
+          extra_hours?: number;
           id?: string;
           lead_id?: string | null;
           location?: string | null;
@@ -192,6 +194,7 @@ export type GogaDatabase = {
           deposit_cents?: number;
           deposit_status?: GogaDatabase["public"]["Enums"]["deposit_status"];
           duration_hours?: number | null;
+          extra_hours?: number;
           id?: string;
           lead_id?: string | null;
           location?: string | null;
@@ -347,6 +350,7 @@ export type GogaDatabase = {
           signature_path: string | null;
           signed_at: string | null;
           signed_ip: string | null;
+          signed_locale: string | null;
           signed_user_agent: string | null;
           signer_email: string | null;
           signer_name: string | null;
@@ -365,6 +369,7 @@ export type GogaDatabase = {
           signature_path?: string | null;
           signed_at?: string | null;
           signed_ip?: string | null;
+          signed_locale?: string | null;
           signed_user_agent?: string | null;
           signer_email?: string | null;
           signer_name?: string | null;
@@ -383,6 +388,7 @@ export type GogaDatabase = {
           signature_path?: string | null;
           signed_at?: string | null;
           signed_ip?: string | null;
+          signed_locale?: string | null;
           signed_user_agent?: string | null;
           signer_email?: string | null;
           signer_name?: string | null;
@@ -411,6 +417,7 @@ export type GogaDatabase = {
           intro_en: string | null;
           intro_ka: string | null;
           last_viewed_at: string | null;
+          notified_at: string | null;
           password_hash: string | null;
           token: string;
           updated_at: string;
@@ -426,6 +433,7 @@ export type GogaDatabase = {
           intro_en?: string | null;
           intro_ka?: string | null;
           last_viewed_at?: string | null;
+          notified_at?: string | null;
           password_hash?: string | null;
           token: string;
           updated_at?: string;
@@ -441,6 +449,7 @@ export type GogaDatabase = {
           intro_en?: string | null;
           intro_ka?: string | null;
           last_viewed_at?: string | null;
+          notified_at?: string | null;
           password_hash?: string | null;
           token?: string;
           updated_at?: string;
@@ -635,7 +644,9 @@ export type GogaDatabase = {
           deliverables_ru: string | null;
           deposit_pct: number;
           duration_hours: number | null;
+          extra_hour_cents: number;
           id: string;
+          max_extra_hours: number;
           name_en: string;
           name_ka: string | null;
           name_ru: string | null;
@@ -656,7 +667,9 @@ export type GogaDatabase = {
           deliverables_ru?: string | null;
           deposit_pct?: number;
           duration_hours?: number | null;
+          extra_hour_cents?: number;
           id?: string;
+          max_extra_hours?: number;
           name_en: string;
           name_ka?: string | null;
           name_ru?: string | null;
@@ -677,7 +690,9 @@ export type GogaDatabase = {
           deliverables_ru?: string | null;
           deposit_pct?: number;
           duration_hours?: number | null;
+          extra_hour_cents?: number;
           id?: string;
+          max_extra_hours?: number;
           name_en?: string;
           name_ka?: string | null;
           name_ru?: string | null;
@@ -758,10 +773,12 @@ export type GogaDatabase = {
           caption_ka: string | null;
           caption_ru: string | null;
           created_at: string;
+          height: number | null;
           id: string;
           image_path: string;
           project_id: string;
           sort_order: number;
+          width: number | null;
         };
         Insert: {
           alt_text?: string | null;
@@ -769,10 +786,12 @@ export type GogaDatabase = {
           caption_ka?: string | null;
           caption_ru?: string | null;
           created_at?: string;
+          height?: number | null;
           id?: string;
           image_path: string;
           project_id: string;
           sort_order?: number;
+          width?: number | null;
         };
         Update: {
           alt_text?: string | null;
@@ -780,10 +799,12 @@ export type GogaDatabase = {
           caption_ka?: string | null;
           caption_ru?: string | null;
           created_at?: string;
+          height?: number | null;
           id?: string;
           image_path?: string;
           project_id?: string;
           sort_order?: number;
+          width?: number | null;
         };
         Relationships: [
           {
@@ -995,6 +1016,132 @@ export type GogaDatabase = {
         Row: ProjectAlbumRow;
         Insert: ProjectAlbumRow;
         Update: Partial<ProjectAlbumRow>;
+        Relationships: [];
+      };
+      contract_templates: {
+        Row: {
+          body_en: string;
+          body_ka: string;
+          body_ru: string;
+          id: number;
+          updated_at: string;
+        };
+        Insert: {
+          body_en?: string;
+          body_ka?: string;
+          body_ru?: string;
+          id?: number;
+          updated_at?: string;
+        };
+        Update: {
+          body_en?: string;
+          body_ka?: string;
+          body_ru?: string;
+          id?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      automation_rules: {
+        Row: {
+          body_en: string;
+          body_ka: string;
+          body_ru: string;
+          delay_days: number;
+          enabled: boolean;
+          key: string;
+          notify_studio: boolean;
+          subject_en: string;
+          subject_ka: string;
+          subject_ru: string;
+          updated_at: string;
+        };
+        Insert: {
+          body_en?: string;
+          body_ka?: string;
+          body_ru?: string;
+          delay_days?: number;
+          enabled?: boolean;
+          key: string;
+          notify_studio?: boolean;
+          subject_en?: string;
+          subject_ka?: string;
+          subject_ru?: string;
+          updated_at?: string;
+        };
+        Update: {
+          body_en?: string;
+          body_ka?: string;
+          body_ru?: string;
+          delay_days?: number;
+          enabled?: boolean;
+          key?: string;
+          notify_studio?: boolean;
+          subject_en?: string;
+          subject_ka?: string;
+          subject_ru?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      automation_log: {
+        Row: {
+          created_at: string;
+          entity_id: string;
+          error: string | null;
+          id: string;
+          recipient: string | null;
+          rule_key: string;
+          status: string;
+        };
+        Insert: {
+          created_at?: string;
+          entity_id: string;
+          error?: string | null;
+          id?: string;
+          recipient?: string | null;
+          rule_key: string;
+          status?: string;
+        };
+        Update: {
+          created_at?: string;
+          entity_id?: string;
+          error?: string | null;
+          id?: string;
+          recipient?: string | null;
+          rule_key?: string;
+          status?: string;
+        };
+        Relationships: [];
+      };
+      site_settings: {
+        Row: {
+          calculator_enabled: boolean;
+          caption_mode: string;
+          id: number;
+          lightbox_captions: boolean;
+          page_transitions: boolean;
+          reveal_animations: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          calculator_enabled?: boolean;
+          caption_mode?: string;
+          id?: number;
+          lightbox_captions?: boolean;
+          page_transitions?: boolean;
+          reveal_animations?: boolean;
+          updated_at?: string;
+        };
+        Update: {
+          calculator_enabled?: boolean;
+          caption_mode?: string;
+          id?: number;
+          lightbox_captions?: boolean;
+          page_transitions?: boolean;
+          reveal_animations?: boolean;
+          updated_at?: string;
+        };
         Relationships: [];
       };
     };

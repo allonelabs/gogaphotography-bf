@@ -2,7 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { createPackage, updatePackage } from "@/app/lib/goga/actions-packages";
+import { createAddon, updateAddon } from "@/app/lib/goga/actions-addons";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
 
@@ -11,29 +11,19 @@ type Initial = {
   slug?: string | null;
   name_en?: string | null;
   name_ka?: string | null;
-
   name_ru?: string | null;
-  short_desc_en?: string | null;
-  short_desc_ka?: string | null;
-
-  short_desc_ru?: string | null;
-  deliverables_en?: string | null;
-  deliverables_ka?: string | null;
-
-  deliverables_ru?: string | null;
-  base_price_cents?: number | null;
-  currency?: string | null;
-  duration_hours?: number | null;
-  deposit_pct?: number | null;
-  extra_hour_cents?: number | null;
-  max_extra_hours?: number | null;
+  description_en?: string | null;
+  description_ka?: string | null;
+  description_ru?: string | null;
+  price_cents?: number | null;
+  sort_order?: number | null;
   published?: boolean | null;
 };
 
 const fromCents = (c: number | null | undefined) =>
   c == null ? "" : (c / 100).toFixed(2);
 
-export function PackageForm({ initial }: { initial?: Initial }) {
+export function AddonForm({ initial }: { initial?: Initial }) {
   const router = useRouter();
   const toast = useToast();
   const [pending, start] = useTransition();
@@ -47,12 +37,12 @@ export function PackageForm({ initial }: { initial?: Initial }) {
     start(async () => {
       try {
         if (isEdit && initial?.id) {
-          await updatePackage(initial.id, fd);
-          toast.show("Package saved", "success");
+          await updateAddon(initial.id, fd);
+          toast.show("Add-on saved", "success");
           router.refresh();
         } else {
-          await createPackage(fd);
-          toast.show("Package created", "success");
+          await createAddon(fd);
+          toast.show("Add-on created", "success");
         }
       } catch (e) {
         rethrowIfRedirect(e);
@@ -77,7 +67,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
             name="name_en"
             required
             defaultValue={initial?.name_en ?? ""}
-            placeholder="Full-day wedding"
+            placeholder="Second photographer"
             className={inputCls}
           />
         </Field>
@@ -101,32 +91,32 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         <input
           name="slug"
           defaultValue={initial?.slug ?? ""}
-          placeholder="full-day-wedding"
+          placeholder="second-photographer"
           className={inputCls}
         />
       </Field>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Short description (EN)">
+        <Field label="Description (EN)">
           <textarea
-            name="short_desc_en"
-            defaultValue={initial?.short_desc_en ?? ""}
+            name="description_en"
+            defaultValue={initial?.description_en ?? ""}
             rows={3}
             className={inputCls}
           />
         </Field>
-        <Field label="Short description (KA)">
+        <Field label="Description (KA)">
           <textarea
-            name="short_desc_ka"
-            defaultValue={initial?.short_desc_ka ?? ""}
+            name="description_ka"
+            defaultValue={initial?.description_ka ?? ""}
             rows={3}
             className={inputCls}
           />
         </Field>
-        <Field label="Short description (RU)">
+        <Field label="Description (RU)">
           <textarea
-            name="short_desc_ru"
-            defaultValue={initial?.short_desc_ru ?? ""}
+            name="description_ru"
+            defaultValue={initial?.description_ru ?? ""}
             rows={3}
             className={inputCls}
           />
@@ -134,98 +124,23 @@ export function PackageForm({ initial }: { initial?: Initial }) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Deliverables (EN) — one per line">
-          <textarea
-            name="deliverables_en"
-            defaultValue={initial?.deliverables_en ?? ""}
-            rows={4}
-            placeholder={
-              "All edited RAW files\n2 photographers\nOnline gallery"
-            }
-            className={inputCls}
-          />
-        </Field>
-        <Field label="Deliverables (KA)">
-          <textarea
-            name="deliverables_ka"
-            defaultValue={initial?.deliverables_ka ?? ""}
-            rows={4}
-            className={inputCls}
-          />
-        </Field>
-        <Field label="Deliverables (RU)">
-          <textarea
-            name="deliverables_ru"
-            defaultValue={initial?.deliverables_ru ?? ""}
-            rows={4}
-            className={inputCls}
-          />
-        </Field>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-4">
-        <Field label="Base price">
+        <Field label="Price">
           <input
-            name="base_price"
+            name="price"
             type="number"
             step="0.01"
             min="0"
-            defaultValue={fromCents(initial?.base_price_cents)}
-            placeholder="2500.00"
-            className={inputCls}
-          />
-        </Field>
-        <Field label="Currency">
-          <input
-            name="currency"
-            type="text"
-            maxLength={3}
-            defaultValue={initial?.currency ?? "EUR"}
-            className={inputCls}
-          />
-        </Field>
-        <Field label="Duration (hours)">
-          <input
-            name="duration_hours"
-            type="number"
-            step="0.5"
-            min="0"
-            defaultValue={initial?.duration_hours ?? ""}
-            placeholder="10"
-            className={inputCls}
-          />
-        </Field>
-        <Field label="Deposit %">
-          <input
-            name="deposit_pct"
-            type="number"
-            min="0"
-            max="100"
-            defaultValue={initial?.deposit_pct ?? 30}
-            className={inputCls}
-          />
-        </Field>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Extra hour price — 0 = extra hours not offered">
-          <input
-            name="extra_hour_price"
-            type="number"
-            step="0.01"
-            min="0"
-            defaultValue={fromCents(initial?.extra_hour_cents)}
+            defaultValue={fromCents(initial?.price_cents)}
             placeholder="150.00"
             className={inputCls}
           />
         </Field>
-        <Field label="Max extra hours the calculator allows">
+        <Field label="Sort order">
           <input
-            name="max_extra_hours"
+            name="sort_order"
             type="number"
             step="1"
-            min="0"
-            defaultValue={initial?.max_extra_hours ?? 0}
+            defaultValue={initial?.sort_order ?? 0}
             className={inputCls}
           />
         </Field>
@@ -238,7 +153,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
           defaultChecked={initial?.published ?? true}
           className="h-4 w-4 rounded border-black/20"
         />
-        <span>Published — selectable in /book and shown on /services</span>
+        <span>Published — selectable in the /book calculator</span>
       </label>
 
       <div className="flex items-center gap-3 pt-2">
@@ -247,7 +162,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          {pending ? "Saving…" : isEdit ? "Save changes" : "Create package"}
+          {pending ? "Saving…" : isEdit ? "Save changes" : "Create add-on"}
         </button>
         {err ? <span className="text-[13px] text-slate-700">{err}</span> : null}
       </div>

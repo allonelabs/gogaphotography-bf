@@ -26,31 +26,16 @@ function readFields(fd: FormData) {
     name_en: String(fd.get("name_en") ?? "").trim(),
     name_ka: String(fd.get("name_ka") ?? "").trim() || null,
     name_ru: String(fd.get("name_ru") ?? "").trim() || null,
-    short_desc_en: String(fd.get("short_desc_en") ?? "").trim() || null,
-    short_desc_ka: String(fd.get("short_desc_ka") ?? "").trim() || null,
-    short_desc_ru: String(fd.get("short_desc_ru") ?? "").trim() || null,
-    deliverables_en: String(fd.get("deliverables_en") ?? "").trim() || null,
-    deliverables_ka: String(fd.get("deliverables_ka") ?? "").trim() || null,
-    deliverables_ru: String(fd.get("deliverables_ru") ?? "").trim() || null,
-    base_price_cents: parseCents(fd.get("base_price")),
-    currency: (
-      String(fd.get("currency") ?? "EUR").trim() || "EUR"
-    ).toUpperCase(),
-    duration_hours: parseFloat(String(fd.get("duration_hours") ?? "0")) || null,
-    deposit_pct: Math.max(
-      0,
-      Math.min(100, parseInt(String(fd.get("deposit_pct") ?? "30"), 10) || 30),
-    ),
-    extra_hour_cents: parseCents(fd.get("extra_hour_price")),
-    max_extra_hours: Math.max(
-      0,
-      parseInt(String(fd.get("max_extra_hours") ?? "0"), 10) || 0,
-    ),
+    description_en: String(fd.get("description_en") ?? "").trim() || null,
+    description_ka: String(fd.get("description_ka") ?? "").trim() || null,
+    description_ru: String(fd.get("description_ru") ?? "").trim() || null,
+    price_cents: parseCents(fd.get("price")),
+    sort_order: parseInt(String(fd.get("sort_order") ?? "0"), 10) || 0,
     published: fd.get("published") === "on",
   };
 }
 
-export async function createPackage(formData: FormData): Promise<void> {
+export async function createAddon(formData: FormData): Promise<void> {
   await requireSession();
   const sb = gogaAdmin();
   const fields = readFields(formData);
@@ -59,11 +44,11 @@ export async function createPackage(formData: FormData): Promise<void> {
   const baseSlug = slugify(
     String(formData.get("slug") ?? "") || fields.name_en,
   );
-  let slug = baseSlug || `package-${Date.now()}`;
+  let slug = baseSlug || `addon-${Date.now()}`;
   let n = 1;
   for (;;) {
     const { data } = await sb
-      .from("packages")
+      .from("addons")
       .select("id")
       .eq("slug", slug)
       .limit(1);
@@ -73,17 +58,17 @@ export async function createPackage(formData: FormData): Promise<void> {
   }
 
   const { data, error } = await sb
-    .from("packages")
+    .from("addons")
     .insert({ slug, ...fields })
     .select("id")
     .single();
   if (error) throw new Error(error.message);
 
-  revalidatePath("/admin/packages");
-  redirect(`/admin/packages/${data.id}`);
+  revalidatePath("/admin/addons");
+  redirect(`/admin/addons/${data.id}`);
 }
 
-export async function updatePackage(
+export async function updateAddon(
   id: string,
   formData: FormData,
 ): Promise<void> {
@@ -95,29 +80,29 @@ export async function updatePackage(
   const rawSlug = String(formData.get("slug") ?? "").trim();
   const update = rawSlug ? { slug: slugify(rawSlug), ...fields } : fields;
 
-  const { error } = await sb.from("packages").update(update).eq("id", id);
+  const { error } = await sb.from("addons").update(update).eq("id", id);
   if (error) throw new Error(error.message);
 
-  revalidatePath("/admin/packages");
-  revalidatePath(`/admin/packages/${id}`);
+  revalidatePath("/admin/addons");
+  revalidatePath(`/admin/addons/${id}`);
 }
 
-export async function deletePackage(id: string): Promise<void> {
+export async function deleteAddon(id: string): Promise<void> {
   await requireSession();
-  await gogaAdmin().from("packages").delete().eq("id", id);
-  revalidatePath("/admin/packages");
+  await gogaAdmin().from("addons").delete().eq("id", id);
+  revalidatePath("/admin/addons");
 }
 
-export async function togglePackagePublished(id: string): Promise<void> {
+export async function toggleAddonPublished(id: string): Promise<void> {
   await requireSession();
   const sb = gogaAdmin();
   const { data } = await sb
-    .from("packages")
+    .from("addons")
     .select("published")
     .eq("id", id)
     .single();
   if (!data) throw new Error("not_found");
-  await sb.from("packages").update({ published: !data.published }).eq("id", id);
-  revalidatePath("/admin/packages");
-  revalidatePath(`/admin/packages/${id}`);
+  await sb.from("addons").update({ published: !data.published }).eq("id", id);
+  revalidatePath("/admin/addons");
+  revalidatePath(`/admin/addons/${id}`);
 }

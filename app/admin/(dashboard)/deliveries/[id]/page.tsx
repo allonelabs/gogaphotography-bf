@@ -18,6 +18,7 @@ export default async function DeliveryAdminPage({ params }: Props) {
       .select(
         `id, booking_id, token, password_hash, intro_en, intro_ka,
          expires_at, downloads_enabled, archived, view_count, last_viewed_at,
+         notified_at,
          bookings(client_name, client_email, shoot_date)`,
       )
       .eq("id", id)
@@ -92,6 +93,8 @@ export default async function DeliveryAdminPage({ params }: Props) {
             downloadsEnabled: delivery.downloads_enabled,
             viewCount: delivery.view_count,
             lastViewedAt: delivery.last_viewed_at,
+            clientEmail: delivery.bookings?.client_email ?? null,
+            notifiedAt: delivery.notified_at,
           }}
           items={items}
         />
