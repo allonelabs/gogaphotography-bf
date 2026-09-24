@@ -4,6 +4,17 @@ import { revalidatePath } from "next/cache";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { hashPassword } from "./delivery-password";
+import { runRule } from "./automation";
+import { logAdminEvent } from "./admin-events";
+
+function galleryOrigin(): string {
+  return (
+    process.env["NEXT_PUBLIC_SITE_URL"] ??
+    (process.env["VERCEL_URL"]
+      ? `https://${process.env["VERCEL_URL"]}`
+      : "http://localhost:3030")
+  ).replace(/\/$/, "");
+}
 
 function randomToken(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(18));
@@ -153,6 +164,67 @@ export async function deleteDeliveryImage(imageId: string): Promise<void> {
     await sb.storage.from("deliveries").remove([data.image_path]);
   }
   revalidatePath(`/admin/deliveries/${data.delivery_id}`);
+}
+
+/**
+ * "Notify client" — fires the `delivery_ready` automation rule, stamps
+ * `notified_at` (idempotency baseline for the upsell cron), and mirrors the
+ * finalizeTbcPayment convention: move the lead to `delivery` + a lead_events
+ * row.
+ */
+export async function notifyClientDelivery(
+  deliveryId: string,
+): Promise<{ ok: boolean }> {
+  await requireSession();
+  const sb = gogaAdmin();
+  const { data: delivery } = await sb
+    .from("deliveries")
+    .select(
+      `id, token, booking_id,
+       bookings(client_name, client_email, lead_id, leads(locale))`,
+    )
+    .eq("id", deliveryId)
+    .single();
+  if (!delivery) throw new Error("not_found");
+  const clientEmail = delivery.bookings?.client_email;
+  if (!clientEmail) throw new Error("no_client_email");
+
+  const galleryUrl = `${galleryOrigin()}/gallery/${delivery.token}`;
+  const result = await runRule(
+    "delivery_ready",
+    deliveryId,
+    {
+      client_name: delivery.bookings?.client_name ?? "",
+      gallery_url: galleryUrl,
+    },
+    { to: clientEmail, locale: delivery.bookings?.leads?.locale ?? "en" },
+  );
+  if (!result.ok) throw new Error(result.error ?? "send failed");
+
+  await sb
+    .from("deliveries")
+    .update({ notified_at: new Date().toISOString() })
+    .eq("id", deliveryId);
+
+  const leadId = delivery.bookings?.lead_id;
+  if (leadId) {
+    await sb.from("leads").update({ stage: "delivery" }).eq("id", leadId);
+    await sb.from("lead_events").insert({
+      lead_id: leadId,
+      kind: "delivery.notified",
+      payload: { deliveryId },
+    });
+  }
+
+  await logAdminEvent("delivery.notified", {
+    entityType: "delivery",
+    entityId: deliveryId,
+    payload: { to: clientEmail, skipped: result.skipped ?? null },
+  });
+
+  revalidatePath(`/admin/deliveries/${deliveryId}`);
+  revalidatePath("/admin/deliveries");
+  return { ok: true };
 }
 
 export async function archiveDelivery(deliveryId: string): Promise<void> {

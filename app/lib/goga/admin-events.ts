@@ -23,6 +23,7 @@ export type AdminEventKind =
   | "delivery.image_uploaded"
   | "delivery.image_deleted"
   | "delivery.archived"
+  | "delivery.notified"
   | "deposit.link_created"
   | "deposit.paid"
   | "deposit.failed"
