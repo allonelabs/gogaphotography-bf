@@ -11,6 +11,8 @@ import {
 import { createBookingFromLead } from "@/app/lib/goga/actions-bookings";
 import type { LeadStage } from "@/app/lib/goga/leads";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { computeBookingTotal } from "@/app/lib/goga/pricing";
+import { formatMoney } from "@/app/lib/goga/money";
 
 type Lead = {
   id: string;
@@ -37,6 +39,15 @@ type Pkg = {
   name: string;
   priceCents: number;
   currency: string;
+  depositPct: number;
+  extraHourCents: number;
+  maxExtraHours: number;
+};
+
+type Addon = {
+  id: string;
+  name: string;
+  priceCents: number;
 };
 
 type RelatedBooking = {
@@ -61,6 +72,7 @@ export function LeadDetail({
   labels,
   events,
   packages,
+  addons,
   relatedBookings,
 }: {
   lead: Lead;
@@ -68,6 +80,7 @@ export function LeadDetail({
   labels: Record<LeadStage, string>;
   events: EventRow[];
   packages: Pkg[];
+  addons: Addon[];
   relatedBookings: RelatedBooking[];
 }) {
   const router = useRouter();
@@ -140,7 +153,9 @@ export function LeadDetail({
               Notes
             </h3>
             {saved === "notes" ? (
-              <span className="text-[11px] text-slate-900 font-medium">Saved.</span>
+              <span className="text-[11px] text-slate-900 font-medium">
+                Saved.
+              </span>
             ) : null}
           </header>
           <textarea
@@ -257,7 +272,9 @@ export function LeadDetail({
             ))}
           </select>
           {saved === "stage" ? (
-            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">Saved.</p>
+            <p className="mt-1.5 text-[11px] text-slate-900 font-medium">
+              Saved.
+            </p>
           ) : null}
 
           <button
@@ -335,6 +352,7 @@ export function LeadDetail({
         <ConvertModal
           lead={lead}
           packages={packages}
+          addons={addons}
           onClose={() => setConvertOpen(false)}
         />
       ) : null}
@@ -358,10 +376,12 @@ function Detail({ label, value }: { label: string; value: React.ReactNode }) {
 function ConvertModal({
   lead,
   packages,
+  addons,
   onClose,
 }: {
   lead: Lead;
   packages: Pkg[];
+  addons: Addon[];
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -371,8 +391,35 @@ function ConvertModal({
   const [date, setDate] = useState(lead.shootDate ?? "");
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
+  const [addonIds, setAddonIds] = useState<string[]>([]);
+  const [extraHours, setExtraHours] = useState(0);
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
+
+  const pkg = packages.find((p) => p.id === packageId) ?? null;
+
+  // Selecting a different package can drop it below max_extra_hours, or the
+  // new package might not offer extra hours at all — clamp instead of
+  // silently sending an invalid value.
+  const clampedExtraHours = pkg ? Math.min(extraHours, pkg.maxExtraHours) : 0;
+
+  function toggleAddon(id: string) {
+    setAddonIds((cur) =>
+      cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id],
+    );
+  }
+
+  const preview = pkg
+    ? computeBookingTotal({
+        basePriceCents: pkg.priceCents,
+        extraHours: clampedExtraHours,
+        extraHourCents: pkg.extraHourCents,
+        addonCents: addons
+          .filter((a) => addonIds.includes(a.id))
+          .map((a) => a.priceCents),
+        depositPct: pkg.depositPct,
+      })
+    : null;
 
   function onSubmit() {
     if (!packageId || !date) {
@@ -388,6 +435,8 @@ function ConvertModal({
           shootDate: date,
           shootTime: time || null,
           location: location || null,
+          addonIds,
+          extraHours: clampedExtraHours,
         });
         router.push(`/admin/bookings/${id}`);
       } catch (e) {
@@ -405,7 +454,7 @@ function ConvertModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full max-w-md rounded-2xl bg-white p-7 ring-1 ring-black/5">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-7 ring-1 ring-black/5">
         <h3 className="text-[16px] font-semibold text-[var(--ink-900)]">
           New booking from lead
         </h3>
@@ -424,12 +473,7 @@ function ConvertModal({
           >
             {packages.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.name} —{" "}
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: p.currency,
-                  maximumFractionDigits: 0,
-                }).format(p.priceCents / 100)}
+                {p.name} — {formatMoney(p.priceCents, p.currency)}
               </option>
             ))}
           </select>
@@ -460,7 +504,7 @@ function ConvertModal({
           </label>
         </div>
 
-        <label className="mb-4 block">
+        <label className="mb-3 block">
           <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
             Location
           </span>
@@ -472,6 +516,64 @@ function ConvertModal({
             className="block w-full rounded-xl border border-black/10 bg-white px-3 py-2.5 text-[14px] outline-none focus:border-[var(--ink-900)]"
           />
         </label>
+
+        {pkg && pkg.maxExtraHours > 0 ? (
+          <label className="mb-3 block">
+            <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
+              Extra hours (up to {pkg.maxExtraHours},{" "}
+              {formatMoney(pkg.extraHourCents, pkg.currency)}/h)
+            </span>
+            <input
+              type="number"
+              min={0}
+              max={pkg.maxExtraHours}
+              value={clampedExtraHours}
+              onChange={(e) =>
+                setExtraHours(Math.max(0, parseInt(e.target.value, 10) || 0))
+              }
+              className="block w-32 rounded-xl border border-black/10 bg-white px-3 py-2.5 text-[14px] outline-none focus:border-[var(--ink-900)]"
+            />
+          </label>
+        ) : null}
+
+        {addons.length > 0 ? (
+          <div className="mb-4">
+            <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
+              Add-ons
+            </span>
+            <ul className="space-y-1.5 rounded-xl border border-black/10 p-3">
+              {addons.map((a) => (
+                <li key={a.id}>
+                  <label className="flex items-center gap-2 text-[13px] text-[var(--ink-700)]">
+                    <input
+                      type="checkbox"
+                      checked={addonIds.includes(a.id)}
+                      onChange={() => toggleAddon(a.id)}
+                      className="h-4 w-4 rounded border-black/20"
+                    />
+                    <span className="flex-1">{a.name}</span>
+                    <span className="tabular-nums text-[var(--ink-500)]">
+                      {formatMoney(a.priceCents, pkg?.currency ?? "GEL")}
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {preview ? (
+          <dl className="mb-4 grid grid-cols-[1fr_auto] gap-y-1 rounded-xl bg-slate-50 px-3.5 py-3 text-[13px]">
+            <dt className="text-[var(--ink-500)]">Total</dt>
+            <dd className="text-right font-medium text-[var(--ink-900)]">
+              {formatMoney(preview.totalCents, pkg!.currency)}
+            </dd>
+            <dt className="text-[var(--ink-500)]">Deposit</dt>
+            <dd className="text-right text-[var(--ink-900)]">
+              {formatMoney(preview.depositCents, pkg!.currency)}
+            </dd>
+          </dl>
+        ) : null}
 
         {err ? <p className="mb-3 text-[12px] text-slate-700">{err}</p> : null}
 
