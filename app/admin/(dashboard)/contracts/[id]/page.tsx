@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { publicSignUrl } from "@/app/lib/goga/site-urls";
 import { ContractEditor } from "./_editor";
 
 export const dynamic = "force-dynamic";
@@ -14,8 +15,8 @@ export default async function ContractAdminPage({ params }: Props) {
   const { data: c } = await sb
     .from("contracts")
     .select(
-      `id, booking_id, token, body_en, body_ka, status, signer_name,
-       signer_email, signed_at, signed_ip, sent_at, signature_path,
+      `id, booking_id, token, body_en, body_ka, body_ru, status, signer_name,
+       signer_email, signed_at, signed_ip, signed_locale, sent_at, signature_path,
        bookings(client_name, shoot_date, packages(name_en))`,
     )
     .eq("id", id)
@@ -68,14 +69,17 @@ export default async function ContractAdminPage({ params }: Props) {
             token: c.token,
             bodyEn: c.body_en ?? "",
             bodyKa: c.body_ka ?? "",
+            bodyRu: c.body_ru ?? "",
             status: c.status,
             signerName: c.signer_name,
             signerEmail: c.signer_email,
             signedAt: c.signed_at,
             signedIp: c.signed_ip,
+            signedLocale: c.signed_locale,
             sentAt: c.sent_at,
             signatureUrl,
           }}
+          publicSignUrl={publicSignUrl(c.token)}
         />
       </div>
     </AppShell>
