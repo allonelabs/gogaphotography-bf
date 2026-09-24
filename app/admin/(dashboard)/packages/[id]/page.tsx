@@ -15,7 +15,7 @@ export default async function EditPackagePage({ params }: Props) {
   const { data } = await sb
     .from("packages")
     .select(
-      "id, slug, name_en, name_ka, short_desc_en, short_desc_ka, deliverables_en, deliverables_ka, base_price_cents, currency, duration_hours, deposit_pct, published",
+      "id, slug, name_en, name_ka, name_ru, short_desc_en, short_desc_ka, short_desc_ru, deliverables_en, deliverables_ka, deliverables_ru, base_price_cents, currency, duration_hours, deposit_pct, extra_hour_cents, max_extra_hours, published",
     )
     .eq("id", id)
     .single();

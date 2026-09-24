@@ -41,6 +41,11 @@ function readFields(fd: FormData) {
       0,
       Math.min(100, parseInt(String(fd.get("deposit_pct") ?? "30"), 10) || 30),
     ),
+    extra_hour_cents: parseCents(fd.get("extra_hour_price")),
+    max_extra_hours: Math.max(
+      0,
+      parseInt(String(fd.get("max_extra_hours") ?? "0"), 10) || 0,
+    ),
     published: fd.get("published") === "on",
   };
 }

@@ -25,6 +25,8 @@ type Initial = {
   currency?: string | null;
   duration_hours?: number | null;
   deposit_pct?: number | null;
+  extra_hour_cents?: number | null;
+  max_extra_hours?: number | null;
   published?: boolean | null;
 };
 
@@ -89,7 +91,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         <Field label="Name (RU)">
           <input
             name="name_ru"
-            defaultValue={initial?.name_ka ?? ""}
+            defaultValue={initial?.name_ru ?? ""}
             className={inputCls}
           />
         </Field>
@@ -124,7 +126,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         <Field label="Short description (RU)">
           <textarea
             name="short_desc_ru"
-            defaultValue={initial?.short_desc_ka ?? ""}
+            defaultValue={initial?.short_desc_ru ?? ""}
             rows={3}
             className={inputCls}
           />
@@ -154,7 +156,7 @@ export function PackageForm({ initial }: { initial?: Initial }) {
         <Field label="Deliverables (RU)">
           <textarea
             name="deliverables_ru"
-            defaultValue={initial?.deliverables_ka ?? ""}
+            defaultValue={initial?.deliverables_ru ?? ""}
             rows={4}
             className={inputCls}
           />
@@ -200,6 +202,30 @@ export function PackageForm({ initial }: { initial?: Initial }) {
             min="0"
             max="100"
             defaultValue={initial?.deposit_pct ?? 30}
+            className={inputCls}
+          />
+        </Field>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field label="Extra hour price — 0 = extra hours not offered">
+          <input
+            name="extra_hour_price"
+            type="number"
+            step="0.01"
+            min="0"
+            defaultValue={fromCents(initial?.extra_hour_cents)}
+            placeholder="150.00"
+            className={inputCls}
+          />
+        </Field>
+        <Field label="Max extra hours the calculator allows">
+          <input
+            name="max_extra_hours"
+            type="number"
+            step="1"
+            min="0"
+            defaultValue={initial?.max_extra_hours ?? 0}
             className={inputCls}
           />
         </Field>

@@ -2,22 +2,14 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { PackageActions } from "./_actions";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
+import { formatMoney } from "@/app/lib/goga/money";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Packages" };
-
-function fmtMoney(cents: number, currency: string): string {
-  try {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(cents / 100);
-  } catch {
-    return `${(cents / 100).toFixed(0)} ${currency}`;
-  }
-}
 
 export default async function PackagesPage() {
   const sb = gogaAdmin();
@@ -87,7 +79,7 @@ export default async function PackagesPage() {
                     </div>
                   </Link>
                   <span className="text-[15px] font-medium tabular-nums text-[var(--ink-900)]">
-                    {fmtMoney(p.base_price_cents, p.currency)}
+                    {formatMoney(p.base_price_cents, p.currency)}
                   </span>
                   <span
                     className={`justify-self-center rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
