@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
-import { hasDeliveryCookie, loadDelivery } from "@/app/lib/goga/delivery-gate";
+import {
+  deliveryExpired,
+  hasDeliveryCookie,
+  loadDelivery,
+} from "@/app/lib/goga/delivery-gate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,6 +19,9 @@ export async function GET(_req: Request, ctx: RouteCtx) {
       { ok: false, error: "not_found" },
       { status: 404 },
     );
+  }
+  if (deliveryExpired(delivery)) {
+    return NextResponse.json({ ok: false, error: "expired" }, { status: 410 });
   }
   if (!delivery.downloads_enabled) {
     return NextResponse.json(

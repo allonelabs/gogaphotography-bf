@@ -54,6 +54,17 @@ function secret(): string {
   return s;
 }
 
+// The HMAC payload binds the delivery token, not just an expiry timestamp.
+// The cookie NAME also embeds the token, but that's just a lookup key the
+// browser sends back verbatim — it proves nothing on its own. Without the
+// token inside the signed payload, a cookie minted for one (open) gallery
+// would verify against the signature check for ANY other token, including
+// a password-protected one, since `hasDeliveryCookie` never compares the
+// token the signature was issued for to the token being checked.
+function signedMessage(token: string, expiresAt: number): string {
+  return `${token}.${expiresAt}`;
+}
+
 export async function setDeliveryCookie(token: string): Promise<{
   name: string;
   value: string;
@@ -66,7 +77,7 @@ export async function setDeliveryCookie(token: string): Promise<{
   };
 }> {
   const expiresAt = Date.now() + TTL_MS;
-  const sig = await hmac(secret(), String(expiresAt));
+  const sig = await hmac(secret(), signedMessage(token, expiresAt));
   const value = `${expiresAt}.${b64url(sig)}`;
   return {
     name: cookieName(token),
@@ -81,17 +92,30 @@ export async function setDeliveryCookie(token: string): Promise<{
   };
 }
 
-export async function hasDeliveryCookie(token: string): Promise<boolean> {
-  const c = (await cookies()).get(cookieName(token))?.value;
-  if (!c) return false;
-  const dot = c.indexOf(".");
+/**
+ * Verify a raw cookie value against the delivery `token` it's presented
+ * for. Pulled out of `hasDeliveryCookie` so the signature-binding logic is
+ * unit-testable without a Next.js request context (`cookies()` only works
+ * inside one).
+ */
+export async function verifyDeliveryCookieValue(
+  token: string,
+  cookieValue: string | undefined,
+): Promise<boolean> {
+  if (!cookieValue) return false;
+  const dot = cookieValue.indexOf(".");
   if (dot <= 0) return false;
-  const expStr = c.slice(0, dot);
-  const sigStr = c.slice(dot + 1);
+  const expStr = cookieValue.slice(0, dot);
+  const sigStr = cookieValue.slice(dot + 1);
   const exp = Number(expStr);
   if (!Number.isFinite(exp) || exp <= Date.now()) return false;
-  const expected = await hmac(secret(), expStr);
+  const expected = await hmac(secret(), signedMessage(token, exp));
   return safeEqual(new Uint8Array(expected), fromB64url(sigStr));
+}
+
+export async function hasDeliveryCookie(token: string): Promise<boolean> {
+  const c = (await cookies()).get(cookieName(token))?.value;
+  return verifyDeliveryCookieValue(token, c);
 }
 
 export type DeliveryRow = {
