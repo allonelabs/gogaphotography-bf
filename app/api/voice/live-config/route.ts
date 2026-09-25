@@ -7,13 +7,21 @@
 //
 // This endpoint exists so we can later swap to short-lived auth_tokens
 // (Google's ephemeral-token pattern) without re-shipping client code.
+//
+// Session-gated: this hands back a live API key, so an unauthenticated
+// caller must never reach it. Runtime is `nodejs` (not `edge`) so it can
+// call the same auth() used everywhere else in the app.
 
 import { NextResponse } from "next/server";
+import { requireApiSession } from "@/app/lib/goga/require-api-session";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   const key = process.env["GEMINI_API_KEY"];
   if (!key) {
     return NextResponse.json(

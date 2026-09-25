@@ -2,10 +2,14 @@
 // browser's SpeechRecognition is unavailable or returns nothing usable.
 
 import { NextRequest, NextResponse } from "next/server";
+import { requireApiSession } from "@/app/lib/goga/require-api-session";
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 export async function POST(request: NextRequest) {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   if (!GROQ_API_KEY) {
     return NextResponse.json({ error: "STT not configured" }, { status: 500 });
   }

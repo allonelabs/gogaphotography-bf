@@ -5,6 +5,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createServerSupabaseClient } from "@/app/lib/supabase/server";
+import { requireApiSession } from "@/app/lib/goga/require-api-session";
 
 const ListSchema = z.object({
   search: z.string().default(""),
@@ -13,6 +14,9 @@ const ListSchema = z.object({
 });
 
 export async function GET(req: Request) {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   const url = new URL(req.url);
   const parsed = ListSchema.safeParse(Object.fromEntries(url.searchParams));
   if (!parsed.success) {

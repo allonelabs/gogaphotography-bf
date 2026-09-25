@@ -37,7 +37,11 @@ const DEFAULT: UIProfile = {
   github: "",
 };
 
-function dbToUI(row: Record<string, unknown> | null, sessionEmail: string, sessionName: string | null): UIProfile & { updatedAt?: string } {
+function dbToUI(
+  row: Record<string, unknown> | null,
+  sessionEmail: string,
+  sessionName: string | null,
+): UIProfile & { updatedAt?: string } {
   if (!row) {
     return {
       ...DEFAULT,
@@ -47,7 +51,8 @@ function dbToUI(row: Record<string, unknown> | null, sessionEmail: string, sessi
   }
   const socials = (row.socials as Record<string, string> | undefined) ?? {};
   return {
-    name: typeof row.full_name === "string" ? row.full_name : sessionName ?? "",
+    name:
+      typeof row.full_name === "string" ? row.full_name : (sessionName ?? ""),
     email: typeof row.email === "string" ? row.email : sessionEmail,
     role: typeof socials.role === "string" ? socials.role : "",
     timezone: typeof row.timezone === "string" ? row.timezone : "",
@@ -61,11 +66,18 @@ function dbToUI(row: Record<string, unknown> | null, sessionEmail: string, sessi
 export async function GET(): Promise<Response> {
   const session = await auth();
   const email = session?.user?.email;
-  if (!email) return jsonResponse({ profile: DEFAULT, error: "not signed in" }, 200);
+  if (!email) return jsonResponse({ error: "not signed in" }, 401);
 
   const sb = getSupabaseAdmin();
-  const { data } = await sb.from("profiles").select("*").eq("email", email).maybeSingle();
-  return jsonResponse({ profile: dbToUI(data, email, session?.user?.name ?? null) }, 200);
+  const { data } = await sb
+    .from("profiles")
+    .select("*")
+    .eq("email", email)
+    .maybeSingle();
+  return jsonResponse(
+    { profile: dbToUI(data, email, session?.user?.name ?? null) },
+    200,
+  );
 }
 
 export async function PUT(req: Request): Promise<Response> {
@@ -74,8 +86,11 @@ export async function PUT(req: Request): Promise<Response> {
   if (!email) return jsonResponse({ error: "not signed in" }, 401);
 
   let body: Partial<UIProfile> = {};
-  try { body = (await req.json()) as Partial<UIProfile>; }
-  catch { return jsonResponse({ error: "invalid json" }, 400); }
+  try {
+    body = (await req.json()) as Partial<UIProfile>;
+  } catch {
+    return jsonResponse({ error: "invalid json" }, 400);
+  }
 
   const sb = getSupabaseAdmin();
   const row = {
@@ -89,10 +104,17 @@ export async function PUT(req: Request): Promise<Response> {
       github: typeof body.github === "string" ? body.github : "",
     },
   };
-  const { data, error } = await sb.from("profiles").upsert(row, { onConflict: "email" }).select("*").single();
+  const { data, error } = await sb
+    .from("profiles")
+    .upsert(row, { onConflict: "email" })
+    .select("*")
+    .single();
   if (error) return jsonResponse({ error: error.message }, 500);
 
-  return jsonResponse({ profile: dbToUI(data, email, session?.user?.name ?? null) }, 200);
+  return jsonResponse(
+    { profile: dbToUI(data, email, session?.user?.name ?? null) },
+    200,
+  );
 }
 
 function jsonResponse(body: object, status: number): Response {

@@ -2,6 +2,7 @@
 // Returns audio/wav. Lifted from allone.ge presentation chat (Aoede voice).
 
 import { NextRequest, NextResponse } from "next/server";
+import { requireApiSession } from "@/app/lib/goga/require-api-session";
 
 const GEMINI_API_KEYS = [
   process.env.GEMINI_API_KEY,
@@ -75,6 +76,9 @@ async function tryTTS(apiKey: string, ttsBody: string): Promise<Buffer | null> {
 }
 
 export async function POST(request: NextRequest) {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   if (GEMINI_API_KEYS.length === 0) {
     return NextResponse.json({ error: "TTS not configured" }, { status: 500 });
   }

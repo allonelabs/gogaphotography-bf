@@ -3,14 +3,23 @@
 // once on POST (stored as plaintext in DB for now — a future hardening pass
 // would hash it like api_keys).
 
-import { auth } from "../../../../auth";
-import { getSupabaseAdmin, getDefaultTenantId } from "../../../lib/supabase-server";
+import {
+  getSupabaseAdmin,
+  getDefaultTenantId,
+} from "../../../lib/supabase-server";
+import { requireApiSession } from "@/app/lib/goga/require-api-session";
 import { randomBytes } from "node:crypto";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-async function logAudit(action: string, target: string, email: string | null, name: string | null, tenantId: string): Promise<void> {
+async function logAudit(
+  action: string,
+  target: string,
+  email: string | null,
+  name: string | null,
+  tenantId: string,
+): Promise<void> {
   await getSupabaseAdmin().from("tenant_audit").insert({
     tenant_id: tenantId,
     actor_email: email,
@@ -21,6 +30,9 @@ async function logAudit(action: string, target: string, email: string | null, na
 }
 
 export async function GET(): Promise<Response> {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   try {
     const sb = getSupabaseAdmin();
     const tenantId = await getDefaultTenantId();
@@ -37,15 +49,23 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  const session = await auth();
-  const actorEmail = session?.user?.email ?? null;
-  const actorName = session?.user?.name ?? null;
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+  const actorEmail = gate.session.email;
+  const actorName = gate.session.name;
 
   let body: { url?: string; events?: string[] } = {};
-  try { body = await req.json(); } catch { return jsonResponse({ ok: false, error: "invalid json" }, 400); }
+  try {
+    body = await req.json();
+  } catch {
+    return jsonResponse({ ok: false, error: "invalid json" }, 400);
+  }
   const url = (body.url ?? "").trim();
-  if (!url || !/^https?:\/\//.test(url)) return jsonResponse({ ok: false, error: "valid https URL required" }, 400);
-  const events = Array.isArray(body.events) ? body.events.filter((e): e is string => typeof e === "string") : [];
+  if (!url || !/^https?:\/\//.test(url))
+    return jsonResponse({ ok: false, error: "valid https URL required" }, 400);
+  const events = Array.isArray(body.events)
+    ? body.events.filter((e): e is string => typeof e === "string")
+    : [];
 
   try {
     const sb = getSupabaseAdmin();
@@ -67,9 +87,17 @@ export async function POST(req: Request): Promise<Response> {
 }
 
 export async function PATCH(req: Request): Promise<Response> {
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+
   let body: { id?: string; is_active?: boolean } = {};
-  try { body = await req.json(); } catch { return jsonResponse({ ok: false, error: "invalid json" }, 400); }
-  if (!body.id || typeof body.is_active !== "boolean") return jsonResponse({ ok: false, error: "id + is_active required" }, 400);
+  try {
+    body = await req.json();
+  } catch {
+    return jsonResponse({ ok: false, error: "invalid json" }, 400);
+  }
+  if (!body.id || typeof body.is_active !== "boolean")
+    return jsonResponse({ ok: false, error: "id + is_active required" }, 400);
 
   try {
     const sb = getSupabaseAdmin();
@@ -89,9 +117,10 @@ export async function PATCH(req: Request): Promise<Response> {
 }
 
 export async function DELETE(req: Request): Promise<Response> {
-  const session = await auth();
-  const actorEmail = session?.user?.email ?? null;
-  const actorName = session?.user?.name ?? null;
+  const gate = await requireApiSession();
+  if (!gate.ok) return gate.response;
+  const actorEmail = gate.session.email;
+  const actorName = gate.session.name;
 
   const u = new URL(req.url);
   const id = u.searchParams.get("id");
@@ -108,14 +137,25 @@ export async function DELETE(req: Request): Promise<Response> {
       .select("url")
       .single();
     if (error || !data) throw error ?? new Error("not found");
-    await logAudit("webhook.deleted", data.url, actorEmail, actorName, tenantId);
+    await logAudit(
+      "webhook.deleted",
+      data.url,
+      actorEmail,
+      actorName,
+      tenantId,
+    );
     return jsonResponse({ ok: true });
   } catch (err) {
     return jsonResponse({ ok: false, error: errMsg(err) }, 500);
   }
 }
 
-function errMsg(e: unknown): string { return e instanceof Error ? e.message : String(e); }
+function errMsg(e: unknown): string {
+  return e instanceof Error ? e.message : String(e);
+}
 function jsonResponse(body: object, status = 200): Response {
-  return new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
 }
