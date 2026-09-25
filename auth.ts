@@ -1,5 +1,13 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import {
+  clientIpFromRequest,
+  failureDelay,
+  isLockedOut,
+  recordFailure,
+  recordSuccess,
+  secureEqual,
+} from "@/app/lib/goga/login-security";
 
 /**
  * GOGA admin auth — single shared password.
@@ -10,18 +18,11 @@ import Credentials from "next-auth/providers/credentials";
  * user table, no Google OAuth, no per-email role/permission lookups.
  *
  * The `password` Credentials provider compares the submitted value to
- * `ADMIN_PASSWORD` in constant-ish time and returns a fixed operator
- * profile. The /admin/login page calls signIn("password", {password}).
+ * `ADMIN_PASSWORD` via a constant-time digest comparison, locks an IP out
+ * after repeated failures, and adds a small fixed delay on every failure
+ * to blunt brute-forcing. The /admin/login page calls
+ * signIn("password", {password}).
  */
-const constantTimeEqual = (a: string, b: string): boolean => {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
-};
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -30,12 +31,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       credentials: {
         password: { label: "Password", type: "password" },
       },
-      async authorize(c) {
+      async authorize(c, request) {
+        const ip = clientIpFromRequest(request);
+        if (isLockedOut(ip)) {
+          await failureDelay();
+          return null;
+        }
+
         const expected = process.env["ADMIN_PASSWORD"];
-        if (!expected) return null;
         const submitted = typeof c?.password === "string" ? c.password : "";
-        if (!submitted) return null;
-        if (!constantTimeEqual(submitted, expected)) return null;
+        const ok =
+          !!expected && !!submitted && secureEqual(submitted, expected);
+        if (!ok) {
+          recordFailure(ip);
+          await failureDelay();
+          return null;
+        }
+
+        recordSuccess(ip);
         return {
           id: "goga",
           email: "goga@goga.photography",
