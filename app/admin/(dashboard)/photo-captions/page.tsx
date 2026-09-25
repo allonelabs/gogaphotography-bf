@@ -1,5 +1,6 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { safeLike } from "@/app/lib/goga/safe-like";
 import { ListSearch } from "@/app/admin/(dashboard)/_components/ListSearch";
 import {
   Pagination,
@@ -42,9 +43,9 @@ export default async function PhotoCaptionsPage({ searchParams }: Props) {
     .order("sort_order", { ascending: true });
   if (sp.project) q = q.eq("project_id", sp.project);
   if (sp.q?.trim()) {
-    const term = sp.q.trim();
+    const term = safeLike(sp.q.trim());
     q = q.or(
-      `caption.ilike.%${term}%,caption_ka.ilike.%${term}%,caption_ru.ilike.%${term}%,alt_text.ilike.%${term}%,image_path.ilike.%${term}%`,
+      `caption.ilike.${term},caption_ka.ilike.${term},caption_ru.ilike.${term},alt_text.ilike.${term},image_path.ilike.${term}`,
     );
   }
   const { data, count } = await q.range(from, to);
