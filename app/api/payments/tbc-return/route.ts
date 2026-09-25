@@ -30,12 +30,14 @@ export async function GET(req: NextRequest) {
   }
 
   if (outcome === "paid") {
-    return NextResponse.redirect(`${origin}/book/thanks?payId=${payId}`);
+    return NextResponse.redirect(
+      `${origin}/book/thanks?payId=${encodeURIComponent(payId)}`,
+    );
   }
   // Fallback: just send them to /book/thanks regardless — it's a
   // friendly "thanks for paying / payment is processing" page either
   // way, and the operator sees the canonical state in the admin.
   return NextResponse.redirect(
-    `${origin}/book/thanks?payId=${payId}&state=${outcome}`,
+    `${origin}/book/thanks?payId=${encodeURIComponent(payId)}&state=${encodeURIComponent(outcome)}`,
   );
 }
