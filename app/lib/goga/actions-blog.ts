@@ -7,6 +7,7 @@ import { requireSession } from "./require-auth";
 import { sanitizeBlogHtml } from "./blog-sanitize";
 import { enqueuePin } from "./pinterest-queue";
 import { COVER_THUMB_WIDTH, uploadThumb } from "./thumbs";
+import { imageMimeFor, sniffImageType } from "./image-magic-bytes";
 
 function slugify(input: string): string {
   return input
@@ -40,8 +41,14 @@ async function uploadCover(file: File): Promise<string> {
   const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const path = `blog/${Date.now()}-${safe}`;
   const buf = Buffer.from(await file.arrayBuffer());
+  // Trust the bytes, not the client-sent type/extension — the `projects`
+  // bucket is public, so anything served back needs to actually be one of
+  // these image formats (no SVG/HTML masquerading as an image).
+  const imageType = sniffImageType(buf);
+  if (!imageType)
+    throw new Error("cover upload: file is not a supported image");
   const { error } = await sb.storage.from("projects").upload(path, buf, {
-    contentType: file.type || "image/jpeg",
+    contentType: imageMimeFor(imageType),
     upsert: false,
   });
   if (error) throw new Error(`cover upload: ${error.message}`);

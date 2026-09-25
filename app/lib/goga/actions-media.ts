@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { logAdminEvent } from "./admin-events";
+import { imageMimeFor, sniffImageType } from "./image-magic-bytes";
 
 type Surface =
   | "hero.hero_image"
@@ -112,10 +113,15 @@ export async function uploadSurfaceImage(formData: FormData): Promise<{
   }
 
   const buf = Buffer.from(await file.arrayBuffer());
+  // Trust the bytes, not the client-sent type/extension — the `projects`
+  // bucket is public, so anything served back needs to actually be one of
+  // these image formats (no SVG/HTML masquerading as an image).
+  const imageType = sniffImageType(buf);
+  if (!imageType) throw new Error("not_an_image");
   const { error: upErr } = await sb.storage
     .from("projects")
     .upload(objectPath, buf, {
-      contentType: file.type,
+      contentType: imageMimeFor(imageType),
       cacheControl: "31536000",
       upsert: false,
     });

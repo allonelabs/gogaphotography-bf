@@ -7,6 +7,7 @@ import { enqueueOutbound } from "@/app/lib/outbox/singleton";
 import { requireSession } from "./require-auth";
 import { buildDownloadEmail } from "./store-email";
 import { enqueuePin } from "./pinterest-queue";
+import { imageMimeFor, sniffImageType } from "./image-magic-bytes";
 import type { StoreProductType } from "@/app/lib/db/store-types";
 
 const STORE_ORG_ID = 1;
@@ -70,8 +71,14 @@ async function uploadImage(file: File): Promise<string> {
   const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const path = `store/${Date.now()}-${safe}`;
   const buf = Buffer.from(await file.arrayBuffer());
+  // Trust the bytes, not the client-sent type/extension — the `projects`
+  // bucket is public, so anything served back needs to actually be one of
+  // these image formats (no SVG/HTML masquerading as an image).
+  const imageType = sniffImageType(buf);
+  if (!imageType)
+    throw new Error("image upload: file is not a supported image");
   const { error } = await sb.storage.from("projects").upload(path, buf, {
-    contentType: file.type || "image/jpeg",
+    contentType: imageMimeFor(imageType),
     upsert: false,
   });
   if (error) throw new Error(`image upload: ${error.message}`);

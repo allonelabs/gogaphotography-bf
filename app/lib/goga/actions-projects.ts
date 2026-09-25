@@ -6,6 +6,7 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "./require-auth";
 import { setProjectAlbums } from "./portfolio-albums";
 import { GALLERY_THUMB_WIDTH, thumbPathFor, uploadThumb } from "./thumbs";
+import { imageMimeFor, sniffImageType } from "./image-magic-bytes";
 
 function slugify(input: string): string {
   return input
@@ -148,10 +149,15 @@ export async function uploadProjectImage(
 
   const imagePath = `${projectId}/${Date.now()}-${safeFilename(file.name)}`;
   const buf = Buffer.from(await file.arrayBuffer());
+  // Trust the bytes, not the client-sent type/extension — the `projects`
+  // bucket is public, so anything served back needs to actually be one of
+  // these image formats (no SVG/HTML masquerading as an image).
+  const imageType = sniffImageType(buf);
+  if (!imageType) throw new Error("file is not a supported image");
   const { error: upErr } = await sb.storage
     .from("projects")
     .upload(imagePath, buf, {
-      contentType: file.type || "image/jpeg",
+      contentType: imageMimeFor(imageType),
       cacheControl: "31536000",
       upsert: false,
     });
@@ -202,7 +208,10 @@ export async function uploadProjectImage(
     // goga_0009 added these columns. Drop it once types are regenerated.
     const rows = sb.from("project_images") as unknown as {
       update: (v: Record<string, number>) => {
-        eq: (c: string, v: string) => Promise<{ error: { message: string } | null }>;
+        eq: (
+          c: string,
+          v: string,
+        ) => Promise<{ error: { message: string } | null }>;
       };
     };
     const { error: dimErr } = await rows

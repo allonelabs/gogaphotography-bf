@@ -2,6 +2,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { requireSession } from "@/app/lib/goga/require-auth";
+import { imageMimeFor, sniffImageType } from "@/app/lib/goga/image-magic-bytes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,8 +17,17 @@ export async function POST(req: NextRequest) {
   const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const path = `blog/body/${Date.now()}-${safe}`;
   const buf = Buffer.from(await file.arrayBuffer());
+  // Trust the bytes, not the client-sent type/extension — the `projects`
+  // bucket is public, so anything served back needs to actually be one of
+  // these image formats (no SVG/HTML masquerading as an image).
+  const imageType = sniffImageType(buf);
+  if (!imageType)
+    return NextResponse.json(
+      { error: "file is not a supported image" },
+      { status: 415 },
+    );
   const { error } = await sb.storage.from("projects").upload(path, buf, {
-    contentType: file.type || "image/jpeg",
+    contentType: imageMimeFor(imageType),
     upsert: false,
   });
   if (error)

@@ -2280,7 +2280,7 @@ export function AppChatPane({
             ref={fileInputRef}
             type="file"
             multiple
-            accept="image/*,application/pdf,text/*"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/gif"
             onChange={handleFilePicked}
             className="hidden"
           />
