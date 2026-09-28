@@ -8,6 +8,7 @@ import {
   STAGE_TONE,
 } from "@/app/lib/goga/leads";
 import { LeadDetail } from "./_detail";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export default async function LeadDetailPage({ params }: Props) {
   const { id } = await params;
+  const tr = await getServerTr();
   const sb = gogaAdmin();
 
   const [
@@ -72,7 +74,7 @@ export default async function LeadDetailPage({ params }: Props) {
       id: b.id,
       status: b.status,
       shootDate: b.shoot_date,
-      packageLabel: b.packages?.name_en ?? null,
+      packageLabel: b.packages?.name_en ?? null, // DB content, not translated
       totalCents: b.total_cents,
       currency: b.currency,
       contract: contract
@@ -96,21 +98,21 @@ export default async function LeadDetailPage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Pipeline" },
-        { label: "Leads", href: "/admin/leads" },
-        { label: lead.name ?? "Anonymous" },
+        { label: tr("Pipeline", "სამუშაო პროცესი") },
+        { label: tr("Leads", "კლიენტები"), href: "/admin/leads" },
+        { label: lead.name ?? tr("Anonymous", "ანონიმური") },
       ]}
       chatScope={{ level: "tool", tool: "leads" }}
-      chatScopeLabel={lead.name ?? "Lead"}
+      chatScopeLabel={lead.name ?? tr("Lead", "ლიდი")}
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              {lead.name ?? "Anonymous"}
+              {lead.name ?? tr("Anonymous", "ანონიმური")}
             </h1>
             <p className="mt-1 text-[12px] text-[var(--ink-500)]">
-              {lead.email ?? "(no email)"}
+              {lead.email ?? tr("(no email)", "(ელფოსტა არ არის)")}
               {lead.phone ? ` · ${lead.phone}` : ""}
               {lead.source ? ` · ${lead.source}` : ""}
             </p>
@@ -125,7 +127,7 @@ export default async function LeadDetailPage({ params }: Props) {
               href="/admin/leads"
               className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
             >
-              ← back
+              {tr("← back", "← უკან")}
             </Link>
           </div>
         </header>

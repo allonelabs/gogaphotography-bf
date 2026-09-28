@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 import { DeliveryManager } from "./_manager";
 
 export const dynamic = "force-dynamic";
@@ -33,6 +34,10 @@ export default async function DeliveryAdminPage({ params }: Props) {
   ]);
   if (!delivery) notFound();
 
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const intlLocale = locale === "ka" ? "ka-GE" : "en-US";
+
   const items = await Promise.all(
     (images ?? []).map(async (img) => {
       const { data } = await sb.storage
@@ -52,22 +57,28 @@ export default async function DeliveryAdminPage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Pipeline" },
-        { label: "Deliveries", href: "/admin/deliveries" },
-        { label: delivery.bookings?.client_name ?? "Delivery" },
+        { label: tr("Pipeline", "პროცესი") },
+        { label: tr("Deliveries", "მიწოდებები"), href: "/admin/deliveries" },
+        { label: delivery.bookings?.client_name ?? tr("Delivery", "მიწოდება") },
       ]}
       chatScope={{ level: "tool", tool: "deliveries" }}
-      chatScopeLabel={delivery.bookings?.client_name ?? "Delivery"}
+      chatScopeLabel={
+        delivery.bookings?.client_name ?? tr("Delivery", "მიწოდება")
+      }
     >
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Delivery · {delivery.bookings?.client_name ?? "(client)"}
+              {tr("Delivery", "მიწოდება")} ·{" "}
+              {delivery.bookings?.client_name ?? tr("(client)", "(კლიენტი)")}
             </h1>
             <p className="mt-1 text-[12px] text-[var(--ink-500)]">
               {delivery.bookings?.shoot_date
-                ? `Shoot · ${new Date(delivery.bookings.shoot_date).toLocaleDateString()}`
+                ? tr(
+                    `Shoot · ${new Date(delivery.bookings.shoot_date).toLocaleDateString(intlLocale)}`,
+                    `გადაღება · ${new Date(delivery.bookings.shoot_date).toLocaleDateString(intlLocale)}`,
+                  )
                 : ""}
               {delivery.bookings?.client_email
                 ? ` · ${delivery.bookings.client_email}`
@@ -78,7 +89,7 @@ export default async function DeliveryAdminPage({ params }: Props) {
             href={`/admin/bookings/${delivery.booking_id}`}
             className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
           >
-            ← booking
+            {tr("← booking", "← ჯავშანი")}
           </Link>
         </header>
 

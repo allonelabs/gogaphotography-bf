@@ -2,12 +2,17 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ServiceActions } from "./_actions";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Services" };
 
 export default async function ServicesPage() {
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("services")
@@ -17,34 +22,43 @@ export default async function ServicesPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Catalog" }, { label: "Services" }]}
+      breadcrumb={[
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Services", "სერვისები") },
+      ]}
       chatScope={{ level: "tool", tool: "services" }}
-      chatScopeLabel="Services"
+      chatScopeLabel={tr("Services", "სერვისები")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Services
+              {tr("Services", "სერვისები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} total
+              {tr(`${items.length} total`, `სულ ${items.length}`)}
             </p>
           </div>
           <Link
             href="/admin/services/new"
             className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
           >
-            New service
+            {tr("New service", "ახალი სერვისი")}
           </Link>
         </header>
 
         {items.length === 0 ? (
           <EmptyState
             icon={<Icon name="grid" />}
-            title="No services yet"
-            description="Services show up on the public /services page once published. Add your first one to publish it."
-            primary={{ label: "New service", href: "/admin/services/new" }}
+            title={tr("No services yet", "სერვისები ჯერ არ არის")}
+            description={tr(
+              "Services show up on the public /services page once published. Add your first one to publish it.",
+              "სერვისები საჯარო /services გვერდზე გამოჩნდება გამოქვეყნების შემდეგ. დაამატეთ პირველი მისი გამოსაქვეყნებლად.",
+            )}
+            primary={{
+              label: tr("New service", "ახალი სერვისი"),
+              href: "/admin/services/new",
+            }}
           />
         ) : (
           <ul className="space-y-2">
@@ -70,7 +84,9 @@ export default async function ServicesPage() {
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >
-                    {s.published ? "Live" : "Draft"}
+                    {s.published
+                      ? tr("Live", "აქტიური")
+                      : tr("Draft", "მონახაზი")}
                   </span>
                   <ServiceActions
                     id={s.id}

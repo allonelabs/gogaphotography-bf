@@ -2,9 +2,11 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function LeadsSearch({ initial }: { initial: string }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [q, setQ] = useState(initial);
   const [, start] = useTransition();
 
@@ -41,7 +43,10 @@ export function LeadsSearch({ initial }: { initial: string }) {
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search name, email, phone, or message…"
+          placeholder={tr(
+            "Search name, email, phone, or message…",
+            "ძიება: სახელი, ელფოსტა, ტელეფონი ან შეტყობინება…",
+          )}
           className="block w-full rounded-xl border border-black/10 bg-white pl-9 pr-3 py-2.5 text-[14px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
         />
       </div>
@@ -51,7 +56,7 @@ export function LeadsSearch({ initial }: { initial: string }) {
           onClick={() => setQ("")}
           className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
         >
-          Clear
+          {tr("Clear", "გასუფთავება")}
         </button>
       ) : null}
     </div>

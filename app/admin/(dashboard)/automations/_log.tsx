@@ -1,3 +1,5 @@
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
+
 type LogRow = {
   id: string;
   rule_key: string;
@@ -8,14 +10,19 @@ type LogRow = {
   created_at: string;
 };
 
-export function RecentLog({ rows }: { rows: LogRow[] }) {
+export async function RecentLog({ rows }: { rows: LogRow[] }) {
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   return (
     <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
       <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-        Recent sends
+        {tr("Recent sends", "ბოლო გაგზავნები")}
       </h2>
       {rows.length === 0 ? (
-        <p className="text-[13px] text-[var(--ink-400)]">Nothing sent yet.</p>
+        <p className="text-[13px] text-[var(--ink-400)]">
+          {tr("Nothing sent yet.", "ჯერ არაფერია გაგზავნილი.")}
+        </p>
       ) : (
         <ul className="divide-y divide-black/5">
           {rows.map((r) => (
@@ -47,7 +54,7 @@ export function RecentLog({ rows }: { rows: LogRow[] }) {
                   {r.status}
                 </span>
                 <time dateTime={r.created_at}>
-                  {new Date(r.created_at).toLocaleString()}
+                  {new Date(r.created_at).toLocaleString(dateLocale)}
                 </time>
               </div>
             </li>

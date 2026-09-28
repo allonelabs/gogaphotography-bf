@@ -7,6 +7,7 @@ import {
   clearSurfaceImage,
 } from "@/app/lib/goga/actions-media";
 import { useToast } from "./Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type SurfaceKey =
   | "hero.hero_image"
@@ -42,6 +43,7 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   const [path, setPath] = useState<string | null>(currentPath);
   const [dragOver, setDragOver] = useState(false);
@@ -55,11 +57,11 @@ export function ImageUploader({
 
   async function uploadOne(file: File) {
     if (!file.type.startsWith("image/")) {
-      toast.show("That's not an image", "error");
+      toast.show(tr("That's not an image", "ეს სურათი არ არის"), "error");
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
-      toast.show("Max 8MB per image", "error");
+      toast.show(tr("Max 8MB per image", "მაქსიმუმ 8MB თითო სურათზე"), "error");
       return;
     }
     start(async () => {
@@ -70,10 +72,15 @@ export function ImageUploader({
         fd.set("file", file);
         const { path: stored } = await uploadSurfaceImage(fd);
         setPath(stored);
-        toast.show("Image saved", "success");
+        toast.show(tr("Image saved", "სურათი შენახულია"), "success");
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Upload failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Upload failed", "ატვირთვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -92,15 +99,20 @@ export function ImageUploader({
   }
 
   function onClear() {
-    if (!confirm("Remove this image?")) return;
+    if (!confirm(tr("Remove this image?", "წავშალოთ ეს სურათი?"))) return;
     start(async () => {
       try {
         await clearSurfaceImage(surface, rowId ?? "");
         setPath(null);
-        toast.show("Image removed", "success");
+        toast.show(tr("Image removed", "სურათი წაშლილია"), "success");
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Remove failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Remove failed", "წაშლა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -118,7 +130,7 @@ export function ImageUploader({
             disabled={pending}
             className="text-[10px] uppercase tracking-[0.18em] text-slate-700 hover:underline disabled:opacity-50"
           >
-            Remove
+            {tr("Remove", "წაშლა")}
           </button>
         ) : null}
       </div>
@@ -158,10 +170,15 @@ export function ImageUploader({
           <div className="absolute inset-0 grid place-items-center text-center">
             <div>
               <p className="text-[12px] uppercase tracking-[0.22em]">
-                {pending ? "Uploading…" : "Drop image"}
+                {pending
+                  ? tr("Uploading…", "იტვირთება…")
+                  : tr("Drop image", "ჩააგდეთ სურათი")}
               </p>
               <p className="mt-1 text-[11px] text-[var(--ink-400)]">
-                or click to choose · JPG/PNG/WebP up to 8MB
+                {tr(
+                  "or click to choose · JPG/PNG/WebP up to 8MB",
+                  "ან დააჭირეთ ასარჩევად · JPG/PNG/WebP მაქს. 8MB",
+                )}
               </p>
             </div>
           </div>
@@ -169,7 +186,7 @@ export function ImageUploader({
         {url && pending ? (
           <div className="absolute inset-0 grid place-items-center bg-black/30 text-white">
             <span className="rounded-full bg-black/70 px-3 py-1 text-[10px] uppercase tracking-[0.2em]">
-              Uploading…
+              {tr("Uploading…", "იტვირთება…")}
             </span>
           </div>
         ) : null}

@@ -1,5 +1,6 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 import {
   CalendarGrid,
   type CalendarItem,
@@ -111,9 +112,14 @@ async function loadShoots(
   }));
 }
 
-function titleFor(view: CalendarView, anchor: Date): string {
+function titleFor(
+  view: CalendarView,
+  anchor: Date,
+  locale: "en" | "ka",
+): string {
+  const intlLocale = locale === "ka" ? "ka-GE" : "en-US";
   if (view === "day") {
-    return anchor.toLocaleDateString("en-US", {
+    return anchor.toLocaleDateString(intlLocale, {
       weekday: "long",
       month: "long",
       day: "numeric",
@@ -126,12 +132,12 @@ function titleFor(view: CalendarView, anchor: Date): string {
     const end = new Date(start.getTime() + 6 * 86400000);
     const sameMonth = start.getUTCMonth() === end.getUTCMonth();
     const fmt = (d: Date, opts: Intl.DateTimeFormatOptions) =>
-      d.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
+      d.toLocaleDateString(intlLocale, { ...opts, timeZone: "UTC" });
     return sameMonth
       ? `${fmt(start, { month: "long", day: "numeric" })} – ${fmt(end, { day: "numeric", year: "numeric" })}`
       : `${fmt(start, { month: "short", day: "numeric" })} – ${fmt(end, { month: "short", day: "numeric", year: "numeric" })}`;
   }
-  return anchor.toLocaleDateString("en-US", {
+  return anchor.toLocaleDateString(intlLocale, {
     month: "long",
     year: "numeric",
     timeZone: "UTC",
@@ -144,13 +150,15 @@ export default async function CalendarPage({ searchParams }: PageProps) {
   const anchor = parseAnchor(view, sp.date, sp.month);
   const { start, endExclusive } = rangeForView(view, anchor);
   const items = await loadShoots(start, endExclusive);
-  const title = titleFor(view, anchor);
+  const locale = await getServerLocale();
+  const tr = await getServerTr();
+  const title = titleFor(view, anchor, locale);
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Calendar" }]}
+      breadcrumb={[{ label: tr("Calendar", "კალენდარი") }]}
       chatScope={{ level: "tool", tool: "calendar" }}
-      chatScopeLabel="Calendar"
+      chatScopeLabel={tr("Calendar", "კალენდარი")}
     >
       <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
@@ -159,7 +167,10 @@ export default async function CalendarPage({ searchParams }: PageProps) {
               {title}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} shoot{items.length === 1 ? "" : "s"}
+              {tr(
+                `${items.length} shoot${items.length === 1 ? "" : "s"}`,
+                `${items.length} გადაღება`,
+              )}
             </p>
           </div>
         </header>

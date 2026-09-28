@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createAddon, updateAddon } from "@/app/lib/goga/actions-addons";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Initial = {
   id?: string;
@@ -26,6 +27,7 @@ const fromCents = (c: number | null | undefined) =>
 export function AddonForm({ initial }: { initial?: Initial }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const isEdit = !!initial?.id;
@@ -38,15 +40,18 @@ export function AddonForm({ initial }: { initial?: Initial }) {
       try {
         if (isEdit && initial?.id) {
           await updateAddon(initial.id, fd);
-          toast.show("Add-on saved", "success");
+          toast.show(tr("Add-on saved", "დამატება შენახულია"), "success");
           router.refresh();
         } else {
           await createAddon(fd);
-          toast.show("Add-on created", "success");
+          toast.show(tr("Add-on created", "დამატება შეიქმნა"), "success");
         }
       } catch (e) {
         rethrowIfRedirect(e);
-        const msg = e instanceof Error ? e.message : "Save failed";
+        const msg =
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა");
         setErr(msg);
         toast.show(msg, "error");
       }
@@ -62,23 +67,23 @@ export function AddonForm({ initial }: { initial?: Initial }) {
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Name (EN)">
+        <Field label={tr("Name (EN)", "სახელი (EN)")}>
           <input
             name="name_en"
             required
             defaultValue={initial?.name_en ?? ""}
-            placeholder="Second photographer"
+            placeholder={tr("Second photographer", "მეორე ფოტოგრაფი")}
             className={inputCls}
           />
         </Field>
-        <Field label="Name (KA)">
+        <Field label={tr("Name (KA)", "სახელი (KA)")}>
           <input
             name="name_ka"
             defaultValue={initial?.name_ka ?? ""}
             className={inputCls}
           />
         </Field>
-        <Field label="Name (RU)">
+        <Field label={tr("Name (RU)", "სახელი (RU)")}>
           <input
             name="name_ru"
             defaultValue={initial?.name_ru ?? ""}
@@ -87,7 +92,12 @@ export function AddonForm({ initial }: { initial?: Initial }) {
         </Field>
       </div>
 
-      <Field label="Slug (URL — leave blank to auto-generate)">
+      <Field
+        label={tr(
+          "Slug (URL — leave blank to auto-generate)",
+          "სლაგი (URL — ცარიელი დატოვეთ ავტომატური გენერაციისთვის)",
+        )}
+      >
         <input
           name="slug"
           defaultValue={initial?.slug ?? ""}
@@ -97,7 +107,7 @@ export function AddonForm({ initial }: { initial?: Initial }) {
       </Field>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Description (EN)">
+        <Field label={tr("Description (EN)", "აღწერა (EN)")}>
           <textarea
             name="description_en"
             defaultValue={initial?.description_en ?? ""}
@@ -105,7 +115,7 @@ export function AddonForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
-        <Field label="Description (KA)">
+        <Field label={tr("Description (KA)", "აღწერა (KA)")}>
           <textarea
             name="description_ka"
             defaultValue={initial?.description_ka ?? ""}
@@ -113,7 +123,7 @@ export function AddonForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
-        <Field label="Description (RU)">
+        <Field label={tr("Description (RU)", "აღწერა (RU)")}>
           <textarea
             name="description_ru"
             defaultValue={initial?.description_ru ?? ""}
@@ -124,7 +134,7 @@ export function AddonForm({ initial }: { initial?: Initial }) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Price">
+        <Field label={tr("Price", "ფასი")}>
           <input
             name="price"
             type="number"
@@ -135,7 +145,7 @@ export function AddonForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
-        <Field label="Sort order">
+        <Field label={tr("Sort order", "დალაგების რიგი")}>
           <input
             name="sort_order"
             type="number"
@@ -153,7 +163,12 @@ export function AddonForm({ initial }: { initial?: Initial }) {
           defaultChecked={initial?.published ?? true}
           className="h-4 w-4 rounded border-black/20"
         />
-        <span>Published — selectable in the /book calculator</span>
+        <span>
+          {tr(
+            "Published — selectable in the /book calculator",
+            "გამოქვეყნებული — შერჩევადია /book კალკულატორში",
+          )}
+        </span>
       </label>
 
       <div className="flex items-center gap-3 pt-2">
@@ -162,7 +177,11 @@ export function AddonForm({ initial }: { initial?: Initial }) {
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          {pending ? "Saving…" : isEdit ? "Save changes" : "Create add-on"}
+          {pending
+            ? tr("Saving…", "ინახება…")
+            : isEdit
+              ? tr("Save changes", "ცვლილებების შენახვა")
+              : tr("Create add-on", "დამატების შექმნა")}
         </button>
         {err ? <span className="text-[13px] text-slate-700">{err}</span> : null}
       </div>

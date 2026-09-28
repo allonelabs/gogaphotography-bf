@@ -1,30 +1,40 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export interface ToastMessage {
   id: string;
   text: string;
-  kind?: 'info' | 'ok' | 'warn' | 'err';
+  kind?: "info" | "ok" | "warn" | "err";
   action?: { label: string; onClick: () => void };
 }
 
-const EVENT = 'allonce.toast';
+const EVENT = "allonce.toast";
 
 export function toast(
   text: string,
-  kind: ToastMessage['kind'] = 'info',
-  action?: ToastMessage['action']
+  kind: ToastMessage["kind"] = "info",
+  action?: ToastMessage["action"],
 ) {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   window.dispatchEvent(
-    new CustomEvent(EVENT, { detail: { id, text, kind, action } })
+    new CustomEvent(EVENT, { detail: { id, text, kind, action } }),
   );
 }
 
 export function comingSoon(what: string) {
-  toast(`${what} · ships next round`, 'info');
+  // Non-component helper — no useLocale() hook available here. Read the
+  // locale the same way useLocale's readLocaleFromDocument() does: from
+  // <html data-locale>, set by LocaleBoot / the toggle.
+  const locale =
+    typeof document !== "undefined" &&
+    document.documentElement.dataset.locale === "ka"
+      ? "ka"
+      : "en";
+  const suffix =
+    locale === "ka" ? "შემდეგ ეტაპზე დაემატება" : "ships next round";
+  toast(`${what} · ${suffix}`, "info");
 }
 
 export function ToastHost() {
@@ -69,15 +79,15 @@ export function ToastHost() {
   );
 }
 
-function KindDot({ kind = 'info' }: { kind?: ToastMessage['kind'] }) {
+function KindDot({ kind = "info" }: { kind?: ToastMessage["kind"] }) {
   const color =
-    kind === 'ok'
-      ? 'var(--allonce-ok)'
-      : kind === 'warn'
-      ? 'var(--allonce-warn)'
-      : kind === 'err'
-      ? 'var(--allonce-err)'
-      : '#ffffff99';
+    kind === "ok"
+      ? "var(--allonce-ok)"
+      : kind === "warn"
+        ? "var(--allonce-warn)"
+        : kind === "err"
+          ? "var(--allonce-err)"
+          : "#ffffff99";
   return (
     <span
       className="inline-block h-1.5 w-1.5 rounded-full"

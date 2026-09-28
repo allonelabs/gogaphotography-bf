@@ -3,11 +3,13 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { AddonActions } from "./_actions";
 import { formatMoney } from "@/app/lib/goga/money";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Add-ons" };
 
 export default async function AddonsPage() {
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("addons")
@@ -18,39 +20,44 @@ export default async function AddonsPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Catalog" }, { label: "Add-ons" }]}
+      breadcrumb={[
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Add-ons", "დამატებები") },
+      ]}
       chatScope={{ level: "tool", tool: "addons" }}
-      chatScopeLabel="Add-ons"
+      chatScopeLabel={tr("Add-ons", "დამატებები")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Add-ons
+              {tr("Add-ons", "დამატებები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} total
+              {tr(`${items.length} total`, `სულ ${items.length}`)}
             </p>
           </div>
           <Link
             href="/admin/addons/new"
             className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
           >
-            New add-on
+            {tr("New add-on", "ახალი დამატება")}
           </Link>
         </header>
 
         {items.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
             <p className="mb-3 text-[14px] text-[var(--ink-500)]">
-              No add-ons yet — create one so clients can attach it in the
-              calculator.
+              {tr(
+                "No add-ons yet — create one so clients can attach it in the calculator.",
+                "დამატებები ჯერ არ არის — შექმენით ერთი, რომ კლიენტებმა შეძლონ მისი დამატება კალკულატორში.",
+              )}
             </p>
             <Link
               href="/admin/addons/new"
               className="inline-block rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
             >
-              Create the first add-on
+              {tr("Create the first add-on", "პირველი დამატების შექმნა")}
             </Link>
           </div>
         ) : (
@@ -82,7 +89,9 @@ export default async function AddonsPage() {
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >
-                    {a.published ? "Live" : "Draft"}
+                    {a.published
+                      ? tr("Live", "აქტიური")
+                      : tr("Draft", "მონახაზი")}
                   </span>
                   <AddonActions
                     id={a.id}

@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteService } from "@/app/lib/goga/actions-content";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function DeleteServiceButton({
   id,
@@ -14,6 +15,7 @@ export function DeleteServiceButton({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -21,15 +23,19 @@ export function DeleteServiceButton({
       disabled={pending}
       className="rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"
       onClick={() => {
-        if (confirm(`Delete service "${title}"?`)) {
+        if (
+          confirm(
+            tr(`Delete service "${title}"?`, `წავშალოთ სერვისი „${title}"?`),
+          )
+        ) {
           start(async () => {
             try {
               await deleteService(id);
-              toast.show("Service deleted", "success");
+              toast.show(tr("Service deleted", "სერვისი წაშლილია"), "success");
               router.push("/admin/services");
             } catch (e) {
               toast.show(
-                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                `${tr("Delete failed", "წაშლა ვერ მოხერხდა")}: ${e instanceof Error ? e.message : e}`,
                 "error",
               );
             }
@@ -37,7 +43,9 @@ export function DeleteServiceButton({
         }
       }}
     >
-      {pending ? "Deleting…" : "Delete service"}
+      {pending
+        ? tr("Deleting…", "იშლება…")
+        : tr("Delete service", "სერვისის წაშლა")}
     </button>
   );
 }

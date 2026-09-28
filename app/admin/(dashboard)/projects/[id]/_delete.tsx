@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { deleteProject } from "@/app/lib/goga/actions-projects";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function DeleteProjectButton({
   id,
@@ -15,6 +16,7 @@ export function DeleteProjectButton({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -24,18 +26,24 @@ export function DeleteProjectButton({
       onClick={() => {
         if (
           confirm(
-            `Delete "${title}" and all its photos? This cannot be undone.`,
+            tr(
+              `Delete "${title}" and all its photos? This cannot be undone.`,
+              `წაიშალოს „${title}“ და მისი ყველა ფოტო? ეს ქმედება შეუქცევადია.`,
+            ),
           )
         ) {
           start(async () => {
             try {
               await deleteProject(id);
-              toast.show("Project deleted", "success");
+              toast.show(tr("Project deleted", "პროექტი წაიშალა"), "success");
               router.push("/admin/projects");
             } catch (e) {
               rethrowIfRedirect(e);
               toast.show(
-                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                tr(
+                  `Delete failed: ${e instanceof Error ? e.message : e}`,
+                  `წაშლა ვერ მოხერხდა: ${e instanceof Error ? e.message : e}`,
+                ),
                 "error",
               );
             }
@@ -43,7 +51,9 @@ export function DeleteProjectButton({
         }
       }}
     >
-      {pending ? "Deleting…" : "Delete project"}
+      {pending
+        ? tr("Deleting…", "იშლება…")
+        : tr("Delete project", "პროექტის წაშლა")}
     </button>
   );
 }

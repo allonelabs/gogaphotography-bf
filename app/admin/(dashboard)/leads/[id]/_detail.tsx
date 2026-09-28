@@ -13,6 +13,7 @@ import type { LeadStage } from "@/app/lib/goga/leads";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { computeBookingTotal } from "@/app/lib/goga/pricing";
 import { formatMoney } from "@/app/lib/goga/money";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Lead = {
   id: string;
@@ -85,6 +86,7 @@ export function LeadDetail({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr, locale } = useLocale();
   const [stage, setStage] = useState<LeadStage>(lead.stage);
   const [notes, setNotes] = useState(lead.notes ?? "");
   const [, start] = useTransition();
@@ -104,7 +106,9 @@ export function LeadDetail({
       } catch (e) {
         setStage(prev);
         toast.show(
-          e instanceof Error ? e.message : "Stage update failed",
+          e instanceof Error
+            ? e.message
+            : tr("Stage update failed", "სტატუსის განახლება ვერ მოხერხდა"),
           "error",
         );
       }
@@ -122,7 +126,15 @@ export function LeadDetail({
   }
 
   function onArchive() {
-    if (!confirm("Archive this lead? It hides from the pipeline.")) return;
+    if (
+      !confirm(
+        tr(
+          "Archive this lead? It hides from the pipeline.",
+          "დაარქივდეს ეს ლიდი? ის სამუშაო პროცესიდან დაიმალება.",
+        ),
+      )
+    )
+      return;
     start(async () => {
       await archiveLead(lead.id);
       router.push("/admin/leads");
@@ -134,7 +146,7 @@ export function LeadDetail({
       <div className="space-y-4">
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Inquiry
+            {tr("Inquiry", "მოთხოვნა")}
           </h3>
           {lead.message ? (
             <p className="m-0 whitespace-pre-wrap text-[14px] leading-[1.55] text-[var(--ink-800)]">
@@ -142,7 +154,7 @@ export function LeadDetail({
             </p>
           ) : (
             <p className="m-0 text-[14px] text-[var(--ink-400)]">
-              No message provided.
+              {tr("No message provided.", "შეტყობინება არ არის.")}
             </p>
           )}
         </section>
@@ -150,11 +162,11 @@ export function LeadDetail({
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <header className="mb-3 flex items-baseline justify-between">
             <h3 className="text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              Notes
+              {tr("Notes", "შენიშვნები")}
             </h3>
             {saved === "notes" ? (
               <span className="text-[11px] text-slate-900 font-medium">
-                Saved.
+                {tr("Saved.", "შენახულია.")}
               </span>
             ) : null}
           </header>
@@ -162,7 +174,10 @@ export function LeadDetail({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             onBlur={onNotesBlur}
-            placeholder="Conversation summary, follow-up reminders, internal context…"
+            placeholder={tr(
+              "Conversation summary, follow-up reminders, internal context…",
+              "საუბრის შინაარსი, შემდგომი ნაბიჯები, შიდა შენიშვნები…",
+            )}
             rows={6}
             className="block w-full rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-[14px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
           />
@@ -171,7 +186,7 @@ export function LeadDetail({
         {relatedBookings.length > 0 ? (
           <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
             <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              Linked work
+              {tr("Linked work", "დაკავშირებული სამუშაო")}
             </h3>
             <ul className="space-y-2">
               {relatedBookings.map((b) => (
@@ -184,9 +199,9 @@ export function LeadDetail({
                       href={`/admin/bookings/${b.id}`}
                       className="text-[13px] font-medium text-[var(--ink-900)] hover:underline"
                     >
-                      {b.packageLabel ?? "Booking"}
+                      {b.packageLabel ?? tr("Booking", "ჯავშანი")}
                       {b.shootDate
-                        ? ` · ${new Date(b.shootDate).toLocaleDateString()}`
+                        ? ` · ${new Date(b.shootDate).toLocaleDateString(locale === "ka" ? "ka-GE" : "en-US")}`
                         : ""}
                     </Link>
                     <span className="rounded-full bg-white px-2 py-0.5 text-[10px] uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5">
@@ -199,7 +214,7 @@ export function LeadDetail({
                         href={`/admin/contracts/${b.contract.id}`}
                         className="rounded-full bg-white px-2.5 py-0.5 uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5 hover:bg-slate-100"
                       >
-                        Contract · {b.contract.status}
+                        {tr("Contract", "ხელშეკრულება")} · {b.contract.status}
                       </Link>
                     ) : null}
                     {b.delivery ? (
@@ -207,8 +222,11 @@ export function LeadDetail({
                         href={`/admin/deliveries/${b.delivery.id}`}
                         className="rounded-full bg-white px-2.5 py-0.5 uppercase tracking-[0.14em] text-[var(--ink-700)] ring-1 ring-black/5 hover:bg-slate-100"
                       >
-                        Gallery · {b.delivery.viewCount} view
-                        {b.delivery.viewCount === 1 ? "" : "s"}
+                        {tr("Gallery", "გალერეა")} · {b.delivery.viewCount}{" "}
+                        {tr(
+                          b.delivery.viewCount === 1 ? "view" : "views",
+                          "ნახვა",
+                        )}
                       </Link>
                     ) : null}
                     {b.totalCents != null && b.currency ? (
@@ -229,11 +247,11 @@ export function LeadDetail({
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Activity
+            {tr("Activity", "აქტივობა")}
           </h3>
           {events.length === 0 ? (
             <p className="m-0 text-[14px] text-[var(--ink-400)]">
-              No activity yet.
+              {tr("No activity yet.", "აქტივობა ჯერ არ არის.")}
             </p>
           ) : (
             <ol className="m-0 list-none p-0">
@@ -246,7 +264,11 @@ export function LeadDetail({
                     {e.kind}
                   </span>
                   <time className="text-[11px] text-[var(--ink-400)]">
-                    {e.createdAt ? new Date(e.createdAt).toLocaleString() : ""}
+                    {e.createdAt
+                      ? new Date(e.createdAt).toLocaleString(
+                          locale === "ka" ? "ka-GE" : "en-US",
+                        )
+                      : ""}
                   </time>
                 </li>
               ))}
@@ -258,7 +280,7 @@ export function LeadDetail({
       <aside className="space-y-3">
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <label className="block text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Stage
+            {tr("Stage", "სტატუსი")}
           </label>
           <select
             value={stage}
@@ -273,7 +295,7 @@ export function LeadDetail({
           </select>
           {saved === "stage" ? (
             <p className="mt-1.5 text-[11px] text-slate-900 font-medium">
-              Saved.
+              {tr("Saved.", "შენახულია.")}
             </p>
           ) : null}
 
@@ -283,24 +305,27 @@ export function LeadDetail({
             disabled={packages.length === 0}
             className="mt-4 w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Convert to booking
+            {tr("Convert to booking", "ჯავშნად გადაქცევა")}
           </button>
           {packages.length === 0 ? (
             <p className="mt-2 text-[11px] text-[var(--ink-400)]">
-              Add a package first to enable this.
+              {tr(
+                "Add a package first to enable this.",
+                "ჯერ დაამატეთ პაკეტი, რომ ეს ჩართოთ.",
+              )}
             </p>
           ) : null}
         </section>
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Details
+            {tr("Details", "დეტალები")}
           </h3>
           <dl className="space-y-2 text-[13px]">
-            <Detail label="Source" value={lead.source} />
+            <Detail label={tr("Source", "წყარო")} value={lead.source} />
             {lead.email ? (
               <Detail
-                label="Email"
+                label={tr("Email", "ელფოსტა")}
                 value={
                   <a
                     href={`mailto:${lead.email}`}
@@ -313,7 +338,7 @@ export function LeadDetail({
             ) : null}
             {lead.phone ? (
               <Detail
-                label="Phone"
+                label={tr("Phone", "ტელეფონი")}
                 value={
                   <a
                     href={`tel:${lead.phone}`}
@@ -326,14 +351,18 @@ export function LeadDetail({
             ) : null}
             {lead.shootDate ? (
               <Detail
-                label="Shoot date"
-                value={new Date(lead.shootDate).toLocaleDateString()}
+                label={tr("Shoot date", "გადაღების თარიღი")}
+                value={new Date(lead.shootDate).toLocaleDateString(
+                  locale === "ka" ? "ka-GE" : "en-US",
+                )}
               />
             ) : null}
             {lead.createdAt ? (
               <Detail
-                label="Created"
-                value={new Date(lead.createdAt).toLocaleString()}
+                label={tr("Created", "შექმნის თარიღი")}
+                value={new Date(lead.createdAt).toLocaleString(
+                  locale === "ka" ? "ka-GE" : "en-US",
+                )}
               />
             ) : null}
           </dl>
@@ -344,7 +373,7 @@ export function LeadDetail({
           onClick={onArchive}
           className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100"
         >
-          Archive lead
+          {tr("Archive lead", "ლიდის დაარქივება")}
         </button>
       </aside>
 
@@ -385,6 +414,7 @@ function ConvertModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [packageId, setPackageId] = useState(
     lead.packageId ?? packages[0]?.id ?? "",
   );
@@ -423,7 +453,7 @@ function ConvertModal({
 
   function onSubmit() {
     if (!packageId || !date) {
-      setErr("Pick a package and a date.");
+      setErr(tr("Pick a package and a date.", "აირჩიეთ პაკეტი და თარიღი."));
       return;
     }
     setErr(null);
@@ -440,7 +470,11 @@ function ConvertModal({
         });
         router.push(`/admin/bookings/${id}`);
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Could not create booking");
+        setErr(
+          e instanceof Error
+            ? e.message
+            : tr("Could not create booking", "ჯავშნის შექმნა ვერ მოხერხდა"),
+        );
       }
     });
   }
@@ -456,15 +490,18 @@ function ConvertModal({
     >
       <div className="w-full max-w-lg rounded-2xl bg-white p-7 ring-1 ring-black/5">
         <h3 className="text-[16px] font-semibold text-[var(--ink-900)]">
-          New booking from lead
+          {tr("New booking from lead", "ახალი ჯავშანი ლიდიდან")}
         </h3>
         <p className="mb-4 mt-1 text-[12px] text-[var(--ink-500)]">
-          Creates a reserved booking + advances the lead to consultation.
+          {tr(
+            "Creates a reserved booking + advances the lead to consultation.",
+            "შექმნის დაჯავშნილ ჯავშანს და ლიდს გადაიტანს კონსულტაციის სტატუსში.",
+          )}
         </p>
 
         <label className="mb-3 block">
           <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-            Package
+            {tr("Package", "პაკეტი")}
           </span>
           <select
             value={packageId}
@@ -482,7 +519,7 @@ function ConvertModal({
         <div className="mb-3 grid grid-cols-2 gap-3">
           <label className="block">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Shoot date
+              {tr("Shoot date", "გადაღების თარიღი")}
             </span>
             <input
               type="date"
@@ -493,7 +530,7 @@ function ConvertModal({
           </label>
           <label className="block">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Start time
+              {tr("Start time", "დაწყების დრო")}
             </span>
             <input
               type="time"
@@ -506,7 +543,7 @@ function ConvertModal({
 
         <label className="mb-3 block">
           <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-            Location
+            {tr("Location", "ლოკაცია")}
           </span>
           <input
             type="text"
@@ -520,8 +557,9 @@ function ConvertModal({
         {pkg && pkg.maxExtraHours > 0 ? (
           <label className="mb-3 block">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Extra hours (up to {pkg.maxExtraHours},{" "}
-              {formatMoney(pkg.extraHourCents, pkg.currency)}/h)
+              {tr("Extra hours", "დამატებითი საათები")} ({tr("up to", "მაქს.")}{" "}
+              {pkg.maxExtraHours},{" "}
+              {formatMoney(pkg.extraHourCents, pkg.currency)}/{tr("h", "სთ")})
             </span>
             <input
               type="number"
@@ -539,7 +577,7 @@ function ConvertModal({
         {addons.length > 0 ? (
           <div className="mb-4">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Add-ons
+              {tr("Add-ons", "დამატებები")}
             </span>
             <ul className="space-y-1.5 rounded-xl border border-black/10 p-3">
               {addons.map((a) => (
@@ -564,11 +602,11 @@ function ConvertModal({
 
         {preview ? (
           <dl className="mb-4 grid grid-cols-[1fr_auto] gap-y-1 rounded-xl bg-slate-50 px-3.5 py-3 text-[13px]">
-            <dt className="text-[var(--ink-500)]">Total</dt>
+            <dt className="text-[var(--ink-500)]">{tr("Total", "ჯამი")}</dt>
             <dd className="text-right font-medium text-[var(--ink-900)]">
               {formatMoney(preview.totalCents, pkg!.currency)}
             </dd>
-            <dt className="text-[var(--ink-500)]">Deposit</dt>
+            <dt className="text-[var(--ink-500)]">{tr("Deposit", "ავანსი")}</dt>
             <dd className="text-right text-[var(--ink-900)]">
               {formatMoney(preview.depositCents, pkg!.currency)}
             </dd>
@@ -584,7 +622,7 @@ function ConvertModal({
             disabled={pending}
             className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
           >
-            Cancel
+            {tr("Cancel", "გაუქმება")}
           </button>
           <button
             type="button"
@@ -592,7 +630,9 @@ function ConvertModal({
             disabled={pending}
             className="rounded-full bg-[var(--ao-accent)] px-5 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
           >
-            {pending ? "Creating…" : "Create booking"}
+            {pending
+              ? tr("Creating…", "იქმნება…")
+              : tr("Create booking", "ჯავშნის შექმნა")}
           </button>
         </div>
       </div>

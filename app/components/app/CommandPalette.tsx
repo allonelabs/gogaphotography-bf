@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 interface Item {
   id: string;
@@ -23,6 +24,7 @@ type RemoteHit = {
 };
 
 export function CommandPalette() {
+  const { tr } = useLocale();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -32,131 +34,137 @@ export function CommandPalette() {
 
   // Navigation + global actions for the photographer admin.
   const items: Item[] = useMemo(() => {
+    const NAV = tr("Navigate", "ნავიგაცია");
+    const CREATE = tr("Create", "შექმნა");
+    const ACTIONS = tr("Actions", "მოქმედებები");
     return [
       {
         id: "go-hub",
-        label: "Overview",
-        hint: "Studio dashboard",
-        group: "Navigate",
+        label: tr("Overview", "მთავარი"),
+        hint: tr("Studio dashboard", "სტუდიის დაფა"),
+        group: NAV,
         href: "/admin",
         shortcut: "g o",
       },
       {
         id: "go-leads",
-        label: "Leads",
-        hint: "Pipeline of inquiries",
-        group: "Navigate",
+        label: tr("Leads", "კლიენტები"),
+        hint: tr("Pipeline of inquiries", "მოთხოვნების პაიფლაინი"),
+        group: NAV,
         href: "/admin/leads",
       },
       {
         id: "go-bookings",
-        label: "Bookings",
-        hint: "Reserved & confirmed shoots",
-        group: "Navigate",
+        label: tr("Bookings", "ჯავშნები"),
+        hint: tr(
+          "Reserved & confirmed shoots",
+          "დაჯავშნილი და დადასტურებული გადაღებები",
+        ),
+        group: NAV,
         href: "/admin/bookings",
       },
       {
         id: "go-calendar",
-        label: "Calendar",
-        hint: "Month view of shoots",
-        group: "Navigate",
+        label: tr("Calendar", "კალენდარი"),
+        hint: tr("Month view of shoots", "გადაღებების თვიური ხედი"),
+        group: NAV,
         href: "/admin/calendar",
       },
       {
         id: "go-contracts",
-        label: "Contracts",
-        hint: "Signature pipeline",
-        group: "Navigate",
+        label: tr("Contracts", "ხელშეკრულებები"),
+        hint: tr("Signature pipeline", "ხელმოწერის პროცესი"),
+        group: NAV,
         href: "/admin/contracts",
       },
       {
         id: "go-deliveries",
-        label: "Deliveries",
-        hint: "Client galleries",
-        group: "Navigate",
+        label: tr("Deliveries", "მიწოდებები"),
+        hint: tr("Client galleries", "კლიენტის გალერეები"),
+        group: NAV,
         href: "/admin/deliveries",
       },
       {
         id: "go-packages",
-        label: "Packages",
-        hint: "Pricing & inclusions",
-        group: "Navigate",
+        label: tr("Packages", "პაკეტები"),
+        hint: tr("Pricing & inclusions", "ფასები და დეტალები"),
+        group: NAV,
         href: "/admin/packages",
       },
       {
         id: "go-projects",
-        label: "Projects",
-        hint: "Portfolio galleries",
-        group: "Navigate",
+        label: tr("Projects", "პროექტები"),
+        hint: tr("Portfolio galleries", "პორტფოლიოს გალერეები"),
+        group: NAV,
         href: "/admin/projects",
       },
       {
         id: "go-services",
-        label: "Services",
-        hint: "Public services page",
-        group: "Navigate",
+        label: tr("Services", "სერვისები"),
+        hint: tr("Public services page", "საჯარო სერვისების გვერდი"),
+        group: NAV,
         href: "/admin/services",
       },
       {
         id: "go-pages",
-        label: "Pages",
-        hint: "Static page content",
-        group: "Navigate",
+        label: tr("Pages", "გვერდები"),
+        hint: tr("Static page content", "სტატიკური გვერდების კონტენტი"),
+        group: NAV,
         href: "/admin/pages",
       },
       {
         id: "go-hero",
-        label: "Homepage hero",
-        hint: "Landing copy",
-        group: "Navigate",
+        label: tr("Homepage hero", "მთავარი გვერდის Hero"),
+        hint: tr("Landing copy", "მთავარი გვერდის ტექსტი"),
+        group: NAV,
         href: "/admin/hero",
       },
       {
         id: "go-contact",
-        label: "Contact inbox",
-        hint: "Form submissions",
-        group: "Navigate",
+        label: tr("Contact inbox", "საკონტაქტო შემოსული"),
+        hint: tr("Form submissions", "ფორმის განაცხადები"),
+        group: NAV,
         href: "/admin/contact",
       },
       {
         id: "go-chatbot",
-        label: "Chatbot sessions",
-        hint: "Site assistant transcripts",
-        group: "Navigate",
+        label: tr("Chatbot sessions", "ჩატბოტის სესიები"),
+        hint: tr("Site assistant transcripts", "საიტის ასისტენტის ჩანაწერები"),
+        group: NAV,
         href: "/admin/chatbot",
       },
       {
         id: "create-project",
-        label: "New project",
-        hint: "Start a portfolio piece",
-        group: "Create",
+        label: tr("New project", "ახალი პროექტი"),
+        hint: tr("Start a portfolio piece", "დაიწყე ახალი პორტფოლიო ერთეული"),
+        group: CREATE,
         href: "/admin/projects/new",
       },
       {
         id: "create-package",
-        label: "New package",
-        hint: "Add a pricing tier",
-        group: "Create",
+        label: tr("New package", "ახალი პაკეტი"),
+        hint: tr("Add a pricing tier", "დაამატე ფასების დონე"),
+        group: CREATE,
         href: "/admin/packages/new",
       },
       {
         id: "create-service",
-        label: "New service",
-        hint: "Add a service offering",
-        group: "Create",
+        label: tr("New service", "ახალი სერვისი"),
+        hint: tr("Add a service offering", "დაამატე სერვისი"),
+        group: CREATE,
         href: "/admin/services/new",
       },
       {
         id: "action-signout",
-        label: "Sign out",
-        hint: "End this session",
-        group: "Actions",
+        label: tr("Sign out", "გასვლა"),
+        hint: tr("End this session", "სესიის დასრულება"),
+        group: ACTIONS,
         action: () => {
           void signOut({ callbackUrl: "/" });
         },
       },
     ];
-  }, []);
+  }, [tr]);
 
   // Debounced remote search.
   useEffect(() => {
@@ -282,7 +290,10 @@ export function CommandPalette() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search navigation, actions…"
+            placeholder={tr(
+              "Search navigation, actions…",
+              "მოძებნე ნავიგაცია, მოქმედებები…",
+            )}
             className="flex-1 bg-transparent text-[15px] text-[var(--ink-900)] placeholder:text-[var(--ink-400)] no-ring outline-none"
           />
           <kbd className="rounded border border-[var(--allonce-line)] bg-[var(--bg-surface-alt)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--ink-400)]">
@@ -293,7 +304,7 @@ export function CommandPalette() {
         <div className="max-h-[60vh] overflow-y-auto py-2">
           {filtered.length === 0 ? (
             <div className="px-5 py-10 text-center text-[13px] text-[var(--ink-500)]">
-              No matches for &ldquo;{query}&rdquo;
+              {tr("No matches for", "შედეგი არ მოიძებნა")} &ldquo;{query}&rdquo;
             </div>
           ) : (
             Object.entries(grouped).map(([group, list]) => (
@@ -346,16 +357,18 @@ export function CommandPalette() {
               <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-[10px]">
                 ↓
               </kbd>
-              navigate
+              {tr("navigate", "ნავიგაცია")}
             </span>
             <span className="flex items-center gap-1">
               <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-[10px]">
                 ↵
               </kbd>
-              open
+              {tr("open", "გახსნა")}
             </span>
           </div>
-          <span>{filtered.length} results</span>
+          <span>
+            {filtered.length} {tr("results", "შედეგი")}
+          </span>
         </div>
       </div>
     </div>

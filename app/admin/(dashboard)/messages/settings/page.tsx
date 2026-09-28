@@ -2,6 +2,7 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { saveMetaSettings } from "@/app/lib/goga/actions-meta";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Messages settings" };
@@ -12,27 +13,33 @@ export default async function MetaSettingsPage() {
     .select("*")
     .eq("id", 1)
     .maybeSingle();
+  const tr = await getServerTr();
   const field =
     "mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-sm";
   return (
     <AppShell
       breadcrumb={[
-        { label: "Inbox" },
-        { label: "Messages", href: "/admin/messages" },
-        { label: "Settings" },
+        { label: tr("Inbox", "შემოსული") },
+        { label: tr("Messages", "მესიჯები"), href: "/admin/messages" },
+        { label: tr("Settings", "პარამეტრები") },
       ]}
       chatScope={{ level: "tool", tool: "messages" }}
-      chatScopeLabel="Messages"
+      chatScopeLabel={tr("Messages", "მესიჯები")}
     >
       <div className="mx-auto max-w-xl px-4 py-6 sm:px-6 sm:py-8">
-        <h1 className="mb-4 text-lg font-semibold">Meta connection</h1>
+        <h1 className="mb-4 text-lg font-semibold">
+          {tr("Meta connection", "Meta კავშირი")}
+        </h1>
         <p className="mb-4 text-sm text-neutral-500">
-          Webhook URL: <code>/api/meta/webhook</code>. Set the same Verify token
-          in the Meta app webhook config.
+          {tr("Webhook URL", "Webhook URL")}: <code>/api/meta/webhook</code>.{" "}
+          {tr(
+            "Set the same Verify token in the Meta app webhook config.",
+            "დააყენეთ იგივე Verify token Meta აპის webhook კონფიგურაციაში.",
+          )}
         </p>
         <form action={saveMetaSettings} className="space-y-3">
           <label className="block text-sm">
-            Page ID
+            {tr("Page ID", "გვერდის ID")}
             <input
               name="page_id"
               defaultValue={s?.page_id ?? ""}
@@ -40,7 +47,7 @@ export default async function MetaSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            Page access token
+            {tr("Page access token", "გვერდის წვდომის ტოკენი")}
             <input
               name="page_access_token"
               defaultValue={s?.page_access_token ?? ""}
@@ -48,7 +55,7 @@ export default async function MetaSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            Verify token
+            {tr("Verify token", "Verify token")}
             <input
               name="verify_token"
               defaultValue={s?.verify_token ?? ""}
@@ -56,7 +63,7 @@ export default async function MetaSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            App secret
+            {tr("App secret", "აპლიკაციის საიდუმლო")}
             <input
               name="app_secret"
               defaultValue={s?.app_secret ?? ""}
@@ -64,7 +71,7 @@ export default async function MetaSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            Instagram user ID
+            {tr("Instagram user ID", "Instagram-ის მომხმარებლის ID")}
             <input
               name="ig_user_id"
               defaultValue={s?.ig_user_id ?? ""}
@@ -77,10 +84,10 @@ export default async function MetaSettingsPage() {
               name="bot_enabled"
               defaultChecked={s?.bot_enabled ?? false}
             />{" "}
-            Bot enabled
+            {tr("Bot enabled", "ბოტი ჩართულია")}
           </label>
           <button className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white">
-            Save
+            {tr("Save", "შენახვა")}
           </button>
         </form>
       </div>

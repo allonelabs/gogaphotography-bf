@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { STAGE_TONE, LEAD_STAGE_LABELS } from "@/app/lib/goga/leads";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const metadata: Metadata = { title: "Dashboard" };
 export const dynamic = "force-dynamic";
@@ -39,18 +40,21 @@ function operatorFirstName(
   return "Goga";
 }
 
-function greeting(now = new Date()): string {
+function greeting(
+  tr: (en: string, ka: string) => string,
+  now = new Date(),
+): string {
   const h = now.getHours();
-  if (h < 5) return "Late night";
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  if (h < 21) return "Good evening";
-  return "Late night";
+  if (h < 5) return tr("Late night", "გვიანი ღამეა");
+  if (h < 12) return tr("Good morning", "დილა მშვიდობისა");
+  if (h < 17) return tr("Good afternoon", "შუადღე მშვიდობისა");
+  if (h < 21) return tr("Good evening", "საღამო მშვიდობისა");
+  return tr("Late night", "გვიანი ღამეა");
 }
 
-function fmtMoney(cents: number, currency: string): string {
+function fmtMoney(cents: number, currency: string, locale: string): string {
   try {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
       maximumFractionDigits: 0,
@@ -166,6 +170,9 @@ async function loadDashboard() {
 
 export default async function HomePage() {
   const session = await auth();
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const intlLocale = locale === "ka" ? "ka-GE" : "en-US";
   const firstName = operatorFirstName(
     session?.user?.name,
     session?.user?.email,
@@ -173,19 +180,28 @@ export default async function HomePage() {
   const stats = await loadDashboard();
   const revenueLine =
     Object.entries(stats.revenue)
-      .map(([cur, cents]) => fmtMoney(cents, cur))
+      .map(([cur, cents]) => fmtMoney(cents, cur, intlLocale))
       .join(" · ") || "—";
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Dashboard" }]}
+      breadcrumb={[{ label: tr("Dashboard", "დაფა") }]}
       chatScope={{ level: "org", org: "goga" }}
       chatScopeLabel="GOGA Studio"
       chatStarters={[
-        "What shoots are coming up this week?",
-        "Any contracts still awaiting signature?",
-        "How are leads split across stages right now?",
-        "Revenue this month so far",
+        tr(
+          "What shoots are coming up this week?",
+          "რა გადაღებებია ამ კვირაში?",
+        ),
+        tr(
+          "Any contracts still awaiting signature?",
+          "არის ხელმოსაწერად მოლოდინში ხელშეკრულებები?",
+        ),
+        tr(
+          "How are leads split across stages right now?",
+          "როგორ ნაწილდება ლიდები სტატუსებზე ამჟამად?",
+        ),
+        tr("Revenue this month so far", "ამ თვის შემოსავალი დღემდე"),
       ]}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 space-y-8">
@@ -200,10 +216,10 @@ export default async function HomePage() {
                 lineHeight: 1.05,
               }}
             >
-              {greeting()}, {firstName}.
+              {greeting(tr)}, {firstName}.
             </h1>
             <p className="mt-1.5 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {new Date().toLocaleDateString(undefined, {
+              {new Date().toLocaleDateString(intlLocale, {
                 weekday: "long",
                 month: "long",
                 day: "numeric",
@@ -214,35 +230,35 @@ export default async function HomePage() {
             href="/admin/leads"
             className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
           >
-            Open pipeline →
+            {tr("Open pipeline →", "სამუშაო პროცესის გახსნა →")}
           </Link>
         </header>
 
         {/* Stat cards */}
         <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Stat
-            label="Active leads"
+            label={tr("Active leads", "აქტიური კლიენტები")}
             value={stats.counts.leads}
             href="/admin/leads"
-            hint="not archived"
+            hint={tr("not archived", "დაუარქივებელი")}
           />
           <Stat
-            label="Open bookings"
+            label={tr("Open bookings", "ღია ჯავშნები")}
             value={stats.counts.activeBookings}
             href="/admin/bookings"
-            hint="reserved + confirmed"
+            hint={tr("reserved + confirmed", "დაჯავშნილი + დადასტურებული")}
           />
           <Stat
-            label="Next 30 days"
+            label={tr("Next 30 days", "მომდევნო 30 დღე")}
             value={stats.counts.upcomingShoots}
             href="/admin/calendar"
-            hint="upcoming shoots"
+            hint={tr("upcoming shoots", "მომავალი გადაღებები")}
           />
           <Stat
-            label="Revenue · this period"
+            label={tr("Revenue · this period", "შემოსავალი · ამ პერიოდში")}
             valueText={revenueLine}
             href="/admin/bookings"
-            hint="confirmed + completed"
+            hint={tr("confirmed + completed", "დადასტურებული + დასრულებული")}
           />
         </section>
 
@@ -250,13 +266,13 @@ export default async function HomePage() {
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <header className="mb-4 flex items-baseline justify-between">
             <h2 className="text-[14px] font-medium text-[var(--ink-900)]">
-              Pipeline
+              {tr("Pipeline", "სამუშაო პროცესი")}
             </h2>
             <Link
               href="/admin/leads"
               className="text-[11px] uppercase tracking-[0.18em] text-[var(--ink-500)] hover:text-[var(--ink-900)]"
             >
-              Open kanban →
+              {tr("Open kanban →", "კანბანის გახსნა →")}
             </Link>
           </header>
           <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-8">
@@ -281,11 +297,19 @@ export default async function HomePage() {
         {/* Two-column action lists */}
         <section className="grid gap-4 lg:grid-cols-2">
           <Card
-            title="Next shoots"
-            cta={{ label: "All bookings →", href: "/admin/bookings" }}
+            title={tr("Next shoots", "მომავალი გადაღებები")}
+            cta={{
+              label: tr("All bookings →", "ყველა ჯავშანი →"),
+              href: "/admin/bookings",
+            }}
           >
             {stats.nextShoots.length === 0 ? (
-              <Empty>No upcoming shoots scheduled.</Empty>
+              <Empty>
+                {tr(
+                  "No upcoming shoots scheduled.",
+                  "დაგეგმილი გადაღებები არ არის.",
+                )}
+              </Empty>
             ) : (
               <ul className="divide-y divide-black/5">
                 {stats.nextShoots.map((b) => (
@@ -296,15 +320,17 @@ export default async function HomePage() {
                     >
                       <div className="min-w-0">
                         <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                          {b.client_name ?? "Unnamed client"}
+                          {b.client_name ??
+                            tr("Unnamed client", "უსახელო კლიენტი")}
                         </div>
                         <div className="truncate text-[12px] text-[var(--ink-500)]">
-                          {b.packages?.name_en ?? "(no package)"}
+                          {b.packages?.name_en ??
+                            tr("(no package)", "(პაკეტის გარეშე)")}
                           {b.location ? ` · ${b.location}` : ""}
                         </div>
                       </div>
                       <span className="shrink-0 font-mono text-[12px] tabular-nums text-[var(--ink-700)]">
-                        {new Date(b.shoot_date).toLocaleDateString(undefined, {
+                        {new Date(b.shoot_date).toLocaleDateString(intlLocale, {
                           month: "short",
                           day: "numeric",
                         })}
@@ -318,11 +344,14 @@ export default async function HomePage() {
           </Card>
 
           <Card
-            title="Recent leads"
-            cta={{ label: "All leads →", href: "/admin/leads" }}
+            title={tr("Recent leads", "ბოლო კლიენტები")}
+            cta={{
+              label: tr("All leads →", "ყველა კლიენტი →"),
+              href: "/admin/leads",
+            }}
           >
             {stats.recentLeads.length === 0 ? (
-              <Empty>No leads yet.</Empty>
+              <Empty>{tr("No leads yet.", "ჯერ კლიენტები არ არის.")}</Empty>
             ) : (
               <ul className="divide-y divide-black/5">
                 {stats.recentLeads.map((l) => (
@@ -333,10 +362,11 @@ export default async function HomePage() {
                     >
                       <div className="min-w-0">
                         <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                          {l.name ?? "Anonymous"}
+                          {l.name ?? tr("Anonymous", "ანონიმური")}
                         </div>
                         <div className="truncate text-[12px] text-[var(--ink-500)]">
-                          {l.email ?? "(no email)"} · {l.source}
+                          {l.email ?? tr("(no email)", "(ელფოსტა არ არის)")} ·{" "}
+                          {l.source}
                         </div>
                       </div>
                       <span
@@ -352,11 +382,19 @@ export default async function HomePage() {
           </Card>
 
           <Card
-            title="Awaiting signature"
-            cta={{ label: "Contracts →", href: "/admin/contracts" }}
+            title={tr("Awaiting signature", "ხელმოსაწერად მოლოდინში")}
+            cta={{
+              label: tr("Contracts →", "ხელშეკრულებები →"),
+              href: "/admin/contracts",
+            }}
           >
             {stats.pendingContracts.length === 0 ? (
-              <Empty>No contracts awaiting signature.</Empty>
+              <Empty>
+                {tr(
+                  "No contracts awaiting signature.",
+                  "ხელმოსაწერად მოლოდინში ხელშეკრულებები არ არის.",
+                )}
+              </Empty>
             ) : (
               <ul className="divide-y divide-black/5">
                 {stats.pendingContracts.map((c) => (
@@ -367,7 +405,8 @@ export default async function HomePage() {
                     >
                       <div className="min-w-0">
                         <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                          {c.signer_name ?? "(no signer)"}
+                          {c.signer_name ??
+                            tr("(no signer)", "(ხელმომწერი არ არის)")}
                         </div>
                         <div className="truncate text-[12px] text-[var(--ink-500)]">
                           {c.signer_email ?? ""}
@@ -380,7 +419,11 @@ export default async function HomePage() {
                             : "bg-slate-100 text-slate-600"
                         }`}
                       >
-                        {c.status}
+                        {c.status === "sent"
+                          ? tr("sent", "გაგზავნილი")
+                          : c.status === "draft"
+                            ? tr("draft", "მონახაზი")
+                            : c.status}
                       </span>
                     </Link>
                   </li>
@@ -390,15 +433,20 @@ export default async function HomePage() {
           </Card>
 
           <Card
-            title="Activity"
+            title={tr("Activity", "აქტივობა")}
             cta={
               stats.recentEvents.length > 0
-                ? { label: "All leads →", href: "/admin/leads" }
+                ? {
+                    label: tr("All leads →", "ყველა კლიენტი →"),
+                    href: "/admin/leads",
+                  }
                 : undefined
             }
           >
             {stats.recentEvents.length === 0 ? (
-              <Empty>Nothing happened yet.</Empty>
+              <Empty>
+                {tr("Nothing happened yet.", "აქტივობა ჯერ არ არის.")}
+              </Empty>
             ) : (
               <ul className="space-y-2">
                 {stats.recentEvents.map((e) => (
@@ -408,13 +456,13 @@ export default async function HomePage() {
                   >
                     <span className="min-w-0 truncate text-[var(--ink-700)]">
                       <strong className="text-[var(--ink-900)]">
-                        {e.leads?.name ?? "Lead"}
+                        {e.leads?.name ?? tr("Lead", "ლიდი")}
                       </strong>{" "}
                       · {e.kind}
                     </span>
                     <time className="shrink-0 text-[11px] text-[var(--ink-400)]">
                       {e.created_at
-                        ? new Date(e.created_at).toLocaleString(undefined, {
+                        ? new Date(e.created_at).toLocaleString(intlLocale, {
                             month: "short",
                             day: "numeric",
                             hour: "numeric",

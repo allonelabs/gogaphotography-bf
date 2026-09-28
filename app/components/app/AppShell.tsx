@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 import { AppTopbar } from "./AppTopbar";
 import { AppSidebar } from "./AppSidebar";
 import { AppChatPane, type ChatScope } from "./AppChatPane";
@@ -36,6 +37,7 @@ export function AppShell({
   children,
   hideChatToggle = false,
 }: AppShellProps) {
+  const { tr } = useLocale();
   const [chatOpen, setChatOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [topbarOpen, setTopbarOpen] = useState(true);
@@ -153,8 +155,8 @@ export function AppShell({
           <button
             type="button"
             onClick={() => setTopbarOpen(true)}
-            aria-label="Show topbar · ⌘."
-            title="Show topbar · ⌘."
+            aria-label={tr("Show topbar · ⌘.", "პანელის ჩვენება · ⌘.")}
+            title={tr("Show topbar · ⌘.", "პანელის ჩვენება · ⌘.")}
             className="absolute left-1/2 top-1.5 z-50 inline-block h-[2px] w-8 -translate-x-1/2 rounded-full bg-[var(--ink-500)]"
             style={{ opacity: 0.35, transition: "opacity 180ms ease" }}
             onMouseEnter={(e) => {
@@ -200,7 +202,7 @@ export function AppShell({
           <>
             <button
               type="button"
-              aria-label="Close sidebar"
+              aria-label={tr("Close sidebar", "გვერდითი პანელის დახურვა")}
               onClick={() => setSidebarOpen(false)}
               className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity"
             />

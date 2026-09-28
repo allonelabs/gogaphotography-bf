@@ -1,11 +1,13 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { SiteSettingsForm } from "./_form";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Site settings" };
 
 export default async function SiteSettingsPage() {
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("site_settings")
@@ -17,18 +19,25 @@ export default async function SiteSettingsPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Site" }, { label: "Site settings" }]}
+      breadcrumb={[
+        { label: tr("Site", "საიტი") },
+        { label: tr("Site settings", "საიტის პარამეტრები") },
+      ]}
       chatScope={{ level: "tool", tool: "site-settings" }}
-      chatScopeLabel="Site settings"
+      chatScopeLabel={tr("Site settings", "საიტის პარამეტრები")}
     >
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <header>
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Site settings
+            {tr("Site settings", "საიტის პარამეტრები")}
           </h1>
           <p className="mt-1 max-w-prose text-[13px] text-[var(--ink-500)]">
-            Global switches for the public site&apos;s motion and captions.
-            <code>GET /api/studio</code> exposes these under{" "}
+            {tr(
+              "Global switches for the public site's motion and captions.",
+              "საჯარო საიტის ანიმაციისა და წარწერების გლობალური გადამრთველები.",
+            )}{" "}
+            <code>GET /api/studio</code>{" "}
+            {tr("exposes these under", "აჩვენებს ამათ ველში")}{" "}
             <code>settings</code>.
           </p>
         </header>

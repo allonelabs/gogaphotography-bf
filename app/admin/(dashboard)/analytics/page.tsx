@@ -15,6 +15,7 @@ import {
   errorMessage,
   type AnalyticsError,
 } from "@/app/lib/goga/analytics";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Analytics" };
@@ -22,16 +23,16 @@ export const metadata = { title: "Analytics" };
 const RANGES = [7, 14, 30] as const;
 
 /** Prettier axis label than a raw ISO date. */
-function dayLabel(iso: string): string {
+function dayLabel(iso: string, dateLocale: string): string {
   const d = new Date(iso);
   return Number.isNaN(d.getTime())
     ? iso
-    : d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+    : d.toLocaleDateString(dateLocale, { day: "numeric", month: "short" });
 }
 
 /** Page paths read better without the origin; "/" is worth naming. */
-function pathLabel(p: string): string {
-  if (!p || p === "/") return "Home";
+function pathLabel(p: string, tr: (en: string, ka: string) => string): string {
+  if (!p || p === "/") return tr("Home", "მთავარი");
   return p.replace(/\/$/, "");
 }
 
@@ -67,12 +68,22 @@ function Stat({
   );
 }
 
-function NotConnected({ error }: { error: AnalyticsError }) {
-  const actionable = error.kind === "unconfigured" || error.kind === "not_enabled";
+function NotConnected({
+  error,
+  tr,
+}: {
+  error: AnalyticsError;
+  tr: (en: string, ka: string) => string;
+}) {
+  const actionable =
+    error.kind === "unconfigured" || error.kind === "not_enabled";
   return (
     <div className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
       <h2 className="text-[13px] font-medium text-[var(--ink-900)]">
-        Traffic data is not flowing yet
+        {tr(
+          "Traffic data is not flowing yet",
+          "ტრაფიკის მონაცემები ჯერ არ მოდის",
+        )}
       </h2>
       <p className="mt-1 max-w-prose text-[13px] text-[var(--ink-500)]">
         {errorMessage(error)}
@@ -80,16 +91,30 @@ function NotConnected({ error }: { error: AnalyticsError }) {
       {actionable ? (
         <ol className="mt-4 max-w-prose list-decimal space-y-1.5 pl-5 text-[13px] text-[var(--ink-500)]">
           <li>
-            Turn on <strong className="text-[var(--ink-900)]">Web Analytics</strong> for
-            the site project in Vercel. It is a dashboard switch, with no API to
-            do it from here.
+            {tr("Turn on", "ჩართე")}{" "}
+            <strong className="text-[var(--ink-900)]">Web Analytics</strong>{" "}
+            {tr(
+              "for the site project in Vercel. It is a dashboard switch, with no API to do it from here.",
+              "საიტის პროექტისთვის Vercel-ში. ეს არის დაშბორდის გადამრთველი — აქედან API არ არსებობს.",
+            )}
           </li>
           <li>
-            Create a team-scoped access token and set{" "}
-            <code className="font-mono text-[12px]">VERCEL_TOKEN</code> on this
-            project. The project and team IDs are already set.
+            {tr(
+              "Create a team-scoped access token and set",
+              "შექმენი გუნდის წვდომის ტოკენი და დააყენე",
+            )}{" "}
+            <code className="font-mono text-[12px]">VERCEL_TOKEN</code>{" "}
+            {tr(
+              "on this project. The project and team IDs are already set.",
+              "ამ პროექტზე. პროექტის და გუნდის ID-ები უკვე დაყენებულია.",
+            )}
           </li>
-          <li>Redeploy. Figures appear once real visitors arrive.</li>
+          <li>
+            {tr(
+              "Redeploy. Figures appear once real visitors arrive.",
+              "თავიდან დეპლოი. მონაცემები გამოჩნდება რეალური სტუმრების მოსვლისთანავე.",
+            )}
+          </li>
         </ol>
       ) : null}
     </div>
@@ -102,21 +127,27 @@ export default async function AnalyticsPage({
   searchParams: Promise<{ days?: string }>;
 }) {
   const sp = await searchParams;
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   const requested = Number(sp.days);
-  const days = RANGES.includes(requested as (typeof RANGES)[number]) ? requested : 7;
+  const days = RANGES.includes(requested as (typeof RANGES)[number])
+    ? requested
+    : 7;
 
-  const [totals, daily, countries, pages, referrers, devices] = await Promise.all([
-    getTotals(days),
-    getDaily(days),
-    getBreakdown("country", days),
-    getBreakdown("requestPath", days),
-    getBreakdown("referrerHostname", days),
-    getBreakdown("deviceType", days),
-  ]);
+  const [totals, daily, countries, pages, referrers, devices] =
+    await Promise.all([
+      getTotals(days),
+      getDaily(days),
+      getBreakdown("country", days),
+      getBreakdown("requestPath", days),
+      getBreakdown("referrerHostname", days),
+      getBreakdown("deviceType", days),
+    ]);
 
   const series: Point[] = daily.ok
     ? daily.data.map((d) => ({
-        label: dayLabel(d.key),
+        label: dayLabel(d.key, dateLocale),
         value: d.pageviews,
         secondary: d.visitors,
       }))
@@ -125,17 +156,30 @@ export default async function AnalyticsPage({
   const toPoints = (
     r: typeof countries,
     map: (k: string) => string = (k) => k,
-  ): Point[] => (r.ok ? r.data.map((d) => ({ label: map(d.key), value: d.pageviews })) : []);
+  ): Point[] =>
+    r.ok ? r.data.map((d) => ({ label: map(d.key), value: d.pageviews })) : [];
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Site" }, { label: "Analytics" }]}
+      breadcrumb={[
+        { label: tr("Site", "საიტი") },
+        { label: tr("Analytics", "ანალიტიკა") },
+      ]}
       chatScope={{ level: "tool", tool: "analytics" }}
-      chatScopeLabel="Analytics"
+      chatScopeLabel={tr("Analytics", "ანალიტიკა")}
       chatStarters={[
-        "Which page got the most visits this week?",
-        "Where are my visitors coming from?",
-        "Are people finding the site on their phone?",
+        tr(
+          "Which page got the most visits this week?",
+          "რომელმა გვერდმა მიიღო ყველაზე მეტი ვიზიტი ამ კვირას?",
+        ),
+        tr(
+          "Where are my visitors coming from?",
+          "საიდან მოდიან ჩემი სტუმრები?",
+        ),
+        tr(
+          "Are people finding the site on their phone?",
+          "ხალხი საიტს ტელეფონით პოულობს?",
+        ),
       ]}
     >
       <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
@@ -150,14 +194,14 @@ export default async function AnalyticsPage({
                 lineHeight: 1.05,
               }}
             >
-              Analytics
+              {tr("Analytics", "ანალიტიკა")}
             </h1>
             <p className="mt-1.5 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              ვინ სტუმრობს საიტს
+              {tr("Who's visiting the site", "ვინ სტუმრობს საიტს")}
             </p>
           </div>
           <nav
-            aria-label="Date range"
+            aria-label={tr("Date range", "თარიღის შუალედი")}
             className="flex gap-1 rounded-full bg-white p-1 ring-1 ring-black/5"
           >
             {RANGES.map((r) => {
@@ -181,75 +225,118 @@ export default async function AnalyticsPage({
         </header>
 
         {!totals.ok ? (
-          <NotConnected error={totals.error} />
+          <NotConnected error={totals.error} tr={tr} />
         ) : (
           <>
             <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Stat
-                label="Visitors"
+                label={tr("Visitors", "სტუმრები")}
                 value={totals.data.visitors}
-                hint={`unique people, last ${days} days`}
+                hint={tr(
+                  `unique people, last ${days} days`,
+                  `უნიკალური ადამიანი, ბოლო ${days} დღე`,
+                )}
                 spark={series.map((p) => p.secondary ?? 0)}
               />
               <Stat
-                label="Page views"
+                label={tr("Page views", "გვერდის ნახვები")}
                 value={totals.data.pageviews}
-                hint={`pages opened, last ${days} days`}
+                hint={tr(
+                  `pages opened, last ${days} days`,
+                  `გახსნილი გვერდი, ბოლო ${days} დღე`,
+                )}
                 spark={series.map((p) => p.value)}
               />
               <Stat
-                label="Views per visitor"
+                label={tr("Views per visitor", "ნახვა თითო სტუმარზე")}
                 value={
                   totals.data.visitors > 0
-                    ? Math.round((totals.data.pageviews / totals.data.visitors) * 10) / 10
+                    ? Math.round(
+                        (totals.data.pageviews / totals.data.visitors) * 10,
+                      ) / 10
                     : 0
                 }
-                hint="how deep people go"
+                hint={tr("how deep people go", "რამდენად ღრმად შედიან")}
               />
               <Stat
-                label="Busiest day"
-                value={series.length ? Math.max(...series.map((p) => p.value)) : 0}
+                label={tr("Busiest day", "ყველაზე დატვირთული დღე")}
+                value={
+                  series.length ? Math.max(...series.map((p) => p.value)) : 0
+                }
                 hint={
                   series.length
                     ? (series.find(
-                        (p) => p.value === Math.max(...series.map((q) => q.value)),
+                        (p) =>
+                          p.value === Math.max(...series.map((q) => q.value)),
                       )?.label ?? "—")
-                    : "no data yet"
+                    : tr("no data yet", "ჯერ არ არის მონაცემი")
                 }
               />
             </section>
 
-            <Card title="Traffic" hint={`page views per day, last ${days} days`}>
-              <AreaChart points={series} label="Page views" />
+            <Card
+              title={tr("Traffic", "ტრაფიკი")}
+              hint={tr(
+                `page views per day, last ${days} days`,
+                `გვერდის ნახვები დღეში, ბოლო ${days} დღე`,
+              )}
+            >
+              <AreaChart
+                points={series}
+                label={tr("Page views", "გვერდის ნახვები")}
+              />
             </Card>
 
             <div className="grid gap-3 lg:grid-cols-2">
-              <Card title="Top pages" hint="what people actually open">
+              <Card
+                title={tr("Top pages", "საუკეთესო გვერდები")}
+                hint={tr("what people actually open", "რას ხსნიან რეალურად")}
+              >
                 <BarList
-                  points={toPoints(pages, pathLabel)}
-                  empty="No page data yet."
+                  points={toPoints(pages, (p) => pathLabel(p, tr))}
+                  empty={tr(
+                    "No page data yet.",
+                    "ჯერ არ არის გვერდის მონაცემები.",
+                  )}
                 />
               </Card>
-              <Card title="Countries" hint="where visitors are">
-                <BarList points={toPoints(countries)} empty="No country data yet." />
+              <Card
+                title={tr("Countries", "ქვეყნები")}
+                hint={tr("where visitors are", "საიდან არიან სტუმრები")}
+              >
+                <BarList
+                  points={toPoints(countries)}
+                  empty={tr(
+                    "No country data yet.",
+                    "ჯერ არ არის ქვეყნის მონაცემები.",
+                  )}
+                />
               </Card>
-              <Card title="Referrers" hint="how they found the site">
+              <Card
+                title={tr("Referrers", "წყაროები")}
+                hint={tr("how they found the site", "როგორ იპოვეს საიტი")}
+              >
                 <BarList
                   points={toPoints(referrers)}
-                  empty="Nothing yet. Visits typed straight into the address bar show up as direct, not here."
+                  empty={tr(
+                    "Nothing yet. Visits typed straight into the address bar show up as direct, not here.",
+                    "ჯერ არაფერია. პირდაპირ მისამართის ველში აკრეფილი ვიზიტები აქ არ ჩანს — ისინი პირდაპირია.",
+                  )}
                 />
               </Card>
-              <Card title="Devices" hint="phone against desktop">
+              <Card
+                title={tr("Devices", "მოწყობილობები")}
+                hint={tr("phone against desktop", "ტელეფონი vs. კომპიუტერი")}
+              >
                 <DonutSplit points={toPoints(devices)} />
               </Card>
             </div>
 
             <p className="max-w-prose text-[11px] leading-relaxed text-[var(--ink-500)]">
-              Visitors are counted from a hash of each request that resets every
-              day, so there are no cookies and no consent banner, and the same
-              person on two days counts twice. These figures are totals by page,
-              country and device. They cannot tell you which named person
-              visited, and nothing here identifies anyone.
+              {tr(
+                "Visitors are counted from a hash of each request that resets every day, so there are no cookies and no consent banner, and the same person on two days counts twice. These figures are totals by page, country and device. They cannot tell you which named person visited, and nothing here identifies anyone.",
+                "სტუმრები ითვლება თითოეული მოთხოვნის ჰეშით, რომელიც ყოველდღე განახლდება — ამიტომ არ არის ქუქი-ფაილები და თანხმობის ბანერი, ხოლო ერთი და იგივე ადამიანი ორ დღეში ორჯერ ითვლება. ეს მაჩვენებლები არის ჯამები გვერდის, ქვეყნისა და მოწყობილობის მიხედვით. მათგან ვერ გაიგებთ, კონკრეტულად ვინ ეწვია საიტს — აქ არავინ არ არის იდენტიფიცირებული.",
+              )}
             </p>
           </>
         )}

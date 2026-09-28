@@ -2,20 +2,19 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 /**
  * Generic debounced `?q=` search input. Preserves any other query
  * params (e.g. `?status=confirmed`) so it composes cleanly with
  * FilterChips.
  */
-export function ListSearch({
-  placeholder = "Search…",
-}: {
-  placeholder?: string;
-}) {
+export function ListSearch({ placeholder }: { placeholder?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const { tr } = useLocale();
+  const resolvedPlaceholder = placeholder ?? tr("Search…", "ძიება…");
   const initial = params.get("q") ?? "";
   const [q, setQ] = useState(initial);
   const [, start] = useTransition();
@@ -58,7 +57,7 @@ export function ListSearch({
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           className="block w-full rounded-xl border border-black/10 bg-white pl-9 pr-3 py-2.5 text-[14px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
         />
       </div>
@@ -68,7 +67,7 @@ export function ListSearch({
           onClick={() => setQ("")}
           className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
         >
-          Clear
+          {tr("Clear", "გასუფთავება")}
         </button>
       ) : null}
     </div>

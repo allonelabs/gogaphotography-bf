@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "./Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type ActionFn<T extends unknown[] = []> = (...args: T) => Promise<void>;
 
@@ -16,6 +17,7 @@ export function PublishToggle({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -26,35 +28,47 @@ export function PublishToggle({
         start(async () => {
           try {
             await onToggle();
-            toast.show(published ? "Unpublished" : "Published", "success");
+            toast.show(
+              published
+                ? tr("Unpublished", "გამოქვეყნება გაუქმდა")
+                : tr("Published", "გამოქვეყნებულია"),
+              "success",
+            );
             router.refresh();
           } catch (e) {
             toast.show(
-              e instanceof Error ? e.message : "Toggle failed",
+              e instanceof Error
+                ? e.message
+                : tr("Toggle failed", "ვერ შეიცვალა"),
               "error",
             );
           }
         })
       }
     >
-      {pending ? "…" : published ? "Unpublish" : "Publish"}
+      {pending
+        ? "…"
+        : published
+          ? tr("Unpublish", "მოხსნა")
+          : tr("Publish", "გამოქვეყნება")}
     </button>
   );
 }
 
 export function EditLink({ href }: { href: string }) {
+  const { tr } = useLocale();
   return (
     <Link
       href={href}
       className="rounded-full border border-black/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] transition hover:bg-slate-50"
     >
-      Edit
+      {tr("Edit", "რედაქტირება")}
     </Link>
   );
 }
 
 export function DeleteButton({
-  label = "Delete",
+  label,
   confirmText,
   onDelete,
 }: {
@@ -64,7 +78,9 @@ export function DeleteButton({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
+  const resolvedLabel = label ?? tr("Delete", "წაშლა");
   return (
     <button
       type="button"
@@ -75,18 +91,18 @@ export function DeleteButton({
         start(async () => {
           try {
             await onDelete();
-            toast.show("Deleted", "success");
+            toast.show(tr("Deleted", "წაშლილია"), "success");
             router.refresh();
           } catch (e) {
             toast.show(
-              `Delete failed: ${e instanceof Error ? e.message : e}`,
+              `${tr("Delete failed", "წაშლა ვერ მოხერხდა")}: ${e instanceof Error ? e.message : e}`,
               "error",
             );
           }
         });
       }}
     >
-      {pending ? "Deleting…" : label}
+      {pending ? tr("Deleting…", "იშლება…") : resolvedLabel}
     </button>
   );
 }

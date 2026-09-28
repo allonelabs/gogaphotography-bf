@@ -8,6 +8,7 @@ import {
   type AutomationRuleKey,
 } from "@/app/lib/goga/actions-automations";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type RuleState = {
   enabled: boolean;
@@ -40,6 +41,7 @@ export function RuleEditor({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [open, setOpen] = useState(false);
   const [lang, setLang] = useState<"en" | "ka" | "ru">("en");
   const [state, setState] = useState<RuleState>(initial);
@@ -54,10 +56,15 @@ export function RuleEditor({
     start(async () => {
       try {
         await updateAutomationRule(ruleKey, state);
-        toast.show("Rule saved", "success");
+        toast.show(tr("Rule saved", "წესი შენახულია"), "success");
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Save failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -66,9 +73,20 @@ export function RuleEditor({
     startTest(async () => {
       try {
         await sendTestAutomation(ruleKey);
-        toast.show("Test email sent to your inbox", "success");
+        toast.show(
+          tr(
+            "Test email sent to your inbox",
+            "სატესტო წერილი გამოგზავნილია თქვენს ინბოქსში",
+          ),
+          "success",
+        );
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Send failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Send failed", "გაგზავნა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -95,7 +113,7 @@ export function RuleEditor({
           <code className="text-[11px] text-[var(--ink-400)]">{ruleKey}</code>
         </div>
         <span className="text-[11px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-          {open ? "Collapse" : "Edit"}
+          {open ? tr("Collapse", "ჩაკეცვა") : tr("Edit", "რედაქტირება")}
         </span>
       </button>
 
@@ -109,7 +127,7 @@ export function RuleEditor({
                 onChange={(e) => patch({ enabled: e.target.checked })}
                 className="h-4 w-4 rounded border-black/20"
               />
-              Enabled
+              {tr("Enabled", "ჩართულია")}
             </label>
             <label className="flex items-center gap-2 text-[13px] text-[var(--ink-700)]">
               <input
@@ -118,10 +136,10 @@ export function RuleEditor({
                 onChange={(e) => patch({ notify_studio: e.target.checked })}
                 className="h-4 w-4 rounded border-black/20"
               />
-              Also alert the studio
+              {tr("Also alert the studio", "აცნობე სტუდიასაც")}
             </label>
             <label className="flex items-center gap-2 text-[13px] text-[var(--ink-700)]">
-              Delay (days)
+              {tr("Delay (days)", "დაყოვნება (დღე)")}
               <input
                 type="number"
                 min={0}
@@ -164,7 +182,7 @@ export function RuleEditor({
 
           <label className="block">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Subject ({lang.toUpperCase()})
+              {tr("Subject", "თემა")} ({lang.toUpperCase()})
             </span>
             <input
               value={state[`subject_${lang}`]}
@@ -178,7 +196,7 @@ export function RuleEditor({
           </label>
           <label className="block">
             <span className="mb-1.5 block text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--ink-500)]">
-              Body ({lang.toUpperCase()})
+              {tr("Body", "შინაარსი")} ({lang.toUpperCase()})
             </span>
             <textarea
               value={state[`body_${lang}`]}
@@ -199,7 +217,9 @@ export function RuleEditor({
               disabled={pending}
               className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
             >
-              {pending ? "Saving…" : "Save rule"}
+              {pending
+                ? tr("Saving…", "ინახება…")
+                : tr("Save rule", "წესის შენახვა")}
             </button>
             <button
               type="button"
@@ -207,7 +227,9 @@ export function RuleEditor({
               disabled={testPending}
               className="rounded-full border border-black/10 px-5 py-2.5 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] transition hover:bg-slate-50 disabled:opacity-50"
             >
-              {testPending ? "Sending…" : "Send test to me"}
+              {testPending
+                ? tr("Sending…", "იგზავნება…")
+                : tr("Send test to me", "სატესტოს გამომიგზავნე")}
             </button>
           </div>
         </div>

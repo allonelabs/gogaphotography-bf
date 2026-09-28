@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { AllOnceLogo } from "../AllOnceLogo";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { AccountMenu } from "./AccountMenu";
 import { ThemeToggle } from "./ThemeToggle";
@@ -30,6 +31,7 @@ export function AppTopbar({
   onCollapseTopbar,
   isMobile = false,
 }: AppTopbarProps) {
+  const { tr } = useLocale();
   function openPalette() {
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("allonce.openPalette"));
@@ -42,8 +44,16 @@ export function AppTopbar({
         {onToggleSidebar && (
           <button
             type="button"
-            aria-label={sidebarOpen ? "Hide sidebar" : "Show sidebar"}
-            title={sidebarOpen ? "Hide sidebar · ⌘\\" : "Show sidebar · ⌘\\"}
+            aria-label={
+              sidebarOpen
+                ? tr("Hide sidebar", "გვერდითი პანელის დამალვა")
+                : tr("Show sidebar", "გვერდითი პანელის ჩვენება")
+            }
+            title={
+              sidebarOpen
+                ? tr("Hide sidebar · ⌘\\", "გვერდითი პანელის დამალვა · ⌘\\")
+                : tr("Show sidebar · ⌘\\", "გვერდითი პანელის ჩვენება · ⌘\\")
+            }
             onClick={onToggleSidebar}
             className="group inline-flex h-8 w-8 shrink-0 items-center justify-center text-[var(--ink-700)]"
           >
@@ -90,7 +100,7 @@ export function AppTopbar({
           <>
             <span className="hidden h-4 w-px bg-[var(--allonce-line)] sm:inline-block" />
             <nav
-              aria-label="breadcrumb"
+              aria-label={tr("breadcrumb", "ნავიგაციის ბილიკი")}
               className="hidden min-w-0 items-center gap-1.5 truncate sm:flex"
             >
               {breadcrumb.map((c, i) => (
@@ -131,7 +141,7 @@ export function AppTopbar({
       <div className="flex items-center gap-2">
         <button
           type="button"
-          aria-label="Search"
+          aria-label={tr("Search", "ძიება")}
           onClick={openPalette}
           className="flex h-8 items-center gap-2.5 rounded-full bg-white px-3.5 text-[13px] text-[var(--ink-900)] transition hover:text-[var(--ink-900)]"
         >
@@ -147,7 +157,7 @@ export function AppTopbar({
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.35-4.35" />
           </svg>
-          <span className="hidden sm:inline">Search</span>
+          <span className="hidden sm:inline">{tr("Search", "ძიება")}</span>
           <kbd className="hidden rounded bg-[var(--bg-sunken)] px-1.5 py-0.5 font-mono text-[10px] text-[var(--ink-700)] sm:inline-block">
             ⌘K
           </kbd>
@@ -156,8 +166,12 @@ export function AppTopbar({
         {!hideChatToggle && (
           <button
             type="button"
-            aria-label={chatOpen ? "Hide chat" : "Show chat"}
-            title="Chat · ⌘/"
+            aria-label={
+              chatOpen
+                ? tr("Hide chat", "ჩატის დამალვა")
+                : tr("Show chat", "ჩატის ჩვენება")
+            }
+            title={tr("Chat · ⌘/", "ჩატი · ⌘/")}
             onClick={onToggleChat}
             data-chat-pill
             data-state={chatOpen ? "open" : "closed"}
@@ -175,7 +189,9 @@ export function AppTopbar({
             >
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="hidden font-medium sm:inline">Chat</span>
+            <span className="hidden font-medium sm:inline">
+              {tr("Chat", "ჩატი")}
+            </span>
             <kbd
               data-chat-pill-kbd
               className="hidden rounded px-1.5 py-0.5 font-mono text-[10px] sm:inline-block"
@@ -202,8 +218,8 @@ export function AppTopbar({
         <button
           type="button"
           onClick={onCollapseTopbar}
-          aria-label="Collapse topbar · ⌘."
-          title="Collapse topbar · ⌘."
+          aria-label={tr("Collapse topbar · ⌘.", "პანელის ჩაკეცვა · ⌘.")}
+          title={tr("Collapse topbar · ⌘.", "პანელის ჩაკეცვა · ⌘.")}
           className="absolute bottom-1.5 left-1/2 inline-block h-[2px] w-8 -translate-x-1/2 rounded-full bg-[var(--ink-500)]"
           style={{ opacity: 0.35, transition: "opacity 180ms ease" }}
           onMouseEnter={(e) => {

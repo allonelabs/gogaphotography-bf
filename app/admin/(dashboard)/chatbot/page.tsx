@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Chatbot" };
 
-function fmt(iso: string | null): string {
+function fmt(iso: string | null, dateLocale: string): string {
   if (!iso) return "";
-  return new Date(iso).toLocaleString();
+  return new Date(iso).toLocaleString(dateLocale);
 }
 
 const PREVIEW_CHARS = 140;
@@ -20,6 +21,9 @@ function preview(text: string): string {
 }
 
 export default async function ChatbotIndex() {
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   const sb = gogaAdmin();
   // Each row leads with the visitor's opening question — that, not a token
   // fragment, is what tells Goga which conversation is worth opening. The
@@ -31,32 +35,43 @@ export default async function ChatbotIndex() {
     )
     .eq("chatbot_messages.role", "user")
     .order("started_at", { ascending: false })
-    .order("created_at", { referencedTable: "chatbot_messages", ascending: true })
+    .order("created_at", {
+      referencedTable: "chatbot_messages",
+      ascending: true,
+    })
     .limit(1, { referencedTable: "chatbot_messages" })
     .limit(200);
   const sessions = data ?? [];
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Inbox" }, { label: "Chatbot" }]}
+      breadcrumb={[
+        { label: tr("Inbox", "შემოსული") },
+        { label: tr("Chatbot", "ჩატბოტი") },
+      ]}
       chatScope={{ level: "tool", tool: "chatbot" }}
-      chatScopeLabel="Chatbot"
+      chatScopeLabel={tr("Chatbot", "ჩატბოტი")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Chatbot
+            {tr("Chatbot", "ჩატბოტი")}
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            {sessions.length} sessions · last 200
+            {tr(
+              `${sessions.length} sessions · last 200`,
+              `${sessions.length} სესია · ბოლო 200`,
+            )}
           </p>
         </header>
 
         {sessions.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
             <p className="text-[14px] text-[var(--ink-500)]">
-              No chatbot conversations yet. The widget lives on every public
-              page bottom-right.
+              {tr(
+                "No chatbot conversations yet. The widget lives on every public page bottom-right.",
+                "ჩატბოტის საუბრები ჯერ არ არის. ვიჯეტი ხელმისაწვდომია ყველა საჯარო გვერდზე, ქვედა მარჯვენა კუთხეში.",
+              )}
             </p>
           </div>
         ) : (
@@ -73,12 +88,13 @@ export default async function ChatbotIndex() {
                         `“${preview(s.chatbot_messages[0].content)}”`
                       ) : (
                         <span className="text-[var(--ink-500)]">
-                          Session {s.session_token.slice(0, 8)}…
+                          {tr("Session", "სესია")} {s.session_token.slice(0, 8)}
+                          …
                         </span>
                       )}
                     </div>
                     <div className="text-[12px] text-[var(--ink-500)]">
-                      {fmt(s.started_at)}
+                      {fmt(s.started_at, dateLocale)}
                       {s.ip ? ` · ${s.ip}` : ""}
                     </div>
                   </Link>
@@ -86,14 +102,17 @@ export default async function ChatbotIndex() {
                     {(s.locale ?? "en").toUpperCase()}
                   </span>
                   <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-slate-700">
-                    {s.message_count} msgs
+                    {tr(
+                      `${s.message_count} msgs`,
+                      `${s.message_count} შეტყობინება`,
+                    )}
                   </span>
                   {s.lead_id ? (
                     <Link
                       href={`/admin/leads/${s.lead_id}`}
                       className="shrink-0 rounded-full bg-slate-900 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.14em] text-white transition hover:bg-slate-700"
                     >
-                      → Lead
+                      {tr("→ Lead", "→ ლიდი")}
                     </Link>
                   ) : (
                     <span className="w-14 text-center text-[11px] text-[var(--ink-300)]">

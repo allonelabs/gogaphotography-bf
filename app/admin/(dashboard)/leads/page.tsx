@@ -5,6 +5,7 @@ import { safeLike } from "@/app/lib/goga/safe-like";
 import { Kanban, type CardData } from "./_kanban";
 import { LeadsSearch } from "./_search";
 import { RealtimeRefresh } from "@/app/admin/(dashboard)/_components/useRealtimeRefresh";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ type Props = { searchParams: Promise<{ q?: string }> };
 export default async function LeadsPage({ searchParams }: Props) {
   const { q } = await searchParams;
   const query = (q ?? "").trim();
+  const tr = await getServerTr();
 
   const sb = gogaAdmin();
   let select = sb
@@ -34,7 +36,7 @@ export default async function LeadsPage({ searchParams }: Props) {
 
   const cards: CardData[] = (data ?? []).map((l) => ({
     id: l.id,
-    name: l.name || "Anonymous",
+    name: l.name || tr("Anonymous", "ანონიმური"),
     email: l.email || "",
     snippet: (l.message ?? "").slice(0, 140),
     source: l.source,
@@ -45,22 +47,29 @@ export default async function LeadsPage({ searchParams }: Props) {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Pipeline" }, { label: "Leads" }]}
+      breadcrumb={[
+        { label: tr("Pipeline", "სამუშაო პროცესი") },
+        { label: tr("Leads", "კლიენტები") },
+      ]}
       chatScope={{ level: "tool", tool: "leads" }}
-      chatScopeLabel="Leads"
+      chatScopeLabel={tr("Leads", "კლიენტები")}
     >
       <div className="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Leads
+              {tr("Leads", "კლიენტები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              Pipeline · {cards.length} {query ? "matching" : "active"}
+              {tr("Pipeline", "სამუშაო პროცესი")} · {cards.length}{" "}
+              {query ? tr("matching", "შესაბამისი") : tr("active", "აქტიური")}
             </p>
           </div>
           <p className="text-[12px] text-[var(--ink-500)]">
-            Drag a card between columns to advance the lead.
+            {tr(
+              "Drag a card between columns to advance the lead.",
+              "გადაიტანეთ ბარათი სვეტებს შორის, რომ ლიდის სტატუსი შეცვალოთ.",
+            )}
           </p>
         </header>
 

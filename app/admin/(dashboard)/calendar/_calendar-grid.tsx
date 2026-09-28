@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export type CalendarView = "month" | "week" | "day";
 
@@ -78,6 +79,7 @@ export function CalendarGrid({
 }
 
 function Toolbar({ view, anchor }: { view: CalendarView; anchor: Date }) {
+  const { tr } = useLocale();
   const prev = shift(view, anchor, -1);
   const next = shift(view, anchor, 1);
   const linkCls =
@@ -91,13 +93,13 @@ function Toolbar({ view, anchor }: { view: CalendarView; anchor: Date }) {
       <ViewToggle view={view} anchor={anchor} />
       <div className="flex items-center gap-2">
         <Link href={hrefFor(view, prev)} className={linkCls}>
-          ← Prev
+          {tr("← Prev", "← წინა")}
         </Link>
         <Link href={todayLink} className={linkCls}>
-          Today
+          {tr("Today", "დღეს")}
         </Link>
         <Link href={hrefFor(view, next)} className={linkCls}>
-          Next →
+          {tr("Next →", "შემდეგი →")}
         </Link>
       </div>
     </div>
@@ -105,7 +107,13 @@ function Toolbar({ view, anchor }: { view: CalendarView; anchor: Date }) {
 }
 
 function ViewToggle({ view, anchor }: { view: CalendarView; anchor: Date }) {
+  const { tr } = useLocale();
   const opts: CalendarView[] = ["month", "week", "day"];
+  const labels: Record<CalendarView, string> = {
+    month: tr("Month", "თვე"),
+    week: tr("Week", "კვირა"),
+    day: tr("Day", "დღე"),
+  };
   return (
     <div className="inline-flex rounded-full bg-slate-100 p-0.5">
       {opts.map((v) => {
@@ -120,7 +128,7 @@ function ViewToggle({ view, anchor }: { view: CalendarView; anchor: Date }) {
                 : "text-[var(--ink-700)] hover:text-[var(--ink-900)]"
             }`}
           >
-            {v[0]!.toUpperCase() + v.slice(1)}
+            {labels[v]}
           </Link>
         );
       })}
@@ -159,6 +167,11 @@ function MonthGrid({
   byDate: Map<string, CalendarItem[]>;
   todayKey: string;
 }) {
+  const { tr, locale } = useLocale();
+  const dowLabels =
+    locale === "ka"
+      ? ["ორშ", "სამ", "ოთხ", "ხუთ", "პარ", "შაბ", "კვი"]
+      : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const year = anchor.getUTCFullYear();
   const month = anchor.getUTCMonth(); // 0-based
   const firstOfMonth = new Date(Date.UTC(year, month, 1));
@@ -182,7 +195,7 @@ function MonthGrid({
   return (
     <div className="-mx-1 overflow-x-auto sm:mx-0">
       <div className="grid min-w-[600px] grid-cols-7 gap-px overflow-hidden rounded-xl bg-black/[0.06] text-[12px] sm:min-w-0">
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
+        {dowLabels.map((d) => (
           <div
             key={d}
             className="bg-slate-50 px-2 py-2 text-center text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]"
@@ -213,7 +226,7 @@ function MonthGrid({
                     href={`/admin/calendar?view=day&date=${c.date}`}
                     className="text-[10px] uppercase tracking-[0.14em] text-[var(--ink-400)] hover:text-[var(--ink-900)]"
                   >
-                    day →
+                    {tr("day →", "დღე →")}
                   </Link>
                 ) : null}
               </div>
@@ -233,7 +246,10 @@ function MonthGrid({
                 ))}
                 {dayItems.length > 4 ? (
                   <span className="block px-1.5 text-[10px] uppercase tracking-[0.12em] text-[var(--ink-500)]">
-                    +{dayItems.length - 4} more
+                    {tr(
+                      `+${dayItems.length - 4} more`,
+                      `+${dayItems.length - 4} მეტი`,
+                    )}
                   </span>
                 ) : null}
               </div>
@@ -256,6 +272,7 @@ function WeekGrid({
   byDate: Map<string, CalendarItem[]>;
   todayKey: string;
 }) {
+  const { locale } = useLocale();
   const weekStart = startOfWeekUTC(anchor);
   const days = Array.from({ length: 7 }, (_, i) => {
     const d = new Date(weekStart.getTime() + i * 86400000);
@@ -268,10 +285,13 @@ function WeekGrid({
           const items = byDate.get(d.date) ?? [];
           const isToday = d.date === todayKey;
           const dayNum = d.label.getUTCDate();
-          const dowLabel = d.label.toLocaleDateString("en-US", {
-            weekday: "short",
-            timeZone: "UTC",
-          });
+          const dowLabel = d.label.toLocaleDateString(
+            locale === "ka" ? "ka-GE" : "en-US",
+            {
+              weekday: "short",
+              timeZone: "UTC",
+            },
+          );
           return (
             <div key={d.date} className="min-h-[360px] bg-white">
               <Link
@@ -339,6 +359,7 @@ function DayGrid({
   items: CalendarItem[];
   todayKey: string;
 }) {
+  const { tr, locale } = useLocale();
   const key = ymd(anchor);
   const isToday = key === todayKey;
   const sorted = useMemo(
@@ -384,21 +405,24 @@ function DayGrid({
       >
         <div className="text-[10px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
           {isToday
-            ? "Today"
-            : anchor.toLocaleDateString("en-US", {
+            ? tr("Today", "დღეს")
+            : anchor.toLocaleDateString(locale === "ka" ? "ka-GE" : "en-US", {
                 weekday: "long",
                 timeZone: "UTC",
               })}
         </div>
         <div className="text-[12px] text-[var(--ink-500)] tabular-nums">
-          {items.length} shoot{items.length === 1 ? "" : "s"}
+          {tr(
+            `${items.length} shoot${items.length === 1 ? "" : "s"}`,
+            `${items.length} გადაღება`,
+          )}
         </div>
       </div>
 
       {allDay.length > 0 || early.length > 0 ? (
         <div className="border-b border-black/5 px-3 py-2">
           <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-            All day / before 08:00
+            {tr("All day / before 08:00", "მთელი დღე / 08:00-მდე")}
           </div>
           <ItemRow items={[...allDay, ...early]} />
         </div>
@@ -421,7 +445,7 @@ function DayGrid({
       {late.length > 0 ? (
         <div className="border-t border-black/5 px-3 py-2">
           <div className="mb-1 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-            After 22:00
+            {tr("After 22:00", "22:00-ის შემდეგ")}
           </div>
           <ItemRow items={late} />
         </div>
@@ -429,7 +453,7 @@ function DayGrid({
 
       {items.length === 0 ? (
         <p className="px-4 py-6 text-[13px] text-[var(--ink-400)]">
-          No shoots scheduled.
+          {tr("No shoots scheduled.", "გადაღება არ არის დაგეგმილი.")}
         </p>
       ) : null}
     </div>

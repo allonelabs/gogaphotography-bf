@@ -17,6 +17,7 @@ import {
   notifyClientDelivery,
 } from "@/app/lib/goga/actions-deliveries";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Delivery = {
   id: string;
@@ -58,6 +59,7 @@ export function DeliveryManager({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [, start] = useTransition();
   const [notifyPending, startNotify] = useTransition();
   const [photos, setPhotos] = useState<Item[]>(items);
@@ -69,17 +71,25 @@ export function DeliveryManager({
   function onNotify() {
     if (
       !confirm(
-        `Send the "photos are ready" email to ${delivery.clientEmail ?? "the client"}?`,
+        tr(
+          `Send the "photos are ready" email to ${delivery.clientEmail ?? "the client"}?`,
+          `გაეგზავნოს „ფოტოები მზადაა“ წერილი ${delivery.clientEmail ?? "კლიენტს"}?`,
+        ),
       )
     )
       return;
     startNotify(async () => {
       try {
         await notifyClientDelivery(delivery.id);
-        toast.show("Client notified", "success");
+        toast.show(tr("Client notified", "კლიენტი შეტყობინებულია"), "success");
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Notify failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Notify failed", "შეტყობინება ვერ გაიგზავნა"),
+          "error",
+        );
       }
     });
   }
@@ -167,7 +177,12 @@ export function DeliveryManager({
   }
   async function onClearPassword() {
     if (
-      !confirm("Remove the password? Anyone with the URL will see the photos.")
+      !confirm(
+        tr(
+          "Remove the password? Anyone with the URL will see the photos.",
+          "წაიშალოს პაროლი? ვისაც ბმული ექნება, ფოტოებს ნახავს.",
+        ),
+      )
     )
       return;
     start(async () => {
@@ -189,7 +204,15 @@ export function DeliveryManager({
     });
   }
   async function onDeleteImage(imageId: string) {
-    if (!confirm("Delete this photo from the delivery?")) return;
+    if (
+      !confirm(
+        tr(
+          "Delete this photo from the delivery?",
+          "წაიშალოს ეს ფოტო მიწოდებიდან?",
+        ),
+      )
+    )
+      return;
     await deleteDeliveryImage(imageId);
     setPhotos((cur) => cur.filter((x) => x.id !== imageId));
     router.refresh();
@@ -202,7 +225,7 @@ export function DeliveryManager({
     <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
       <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
         <h2 className="mb-3 text-[14px] font-medium text-[var(--ink-900)]">
-          Photos · {photos.length}
+          {tr("Photos", "ფოტოები")} · {photos.length}
         </h2>
         <div
           onDragOver={(e) => {
@@ -227,10 +250,10 @@ export function DeliveryManager({
             className="hidden"
           />
           <strong className="text-[12px] uppercase tracking-[0.18em]">
-            Drop client photos
+            {tr("Drop client photos", "ჩააგდეთ კლიენტის ფოტოები")}
           </strong>
           <span className="text-[12px] text-[var(--ink-500)]">
-            or click to choose files
+            {tr("or click to choose files", "ან დააჭირეთ ფაილების ასარჩევად")}
           </span>
         </div>
 
@@ -250,8 +273,8 @@ export function DeliveryManager({
                 <span className="text-[12px]">{u.filename}</span>
                 <span className="ml-auto text-[11px] text-[var(--ink-500)]">
                   {u.status === "uploading"
-                    ? "uploading…"
-                    : `error: ${u.error}`}
+                    ? tr("uploading…", "იტვირთება…")
+                    : `${tr("error", "შეცდომა")}: ${u.error}`}
                 </span>
               </li>
             ))}
@@ -260,7 +283,10 @@ export function DeliveryManager({
 
         {photos.length === 0 ? (
           <p className="py-4 text-[13px] text-[var(--ink-400)]">
-            No photos uploaded yet. Drop or pick a folder to start.
+            {tr(
+              "No photos uploaded yet. Drop or pick a folder to start.",
+              "ფოტოები ჯერ არ არის ატვირთული. ჩააგდეთ ან აირჩიეთ საქაღალდე დასაწყებად.",
+            )}
           </p>
         ) : (
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4">
@@ -289,7 +315,7 @@ export function DeliveryManager({
                 <button
                   type="button"
                   onClick={() => onDeleteImage(p.id)}
-                  aria-label="Delete photo"
+                  aria-label={tr("Delete photo", "ფოტოს წაშლა")}
                   className="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-black/55 text-sm text-white opacity-0 transition group-hover:opacity-100"
                 >
                   ×
@@ -303,7 +329,7 @@ export function DeliveryManager({
       <aside className="space-y-3">
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Share
+            {tr("Share", "გაზიარება")}
           </h3>
           <div className="mb-3 flex gap-1.5">
             <input
@@ -316,13 +342,13 @@ export function DeliveryManager({
               onClick={copyUrl}
               className="rounded-lg bg-[var(--ao-accent)] px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-white hover:bg-[var(--ao-accent-hover)]"
             >
-              {copied ? "Copied" : "Copy"}
+              {copied ? tr("Copied", "დაკოპირდა") : tr("Copy", "კოპირება")}
             </button>
           </div>
           <p className="text-[11px] text-[var(--ink-500)]">
-            Views: {delivery.viewCount}
+            {tr("Views", "ნახვები")}: {delivery.viewCount}
             {delivery.lastViewedAt
-              ? ` · last ${new Date(delivery.lastViewedAt).toLocaleString()}`
+              ? ` · ${tr("last", "ბოლო")} ${new Date(delivery.lastViewedAt).toLocaleString()}`
               : ""}
           </p>
           <button
@@ -332,37 +358,45 @@ export function DeliveryManager({
             title={
               delivery.clientEmail
                 ? undefined
-                : "No client email on this booking"
+                : tr(
+                    "No client email on this booking",
+                    "ამ ჯავშანს კლიენტის ელფოსტა არ აქვს",
+                  )
             }
             className="mt-3 w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
           >
-            {notifyPending ? "Sending…" : "Notify client"}
+            {notifyPending
+              ? tr("Sending…", "იგზავნება…")
+              : tr("Notify client", "კლიენტის შეტყობინება")}
           </button>
           {delivery.notifiedAt ? (
             <p className="mt-1.5 text-[11px] text-[var(--ink-500)]">
-              Notified {new Date(delivery.notifiedAt).toLocaleString()} — the
-              automation log is idempotent, so a repeat click won&apos;t resend
-              the email.
+              {tr(
+                `Notified ${new Date(delivery.notifiedAt).toLocaleString()} — the automation log is idempotent, so a repeat click won't resend the email.`,
+                `შეტყობინებულია ${new Date(delivery.notifiedAt).toLocaleString()} — ავტომატიზაციის ჟურნალი იდემპოტენტურია, ამიტომ განმეორებითი დაჭერა წერილს ხელახლა არ გაუგზავნის.`,
+              )}
             </p>
           ) : null}
         </section>
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Password
+            {tr("Password", "პაროლი")}
           </h3>
           {delivery.hasPassword ? (
             <>
               <p className="mb-3 text-[13px] text-[var(--ink-700)]">
-                Protected. Clients enter the password once; a cookie lasts 30
-                days.
+                {tr(
+                  "Protected. Clients enter the password once; a cookie lasts 30 days.",
+                  "დაცულია. კლიენტი პაროლს ერთხელ შეიყვანს; cookie 30 დღეს ინახავს.",
+                )}
               </p>
               <button
                 type="button"
                 onClick={onClearPassword}
                 className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 hover:bg-slate-100"
               >
-                Remove password
+                {tr("Remove password", "პაროლის წაშლა")}
               </button>
             </>
           ) : (
@@ -371,7 +405,7 @@ export function DeliveryManager({
                 type="text"
                 name="password"
                 minLength={4}
-                placeholder="At least 4 characters"
+                placeholder={tr("At least 4 characters", "მინიმუმ 4 სიმბოლო")}
                 required
                 className={`${inputCls} mb-2`}
               />
@@ -379,7 +413,7 @@ export function DeliveryManager({
                 type="submit"
                 className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white hover:bg-[var(--ao-accent-hover)]"
               >
-                Set password
+                {tr("Set password", "პაროლის დაყენება")}
               </button>
             </form>
           )}
@@ -387,12 +421,12 @@ export function DeliveryManager({
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Settings
+            {tr("Settings", "პარამეტრები")}
           </h3>
           <form onSubmit={onSaveMeta} className="space-y-3">
             <label className="block">
               <span className="mb-1.5 block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                Intro (EN)
+                {tr("Intro (EN)", "შესავალი (ინგლ.)")}
               </span>
               <textarea
                 name="intro_en"
@@ -403,7 +437,7 @@ export function DeliveryManager({
             </label>
             <label className="block">
               <span className="mb-1.5 block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                Intro (KA)
+                {tr("Intro (KA)", "შესავალი (ქართ.)")}
               </span>
               <textarea
                 name="intro_ka"
@@ -414,7 +448,7 @@ export function DeliveryManager({
             </label>
             <label className="block">
               <span className="mb-1.5 block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-                Expires (optional)
+                {tr("Expires (optional)", "ვადა (არასავალდებულო)")}
               </span>
               <input
                 type="datetime-local"
@@ -432,13 +466,13 @@ export function DeliveryManager({
                 defaultChecked={delivery.downloadsEnabled}
                 className="h-4 w-4 rounded border-black/20"
               />
-              <span>Allow downloads</span>
+              <span>{tr("Allow downloads", "ჩამოტვირთვის დაშვება")}</span>
             </label>
             <button
               type="submit"
               className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white hover:bg-[var(--ao-accent-hover)]"
             >
-              Save
+              {tr("Save", "შენახვა")}
             </button>
           </form>
         </section>

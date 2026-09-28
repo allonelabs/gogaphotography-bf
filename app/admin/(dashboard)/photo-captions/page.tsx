@@ -8,6 +8,7 @@ import {
 } from "@/app/admin/(dashboard)/_components/Pagination";
 import { ProjectFilter } from "./_project-filter";
 import { CaptionsTable } from "./_table";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 const PAGE_SIZE = 40;
 
@@ -25,6 +26,7 @@ type Props = {
 
 export default async function PhotoCaptionsPage({ searchParams }: Props) {
   const sp = await searchParams;
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { page, from, to } = parsePage(sp.page, PAGE_SIZE);
 
@@ -55,7 +57,8 @@ export default async function PhotoCaptionsPage({ searchParams }: Props) {
     id: img.id,
     projectId: img.project_id,
     projectTitle:
-      projectById.get(img.project_id)?.title_en ?? "(deleted project)",
+      projectById.get(img.project_id)?.title_en ??
+      tr("(deleted project)", "(წაშლილი პროექტი)"),
     thumbUrl: publicImageUrl(img.image_path),
     caption: img.caption ?? "",
     captionKa: img.caption_ka ?? "",
@@ -65,21 +68,32 @@ export default async function PhotoCaptionsPage({ searchParams }: Props) {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Site" }, { label: "Photo captions" }]}
+      breadcrumb={[
+        { label: tr("Site", "საიტი") },
+        { label: tr("Photo captions", "ფოტოს წარწერები") },
+      ]}
       chatScope={{ level: "tool", tool: "photo-captions" }}
-      chatScopeLabel="Photo captions"
+      chatScopeLabel={tr("Photo captions", "ფოტოს წარწერები")}
     >
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Photo captions
+            {tr("Photo captions", "ფოტოს წარწერები")}
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            {count ?? items.length} photos across all projects
+            {tr(
+              `${count ?? items.length} photos across all projects`,
+              `${count ?? items.length} ფოტო ყველა პროექტში`,
+            )}
           </p>
         </header>
 
-        <ListSearch placeholder="Search captions, alt text, file name…" />
+        <ListSearch
+          placeholder={tr(
+            "Search captions, alt text, file name…",
+            "მოძებნე წარწერები, alt ტექსტი, ფაილის სახელი…",
+          )}
+        />
         <ProjectFilter
           projects={(projects ?? []).map((p) => ({
             id: p.id,

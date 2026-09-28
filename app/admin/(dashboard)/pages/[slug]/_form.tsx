@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { upsertPage } from "@/app/lib/goga/actions-content";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Initial = {
   title_en: string;
@@ -25,6 +26,7 @@ export function PageForm({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -38,10 +40,13 @@ export function PageForm({
       try {
         await upsertPage(slug, fd);
         setSaved(true);
-        toast.show("Page saved", "success");
+        toast.show(tr("Page saved", "გვერდი შენახულია"), "success");
         router.refresh();
       } catch (e) {
-        const msg = e instanceof Error ? e.message : "Save failed";
+        const msg =
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა");
         setErr(msg);
         toast.show(msg, "error");
       }
@@ -59,21 +64,21 @@ export function PageForm({
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Title (EN)">
+        <Field label={`${tr("Title", "სათაური")} (EN)`}>
           <input
             name="title_en"
             defaultValue={initial.title_en}
             className={inputCls}
           />
         </Field>
-        <Field label="Title (KA)">
+        <Field label={`${tr("Title", "სათაური")} (KA)`}>
           <input
             name="title_ka"
             defaultValue={initial.title_ka}
             className={inputCls}
           />
         </Field>
-        <Field label="Title (RU)">
+        <Field label={`${tr("Title", "სათაური")} (RU)`}>
           <input
             name="title_ru"
             defaultValue={initial.title_ru ?? ""}
@@ -83,7 +88,7 @@ export function PageForm({
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Body (EN) · markdown">
+        <Field label={`${tr("Body", "შინაარსი")} (EN) · markdown`}>
           <textarea
             name="body_en"
             defaultValue={initial.body_en}
@@ -92,7 +97,7 @@ export function PageForm({
             style={{ minHeight: 280 }}
           />
         </Field>
-        <Field label="Body (KA) · markdown">
+        <Field label={`${tr("Body", "შინაარსი")} (KA) · markdown`}>
           <textarea
             name="body_ka"
             defaultValue={initial.body_ka}
@@ -101,7 +106,7 @@ export function PageForm({
             style={{ minHeight: 280 }}
           />
         </Field>
-        <Field label="Body (RU) · markdown">
+        <Field label={`${tr("Body", "შინაარსი")} (RU) · markdown`}>
           <textarea
             name="body_ru"
             defaultValue={initial.body_ru ?? ""}
@@ -118,10 +123,12 @@ export function PageForm({
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          {pending ? "Saving…" : "Save"}
+          {pending ? tr("Saving…", "ინახება…") : tr("Save", "შენახვა")}
         </button>
         {saved ? (
-          <span className="text-[12px] text-slate-900 font-medium">Saved.</span>
+          <span className="text-[12px] text-slate-900 font-medium">
+            {tr("Saved.", "შენახულია.")}
+          </span>
         ) : null}
         {err ? <span className="text-[12px] text-slate-700">{err}</span> : null}
       </div>

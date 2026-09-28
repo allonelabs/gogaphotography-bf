@@ -9,6 +9,7 @@ import {
   deleteService,
   toggleServicePublished,
 } from "@/app/lib/goga/actions-content";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function ServiceActions({
   id,
@@ -19,6 +20,7 @@ export function ServiceActions({
   title: string;
   published: boolean;
 }) {
+  const { tr } = useLocale();
   return (
     <>
       <PublishToggle
@@ -27,7 +29,10 @@ export function ServiceActions({
       />
       <EditLink href={`/admin/services/${id}`} />
       <DeleteButton
-        confirmText={`Delete service "${title}"? This cannot be undone.`}
+        confirmText={tr(
+          `Delete service "${title}"? This cannot be undone.`,
+          `წავშალოთ სერვისი „${title}"? ამის დაბრუნება ვერ მოხერხდება.`,
+        )}
         onDelete={() => deleteService(id)}
       />
     </>

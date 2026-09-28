@@ -9,6 +9,7 @@ import {
   deletePackage,
   togglePackagePublished,
 } from "@/app/lib/goga/actions-packages";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function PackageActions({
   id,
@@ -19,6 +20,7 @@ export function PackageActions({
   title: string;
   published: boolean;
 }) {
+  const { tr } = useLocale();
   return (
     <>
       <PublishToggle
@@ -27,7 +29,10 @@ export function PackageActions({
       />
       <EditLink href={`/admin/packages/${id}`} />
       <DeleteButton
-        confirmText={`Delete package "${title}"? This cannot be undone.`}
+        confirmText={tr(
+          `Delete package "${title}"? This cannot be undone.`,
+          `წაშალოთ პაკეტი „${title}“? მოქმედება შეუქცევადია.`,
+        )}
         onDelete={() => deletePackage(id)}
       />
     </>

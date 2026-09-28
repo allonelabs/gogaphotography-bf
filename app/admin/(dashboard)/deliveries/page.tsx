@@ -1,9 +1,16 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
-import { Pagination, parsePage } from "@/app/admin/(dashboard)/_components/Pagination";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  Pagination,
+  parsePage,
+} from "@/app/admin/(dashboard)/_components/Pagination";
 import { RealtimeRefresh } from "@/app/admin/(dashboard)/_components/useRealtimeRefresh";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 const PAGE_SIZE = 50;
 
@@ -28,20 +35,29 @@ export default async function DeliveriesPage({ searchParams }: Props) {
     .order("created_at", { ascending: false })
     .range(from, to);
   const items = data ?? [];
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const intlLocale = locale === "ka" ? "ka-GE" : "en-US";
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Pipeline" }, { label: "Deliveries" }]}
+      breadcrumb={[
+        { label: tr("Pipeline", "პროცესი") },
+        { label: tr("Deliveries", "მიწოდებები") },
+      ]}
       chatScope={{ level: "tool", tool: "deliveries" }}
-      chatScopeLabel="Deliveries"
+      chatScopeLabel={tr("Deliveries", "მიწოდებები")}
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Deliveries
+            {tr("Deliveries", "მიწოდებები")}
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            {items.length} active galleries
+            {tr(
+              `${items.length} active galleries`,
+              `${items.length} აქტიური გალერეა`,
+            )}
           </p>
         </header>
 
@@ -50,8 +66,11 @@ export default async function DeliveriesPage({ searchParams }: Props) {
         {items.length === 0 ? (
           <EmptyState
             icon={<Icon name="image" />}
-            title="No deliveries yet"
-            description="Open a booking detail page after the shoot and hit “Create delivery gallery” to share photos with the client."
+            title={tr("No deliveries yet", "მიწოდებები ჯერ არ არის")}
+            description={tr(
+              "Open a booking detail page after the shoot and hit “Create delivery gallery” to share photos with the client.",
+              "გადაღების შემდეგ გახსენით ჯავშნის გვერდი და დააჭირეთ „მიწოდების გალერეის შექმნას“, რომ გაუზიაროთ ფოტოები კლიენტს.",
+            )}
           />
         ) : (
           <ul className="space-y-2">
@@ -66,22 +85,31 @@ export default async function DeliveriesPage({ searchParams }: Props) {
                 >
                   <div className="min-w-0">
                     <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                      {d.bookings?.client_name ?? "(no client)"}
+                      {d.bookings?.client_name ??
+                        tr("(no client)", "(კლიენტის გარეშე)")}
                       {d.bookings?.shoot_date ? (
                         <span className="ml-2 font-mono text-[11px] font-normal tabular-nums text-[var(--ink-500)]">
-                          {new Date(d.bookings.shoot_date).toLocaleDateString()}
+                          {new Date(d.bookings.shoot_date).toLocaleDateString(
+                            intlLocale,
+                          )}
                         </span>
                       ) : null}
                     </div>
                     <div className="truncate font-mono text-[11px] text-[var(--ink-400)]">
                       /gallery/{d.token} ·{" "}
                       {d.last_viewed_at
-                        ? `last viewed ${new Date(d.last_viewed_at).toLocaleDateString()}`
-                        : "never viewed"}
+                        ? tr(
+                            `last viewed ${new Date(d.last_viewed_at).toLocaleDateString(intlLocale)}`,
+                            `ბოლოს ნანახია ${new Date(d.last_viewed_at).toLocaleDateString(intlLocale)}`,
+                          )
+                        : tr("never viewed", "არასდროს ნანახი")}
                     </div>
                   </div>
                   <span className="text-[12px] text-[var(--ink-500)]">
-                    {d.view_count} view{d.view_count === 1 ? "" : "s"}
+                    {tr(
+                      `${d.view_count} view${d.view_count === 1 ? "" : "s"}`,
+                      `${d.view_count} ნახვა`,
+                    )}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
@@ -90,7 +118,9 @@ export default async function DeliveriesPage({ searchParams }: Props) {
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >
-                    {d.password_hash ? "Protected" : "Open"}
+                    {d.password_hash
+                      ? tr("Protected", "დაცული")
+                      : tr("Open", "ღია")}
                   </span>
                 </Link>
               </li>

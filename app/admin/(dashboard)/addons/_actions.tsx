@@ -9,6 +9,7 @@ import {
   deleteAddon,
   toggleAddonPublished,
 } from "@/app/lib/goga/actions-addons";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function AddonActions({
   id,
@@ -19,6 +20,7 @@ export function AddonActions({
   title: string;
   published: boolean;
 }) {
+  const { tr } = useLocale();
   return (
     <>
       <PublishToggle
@@ -27,7 +29,10 @@ export function AddonActions({
       />
       <EditLink href={`/admin/addons/${id}`} />
       <DeleteButton
-        confirmText={`Delete add-on "${title}"? This cannot be undone.`}
+        confirmText={tr(
+          `Delete add-on "${title}"? This cannot be undone.`,
+          `წავშალოთ დამატება „${title}"? ამის დაბრუნება ვერ მოხერხდება.`,
+        )}
         onDelete={() => deleteAddon(id)}
       />
     </>

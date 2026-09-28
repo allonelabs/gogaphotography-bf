@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { listAdminEvents } from "@/app/lib/goga/admin-events";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
-import { Pagination, parsePage } from "@/app/admin/(dashboard)/_components/Pagination";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  Pagination,
+  parsePage,
+} from "@/app/admin/(dashboard)/_components/Pagination";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Audit" };
@@ -91,6 +98,9 @@ function describe(
 
 export default async function AuditPage({ searchParams }: Props) {
   const sp = await searchParams;
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   const { page, from, to } = parsePage(sp.page, PAGE_SIZE);
   const { rows, count } = await listAdminEvents({
     offset: from,
@@ -104,19 +114,21 @@ export default async function AuditPage({ searchParams }: Props) {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Audit" }]}
+      breadcrumb={[{ label: tr("Audit", "აუდიტი") }]}
       chatScope={{ level: "tool", tool: "audit" }}
-      chatScopeLabel="Audit"
+      chatScopeLabel={tr("Audit", "აუდიტი")}
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex flex-wrap items-baseline justify-between gap-3">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Audit
+              {tr("Audit", "აუდიტი")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {count != null ? `${count} events` : "events"}
-              {filtered ? " · filtered" : ""}
+              {count != null
+                ? tr(`${count} events`, `${count} მოვლენა`)
+                : tr("events", "მოვლენები")}
+              {filtered ? tr(" · filtered", " · გაფილტრული") : ""}
             </p>
           </div>
           {filtered ? (
@@ -124,7 +136,7 @@ export default async function AuditPage({ searchParams }: Props) {
               href="/admin/audit"
               className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
             >
-              Clear filters
+              {tr("Clear filters", "ფილტრების გასუფთავება")}
             </Link>
           ) : null}
         </header>
@@ -132,11 +144,24 @@ export default async function AuditPage({ searchParams }: Props) {
         {rows.length === 0 ? (
           <EmptyState
             icon={<Icon name="file" />}
-            title={filtered ? "No events match these filters" : "No events yet"}
+            title={
+              filtered
+                ? tr(
+                    "No events match these filters",
+                    "ამ ფილტრებით მოვლენები ვერ მოიძებნა",
+                  )
+                : tr("No events yet", "მოვლენები ჯერ არ არის")
+            }
             description={
               filtered
-                ? "Try clearing filters or pick a different entity / kind."
-                : "Operator actions and payment outcomes will appear here as they happen."
+                ? tr(
+                    "Try clearing filters or pick a different entity / kind.",
+                    "სცადეთ ფილტრების გასუფთავება ან სხვა ობიექტის / ტიპის არჩევა.",
+                  )
+                : tr(
+                    "Operator actions and payment outcomes will appear here as they happen.",
+                    "ოპერატორის მოქმედებები და გადახდის შედეგები აქ გამოჩნდება მოხდომისთანავე.",
+                  )
             }
           />
         ) : (
@@ -150,7 +175,7 @@ export default async function AuditPage({ searchParams }: Props) {
                   className="grid grid-cols-[180px_1fr_auto] items-center gap-3 rounded-xl bg-white px-4 py-2.5 text-[13px] ring-1 ring-black/5"
                 >
                   <time className="font-mono text-[11px] tabular-nums text-[var(--ink-500)]">
-                    {new Date(e.created_at).toLocaleString(undefined, {
+                    {new Date(e.created_at).toLocaleString(dateLocale, {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
@@ -185,7 +210,7 @@ export default async function AuditPage({ searchParams }: Props) {
                     </div>
                   </div>
                   <span className="text-[11px] text-[var(--ink-400)]">
-                    {e.actor ?? "system"}
+                    {e.actor ?? tr("system", "სისტემა")}
                   </span>
                 </li>
               );

@@ -40,7 +40,7 @@ export function OverviewChat({
   operatorFirstName,
   starters,
 }: OverviewChatProps) {
-  const { t } = useLocale();
+  const { t, tr } = useLocale();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [streamingSay, setStreamingSay] = useState("");
   const [streamClosed, setStreamClosed] = useState(false);
@@ -274,7 +274,9 @@ export function OverviewChat({
               <Bubble key={i} turn={t} />
             ))}
             {pending && !streamingSay && (
-              <div aria-label="Assistant is thinking">
+              <div
+                aria-label={tr("Assistant is thinking", "ასისტენტი ფიქრობს")}
+              >
                 <AssistantThinking />
               </div>
             )}
@@ -532,6 +534,7 @@ function truncateMiddle(name: string, max: number): string {
 
 function Bubble({ turn }: { turn: Turn }) {
   const isUser = turn.role === "user";
+  const { tr } = useLocale();
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -589,8 +592,8 @@ function Bubble({ turn }: { turn: Turn }) {
       <button
         type="button"
         onClick={copy}
-        aria-label={copied ? "Copied" : "Copy"}
-        title={copied ? "Copied" : "Copy"}
+        aria-label={copied ? tr("Copied", "დაკოპირდა") : tr("Copy", "კოპირება")}
+        title={copied ? tr("Copied", "დაკოპირდა") : tr("Copy", "კოპირება")}
         className="absolute -right-1 top-0 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--ink-400)] opacity-0 transition hover:bg-[var(--bg-sunken)] hover:text-[var(--ink-900)] group-hover:opacity-100"
       >
         {copied ? (

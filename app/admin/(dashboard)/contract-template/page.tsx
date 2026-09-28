@@ -1,6 +1,7 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ContractTemplateForm } from "./_form";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Contract template" };
@@ -24,6 +25,7 @@ const PLACEHOLDERS = [
 ];
 
 export default async function ContractTemplatePage() {
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("contract_templates")
@@ -33,25 +35,29 @@ export default async function ContractTemplatePage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Pipeline" }, { label: "Contract template" }]}
+      breadcrumb={[
+        { label: tr("Pipeline", "პროცესი") },
+        { label: tr("Contract template", "ხელშეკრულების შაბლონი") },
+      ]}
       chatScope={{ level: "tool", tool: "contract-template" }}
-      chatScopeLabel="Contract template"
+      chatScopeLabel={tr("Contract template", "ხელშეკრულების შაბლონი")}
     >
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <header>
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Contract template
+            {tr("Contract template", "ხელშეკრულების შაბლონი")}
           </h1>
           <p className="mt-1 max-w-prose text-[13px] text-[var(--ink-500)]">
-            The default body used every time a new contract is generated from a
-            booking (EN/KA/RU). Existing contracts aren&apos;t retroactively
-            changed.
+            {tr(
+              "The default body used every time a new contract is generated from a booking (EN/KA/RU). Existing contracts aren't retroactively changed.",
+              "საბაზისო ტექსტი, რომელიც გამოიყენება ყოველ ჯერზე, როცა ჯავშნიდან იქმნება ახალი ხელშეკრულება (EN/KA/RU). არსებული ხელშეკრულებები უკუძალით არ იცვლება.",
+            )}
           </p>
         </header>
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h2 className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Placeholders
+            {tr("Placeholders", "ცვლადები")}
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {PLACEHOLDERS.map((p) => (
@@ -64,7 +70,10 @@ export default async function ContractTemplatePage() {
             ))}
           </div>
           <p className="mt-2 text-[12px] text-[var(--ink-500)]">
-            Unknown placeholders render as an empty string.
+            {tr(
+              "Unknown placeholders render as an empty string.",
+              "უცნობი ცვლადები ცარიელ ველად აისახება.",
+            )}
           </p>
         </section>
 

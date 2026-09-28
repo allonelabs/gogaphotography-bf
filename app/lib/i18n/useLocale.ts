@@ -6,8 +6,12 @@ import { translate, type Locale, type TranslationKey } from "./dict";
 const STORAGE_KEY = "tp.locale";
 const EVENT = "tp.locale.change";
 
+// GOGA's studio works in Georgian, so the admin opens in Georgian until the
+// operator picks English.
+export const DEFAULT_LOCALE: Locale = "ka";
+
 function readLocaleFromDocument(): Locale {
-  if (typeof document === "undefined") return "en";
+  if (typeof document === "undefined") return DEFAULT_LOCALE;
   // Prefer <html data-locale> set by LocaleBoot (server cookie → SSR)
   const fromHtml = document.documentElement.dataset.locale;
   if (fromHtml === "en" || fromHtml === "ka") return fromHtml;
@@ -17,11 +21,11 @@ function readLocaleFromDocument(): Locale {
   } catch {
     /* ignore */
   }
-  return "en";
+  return DEFAULT_LOCALE;
 }
 
 export function useLocale() {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
 
   useEffect(() => {
     setLocaleState(readLocaleFromDocument());
@@ -53,5 +57,11 @@ export function useLocale() {
     [locale],
   );
 
-  return { locale, setLocale, t };
+  /** Inline pair for admin copy that has no dict key: tr("Save", "შენახვა"). */
+  const tr = useCallback(
+    (en: string, ka: string) => (locale === "ka" ? ka : en),
+    [locale],
+  );
+
+  return { locale, setLocale, t, tr };
 }

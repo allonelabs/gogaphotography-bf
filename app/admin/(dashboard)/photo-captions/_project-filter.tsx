@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function ProjectFilter({
   projects,
@@ -12,6 +13,7 @@ export function ProjectFilter({
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const { tr } = useLocale();
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const next = new URLSearchParams(params.toString());
@@ -29,7 +31,7 @@ export function ProjectFilter({
         onChange={onChange}
         className="rounded-xl border border-black/10 bg-white px-3.5 py-2.5 text-[13px] text-[var(--ink-900)] outline-none transition focus:border-[var(--ink-900)]"
       >
-        <option value="">All projects</option>
+        <option value="">{tr("All projects", "ყველა პროექტი")}</option>
         {projects.map((p) => (
           <option key={p.id} value={p.id}>
             {p.title}

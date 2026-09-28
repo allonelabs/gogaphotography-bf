@@ -7,11 +7,13 @@ import {
   Icon,
 } from "@/app/admin/(dashboard)/_components/EmptyState";
 import { formatMoney } from "@/app/lib/goga/money";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Packages" };
 
 export default async function PackagesPage() {
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("packages")
@@ -24,38 +26,44 @@ export default async function PackagesPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Catalog" }, { label: "Packages" }]}
+      breadcrumb={[
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Packages", "პაკეტები") },
+      ]}
       chatScope={{ level: "tool", tool: "packages" }}
-      chatScopeLabel="Packages"
+      chatScopeLabel={tr("Packages", "პაკეტები")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Packages
+              {tr("Packages", "პაკეტები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} total
+              {tr(`${items.length} total`, `სულ ${items.length}`)}
             </p>
           </div>
           <Link
             href="/admin/packages/new"
             className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
           >
-            New package
+            {tr("New package", "ახალი პაკეტი")}
           </Link>
         </header>
 
         {items.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
             <p className="mb-3 text-[14px] text-[var(--ink-500)]">
-              No packages yet — add your first one to start taking bookings.
+              {tr(
+                "No packages yet — add your first one to start taking bookings.",
+                "პაკეტები ჯერ არ არის — დაამატეთ პირველი ჯავშნების მისაღებად.",
+              )}
             </p>
             <Link
               href="/admin/packages/new"
               className="inline-block rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
             >
-              Create the first package
+              {tr("Create the first package", "შექმენით პირველი პაკეტი")}
             </Link>
           </div>
         ) : (
@@ -88,7 +96,9 @@ export default async function PackagesPage() {
                         : "bg-slate-100 text-slate-700"
                     }`}
                   >
-                    {p.published ? "Live" : "Draft"}
+                    {p.published
+                      ? tr("Live", "გამოქვეყნებული")
+                      : tr("Draft", "მონახაზი")}
                   </span>
                   <PackageActions
                     id={p.id}

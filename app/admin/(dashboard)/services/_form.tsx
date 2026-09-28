@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createService, updateService } from "@/app/lib/goga/actions-content";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Initial = {
   id?: string;
@@ -23,6 +24,7 @@ type Initial = {
 export function ServiceForm({ initial }: { initial?: Initial }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const isEdit = !!initial?.id;
@@ -35,15 +37,18 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
       try {
         if (isEdit && initial?.id) {
           await updateService(initial.id, fd);
-          toast.show("Service saved", "success");
+          toast.show(tr("Service saved", "სერვისი შენახულია"), "success");
           router.refresh();
         } else {
           await createService(fd);
-          toast.show("Service created", "success");
+          toast.show(tr("Service created", "სერვისი შეიქმნა"), "success");
         }
       } catch (e) {
         rethrowIfRedirect(e);
-        const msg = e instanceof Error ? e.message : "Save failed";
+        const msg =
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა");
         setErr(msg);
         toast.show(msg, "error");
       }
@@ -59,23 +64,23 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Title (EN)">
+        <Field label={tr("Title (EN)", "სათაური (EN)")}>
           <input
             name="title_en"
             required
             defaultValue={initial?.title_en ?? ""}
-            placeholder="Wedding photography"
+            placeholder={tr("Wedding photography", "საქორწილო ფოტოგრაფია")}
             className={inputCls}
           />
         </Field>
-        <Field label="Title (KA)">
+        <Field label={tr("Title (KA)", "სათაური (KA)")}>
           <input
             name="title_ka"
             defaultValue={initial?.title_ka ?? ""}
             className={inputCls}
           />
         </Field>
-        <Field label="Title (RU)">
+        <Field label={tr("Title (RU)", "სათაური (RU)")}>
           <input
             name="title_ru"
             defaultValue={initial?.title_ka ?? ""}
@@ -85,7 +90,7 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Description (EN)">
+        <Field label={tr("Description (EN)", "აღწერა (EN)")}>
           <textarea
             name="description_en"
             defaultValue={initial?.description_en ?? ""}
@@ -93,7 +98,7 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
-        <Field label="Description (KA)">
+        <Field label={tr("Description (KA)", "აღწერა (KA)")}>
           <textarea
             name="description_ka"
             defaultValue={initial?.description_ka ?? ""}
@@ -101,7 +106,7 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
             className={inputCls}
           />
         </Field>
-        <Field label="Description (RU)">
+        <Field label={tr("Description (RU)", "აღწერა (RU)")}>
           <textarea
             name="description_ru"
             defaultValue={initial?.description_ka ?? ""}
@@ -111,11 +116,11 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
         </Field>
       </div>
 
-      <Field label="Price">
+      <Field label={tr("Price", "ფასი")}>
         <input
           name="price"
           defaultValue={initial?.price ?? ""}
-          placeholder="From €2,500"
+          placeholder={tr("From €2,500", "€2,500-დან")}
           className={`${inputCls} max-w-xs`}
         />
       </Field>
@@ -127,7 +132,12 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
           defaultChecked={initial?.published ?? true}
           className="h-4 w-4 rounded border-black/20"
         />
-        <span>Published — shown on the public /services page</span>
+        <span>
+          {tr(
+            "Published — shown on the public /services page",
+            "გამოქვეყნებული — ჩანს საჯარო /services გვერდზე",
+          )}
+        </span>
       </label>
 
       <div className="flex items-center gap-3 pt-2">
@@ -136,7 +146,11 @@ export function ServiceForm({ initial }: { initial?: Initial }) {
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          {pending ? "Saving…" : isEdit ? "Save changes" : "Create service"}
+          {pending
+            ? tr("Saving…", "ინახება…")
+            : isEdit
+              ? tr("Save changes", "ცვლილებების შენახვა")
+              : tr("Create service", "სერვისის შექმნა")}
         </button>
         {err ? <span className="text-[13px] text-slate-700">{err}</span> : null}
       </div>

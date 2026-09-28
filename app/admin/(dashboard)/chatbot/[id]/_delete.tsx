@@ -4,10 +4,12 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteChatbotSession } from "@/app/lib/goga/actions-chatbot";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function DeleteSessionButton({ id }: { id: string }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -17,17 +19,23 @@ export function DeleteSessionButton({ id }: { id: string }) {
       onClick={() => {
         if (
           confirm(
-            "Delete this conversation? Every message in it is removed for good.",
+            tr(
+              "Delete this conversation? Every message in it is removed for good.",
+              "წავშალოთ ეს საუბარი? მასში ყველა შეტყობინება სამუდამოდ წაიშლება.",
+            ),
           )
         ) {
           start(async () => {
             try {
               await deleteChatbotSession(id);
-              toast.show("Conversation deleted", "success");
+              toast.show(
+                tr("Conversation deleted", "საუბარი წაშლილია"),
+                "success",
+              );
               router.push("/admin/chatbot");
             } catch (e) {
               toast.show(
-                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                `${tr("Delete failed", "წაშლა ვერ მოხერხდა")}: ${e instanceof Error ? e.message : e}`,
                 "error",
               );
             }
@@ -35,7 +43,7 @@ export function DeleteSessionButton({ id }: { id: string }) {
         }
       }}
     >
-      {pending ? "Deleting…" : "Delete"}
+      {pending ? tr("Deleting…", "იშლება…") : tr("Delete", "წაშლა")}
     </button>
   );
 }

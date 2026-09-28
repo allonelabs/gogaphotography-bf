@@ -3,16 +3,21 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { DeleteSessionButton } from "./_delete";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ id: string }> };
 
-const LOCALE_NAME: Record<string, string> = {
-  ka: "Georgian",
-  en: "English",
-  ru: "Russian",
-};
+function getLocaleNames(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    ka: tr("Georgian", "ქართული"),
+    en: tr("English", "ინგლისური"),
+    ru: tr("Russian", "რუსული"),
+  };
+}
 
 // The site's /api/chat stamps `{ error: true }` on a reply the model never
 // produced — the "we're busy" fallback the visitor saw instead of an answer.
@@ -26,6 +31,10 @@ function isFailedReply(toolCalls: unknown): boolean {
 
 export default async function ChatbotTranscriptPage({ params }: Props) {
   const { id } = await params;
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
+  const LOCALE_NAME = getLocaleNames(tr);
   const sb = gogaAdmin();
   const [{ data: session }, { data: messages }] = await Promise.all([
     sb
@@ -46,17 +55,17 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Inbox" },
-        { label: "Chatbot", href: "/admin/chatbot" },
-        { label: "Session" },
+        { label: tr("Inbox", "შემოსული") },
+        { label: tr("Chatbot", "ჩატბოტი"), href: "/admin/chatbot" },
+        { label: tr("Session", "სესია") },
       ]}
       chatScope={{ level: "tool", tool: "chatbot" }}
-      chatScopeLabel="Chatbot session"
+      chatScopeLabel={tr("Chatbot session", "ჩატის სესია")}
     >
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Chat session
+            {tr("Chat session", "ჩატის სესია")}
           </h1>
           <div className="flex items-center gap-2">
             {session.lead_id ? (
@@ -64,7 +73,7 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                 href={`/admin/leads/${session.lead_id}`}
                 className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
               >
-                → Lead
+                {tr("→ Lead", "→ ლიდი")}
               </Link>
             ) : null}
             <DeleteSessionButton id={session.id} />
@@ -72,30 +81,36 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
               href="/admin/chatbot"
               className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
             >
-              ← back
+              {tr("← back", "← უკან")}
             </Link>
           </div>
         </header>
 
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <dl className="grid grid-cols-[100px_1fr] gap-y-1.5 text-[13px]">
-            <dt className="text-[var(--ink-400)]">Token</dt>
+            <dt className="text-[var(--ink-400)]">{tr("Token", "ტოკენი")}</dt>
             <dd className="font-mono text-[12px]">{session.session_token}</dd>
-            <dt className="text-[var(--ink-400)]">Started</dt>
+            <dt className="text-[var(--ink-400)]">
+              {tr("Started", "დაწყებულია")}
+            </dt>
             <dd>
               {session.started_at
-                ? new Date(session.started_at).toLocaleString()
+                ? new Date(session.started_at).toLocaleString(dateLocale)
                 : ""}
             </dd>
-            <dt className="text-[var(--ink-400)]">Language</dt>
-            <dd>{LOCALE_NAME[session.locale ?? ""] ?? session.locale ?? "—"}</dd>
+            <dt className="text-[var(--ink-400)]">{tr("Language", "ენა")}</dt>
+            <dd>
+              {LOCALE_NAME[session.locale ?? ""] ?? session.locale ?? "—"}
+            </dd>
             {session.ip ? (
               <>
                 <dt className="text-[var(--ink-400)]">IP</dt>
                 <dd>{session.ip}</dd>
               </>
             ) : null}
-            <dt className="text-[var(--ink-400)]">Messages</dt>
+            <dt className="text-[var(--ink-400)]">
+              {tr("Messages", "მესიჯები")}
+            </dt>
             <dd>{session.message_count}</dd>
           </dl>
         </section>
@@ -109,9 +124,9 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                   className="rounded-xl bg-slate-50 px-3 py-2 text-[11px] text-[var(--ink-500)] ring-1 ring-black/5"
                 >
                   <summary className="cursor-pointer list-none">
-                    ⚙ tool result ·{" "}
+                    ⚙ {tr("tool result", "ხელსაწყოს შედეგი")} ·{" "}
                     {m.created_at
-                      ? new Date(m.created_at).toLocaleTimeString()
+                      ? new Date(m.created_at).toLocaleTimeString(dateLocale)
                       : ""}
                   </summary>
                   <pre className="mt-2 whitespace-pre-wrap font-mono text-[11px]">
@@ -136,10 +151,15 @@ export default async function ChatbotTranscriptPage({ params }: Props) {
                     isUser ? "text-white/55" : "text-[var(--ink-500)]"
                   }`}
                 >
-                  {isUser ? "Visitor" : "Assistant"}
-                  {failed ? " · failed to answer" : ""} ·{" "}
+                  {isUser
+                    ? tr("Visitor", "სტუმარი")
+                    : tr("Assistant", "ასისტენტი")}
+                  {failed
+                    ? ` · ${tr("failed to answer", "პასუხი ვერ გაიცა")}`
+                    : ""}{" "}
+                  ·{" "}
                   {m.created_at
-                    ? new Date(m.created_at).toLocaleTimeString()
+                    ? new Date(m.created_at).toLocaleTimeString(dateLocale)
                     : ""}
                 </div>
                 {m.content}

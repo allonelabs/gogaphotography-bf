@@ -1,6 +1,7 @@
 // app/app/store/product-form.tsx
 "use client";
 import type { StoreProductRow } from "@/app/lib/db/store-types";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function ProductForm({
   action,
@@ -9,24 +10,25 @@ export function ProductForm({
   action: (fd: FormData) => void;
   product?: StoreProductRow;
 }) {
+  const { tr } = useLocale();
   const field =
     "mt-1 w-full rounded-lg border border-black/10 px-3 py-2 text-[14px]";
   const label = "block text-[13px] text-[var(--ink-700)]";
   return (
     <form action={action} className="max-w-xl space-y-4">
       <label className={label}>
-        Type
+        {tr("Type", "ტიპი")}
         <select
           name="type"
           defaultValue={product?.type ?? "preset"}
           className={field}
         >
-          <option value="preset">Preset</option>
-          <option value="album">Album</option>
+          <option value="preset">{tr("Preset", "პრესეტი")}</option>
+          <option value="album">{tr("Album", "ალბომი")}</option>
         </select>
       </label>
       <label className={label}>
-        Title
+        {tr("Title", "სათაური")}
         <input
           name="title"
           defaultValue={product?.title ?? ""}
@@ -36,12 +38,12 @@ export function ProductForm({
       </label>
       {!product && (
         <label className={label}>
-          Slug (optional)
+          {tr("Slug (optional)", "სლაგი (არასავალდებულო)")}
           <input name="slug" className={field} />
         </label>
       )}
       <label className={label}>
-        Description
+        {tr("Description", "აღწერა")}
         <textarea
           name="description"
           defaultValue={product?.description ?? ""}
@@ -50,7 +52,7 @@ export function ProductForm({
         />
       </label>
       <label className={label}>
-        Price (GEL)
+        {tr("Price (GEL)", "ფასი (GEL)")}
         <input
           name="price"
           type="number"
@@ -62,7 +64,7 @@ export function ProductForm({
         />
       </label>
       <label className={label}>
-        License terms
+        {tr("License terms", "ლიცენზიის პირობები")}
         <textarea
           name="license_terms"
           defaultValue={product?.license_terms ?? ""}
@@ -71,10 +73,10 @@ export function ProductForm({
         />
       </label>
       <label className={label}>
-        Cover image{" "}
+        {tr("Cover image", "ყდის სურათი")}{" "}
         {product?.cover_image_path && (
           <span className="text-xs text-neutral-400">
-            (current kept if empty)
+            {tr("(current kept if empty)", "(თუ ცარიელია, ძველი შენარჩუნდება)")}
           </span>
         )}
         <input
@@ -85,10 +87,10 @@ export function ProductForm({
         />
       </label>
       <label className={label}>
-        Deliverable file{" "}
+        {tr("Deliverable file", "მისაწოდებელი ფაილი")}{" "}
         {product?.file_path && (
           <span className="text-xs text-neutral-400">
-            (current kept if empty)
+            {tr("(current kept if empty)", "(თუ ცარიელია, ძველი შენარჩუნდება)")}
           </span>
         )}
         <input name="file" type="file" className="mt-1 block" />
@@ -99,10 +101,10 @@ export function ProductForm({
           type="checkbox"
           defaultChecked={product?.published ?? false}
         />{" "}
-        Published
+        {tr("Published", "გამოქვეყნებული")}
       </label>
       <button className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]">
-        {product ? "Save" : "Create"}
+        {product ? tr("Save", "შენახვა") : tr("Create", "შექმნა")}
       </button>
     </form>
   );

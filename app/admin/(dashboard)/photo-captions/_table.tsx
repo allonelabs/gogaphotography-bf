@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { updateImageCaption } from "@/app/lib/goga/actions-photo-captions";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Item = {
   id: string;
@@ -16,11 +17,15 @@ type Item = {
 };
 
 export function CaptionsTable({ items }: { items: Item[] }) {
+  const { tr } = useLocale();
   if (items.length === 0) {
     return (
       <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
         <p className="text-[14px] text-[var(--ink-500)]">
-          No photos match this filter.
+          {tr(
+            "No photos match this filter.",
+            "ამ ფილტრით ფოტოები ვერ მოიძებნა.",
+          )}
         </p>
       </div>
     );
@@ -36,6 +41,7 @@ export function CaptionsTable({ items }: { items: Item[] }) {
 
 function Row({ item }: { item: Item }) {
   const toast = useToast();
+  const { tr } = useLocale();
   const [caption, setCaption] = useState(item.caption);
   const [captionKa, setCaptionKa] = useState(item.captionKa);
   const [captionRu, setCaptionRu] = useState(item.captionRu);
@@ -60,7 +66,12 @@ function Row({ item }: { item: Item }) {
         });
         setSavedAt(Date.now());
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Save failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -84,7 +95,7 @@ function Row({ item }: { item: Item }) {
           <div className="grid gap-2 sm:grid-cols-2">
             <label className="block">
               <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-[var(--ink-500)]">
-                Caption (EN)
+                {tr("Caption", "წარწერა")} (EN)
               </span>
               <input
                 value={caption}
@@ -94,7 +105,7 @@ function Row({ item }: { item: Item }) {
             </label>
             <label className="block">
               <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-[var(--ink-500)]">
-                Alt text
+                {tr("Alt text", "Alt ტექსტი")}
               </span>
               <input
                 value={altText}
@@ -104,7 +115,7 @@ function Row({ item }: { item: Item }) {
             </label>
             <label className="block">
               <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-[var(--ink-500)]">
-                Caption (KA)
+                {tr("Caption", "წარწერა")} (KA)
               </span>
               <input
                 value={captionKa}
@@ -114,7 +125,7 @@ function Row({ item }: { item: Item }) {
             </label>
             <label className="block">
               <span className="mb-1 block text-[10px] uppercase tracking-[0.16em] text-[var(--ink-500)]">
-                Caption (RU)
+                {tr("Caption", "წარწერა")} (RU)
               </span>
               <input
                 value={captionRu}
@@ -130,11 +141,11 @@ function Row({ item }: { item: Item }) {
               disabled={pending || !dirty}
               className="rounded-full bg-[var(--ao-accent)] px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-40"
             >
-              {pending ? "Saving…" : "Save"}
+              {pending ? tr("Saving…", "ინახება…") : tr("Save", "შენახვა")}
             </button>
             {savedAt && !dirty ? (
               <span className="text-[11px] text-slate-900 font-medium">
-                Saved.
+                {tr("Saved.", "შენახულია.")}
               </span>
             ) : null}
           </div>

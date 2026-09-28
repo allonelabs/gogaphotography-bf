@@ -7,6 +7,7 @@ import {
   type WeekdayRule,
 } from "@/app/lib/goga/actions-availability";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Row = {
   weekday: number;
@@ -19,6 +20,7 @@ type Row = {
 export function AvailabilityForm({ initial }: { initial: Row[] }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [rows, setRows] = useState<Row[]>(initial);
   const [pending, start] = useTransition();
 
@@ -38,10 +40,18 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
     start(async () => {
       try {
         await saveAvailabilityRules(payload);
-        toast.show("Weekly hours saved", "success");
+        toast.show(
+          tr("Weekly hours saved", "კვირის განრიგი შენახულია"),
+          "success",
+        );
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Save failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -52,7 +62,7 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
   return (
     <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
       <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-        Weekly hours
+        {tr("Weekly hours", "კვირის განრიგი")}
       </h2>
       <ul className="divide-y divide-black/5">
         {rows.map((r) => (
@@ -72,7 +82,7 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
                 }
                 className="h-4 w-4 rounded border-black/20"
               />
-              Closed
+              {tr("Closed", "დახურულია")}
             </label>
             {!r.closed ? (
               <>
@@ -84,7 +94,9 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
                   }
                   className={inputCls}
                 />
-                <span className="text-[12px] text-[var(--ink-400)]">to</span>
+                <span className="text-[12px] text-[var(--ink-400)]">
+                  {tr("to", "-დან")}
+                </span>
                 <input
                   type="time"
                   value={r.end_time}
@@ -96,7 +108,7 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
               </>
             ) : (
               <span className="text-[12px] text-[var(--ink-400)]">
-                Not bookable this day
+                {tr("Not bookable this day", "ამ დღეს ჯავშანი არ ხერხდება")}
               </span>
             )}
           </li>
@@ -108,7 +120,9 @@ export function AvailabilityForm({ initial }: { initial: Row[] }) {
         disabled={pending}
         className="mt-4 rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
       >
-        {pending ? "Saving…" : "Save weekly hours"}
+        {pending
+          ? tr("Saving…", "ინახება…")
+          : tr("Save weekly hours", "განრიგის შენახვა")}
       </button>
     </section>
   );

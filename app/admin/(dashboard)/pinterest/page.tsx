@@ -15,11 +15,15 @@ import {
   requeuePin,
 } from "@/app/lib/goga/actions-pinterest";
 import type { PinterestPinRow } from "@/app/lib/db/pinterest-types";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Pinterest" };
 
 export default async function PinterestPage() {
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   const configured = isPinterestConfigured();
   const settings = await getSettings();
   const connected = isConnected(settings);
@@ -37,7 +41,10 @@ export default async function PinterestPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Content" }, { label: "Pinterest" }]}
+      breadcrumb={[
+        { label: tr("Content", "კონტენტი") },
+        { label: tr("Pinterest", "Pinterest") },
+      ]}
       chatScope={{ level: "tool", tool: "pinterest" }}
       chatScopeLabel="Pinterest"
     >
@@ -48,9 +55,12 @@ export default async function PinterestPage() {
           </h1>
           {!configured && (
             <p className="rounded-lg bg-amber-50 p-4 text-sm text-amber-800">
-              Set <code>PINTEREST_APP_ID</code> and{" "}
-              <code>PINTEREST_APP_SECRET</code> in the project env to enable the
-              connection.
+              {tr("Set", "დააყენეთ")} <code>PINTEREST_APP_ID</code>{" "}
+              {tr("and", "და")} <code>PINTEREST_APP_SECRET</code>{" "}
+              {tr(
+                "in the project env to enable the connection.",
+                "პროექტის გარემოში (env), რომ ჩართოთ კავშირი.",
+              )}
             </p>
           )}
           {configured && !connected && (
@@ -58,30 +68,31 @@ export default async function PinterestPage() {
               href="/api/pinterest/oauth/start"
               className="inline-block rounded-full bg-black px-5 py-2.5 text-sm text-white"
             >
-              Connect Pinterest
+              {tr("Connect Pinterest", "დააკავშირე Pinterest")}
             </a>
           )}
           {connected && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <p className="text-sm">
-                  Connected as <strong>{settings.connected_account}</strong>
+                  {tr("Connected as", "დაკავშირებულია როგორც")}{" "}
+                  <strong>{settings.connected_account}</strong>
                 </p>
                 <form action={disconnectPinterest}>
                   <button className="text-xs text-red-600 underline">
-                    Disconnect
+                    {tr("Disconnect", "კავშირის გაწყვეტა")}
                   </button>
                 </form>
               </div>
               <form action={savePinterestSettings} className="space-y-3">
                 <label className="block text-sm">
-                  Default board
+                  {tr("Default board", "ნაგულისხმევი დაფა")}
                   <select
                     name="default_board_id"
                     defaultValue={settings.default_board_id ?? ""}
                     className="mt-1 block rounded border px-2 py-1 text-sm"
                   >
-                    <option value="">— none —</option>
+                    <option value="">{tr("— none —", "— არცერთი —")}</option>
                     {boards.map((b) => (
                       <option key={b.id} value={b.id}>
                         {b.name}
@@ -90,7 +101,7 @@ export default async function PinterestPage() {
                   </select>
                 </label>
                 <label className="block text-sm">
-                  Board map (JSON, e.g.{" "}
+                  {tr("Board map (JSON, e.g.", "დაფების რუკა (JSON, მაგ.")}{" "}
                   {`{"blog:weddings":"<id>","product":"<id>"}`})
                   <textarea
                     name="board_map"
@@ -100,7 +111,7 @@ export default async function PinterestPage() {
                   />
                 </label>
                 <label className="block text-sm">
-                  Pins per run
+                  {tr("Pins per run", "პინები გაშვებაზე")}
                   <input
                     name="pins_per_run"
                     type="number"
@@ -115,14 +126,14 @@ export default async function PinterestPage() {
                     type="checkbox"
                     defaultChecked={settings.enabled}
                   />{" "}
-                  Automation enabled
+                  {tr("Automation enabled", "ავტომატიზაცია ჩართულია")}
                 </label>
                 <button className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white">
-                  Save
+                  {tr("Save", "შენახვა")}
                 </button>
               </form>
               <p className="mt-1 text-xs text-neutral-400">
-                Available boards:{" "}
+                {tr("Available boards", "ხელმისაწვდომი დაფები")}:{" "}
                 {boards.map((b) => `${b.name} (${b.id})`).join(", ") || "—"}
               </p>
             </div>
@@ -131,20 +142,25 @@ export default async function PinterestPage() {
 
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Queue ({queue.length})</h2>
+            <h2 className="text-lg font-semibold">
+              {tr("Queue", "რიგი")} ({queue.length})
+            </h2>
             <form action={backfillPins}>
               <button className="rounded-full border px-3 py-1.5 text-xs">
-                Backfill eligible content
+                {tr(
+                  "Backfill eligible content",
+                  "შესაბამისი კონტენტის დამატება",
+                )}
               </button>
             </form>
           </div>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-neutral-500">
-                <th className="py-2">Type</th>
-                <th>Status</th>
-                <th>Scheduled</th>
-                <th>Pin / error</th>
+                <th className="py-2">{tr("Type", "ტიპი")}</th>
+                <th>{tr("Status", "სტატუსი")}</th>
+                <th>{tr("Scheduled", "დაგეგმილია")}</th>
+                <th>{tr("Pin / error", "პინი / შეცდომა")}</th>
                 <th></th>
               </tr>
             </thead>
@@ -153,7 +169,9 @@ export default async function PinterestPage() {
                 <tr key={p.id} className="border-t border-black/5">
                   <td className="py-2">{p.content_type}</td>
                   <td>{p.status}</td>
-                  <td>{new Date(p.scheduled_for).toLocaleString()}</td>
+                  <td>
+                    {new Date(p.scheduled_for).toLocaleString(dateLocale)}
+                  </td>
                   <td className="max-w-[240px] truncate text-xs text-neutral-500">
                     {p.pin_id ?? p.error ?? "—"}
                   </td>
@@ -162,11 +180,13 @@ export default async function PinterestPage() {
                       action={requeuePin.bind(null, p.id)}
                       className="inline"
                     >
-                      <button className="text-xs underline">re-queue</button>
+                      <button className="text-xs underline">
+                        {tr("re-queue", "თავიდან რიგში")}
+                      </button>
                     </form>
                     <form action={skipPin.bind(null, p.id)} className="inline">
                       <button className="text-xs text-red-600 underline">
-                        skip
+                        {tr("skip", "გამოტოვება")}
                       </button>
                     </form>
                   </td>
@@ -175,7 +195,7 @@ export default async function PinterestPage() {
               {queue.length === 0 && (
                 <tr>
                   <td colSpan={5} className="py-4 text-neutral-400">
-                    Queue is empty.
+                    {tr("Queue is empty.", "რიგი ცარიელია.")}
                   </td>
                 </tr>
               )}

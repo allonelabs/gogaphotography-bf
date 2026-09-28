@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { LoginForm } from "./LoginForm";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Studio admin · GOGA" };
@@ -22,6 +23,7 @@ export default async function AdminLoginPage({ searchParams }: Props) {
   if (session?.user?.email) {
     redirect(target);
   }
+  const tr = await getServerTr();
 
   return (
     <div className="min-h-screen w-full grid place-items-center bg-[#0a0a0a] text-[#f4f4f4] px-5 font-sans">
@@ -42,7 +44,7 @@ export default async function AdminLoginPage({ searchParams }: Props) {
           GOGA
         </h1>
         <p className="mt-1 mb-7 text-[11px] uppercase tracking-[0.28em] text-white/55">
-          Studio admin
+          {tr("Studio admin", "სტუდიის ადმინი")}
         </p>
         <LoginForm next={target} />
       </div>

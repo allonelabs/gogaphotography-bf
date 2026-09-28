@@ -7,6 +7,7 @@ import {
   sendContract,
   voidContract,
 } from "@/app/lib/goga/actions-contracts";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Contract = {
   id: string;
@@ -24,6 +25,17 @@ type Contract = {
   signatureUrl: string | null;
 };
 
+function CONTRACT_STATUS_LABELS(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    draft: tr("draft", "მონახაზი"),
+    sent: tr("sent", "გაგზავნილი"),
+    signed: tr("signed", "ხელმოწერილი"),
+    void: tr("void", "გაუქმებული"),
+  };
+}
+
 export function ContractEditor({
   contract,
   publicSignUrl,
@@ -38,6 +50,8 @@ export function ContractEditor({
   publicSignUrl: string;
 }) {
   const router = useRouter();
+  const { tr, locale } = useLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : undefined;
   const [pending, start] = useTransition();
   const [bodyEn, setBodyEn] = useState(contract.bodyEn);
   const [bodyKa, setBodyKa] = useState(contract.bodyKa);
@@ -64,7 +78,11 @@ export function ContractEditor({
         setSavedAt(Date.now());
         router.refresh();
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Save failed");
+        setErr(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+        );
       }
     });
   }
@@ -72,7 +90,10 @@ export function ContractEditor({
   function onSend() {
     if (
       !confirm(
-        `Send this contract to ${contract.signerEmail ?? "(no email on file)"}?`,
+        tr(
+          `Send this contract to ${contract.signerEmail ?? "(no email on file)"}?`,
+          `გაეგზავნოს ეს ხელშეკრულება ${contract.signerEmail ?? "(ელფოსტა არ არის მითითებული)"}-ს?`,
+        ),
       )
     )
       return;
@@ -82,7 +103,11 @@ export function ContractEditor({
         await sendContract(contract.id);
         router.refresh();
       } catch (e) {
-        setErr(e instanceof Error ? e.message : "Send failed");
+        setErr(
+          e instanceof Error
+            ? e.message
+            : tr("Send failed", "გაგზავნა ვერ მოხერხდა"),
+        );
       }
     });
   }
@@ -90,7 +115,10 @@ export function ContractEditor({
   function onVoid() {
     if (
       !confirm(
-        "Void this contract? The sign link stops working. Create a fresh contract afterwards if needed.",
+        tr(
+          "Void this contract? The sign link stops working. Create a fresh contract afterwards if needed.",
+          "გაუქმდეს ეს ხელშეკრულება? ხელმოწერის ბმული აღარ იმუშავებს. საჭიროების შემთხვევაში შექმენით ახალი ხელშეკრულება.",
+        ),
       )
     )
       return;
@@ -117,7 +145,12 @@ export function ContractEditor({
         onSubmit={onSaveBody}
         className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
       >
-        <Field label="Contract body (English)">
+        <Field
+          label={tr(
+            "Contract body (English)",
+            "ხელშეკრულების ტექსტი (ინგლისური)",
+          )}
+        >
           <textarea
             value={bodyEn}
             onChange={(e) => setBodyEn(e.target.value)}
@@ -128,7 +161,12 @@ export function ContractEditor({
           />
         </Field>
 
-        <Field label="Contract body (Georgian) — optional">
+        <Field
+          label={tr(
+            "Contract body (Georgian) — optional",
+            "ხელშეკრულების ტექსტი (ქართული) — არასავალდებულო",
+          )}
+        >
           <textarea
             value={bodyKa}
             onChange={(e) => setBodyKa(e.target.value)}
@@ -138,7 +176,12 @@ export function ContractEditor({
           />
         </Field>
 
-        <Field label="Contract body (Russian) — optional">
+        <Field
+          label={tr(
+            "Contract body (Russian) — optional",
+            "ხელშეკრულების ტექსტი (რუსული) — არასავალდებულო",
+          )}
+        >
           <textarea
             value={bodyRu}
             onChange={(e) => setBodyRu(e.target.value)}
@@ -155,11 +198,13 @@ export function ContractEditor({
               disabled={pending}
               className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
             >
-              {pending ? "Saving…" : "Save body"}
+              {pending
+                ? tr("Saving…", "ინახება…")
+                : tr("Save body", "ტექსტის შენახვა")}
             </button>
             {savedAt ? (
               <span className="text-[12px] text-slate-900 font-medium">
-                Saved.
+                {tr("Saved.", "შენახულია.")}
               </span>
             ) : null}
             {err ? (
@@ -172,11 +217,11 @@ export function ContractEditor({
       <aside className="space-y-3">
         <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-            Status
+            {tr("Status", "სტატუსი")}
           </h3>
           <dl className="space-y-2 text-[13px]">
             <Row
-              label="State"
+              label={tr("State", "მდგომარეობა")}
               value={
                 <span
                   className={`rounded-full px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] ${
@@ -189,13 +234,14 @@ export function ContractEditor({
                           : "bg-slate-100 text-slate-700"
                   }`}
                 >
-                  {contract.status}
+                  {CONTRACT_STATUS_LABELS(tr)[contract.status] ??
+                    contract.status}
                 </span>
               }
             />
             {contract.signerEmail ? (
               <Row
-                label="Signer"
+                label={tr("Signer", "ხელმომწერელი")}
                 value={
                   <a
                     href={`mailto:${contract.signerEmail}`}
@@ -208,19 +254,19 @@ export function ContractEditor({
             ) : null}
             {contract.sentAt ? (
               <Row
-                label="Sent"
-                value={new Date(contract.sentAt).toLocaleString()}
+                label={tr("Sent", "გაგზავნილია")}
+                value={new Date(contract.sentAt).toLocaleString(dateLocale)}
               />
             ) : null}
             {contract.signedAt ? (
               <>
                 <Row
-                  label="Signed"
-                  value={new Date(contract.signedAt).toLocaleString()}
+                  label={tr("Signed", "ხელმოწერილია")}
+                  value={new Date(contract.signedAt).toLocaleString(dateLocale)}
                 />
                 <Row label="IP" value={contract.signedIp ?? "—"} />
                 <Row
-                  label="Locale"
+                  label={tr("Locale", "ენა")}
                   value={(contract.signedLocale ?? "en").toUpperCase()}
                 />
               </>
@@ -229,12 +275,12 @@ export function ContractEditor({
           {contract.signatureUrl ? (
             <>
               <p className="mt-4 text-[10px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-                Signature
+                {tr("Signature", "ხელმოწერა")}
               </p>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={contract.signatureUrl}
-                alt="Signature"
+                alt={tr("Signature", "ხელმოწერა")}
                 className="mt-2 w-full rounded-lg border border-black/5 bg-white"
               />
             </>
@@ -244,7 +290,7 @@ export function ContractEditor({
         {!isSigned && !isVoid ? (
           <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
             <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              Sign link
+              {tr("Sign link", "ხელმოწერის ბმული")}
             </h3>
             <div className="mb-3 flex gap-1.5">
               <input
@@ -257,7 +303,7 @@ export function ContractEditor({
                 onClick={copyLink}
                 className="rounded-lg border border-black/10 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
               >
-                {copied ? "Copied" : "Copy"}
+                {copied ? tr("Copied", "დაკოპირდა") : tr("Copy", "კოპირება")}
               </button>
             </div>
             <button
@@ -266,10 +312,13 @@ export function ContractEditor({
               disabled={pending}
               className="w-full rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
             >
-              {contract.status === "sent" ? "Resend email" : "Email to signer"}
+              {contract.status === "sent"
+                ? tr("Resend email", "ხელახლა გაგზავნა")
+                : tr("Email to signer", "ელფოსტით გაგზავნა")}
             </button>
             <p className="mt-2 text-[11px] text-[var(--ink-500)]">
-              Sends the link to <strong>{contract.signerEmail}</strong>.
+              {tr("Sends the link to", "ბმული გაეგზავნება")}{" "}
+              <strong>{contract.signerEmail}</strong>.
             </p>
           </section>
         ) : null}
@@ -280,7 +329,7 @@ export function ContractEditor({
             onClick={onVoid}
             className="w-full rounded-full border border-black/20 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100"
           >
-            Void contract
+            {tr("Void contract", "ხელშეკრულების გაუქმება")}
           </button>
         ) : null}
       </aside>

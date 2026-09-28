@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 type Chip = { value: string; label: string; count?: number };
 
@@ -7,7 +8,7 @@ type Chip = { value: string; label: string; count?: number };
  * `?{param}=<value>`; the active chip carries the dark "ink" pill style.
  * `all` is special: it links to the same path with the param removed.
  */
-export function FilterChips({
+export async function FilterChips({
   basePath,
   param = "status",
   active,
@@ -18,7 +19,11 @@ export function FilterChips({
   active: string | null;
   chips: Chip[];
 }) {
-  const allChips: Chip[] = [{ value: "all", label: "All" }, ...chips];
+  const tr = await getServerTr();
+  const allChips: Chip[] = [
+    { value: "all", label: tr("All", "ყველა") },
+    ...chips,
+  ];
   return (
     <nav className="mb-3 flex flex-wrap items-center gap-1.5">
       {allChips.map((c) => {

@@ -2,20 +2,27 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/admin/(dashboard)/_components/FilterChips";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
 import { ListSearch } from "@/app/admin/(dashboard)/_components/ListSearch";
-import { Pagination, parsePage } from "@/app/admin/(dashboard)/_components/Pagination";
+import {
+  Pagination,
+  parsePage,
+} from "@/app/admin/(dashboard)/_components/Pagination";
 import { RealtimeRefresh } from "@/app/admin/(dashboard)/_components/useRealtimeRefresh";
 import { safeLike } from "@/app/lib/goga/safe-like";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 const PAGE_SIZE = 50;
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bookings" };
 
-function fmtMoney(cents: number, currency: string): string {
+function fmtMoney(cents: number, currency: string, locale: string): string {
   try {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(locale, {
       style: "currency",
       currency,
       maximumFractionDigits: 0,
@@ -43,21 +50,29 @@ const DEPOSIT_TONE: Record<string, string> = {
   failed: "bg-slate-100 text-slate-400 line-through",
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  inquiry: "Inquiry",
-  reserved: "Reserved",
-  confirmed: "Confirmed",
-  completed: "Completed",
-  cancelled: "Cancelled",
-  no_show: "No-show",
-};
-const DEPOSIT_LABELS: Record<string, string> = {
-  none: "No deposit",
-  pending: "Pending",
-  paid: "Paid",
-  refunded: "Refunded",
-  failed: "Failed",
-};
+function statusLabels(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    inquiry: tr("Inquiry", "მოთხოვნა"),
+    reserved: tr("Reserved", "დაჯავშნილი"),
+    confirmed: tr("Confirmed", "დადასტურებული"),
+    completed: tr("Completed", "დასრულებული"),
+    cancelled: tr("Cancelled", "გაუქმებული"),
+    no_show: tr("No-show", "არ გამოცხადდა"),
+  };
+}
+function depositLabels(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    none: tr("No deposit", "ავანსის გარეშე"),
+    pending: tr("Pending", "მოლოდინში"),
+    paid: tr("Paid", "გადახდილი"),
+    refunded: tr("Refunded", "დაბრუნებული"),
+    failed: tr("Failed", "ვერ შესრულდა"),
+  };
+}
 
 const FILTER_STATUSES = [
   "inquiry",
@@ -75,6 +90,11 @@ type Props = {
 
 export default async function BookingsPage({ searchParams }: Props) {
   const sp = await searchParams;
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const intlLocale = locale === "ka" ? "ka-GE" : "en-US";
+  const STATUS_LABELS = statusLabels(tr);
+  const DEPOSIT_LABELS = depositLabels(tr);
   const sb = gogaAdmin();
   const active: FilterStatus | null = (
     FILTER_STATUSES as readonly string[]
@@ -114,26 +134,34 @@ export default async function BookingsPage({ searchParams }: Props) {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Pipeline" }, { label: "Bookings" }]}
+      breadcrumb={[
+        { label: tr("Pipeline", "სამუშაო პროცესი") },
+        { label: tr("Bookings", "ჯავშნები") },
+      ]}
       chatScope={{ level: "tool", tool: "bookings" }}
-      chatScopeLabel="Bookings"
+      chatScopeLabel={tr("Bookings", "ჯავშნები")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Bookings
+              {tr("Bookings", "ჯავშნები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
               {active || query
-                ? `${count ?? bookings.length} of ${totalAll} · filtered`
-                : `${totalAll} total`}
+                ? `${count ?? bookings.length} ${tr("of", "/")} ${totalAll} · ${tr("filtered", "გაფილტრული")}`
+                : `${totalAll} ${tr("total", "სულ")}`}
             </p>
           </div>
         </header>
 
         <RealtimeRefresh tables={["bookings"]} />
-        <ListSearch placeholder="Search bookings by client, email, or location…" />
+        <ListSearch
+          placeholder={tr(
+            "Search bookings by client, email, or location…",
+            "ძიება: კლიენტი, ელფოსტა ან ლოკაცია…",
+          )}
+        />
 
         <FilterChips
           basePath="/admin/bookings"
@@ -150,21 +178,39 @@ export default async function BookingsPage({ searchParams }: Props) {
             icon={<Icon name="calendar" />}
             title={
               query
-                ? `No bookings match “${query}”`
+                ? tr(
+                    `No bookings match "${query}"`,
+                    `ჯავშანი ვერ მოიძებნა „${query}“-სთვის`,
+                  )
                 : active
-                  ? `Nothing in the “${STATUS_LABELS[active]}” bucket`
-                  : "No bookings yet"
+                  ? tr(
+                      `Nothing in the "${STATUS_LABELS[active]}" bucket`,
+                      `„${STATUS_LABELS[active]}“ ჯგუფში არაფერია`,
+                    )
+                  : tr("No bookings yet", "ჯერ ჯავშნები არ არის")
             }
             description={
               query
-                ? "Try a different name, email, or location."
+                ? tr(
+                    "Try a different name, email, or location.",
+                    "სცადეთ სხვა სახელი, ელფოსტა ან ლოკაცია.",
+                  )
                 : active
-                  ? "Try a different status filter — or clear it."
-                  : "Bookings are created from a lead detail page or via the public /book route."
+                  ? tr(
+                      "Try a different status filter — or clear it.",
+                      "სცადეთ სხვა სტატუსის ფილტრი — ან გაასუფთავეთ.",
+                    )
+                  : tr(
+                      "Bookings are created from a lead detail page or via the public /book route.",
+                      "ჯავშნები იქმნება ლიდის გვერდიდან ან საჯარო /book გვერდიდან.",
+                    )
             }
             secondary={
               query || active
-                ? { label: "Clear filters", href: "/admin/bookings" }
+                ? {
+                    label: tr("Clear filters", "ფილტრების გასუფთავება"),
+                    href: "/admin/bookings",
+                  }
                 : undefined
             }
           />
@@ -180,7 +226,7 @@ export default async function BookingsPage({ searchParams }: Props) {
                   className="grid grid-cols-1 items-start gap-y-1 gap-x-4 px-5 py-4 sm:grid-cols-[110px_1fr_120px_110px_120px] sm:items-center"
                 >
                   <span className="text-[13px] font-medium tabular-nums text-[var(--ink-900)]">
-                    {new Date(b.shoot_date).toLocaleDateString(undefined, {
+                    {new Date(b.shoot_date).toLocaleDateString(intlLocale, {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
@@ -194,15 +240,15 @@ export default async function BookingsPage({ searchParams }: Props) {
                   </span>
                   <div className="min-w-0">
                     <div className="truncate text-[14px] font-medium text-[var(--ink-900)]">
-                      {b.client_name ?? "Unnamed client"}
+                      {b.client_name ?? tr("Unnamed client", "უსახელო კლიენტი")}
                     </div>
                     <div className="truncate text-[12px] text-[var(--ink-500)]">
-                      {b.client_email ?? "(no email)"}
+                      {b.client_email ?? tr("(no email)", "(ელფოსტა არ არის)")}
                       {b.location ? ` · ${b.location}` : ""}
                     </div>
                   </div>
                   <span className="text-[14px] font-medium tabular-nums text-[var(--ink-900)]">
-                    {fmtMoney(b.subtotal_cents, b.currency)}
+                    {fmtMoney(b.subtotal_cents, b.currency, intlLocale)}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${

@@ -9,6 +9,7 @@ import {
   listAlbums,
   getProjectAlbumIds,
 } from "@/app/lib/goga/portfolio-albums";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +36,16 @@ export default async function EditProjectPage({ params }: Props) {
       .single(),
     sb
       .from("project_images")
-      .select("id, image_path, caption, caption_ka, caption_ru, alt_text, sort_order")
+      .select(
+        "id, image_path, caption, caption_ka, caption_ru, alt_text, sort_order",
+      )
       .eq("project_id", id)
       .order("sort_order", { ascending: true }),
   ]);
 
   if (!project) notFound();
+
+  const tr = await getServerTr();
 
   const [albums, selectedAlbumIds] = await Promise.all([
     listAlbums(),
@@ -61,8 +66,8 @@ export default async function EditProjectPage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Catalog" },
-        { label: "Projects", href: "/admin/projects" },
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Projects", "პროექტები"), href: "/admin/projects" },
         { label: project.title_en },
       ]}
       chatScope={{ level: "tool", tool: "projects" }}
@@ -80,13 +85,13 @@ export default async function EditProjectPage({ params }: Props) {
               rel="noopener noreferrer"
               className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
             >
-              View ↗
+              {tr("View ↗", "ნახვა ↗")}
             </Link>
             <Link
               href="/admin/projects"
               className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
             >
-              ← back
+              {tr("← back", "← უკან")}
             </Link>
           </div>
         </header>
@@ -100,10 +105,13 @@ export default async function EditProjectPage({ params }: Props) {
         <section className="mt-8">
           <header className="mb-3 flex items-baseline justify-between">
             <h2 className="text-[14px] font-medium text-[var(--ink-900)]">
-              Gallery
+              {tr("Gallery", "გალერეა")}
             </h2>
             <p className="text-[11px] text-[var(--ink-500)]">
-              Drop images to upload. Drag rows to reorder. ⭐ = hero.
+              {tr(
+                "Drop images to upload. Drag rows to reorder. ⭐ = hero.",
+                "ჩააგდეთ სურათები ასატვირთად. გადათრიეთ რიგები დასალაგებლად. ⭐ = მთავარი.",
+              )}
             </p>
           </header>
           <Gallery
@@ -115,7 +123,7 @@ export default async function EditProjectPage({ params }: Props) {
 
         <section className="mt-12 border-t border-black/5 pt-6">
           <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-700">
-            Danger zone
+            {tr("Danger zone", "საშიში ზონა")}
           </h2>
           <DeleteProjectButton id={project.id} title={project.title_en} />
         </section>

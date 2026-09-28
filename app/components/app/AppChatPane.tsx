@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 
 import type { AdConfig } from "@/app/lib/ad-config";
 import { useVoiceAgent } from "@/app/lib/voice/useVoiceAgent";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 import { AssistantThinking } from "./AssistantThinking";
 import { StreamingText } from "./StreamingText";
 
@@ -105,12 +106,7 @@ interface AutomationEditProposal {
   target: "workflow";
   workflowId: string;
   intent:
-    | "rename"
-    | "set-description"
-    | "set-cap"
-    | "pause"
-    | "resume"
-    | "delete";
+    "rename" | "set-description" | "set-cap" | "pause" | "resume" | "delete";
   newValue?: string | number;
   rationale: string;
   noChange?: boolean;
@@ -239,80 +235,80 @@ function stripHeavy(messages: Message[]): Message[] {
 // Translate internal forge slugs + URL-path scope labels into Apple-style
 // plain English. 2026-05-14 — operator reported chat headers showing raw
 // path jargon like "account/api-keys", "settings/brand", "settings/team".
-const FORGE_SLUG_FRIENDLY: Record<string, string> = {
-  "site-forge": "Website",
-  "ecom-forge": "Shop",
-  "brand-forge": "Brand",
-  "email-forge": "Mail",
-  "legal-forge": "Legal",
-  "automation-forge": "Automations",
-  "social-forge": "Social",
-  "academy-forge": "Team",
-  "content-forge": "Content",
-  "content-factory": "Content",
-  "app-forge": "App",
-  "analytics-forge": "Analytics",
-  "customer-forge": "Customers",
-  "financial-forge": "Financial",
-  "infrastructure-forge": "Infrastructure",
+const FORGE_SLUG_FRIENDLY: Record<string, { en: string; ka: string }> = {
+  "site-forge": { en: "Website", ka: "საიტი" },
+  "ecom-forge": { en: "Shop", ka: "მაღაზია" },
+  "brand-forge": { en: "Brand", ka: "ბრენდი" },
+  "email-forge": { en: "Mail", ka: "ფოსტა" },
+  "legal-forge": { en: "Legal", ka: "იურიდიული" },
+  "automation-forge": { en: "Automations", ka: "ავტომატიზაცია" },
+  "social-forge": { en: "Social", ka: "სოციალური" },
+  "academy-forge": { en: "Team", ka: "გუნდი" },
+  "content-forge": { en: "Content", ka: "კონტენტი" },
+  "content-factory": { en: "Content", ka: "კონტენტი" },
+  "app-forge": { en: "App", ka: "აპლიკაცია" },
+  "analytics-forge": { en: "Analytics", ka: "ანალიტიკა" },
+  "customer-forge": { en: "Customers", ka: "კლიენტები" },
+  "financial-forge": { en: "Financial", ka: "ფინანსები" },
+  "infrastructure-forge": { en: "Infrastructure", ka: "ინფრასტრუქტურა" },
 };
 
 // URL-path leaf → premium label.  Covers the per-business settings pages
 // and the account/* / organization/* trees.
-const PATH_LEAF_FRIENDLY: Record<string, string> = {
-  identity: "Identity",
-  brand: "Brand",
-  team: "Team",
-  billing: "Billing",
-  integrations: "Integrations",
-  domain: "Domain",
-  danger: "Danger zone",
-  security: "Security",
-  preferences: "Preferences",
-  profile: "Profile",
-  "api-keys": "API keys",
-  members: "Members",
-  roles: "Roles",
-  audit: "Audit log",
-  webhooks: "Webhooks",
-  tools: "Tools",
-  artifacts: "Artifacts",
-  inbox: "Inbox",
-  cells: "Elements",
-  crm: "CRM",
-  customers: "Customers",
-  social: "Social",
-  content: "Content",
-  mails: "Mail",
-  shop: "Shop",
-  website: "Website",
-  analytics: "Analytics",
-  financial: "Financial",
-  automations: "Automations",
-  legal: "Legal",
-  spawn: "Launch",
-  "not-found": "Not found",
+const PATH_LEAF_FRIENDLY: Record<string, { en: string; ka: string }> = {
+  identity: { en: "Identity", ka: "იდენტობა" },
+  brand: { en: "Brand", ka: "ბრენდი" },
+  team: { en: "Team", ka: "გუნდი" },
+  billing: { en: "Billing", ka: "ბილინგი" },
+  integrations: { en: "Integrations", ka: "ინტეგრაციები" },
+  domain: { en: "Domain", ka: "დომენი" },
+  danger: { en: "Danger zone", ka: "სახიფათო ზონა" },
+  security: { en: "Security", ka: "უსაფრთხოება" },
+  preferences: { en: "Preferences", ka: "პარამეტრები" },
+  profile: { en: "Profile", ka: "პროფილი" },
+  "api-keys": { en: "API keys", ka: "API გასაღებები" },
+  members: { en: "Members", ka: "წევრები" },
+  roles: { en: "Roles", ka: "როლები" },
+  audit: { en: "Audit log", ka: "აუდიტის ჟურნალი" },
+  webhooks: { en: "Webhooks", ka: "ვებჰუკები" },
+  tools: { en: "Tools", ka: "ხელსაწყოები" },
+  artifacts: { en: "Artifacts", ka: "არტეფაქტები" },
+  inbox: { en: "Inbox", ka: "შემოსული" },
+  cells: { en: "Elements", ka: "ელემენტები" },
+  crm: { en: "CRM", ka: "CRM" },
+  customers: { en: "Customers", ka: "კლიენტები" },
+  social: { en: "Social", ka: "სოციალური" },
+  content: { en: "Content", ka: "კონტენტი" },
+  mails: { en: "Mail", ka: "ფოსტა" },
+  shop: { en: "Shop", ka: "მაღაზია" },
+  website: { en: "Website", ka: "საიტი" },
+  analytics: { en: "Analytics", ka: "ანალიტიკა" },
+  financial: { en: "Financial", ka: "ფინანსები" },
+  automations: { en: "Automations", ka: "ავტომატიზაცია" },
+  legal: { en: "Legal", ka: "იურიდიული" },
+  spawn: { en: "Launch", ka: "გაშვება" },
+  "not-found": { en: "Not found", ka: "ვერ მოიძებნა" },
 };
 
-function prettifyOnePart(p: string): string {
-  if (FORGE_SLUG_FRIENDLY[p]) return FORGE_SLUG_FRIENDLY[p]!;
+function prettifyOnePart(p: string, locale: "en" | "ka"): string {
+  if (FORGE_SLUG_FRIENDLY[p]) return FORGE_SLUG_FRIENDLY[p]![locale];
   // If it looks like a URL path (contains '/'), take the last segment + map.
   if (p.includes("/")) {
     const seg = p.split("/").filter(Boolean).pop() ?? p;
-    if (PATH_LEAF_FRIENDLY[seg]) return PATH_LEAF_FRIENDLY[seg]!;
+    if (PATH_LEAF_FRIENDLY[seg]) return PATH_LEAF_FRIENDLY[seg]![locale];
     // Title-case the leaf segment as a fallback.
     return seg.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   }
-  if (PATH_LEAF_FRIENDLY[p]) return PATH_LEAF_FRIENDLY[p]!;
+  if (PATH_LEAF_FRIENDLY[p]) return PATH_LEAF_FRIENDLY[p]![locale];
   return p;
 }
 
-function prettifyScopeLabel(raw: string): string {
+function prettifyScopeLabel(raw: string, locale: "en" | "ka"): string {
   if (!raw) return raw;
-  if (FORGE_SLUG_FRIENDLY[raw]) return FORGE_SLUG_FRIENDLY[raw]!;
-  if (PATH_LEAF_FRIENDLY[raw]) return PATH_LEAF_FRIENDLY[raw]!;
+  if (FORGE_SLUG_FRIENDLY[raw]) return FORGE_SLUG_FRIENDLY[raw]![locale];
+  if (PATH_LEAF_FRIENDLY[raw]) return PATH_LEAF_FRIENDLY[raw]![locale];
   const parts = raw.split(" · ");
-  return parts.map(prettifyOnePart).join(" · ");
+  return parts.map((part) => prettifyOnePart(part, locale)).join(" · ");
 }
 
 export function AppChatPane({
@@ -321,7 +317,8 @@ export function AppChatPane({
   starters = [],
   onClose,
 }: AppChatPaneProps) {
-  const scopeLabel = prettifyScopeLabel(rawScopeLabel);
+  const { locale, tr } = useLocale();
+  const scopeLabel = prettifyScopeLabel(rawScopeLabel, locale);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [busy, setBusy] = useState(false);
@@ -531,29 +528,42 @@ export function AppChatPane({
 
   const defaultStarters: Record<ChatScope["level"], string[]> = {
     org: [
-      "Summarize health across all my businesses",
-      "Which business has the most unresolved proposals?",
+      tr(
+        "Summarize health across all my businesses",
+        "შემაჯამე ყველა ბიზნესის მდგომარეობა",
+      ),
+      tr(
+        "Which business has the most unresolved proposals?",
+        "რომელ ბიზნესს ჰყავს ყველაზე მეტი გადაუწყვეტელი წინადადება?",
+      ),
     ],
     business: [
-      "Make the hero more formal",
-      "Shorten the about section",
-      "Warmer tone on the FAQ",
+      tr("Make the hero more formal", "გახადე hero-ს ტექსტი უფრო ფორმალური"),
+      tr("Shorten the about section", "შეამოკლე „ჩვენ შესახებ“ სექცია"),
+      tr("Warmer tone on the FAQ", "უფრო თბილი ტონი FAQ-ში"),
     ],
-    tool: ["Tighten the outputs", "Shorter copy"],
-    artifact: ["Make it agile", "Shorter", "Warmer tone"],
+    tool: [
+      tr("Tighten the outputs", "გაამჭიდროვე შედეგები"),
+      tr("Shorter copy", "უფრო მოკლე ტექსტი"),
+    ],
+    artifact: [
+      tr("Make it agile", "გახადე მოქნილი"),
+      tr("Shorter", "უფრო მოკლე"),
+      tr("Warmer tone", "უფრო თბილი ტონი"),
+    ],
   };
 
   // Video-editor subscope gets its own starter set so operators discover the
   // chat's vocabulary without typing into the void. Beats the generic
   // 'Make the hero more formal' suggestions when the video timeline is open.
   const videoEditorStarters: string[] = [
-    "Generate an ad from my brand",
-    "Insert stock of mountains",
-    "Use the explainer template",
-    "Razor at playhead",
-    "Add audio track",
-    "Render",
-    "help",
+    tr("Generate an ad from my brand", "შექმენი რეკლამა ჩემი ბრენდიდან"),
+    tr("Insert stock of mountains", "ჩასვი მთების სტოკ-ვიდეო"),
+    tr("Use the explainer template", "გამოიყენე ახსნითი შაბლონი"),
+    tr("Razor at playhead", "გაჭერი დამკვრელის პოზიციაზე"),
+    tr("Add audio track", "დაამატე აუდიო ტრეკი"),
+    tr("Render", "დარენდერე"),
+    tr("help", "დახმარება"),
   ];
   const isVideoEditorSubScopeForStarters =
     subScope?.surface === "video-editor" && scope.business !== undefined;
@@ -673,7 +683,9 @@ export function AppChatPane({
         // For 'tool_executed' append a compact footer summarizing what the tool did so
         // the operator sees the visible artifacts alongside the model's reply.
         let reply =
-          data && typeof data.text === "string" ? data.text : "No reply.";
+          data && typeof data.text === "string"
+            ? data.text
+            : tr("No reply.", "პასუხი არ მოვიდა.");
         if (data && data.kind === "tool_executed" && data.execution) {
           const exec = data.execution as {
             ok?: boolean;
@@ -750,7 +762,7 @@ export function AppChatPane({
           ...m,
           {
             role: "system",
-            text: `Chat failed: ${err instanceof Error ? err.message : String(err)}`,
+            text: `${tr("Chat failed", "ჩატი ვერ შესრულდა")}: ${err instanceof Error ? err.message : String(err)}`,
             at: nowHHMM(),
             previewStatus: "idle",
           },
@@ -768,8 +780,8 @@ export function AppChatPane({
       {
         role: "system",
         text: isEmailTemplateScope
-          ? "Asking the email styler…"
-          : "Resolving edit intent…",
+          ? tr("Asking the email styler…", "ფოსტის სტილერი მუშაობს…")
+          : tr("Resolving edit intent…", "დამუშავდება რედაქტირების მოთხოვნა…"),
         at: nowHHMM(),
         previewStatus: "idle",
       },
@@ -810,8 +822,8 @@ export function AppChatPane({
             role: "system",
             at: nowHHMM(),
             text: json.error
-              ? `Logo edit failed: ${json.error}`
-              : (json.explanation ?? "Done."),
+              ? `${tr("Logo edit failed", "ლოგოს რედაქტირება ვერ შესრულდა")}: ${json.error}`
+              : (json.explanation ?? tr("Done.", "მზადაა.")),
             previewStatus: json.nextFrame ? "applied" : "idle",
           };
           return copy;
@@ -822,7 +834,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Logo chat failed: ${(err as Error).message}`,
+            text: `${tr("Logo chat failed", "ლოგოს ჩატი ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -940,8 +952,8 @@ export function AppChatPane({
             role: "system",
             at: nowHHMM(),
             text: json.error
-              ? `Video chat failed: ${json.error}`
-              : (json.explanation ?? "Done."),
+              ? `${tr("Video chat failed", "ვიდეო ჩატი ვერ შესრულდა")}: ${json.error}`
+              : (json.explanation ?? tr("Done.", "მზადაა.")),
             previewStatus:
               json.ok && !isHeavy && !isInfoOnly ? "applied" : "idle",
             ...(json.ok && isHeavy && json.action
@@ -973,7 +985,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Video chat failed: ${(err as Error).message}`,
+            text: `${tr("Video chat failed", "ვიდეო ჩატი ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -1014,8 +1026,9 @@ export function AppChatPane({
             role: "system",
             at: nowHHMM(),
             text: json.error
-              ? `Styler failed: ${json.error}`
-              : (json.proposal?.rationale ?? "No suggestions."),
+              ? `${tr("Styler failed", "სტილერმა ვერ იმუშავა")}: ${json.error}`
+              : (json.proposal?.rationale ??
+                tr("No suggestions.", "წინადადებები არ არის.")),
             stylerProposal: json.proposal,
             previewStatus: "idle",
           };
@@ -1027,7 +1040,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Request failed: ${(err as Error).message}`,
+            text: `${tr("Request failed", "მოთხოვნა ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -1065,7 +1078,7 @@ export function AppChatPane({
             at: nowHHMM(),
             text:
               !json.ok || json.error
-                ? `Edit failed: ${json.error ?? "unknown"}`
+                ? `${tr("Edit failed", "რედაქტირება ვერ შესრულდა")}: ${json.error ?? tr("unknown", "უცნობი")}`
                 : json.proposal?.noChange
                   ? json.proposal.rationale
                   : `Proposed: ${describeTeamProposal(json.proposal!)} — ${json.proposal!.rationale}`,
@@ -1084,7 +1097,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Request failed: ${(err as Error).message}`,
+            text: `${tr("Request failed", "მოთხოვნა ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -1120,7 +1133,7 @@ export function AppChatPane({
             at: nowHHMM(),
             text:
               !json.ok || json.error
-                ? `Edit failed: ${json.error ?? "unknown"}`
+                ? `${tr("Edit failed", "რედაქტირება ვერ შესრულდა")}: ${json.error ?? tr("unknown", "უცნობი")}`
                 : json.proposal?.noChange
                   ? json.proposal.rationale
                   : `Proposed: ${describeAutomationProposal(json.proposal!)} — ${json.proposal!.rationale}`,
@@ -1138,7 +1151,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Request failed: ${(err as Error).message}`,
+            text: `${tr("Request failed", "მოთხოვნა ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -1174,7 +1187,7 @@ export function AppChatPane({
             at: nowHHMM(),
             text:
               !json.ok || json.error
-                ? `Edit failed: ${json.error ?? "unknown"}`
+                ? `${tr("Edit failed", "რედაქტირება ვერ შესრულდა")}: ${json.error ?? tr("unknown", "უცნობი")}`
                 : json.proposal?.noChange
                   ? json.proposal.rationale
                   : `Proposed: ${describeSocialProposal(json.proposal!)} — ${json.proposal!.rationale}`,
@@ -1192,7 +1205,7 @@ export function AppChatPane({
           copy[thinkingIdx] = {
             role: "system",
             at: nowHHMM(),
-            text: `Request failed: ${(err as Error).message}`,
+            text: `${tr("Request failed", "მოთხოვნა ვერ შესრულდა")}: ${(err as Error).message}`,
             previewStatus: "error",
           };
           return copy;
@@ -1221,8 +1234,8 @@ export function AppChatPane({
           role: "system",
           at: nowHHMM(),
           text: preview.error
-            ? `Preview failed: ${preview.error}`
-            : previewSummary(preview),
+            ? `${tr("Preview failed", "წინასწარი ხედი ვერ შესრულდა")}: ${preview.error}`
+            : previewSummary(preview, tr),
           preview: preview.error ? undefined : preview,
           previewStatus: "idle",
         };
@@ -1234,7 +1247,7 @@ export function AppChatPane({
         copy[thinkingIdx] = {
           role: "system",
           at: nowHHMM(),
-          text: `Request failed: ${(err as Error).message}`,
+          text: `${tr("Request failed", "მოთხოვნა ვერ შესრულდა")}: ${(err as Error).message}`,
           previewStatus: "error",
         };
         return copy;
@@ -1280,7 +1293,7 @@ export function AppChatPane({
           text:
             json.ok === true
               ? `Applied: ${describeTeamProposal(msg.teamProposal!)}.`
-              : `Apply failed: ${json.error ?? "unknown"}`,
+              : `${tr("Apply failed", "ვერ გამოიყენა")}: ${json.error ?? tr("unknown", "უცნობი")}`,
         };
         return copy;
       });
@@ -1298,7 +1311,7 @@ export function AppChatPane({
         const copy = [...m];
         copy[msgIdx] = {
           ...copy[msgIdx]!,
-          text: `Apply failed: ${(err as Error).message}`,
+          text: `${tr("Apply failed", "ვერ გამოიყენა")}: ${(err as Error).message}`,
         };
         return copy;
       });
@@ -1386,7 +1399,7 @@ export function AppChatPane({
           text:
             json.ok === true
               ? `Applied: ${describeAutomationProposal(msg.automationProposal!)}.`
-              : `Apply failed: ${json.error ?? "unknown"}`,
+              : `${tr("Apply failed", "ვერ გამოიყენა")}: ${json.error ?? tr("unknown", "უცნობი")}`,
         };
         return copy;
       });
@@ -1400,7 +1413,7 @@ export function AppChatPane({
         const copy = [...m];
         copy[msgIdx] = {
           ...copy[msgIdx]!,
-          text: `Apply failed: ${(err as Error).message}`,
+          text: `${tr("Apply failed", "ვერ გამოიყენა")}: ${(err as Error).message}`,
         };
         return copy;
       });
@@ -1432,7 +1445,7 @@ export function AppChatPane({
           text:
             json.ok === true
               ? `Applied: ${describeSocialProposal(msg.socialProposal!)}.`
-              : `Apply failed: ${json.error ?? "unknown"}`,
+              : `${tr("Apply failed", "ვერ გამოიყენა")}: ${json.error ?? tr("unknown", "უცნობი")}`,
         };
         return copy;
       });
@@ -1446,7 +1459,7 @@ export function AppChatPane({
         const copy = [...m];
         copy[msgIdx] = {
           ...copy[msgIdx]!,
-          text: `Apply failed: ${(err as Error).message}`,
+          text: `${tr("Apply failed", "ვერ გამოიყენა")}: ${(err as Error).message}`,
         };
         return copy;
       });
@@ -1489,7 +1502,7 @@ export function AppChatPane({
           previewStatus: result.error ? "error" : "applied",
           applyResult: result,
           text: result.error
-            ? `Apply failed: ${result.error}`
+            ? `${tr("Apply failed", "ვერ გამოიყენა")}: ${result.error}`
             : `Applied ${applied} cell${applied === 1 ? "" : "s"}${skipped > 0 ? ` · skipped ${skipped}` : ""}.`,
           preview: undefined,
         };
@@ -1501,7 +1514,7 @@ export function AppChatPane({
         copy[msgIdx] = {
           ...copy[msgIdx]!,
           previewStatus: "error",
-          text: `Apply failed: ${(err as Error).message}`,
+          text: `${tr("Apply failed", "ვერ გამოიყენა")}: ${(err as Error).message}`,
         };
         return copy;
       });
@@ -1529,16 +1542,16 @@ export function AppChatPane({
             <button
               type="button"
               onClick={() => setMessages([])}
-              title="Clear conversation"
+              title={tr("Clear conversation", "საუბრის გასუფთავება")}
               className="text-[10.5px] uppercase tracking-wider text-[var(--ink-400)] transition hover:text-[var(--ink-900)]"
             >
-              Clear
+              {tr("Clear", "გასუფთავება")}
             </button>
           )}
           <button
             type="button"
             onClick={onClose}
-            title="Close · ⌘/"
+            title={tr("Close · ⌘/", "დახურვა · ⌘/")}
             className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--ink-400)] transition hover:bg-[var(--bg-sunken)] hover:text-[var(--ink-900)]"
           >
             <svg
@@ -1560,7 +1573,10 @@ export function AppChatPane({
         {messages.length === 0 ? (
           <div className="space-y-5">
             <p className="text-[13.5px] leading-relaxed text-[var(--ink-500)]">
-              How can I help with {scopeLabel}?
+              {tr(
+                `How can I help with ${scopeLabel}?`,
+                `რით შემიძლია დაგეხმარო — ${scopeLabel}?`,
+              )}
             </p>
             <div className="space-y-1.5">
               {suggestions.map((s) => (
@@ -1585,7 +1601,7 @@ export function AppChatPane({
               <li key={i} className="group/msg space-y-1.5">
                 <div className="flex items-center gap-2 text-[11px] text-[var(--ink-400)]">
                   <span className="font-medium text-[var(--ink-500)]">
-                    {m.role === "user" ? "You" : "AllOnce"}
+                    {m.role === "user" ? tr("You", "თქვენ") : "AllOnce"}
                   </span>
                   <span>·</span>
                   <span>{m.at}</span>
@@ -1627,7 +1643,7 @@ export function AppChatPane({
                       <div className="-mt-0.5 flex items-center gap-0.5 text-[var(--ink-400)]">
                         <button
                           type="button"
-                          aria-label="Copy message"
+                          aria-label={tr("Copy message", "მესიჯის კოპირება")}
                           onClick={() => copyMessage(i, m.text)}
                           className="inline-flex h-7 w-7 items-center justify-center rounded-md transition hover:bg-[var(--bg-surface-alt)] hover:text-[var(--ink-900)]"
                         >
@@ -1664,7 +1680,7 @@ export function AppChatPane({
                         </button>
                         <button
                           type="button"
-                          aria-label="Good response"
+                          aria-label={tr("Good response", "კარგი პასუხი")}
                           aria-pressed={m.rating === "up"}
                           onClick={() => rateMessage(i, "up")}
                           className={`inline-flex h-7 w-7 items-center justify-center rounded-md transition hover:bg-[var(--bg-surface-alt)] hover:text-[var(--ink-900)] ${m.rating === "up" ? "text-[var(--ink-900)]" : ""}`}
@@ -1688,7 +1704,7 @@ export function AppChatPane({
                         </button>
                         <button
                           type="button"
-                          aria-label="Bad response"
+                          aria-label={tr("Bad response", "ცუდი პასუხი")}
                           aria-pressed={m.rating === "down"}
                           onClick={() => rateMessage(i, "down")}
                           className={`inline-flex h-7 w-7 items-center justify-center rounded-md transition hover:bg-[var(--bg-surface-alt)] hover:text-[var(--ink-900)] ${m.rating === "down" ? "text-[var(--ink-900)]" : ""}`}
@@ -1713,7 +1729,7 @@ export function AppChatPane({
                         {i === messages.length - 1 && (
                           <button
                             type="button"
-                            aria-label="Regenerate"
+                            aria-label={tr("Regenerate", "თავიდან გენერაცია")}
                             disabled={busy}
                             onClick={() => regenerateMessage(i)}
                             className="inline-flex h-7 w-7 items-center justify-center rounded-md transition hover:bg-[var(--bg-surface-alt)] hover:text-[var(--ink-900)] disabled:opacity-40"
@@ -1769,8 +1785,8 @@ export function AppChatPane({
                           className="inline-flex h-8 items-center rounded-lg bg-[var(--ink-900)] px-3 text-[12px] font-medium text-white transition hover:bg-black disabled:opacity-60"
                         >
                           {m.previewStatus === "applying"
-                            ? "Applying…"
-                            : "Apply"}
+                            ? tr("Applying…", "მიმდინარეობს…")
+                            : tr("Apply", "გამოყენება")}
                         </button>
                         {typeof m.preview.costEstimateUsd === "number" && (
                           <span className="font-mono text-[11px] text-[var(--ink-400)]">
@@ -1788,7 +1804,7 @@ export function AppChatPane({
                       {m.stylerProposal.themeOverride !== null && (
                         <details className="rounded-md bg-[var(--bg-surface-alt)] px-2 py-1.5">
                           <summary className="cursor-pointer text-[11.5px] font-medium text-[var(--ink-700)]">
-                            Theme override
+                            {tr("Theme override", "თემის გადაფარვა")}
                           </summary>
                           <pre className="mt-1.5 max-h-48 overflow-auto font-mono text-[10.5px] leading-snug text-[var(--ink-900)]">
                             {JSON.stringify(
@@ -1802,7 +1818,7 @@ export function AppChatPane({
                       {m.stylerProposal.nextSubject && (
                         <div className="rounded-md bg-[var(--bg-surface-alt)] px-2 py-1.5">
                           <div className="text-[10.5px] uppercase tracking-wider text-[var(--ink-400)]">
-                            New subject
+                            {tr("New subject", "ახალი თემა")}
                           </div>
                           <div className="mt-0.5 text-[12px] text-[var(--ink-900)]">
                             {m.stylerProposal.nextSubject}
@@ -1812,7 +1828,7 @@ export function AppChatPane({
                       {m.stylerProposal.nextBodyMd && (
                         <details className="rounded-md bg-[var(--bg-surface-alt)] px-2 py-1.5">
                           <summary className="cursor-pointer text-[11.5px] font-medium text-[var(--ink-700)]">
-                            New body
+                            {tr("New body", "ახალი ტექსტი")}
                           </summary>
                           <pre className="mt-1.5 max-h-64 overflow-auto whitespace-pre-wrap font-mono text-[10.5px] leading-snug text-[var(--ink-900)]">
                             {m.stylerProposal.nextBodyMd}
@@ -1829,12 +1845,12 @@ export function AppChatPane({
                           onClick={() => applyStyler(i)}
                           className="inline-flex h-8 items-center rounded-lg bg-[var(--ink-900)] px-3 text-[12px] font-medium text-white transition hover:bg-black"
                         >
-                          Apply to editor
+                          {tr("Apply to editor", "რედაქტორში გამოყენება")}
                         </button>
                       )}
                     {m.stylerApplied && (
                       <span className="text-[11.5px] text-[var(--allonce-ok)]">
-                        ✓ Applied to editor
+                        ✓ {tr("Applied to editor", "რედაქტორში გამოყენებულია")}
                       </span>
                     )}
                   </div>
@@ -1844,7 +1860,7 @@ export function AppChatPane({
                   <div className="mt-2 space-y-2 rounded-md border border-[var(--allonce-line)] bg-white p-3">
                     <div className="text-[11.5px]">
                       <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--allonce-ink-faint)]">
-                        Proposed change
+                        {tr("Proposed change", "შემოთავაზებული ცვლილება")}
                       </p>
                       <p className="mt-1 font-mono text-[11px] text-[var(--allonce-ink)]">
                         {describeTeamProposal(m.teamProposal)}
@@ -1861,13 +1877,16 @@ export function AppChatPane({
                           disabled={busy}
                           className="inline-flex h-8 items-center rounded-md bg-[var(--allonce-ink)] px-3 text-[12px] font-medium text-white transition hover:bg-black disabled:opacity-50"
                         >
-                          Apply
+                          {tr("Apply", "გამოყენება")}
                         </button>
                       </div>
                     )}
                     {m.teamApplied && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        Applied — refresh to see the change.
+                        {tr(
+                          "Applied — refresh to see the change.",
+                          "გამოყენებულია — ცვლილების სანახავად განაახლეთ გვერდი.",
+                        )}
                       </span>
                     )}
                   </div>
@@ -1877,7 +1896,7 @@ export function AppChatPane({
                   <div className="mt-2 space-y-2 rounded-md border border-[var(--allonce-line)] bg-white p-3">
                     <div className="text-[11.5px]">
                       <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--allonce-ink-faint)]">
-                        Proposed change
+                        {tr("Proposed change", "შემოთავაზებული ცვლილება")}
                       </p>
                       <p className="mt-1 font-mono text-[11px] text-[var(--allonce-ink)]">
                         {describeAutomationProposal(m.automationProposal)}
@@ -1894,13 +1913,16 @@ export function AppChatPane({
                           disabled={busy}
                           className="inline-flex h-8 items-center rounded-md bg-[var(--allonce-ink)] px-3 text-[12px] font-medium text-white transition hover:bg-black disabled:opacity-50"
                         >
-                          Apply
+                          {tr("Apply", "გამოყენება")}
                         </button>
                       </div>
                     )}
                     {m.automationApplied && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        Applied — refresh to see the change.
+                        {tr(
+                          "Applied — refresh to see the change.",
+                          "გამოყენებულია — ცვლილების სანახავად განაახლეთ გვერდი.",
+                        )}
                       </span>
                     )}
                   </div>
@@ -1910,7 +1932,7 @@ export function AppChatPane({
                   <div className="mt-2 space-y-2 rounded-md border border-[var(--allonce-line)] bg-white p-3">
                     <div className="text-[11.5px]">
                       <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--allonce-ink-faint)]">
-                        Proposed change
+                        {tr("Proposed change", "შემოთავაზებული ცვლილება")}
                       </p>
                       <p className="mt-1 font-mono text-[11px] text-[var(--allonce-ink)]">
                         {describeSocialProposal(m.socialProposal)}
@@ -1927,13 +1949,16 @@ export function AppChatPane({
                           disabled={busy}
                           className="inline-flex h-8 items-center rounded-md bg-[var(--allonce-ink)] px-3 text-[12px] font-medium text-white transition hover:bg-black disabled:opacity-50"
                         >
-                          Apply
+                          {tr("Apply", "გამოყენება")}
                         </button>
                       </div>
                     )}
                     {m.socialApplied && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        Applied — refresh to see the change.
+                        {tr(
+                          "Applied — refresh to see the change.",
+                          "გამოყენებულია — ცვლილების სანახავად განაახლეთ გვერდი.",
+                        )}
                       </span>
                     )}
                   </div>
@@ -1944,15 +1969,17 @@ export function AppChatPane({
                     {m.locksList.characters.length === 0 &&
                     m.locksList.styles.length === 0 ? (
                       <p className="text-[11.5px] text-[var(--allonce-ink-muted)]">
-                        Nothing pinned yet — try &quot;lock this character as
-                        &lt;name&gt;&quot;.
+                        {tr(
+                          'Nothing pinned yet — try "lock this character as <name>".',
+                          "ჯერ არაფერია დამაგრებული — სცადეთ „lock this character as <name>“.",
+                        )}
                       </p>
                     ) : (
                       <div className="space-y-1.5">
                         {m.locksList.characters.length > 0 && (
                           <div>
                             <p className="text-[10.5px] uppercase tracking-wider text-[var(--allonce-ink-muted)]">
-                              Characters
+                              {tr("Characters", "პერსონაჟები")}
                             </p>
                             <div className="mt-1 flex flex-wrap gap-1.5">
                               {m.locksList.characters.map((label) => (
@@ -1975,7 +2002,7 @@ export function AppChatPane({
                         {m.locksList.styles.length > 0 && (
                           <div>
                             <p className="text-[10.5px] uppercase tracking-wider text-[var(--allonce-ink-muted)]">
-                              Styles
+                              {tr("Styles", "სტილები")}
                             </p>
                             <div className="mt-1 flex flex-wrap gap-1.5">
                               {m.locksList.styles.map((label) => (
@@ -2002,7 +2029,10 @@ export function AppChatPane({
                   <div className="mt-2 rounded-md border border-[var(--allonce-ink-muted)]/15 bg-[var(--bg-surface-alt)] p-2">
                     {m.rendersList.length === 0 ? (
                       <p className="text-[11.5px] text-[var(--allonce-ink-muted)]">
-                        No renders yet — try "generate ad" or "render".
+                        {tr(
+                          'No renders yet — try "generate ad" or "render".',
+                          "ჯერ არაფერია დარენდერებული — სცადეთ „generate ad“ ან „render“.",
+                        )}
                       </p>
                     ) : (
                       <ul className="space-y-1.5">
@@ -2041,7 +2071,7 @@ export function AppChatPane({
                                   download
                                   className="text-[11px] font-mono text-[var(--allonce-ok)] underline-offset-2 hover:underline"
                                 >
-                                  download
+                                  {tr("download", "ჩამოტვირთვა")}
                                 </a>
                               )}
                           </li>
@@ -2109,7 +2139,8 @@ export function AppChatPane({
                     )}
                     {m.videoPreview?.scriptHint && (
                       <p className="mt-1.5 text-[11.5px] leading-snug text-[var(--allonce-ink-muted)]">
-                        Script: {m.videoPreview.scriptHint.slice(0, 140)}
+                        {tr("Script", "სცენარი")}:{" "}
+                        {m.videoPreview.scriptHint.slice(0, 140)}
                         {m.videoPreview.scriptHint.length > 140 ? "…" : ""}
                       </p>
                     )}
@@ -2130,13 +2161,13 @@ export function AppChatPane({
                           onClick={() => applyVideoAction(i)}
                           className="inline-flex h-8 items-center rounded-md bg-[var(--allonce-ink)] px-3 text-[12px] font-medium text-white transition hover:bg-black"
                         >
-                          Run
+                          {tr("Run", "გაშვება")}
                         </button>
                       </div>
                     )}
                     {m.videoApplied && m.videoStatus === "pending" && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ink-muted)]">
-                        rendering…
+                        {tr("rendering…", "მიმდინარეობს რენდერი…")}
                       </span>
                     )}
                     {m.videoStatus === "rendered" &&
@@ -2147,27 +2178,31 @@ export function AppChatPane({
                           download
                           className="text-[11px] font-mono text-[var(--allonce-ok)] underline-offset-2 hover:underline"
                         >
-                          done · {m.videoOutputFile}
+                          {tr("done", "მზადაა")} · {m.videoOutputFile}
                         </a>
                       )}
                     {m.videoStatus === "rendered" && !m.videoOutputFile && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        rendered.
+                        {tr("rendered.", "დარენდერებულია.")}
                       </span>
                     )}
                     {m.videoStatus === "queued" && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        queued · check the media rail when it lands.
+                        {tr(
+                          "queued · check the media rail when it lands.",
+                          "რიგშია · შეამოწმეთ მედია-პანელზე, როცა მზად იქნება.",
+                        )}
                       </span>
                     )}
                     {m.videoStatus === "applied" && (
                       <span className="text-[11px] font-mono text-[var(--allonce-ok)]">
-                        applied.
+                        {tr("applied.", "გამოყენებულია.")}
                       </span>
                     )}
                     {m.videoStatus === "failed" && (
                       <span className="text-[11px] font-mono text-slate-600">
-                        failed: {m.videoError ?? "unknown error"}
+                        {tr("failed", "ვერ შესრულდა")}:{" "}
+                        {m.videoError ?? tr("unknown error", "უცნობი შეცდომა")}
                       </span>
                     )}
                   </div>
@@ -2178,7 +2213,9 @@ export function AppChatPane({
                     <ul className="space-y-0.5 font-mono text-[11px] text-[var(--ink-500)]">
                       {m.applyResult.materializations.flatMap((mm) =>
                         mm.modifiedPaths.map((p) => (
-                          <li key={`${mm.cellRef}-${p}`}>✓ wrote {p}</li>
+                          <li key={`${mm.cellRef}-${p}`}>
+                            ✓ {tr("wrote", "ჩაიწერა")} {p}
+                          </li>
                         )),
                       )}
                     </ul>
@@ -2230,7 +2267,7 @@ export function AppChatPane({
                 </span>
                 <button
                   type="button"
-                  aria-label={`Remove ${a.name}`}
+                  aria-label={`${tr("Remove", "წაშლა")} ${a.name}`}
                   onClick={() =>
                     setAttachments((prev) => prev.filter((_, j) => j !== i))
                   }
@@ -2266,7 +2303,10 @@ export function AppChatPane({
               ta.style.height = Math.min(ta.scrollHeight, 240) + "px";
             }}
             rows={1}
-            placeholder={`Message ${scopeLabel}…`}
+            placeholder={tr(
+              `Message ${scopeLabel}…`,
+              `მესიჯი — ${scopeLabel}…`,
+            )}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -2286,7 +2326,7 @@ export function AppChatPane({
           />
           <button
             type="button"
-            aria-label="Attach file"
+            aria-label={tr("Attach file", "ფაილის მიბმა")}
             disabled={busy || uploading}
             onClick={() => fileInputRef.current?.click()}
             className="absolute bottom-2 left-2 inline-flex h-8 w-8 items-center justify-center rounded-full text-[var(--ink-500)] transition hover:bg-black/[0.06] hover:text-[var(--ink-900)] disabled:opacity-50"
@@ -2311,7 +2351,9 @@ export function AppChatPane({
           <button
             type="button"
             aria-label={
-              voice.state === "listening" ? "Stop recording" : "Record"
+              voice.state === "listening"
+                ? tr("Stop recording", "ჩაწერის შეჩერება")
+                : tr("Record", "ჩაწერა")
             }
             onClick={() => {
               if (voice.state === "listening") voice.stopListening();
@@ -2343,8 +2385,8 @@ export function AppChatPane({
             type="button"
             aria-label={
               voice.dialogueActive
-                ? "End voice conversation"
-                : "Start voice conversation"
+                ? tr("End voice conversation", "ხმოვანი საუბრის დასრულება")
+                : tr("Start voice conversation", "ხმოვანი საუბრის დაწყება")
             }
             aria-pressed={voice.dialogueActive}
             onClick={() => {
@@ -2381,7 +2423,7 @@ export function AppChatPane({
           </button>
           <button
             type="submit"
-            aria-label="Send"
+            aria-label={tr("Send", "გაგზავნა")}
             disabled={
               busy || (input.trim().length === 0 && attachments.length === 0)
             }
@@ -2402,7 +2444,10 @@ export function AppChatPane({
           </button>
         </div>
         <p className="mt-2 px-1 text-center text-[11px] text-[var(--ink-400)]">
-          AllOnce can make mistakes. Verify before applying changes.
+          {tr(
+            "AllOnce can make mistakes. Verify before applying changes.",
+            "AllOnce-მ შეიძლება შეცდომა დაუშვას. ცვლილების გამოყენებამდე გადაამოწმეთ.",
+          )}
         </p>
       </form>
     </aside>
@@ -2475,22 +2520,43 @@ function describeSocialProposal(p: SocialEditProposal): string {
   }
 }
 
-function previewSummary(p: PreviewResponse): string {
+function previewSummary(
+  p: PreviewResponse,
+  tr: (en: string, ka: string) => string,
+): string {
   const affected = p.resolvedCellRefs?.length ?? 0;
   const shown = p.previewedCellRefs?.length ?? 0;
   const overflow = p.overflowCellCount ?? 0;
   if (affected === 0) {
     return p.rationale
-      ? `Nothing to change: ${p.rationale}`
-      : "Nothing to change for that scope.";
+      ? `${tr("Nothing to change", "შესაცვლელი არაფერია")}: ${p.rationale}`
+      : tr(
+          "Nothing to change for that scope.",
+          "ამ სფეროსთვის შესაცვლელი არაფერია.",
+        );
   }
   const parts = [
-    `${affected} cell${affected === 1 ? "" : "s"} affected`,
-    shown < affected ? `previewing ${shown}` : null,
-    overflow > 0 ? `${overflow} more not previewed` : null,
-    p.kind === "structural" ? "structural (PR-gated)" : null,
+    tr(
+      `${affected} cell${affected === 1 ? "" : "s"} affected`,
+      `${affected} უჯრედზე მოხდება ცვლილება`,
+    ),
+    shown < affected
+      ? tr(`previewing ${shown}`, `მიმდინარეობს ${shown}-ის დათვალიერება`)
+      : null,
+    overflow > 0
+      ? tr(
+          `${overflow} more not previewed`,
+          `კიდევ ${overflow} დაუთვალიერებელი`,
+        )
+      : null,
+    p.kind === "structural"
+      ? tr("structural (PR-gated)", "სტრუქტურული (PR-ით)")
+      : null,
     typeof p.confidence === "number"
-      ? `${Math.round(p.confidence * 100)}% confidence`
+      ? tr(
+          `${Math.round(p.confidence * 100)}% confidence`,
+          `${Math.round(p.confidence * 100)}% სანდოობა`,
+        )
       : null,
   ].filter(Boolean);
   return `${parts.join(" · ")}.`;

@@ -11,6 +11,7 @@ import {
   deleteImage,
   type CaptionLang,
 } from "@/app/lib/goga/actions-projects";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Img = {
   id: string;
@@ -26,7 +27,11 @@ type Img = {
 // One box per language. The site shows the caption for the visitor's
 // language and falls back EN when a language is empty, so a photo with only
 // the English box filled still gets a caption everywhere.
-const CAPTION_BOXES: { lang: CaptionLang; key: "caption" | "captionKa" | "captionRu"; placeholder: string }[] = [
+const CAPTION_BOXES: {
+  lang: CaptionLang;
+  key: "caption" | "captionKa" | "captionRu";
+  placeholder: string;
+}[] = [
   { lang: "en", key: "caption", placeholder: "Caption — English" },
   { lang: "ka", key: "captionKa", placeholder: "წარწერა — ქართული" },
   { lang: "ru", key: "captionRu", placeholder: "Подпись — русский" },
@@ -50,6 +55,7 @@ export function Gallery({
   initial: Img[];
 }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [images, setImages] = useState<Img[]>(initial);
   const [uploading, setUploading] = useState<Uploading[]>([]);
   const [dragOver, setDragOver] = useState(false);
@@ -175,7 +181,15 @@ export function Gallery({
   }
 
   async function onDelete(imageId: string, path: string) {
-    if (!confirm("Delete this photo? This cannot be undone.")) return;
+    if (
+      !confirm(
+        tr(
+          "Delete this photo? This cannot be undone.",
+          "წაიშალოს ეს ფოტო? ეს ქმედება შეუქცევადია.",
+        ),
+      )
+    )
+      return;
     await deleteImage(imageId);
     setImages((cur) => cur.filter((x) => x.id !== imageId));
     if (heroPath === path) setHeroPath(null);
@@ -207,13 +221,16 @@ export function Gallery({
           className="hidden"
         />
         <strong className="text-[12px] uppercase tracking-[0.18em]">
-          Drop photos
+          {tr("Drop photos", "ჩააგდეთ ფოტოები")}
         </strong>
         <span className="text-[12px] text-[var(--ink-500)]">
-          or click to choose files
+          {tr("or click to choose files", "ან დააჭირეთ ფაილების ასარჩევად")}
         </span>
         <span className="text-[11px] text-[var(--ink-400)]">
-          JPEG · PNG · WebP · AVIF · up to 50 MB
+          {tr(
+            "JPEG · PNG · WebP · AVIF · up to 50 MB",
+            "JPEG · PNG · WebP · AVIF · მაქს. 50 მბ",
+          )}
         </span>
       </div>
 
@@ -232,7 +249,9 @@ export function Gallery({
               />
               <span className="text-[13px]">{u.filename}</span>
               <span className="ml-auto text-[11px] text-[var(--ink-500)]">
-                {u.status === "uploading" ? "uploading…" : `error: ${u.error}`}
+                {u.status === "uploading"
+                  ? tr("uploading…", "იტვირთება…")
+                  : `${tr("error", "შეცდომა")}: ${u.error}`}
               </span>
             </li>
           ))}
@@ -241,7 +260,10 @@ export function Gallery({
 
       {images.length === 0 ? (
         <p className="py-4 text-center text-[13px] text-[var(--ink-400)]">
-          No photos yet — drop or pick a few to get started.
+          {tr(
+            "No photos yet — drop or pick a few to get started.",
+            "ფოტოები ჯერ არ არის — ჩააგდეთ ან აირჩიეთ დასაწყებად.",
+          )}
         </p>
       ) : (
         <ul className="space-y-2">
@@ -261,7 +283,7 @@ export function Gallery({
                 <span
                   aria-hidden
                   className="cursor-grab select-none text-[16px] text-[var(--ink-300)] active:cursor-grabbing"
-                  title="Drag to reorder"
+                  title={tr("Drag to reorder", "გადათრიეთ დასალაგებლად")}
                 >
                   ⋮⋮
                 </span>
@@ -291,7 +313,10 @@ export function Gallery({
                   ))}
                   <input
                     defaultValue={img.altText}
-                    placeholder="Alt text (screen readers + image search)"
+                    placeholder={tr(
+                      "Alt text (screen readers + image search)",
+                      "ალტ ტექსტი (ეკრანის წამკითხველები + სურათების ძიება)",
+                    )}
                     onBlur={(e) =>
                       void onAltBlur(img.id, e.target.value, img.altText)
                     }
@@ -301,7 +326,7 @@ export function Gallery({
                 <div className="flex items-center gap-2">
                   {isHero ? (
                     <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-900">
-                      ⭐ Hero
+                      ⭐ {tr("Hero", "მთავარი")}
                     </span>
                   ) : (
                     <button
@@ -309,7 +334,7 @@ export function Gallery({
                       onClick={() => void onMakeHero(img.imagePath)}
                       className="rounded-full border border-black/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
                     >
-                      Make hero
+                      {tr("Make hero", "მთავარად დაყენება")}
                     </button>
                   )}
                   <button
@@ -317,7 +342,7 @@ export function Gallery({
                     onClick={() => void onDelete(img.id, img.imagePath)}
                     className="rounded-full border border-black/20 px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-700 hover:bg-slate-100"
                   >
-                    Delete
+                    {tr("Delete", "წაშლა")}
                   </button>
                 </div>
               </li>

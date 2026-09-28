@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 /**
  * URL-based pagination control. Renders prev / next + a compact
@@ -8,7 +9,7 @@ import Link from "next/link";
  * Stateless and server-rendered — the page server reads ?page= and
  * passes the resolved numbers in.
  */
-export function Pagination({
+export async function Pagination({
   basePath,
   page,
   pageSize,
@@ -22,6 +23,7 @@ export function Pagination({
   /** Other query params to preserve (e.g. status, q). */
   searchParams?: Record<string, string | undefined>;
 }) {
+  const tr = await getServerTr();
   const lastPage = Math.max(1, Math.ceil(totalCount / pageSize));
   const start = totalCount === 0 ? 0 : (page - 1) * pageSize + 1;
   const end = Math.min(page * pageSize, totalCount);
@@ -49,25 +51,30 @@ export function Pagination({
   return (
     <nav className="mt-4 flex items-center justify-between text-[12px] text-[var(--ink-500)]">
       <span className="tabular-nums">
-        {totalCount === 0 ? "0 results" : `${start}–${end} of ${totalCount}`}
+        {totalCount === 0
+          ? tr("0 results", "0 შედეგი")
+          : tr(
+              `${start}–${end} of ${totalCount}`,
+              `${start}–${end} / ${totalCount}`,
+            )}
       </span>
       <div className="flex items-center gap-1.5">
         {prev ? (
           <Link href={prev} className={linkCls} prefetch={false}>
-            ← Prev
+            {tr("← Prev", "← წინა")}
           </Link>
         ) : (
-          <span className={disabledCls}>← Prev</span>
+          <span className={disabledCls}>{tr("← Prev", "← წინა")}</span>
         )}
         <span className="px-2 text-[var(--ink-500)] tabular-nums">
           {page} / {lastPage}
         </span>
         {next ? (
           <Link href={next} className={linkCls} prefetch={false}>
-            Next →
+            {tr("Next →", "შემდეგი →")}
           </Link>
         ) : (
-          <span className={disabledCls}>Next →</span>
+          <span className={disabledCls}>{tr("Next →", "შემდეგი →")}</span>
         )}
       </div>
     </nav>

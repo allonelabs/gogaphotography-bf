@@ -9,6 +9,7 @@ import {
 } from "@/app/lib/goga/blog";
 import { updatePost, deletePost } from "@/app/lib/goga/actions-blog";
 import { BlogPostForm } from "@/app/components/app/blog-post-form";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Edit post" };
@@ -19,6 +20,7 @@ export default async function EditPostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const tr = await getServerTr();
   const [post, categories, tags] = await Promise.all([
     getPostById(id),
     listCategories(),
@@ -31,16 +33,16 @@ export default async function EditPostPage({
   return (
     <AppShell
       breadcrumb={[
-        { label: "Content" },
-        { label: "Blog", href: "/admin/blog" },
-        { label: post.title_en || post.title_ka || "Post" },
+        { label: tr("Content", "კონტენტი") },
+        { label: tr("Blog", "ბლოგი"), href: "/admin/blog" },
+        { label: post.title_en || post.title_ka || tr("Post", "პოსტი") },
       ]}
       chatScope={{ level: "tool", tool: "blog" }}
-      chatScopeLabel="Blog"
+      chatScopeLabel={tr("Blog", "ბლოგი")}
     >
       <div className="mx-auto max-w-7xl space-y-8 px-4 py-6 sm:px-6 sm:py-8">
         <h1 className="text-xl font-semibold text-[var(--ink-900)]">
-          Edit post
+          {tr("Edit post", "პოსტის რედაქტირება")}
         </h1>
         <BlogPostForm
           action={update}
@@ -51,7 +53,7 @@ export default async function EditPostPage({
         />
         <form action={del}>
           <button className="text-sm text-red-600 underline">
-            Delete post
+            {tr("Delete post", "პოსტის წაშლა")}
           </button>
         </form>
       </div>

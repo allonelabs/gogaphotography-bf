@@ -4,6 +4,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createProject, updateProject } from "@/app/lib/goga/actions-projects";
 import { rethrowIfRedirect } from "@/app/lib/goga/redirect-error";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Initial = {
   id?: string;
@@ -42,6 +43,7 @@ export function ProjectForm({
   selectedAlbumIds?: string[];
 }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const isEdit = !!initial?.id;
@@ -60,7 +62,11 @@ export function ProjectForm({
         }
       } catch (e) {
         rethrowIfRedirect(e);
-        setErr(e instanceof Error ? e.message : "Save failed");
+        setErr(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+        );
       }
     });
   }
@@ -74,7 +80,7 @@ export function ProjectForm({
       className="space-y-4 rounded-2xl bg-white p-5 ring-1 ring-black/5"
     >
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Title (EN)">
+        <Field label={tr("Title (EN)", "სათაური (ინგლ.)")}>
           <input
             name="title_en"
             required
@@ -82,14 +88,14 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
-        <Field label="Title (KA)">
+        <Field label={tr("Title (KA)", "სათაური (ქართ.)")}>
           <input
             name="title_ka"
             defaultValue={initial?.title_ka ?? ""}
             className={inputCls}
           />
         </Field>
-        <Field label="Title (RU)">
+        <Field label={tr("Title (RU)", "სათაური (რუს.)")}>
           <input
             name="title_ru"
             defaultValue={initial?.title_ka ?? ""}
@@ -99,7 +105,7 @@ export function ProjectForm({
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Location (EN)">
+        <Field label={tr("Location (EN)", "მდებარეობა (ინგლ.)")}>
           <input
             name="location_en"
             defaultValue={initial?.location_en ?? ""}
@@ -107,14 +113,14 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
-        <Field label="Location (KA)">
+        <Field label={tr("Location (KA)", "მდებარეობა (ქართ.)")}>
           <input
             name="location_ka"
             defaultValue={initial?.location_ka ?? ""}
             className={inputCls}
           />
         </Field>
-        <Field label="Location (RU)">
+        <Field label={tr("Location (RU)", "მდებარეობა (რუს.)")}>
           <input
             name="location_ru"
             defaultValue={initial?.location_ka ?? ""}
@@ -123,7 +129,12 @@ export function ProjectForm({
         </Field>
       </div>
 
-      <Field label="Slug — leave blank to auto-generate">
+      <Field
+        label={tr(
+          "Slug — leave blank to auto-generate",
+          "სლაგი — ცარიელი დატოვეთ ავტომატური გენერაციისთვის",
+        )}
+      >
         <input
           name="slug"
           defaultValue={initial?.slug ?? ""}
@@ -132,7 +143,7 @@ export function ProjectForm({
       </Field>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Field label="Description (EN)">
+        <Field label={tr("Description (EN)", "აღწერა (ინგლ.)")}>
           <textarea
             name="description_en"
             defaultValue={initial?.description_en ?? ""}
@@ -140,7 +151,7 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
-        <Field label="Description (KA)">
+        <Field label={tr("Description (KA)", "აღწერა (ქართ.)")}>
           <textarea
             name="description_ka"
             defaultValue={initial?.description_ka ?? ""}
@@ -148,7 +159,7 @@ export function ProjectForm({
             className={inputCls}
           />
         </Field>
-        <Field label="Description (RU)">
+        <Field label={tr("Description (RU)", "აღწერა (რუს.)")}>
           <textarea
             name="description_ru"
             defaultValue={initial?.description_ka ?? ""}
@@ -160,7 +171,9 @@ export function ProjectForm({
 
       {albums.length > 0 ? (
         <fieldset className="rounded-lg border border-black/10 p-3">
-          <legend className="text-[13px] text-[var(--ink-700)]">Albums</legend>
+          <legend className="text-[13px] text-[var(--ink-700)]">
+            {tr("Albums", "ალბომები")}
+          </legend>
           <div className="flex flex-wrap gap-3">
             {albums.map((a) => (
               <label key={a.id} className="flex items-center gap-1 text-[13px]">
@@ -185,7 +198,12 @@ export function ProjectForm({
           defaultChecked={initial?.published ?? false}
           className="h-4 w-4 rounded border-black/20"
         />
-        <span>Published — visible on the public site</span>
+        <span>
+          {tr(
+            "Published — visible on the public site",
+            "გამოქვეყნებული — ჩანს საჯარო საიტზე",
+          )}
+        </span>
       </label>
 
       <div className="flex items-center gap-3 pt-2">
@@ -194,7 +212,11 @@ export function ProjectForm({
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          {pending ? "Saving…" : isEdit ? "Save changes" : "Create project"}
+          {pending
+            ? tr("Saving…", "ინახება…")
+            : isEdit
+              ? tr("Save changes", "ცვლილებების შენახვა")
+              : tr("Create project", "პროექტის შექმნა")}
         </button>
         {err ? <span className="text-[13px] text-slate-700">{err}</span> : null}
       </div>

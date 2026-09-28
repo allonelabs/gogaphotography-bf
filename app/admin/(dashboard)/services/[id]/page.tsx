@@ -4,6 +4,7 @@ import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { ServiceForm } from "../_form";
 import { DeleteServiceButton } from "./_delete";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export default async function EditServicePage({ params }: Props) {
   const { id } = await params;
+  const tr = await getServerTr();
   const sb = gogaAdmin();
   const { data } = await sb
     .from("services")
@@ -25,8 +27,8 @@ export default async function EditServicePage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Catalog" },
-        { label: "Services", href: "/admin/services" },
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Services", "სერვისები"), href: "/admin/services" },
         { label: data.title_en },
       ]}
       chatScope={{ level: "tool", tool: "services" }}
@@ -41,7 +43,7 @@ export default async function EditServicePage({ params }: Props) {
             href="/admin/services"
             className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
           >
-            ← back
+            {tr("← back", "← უკან")}
           </Link>
         </header>
 
@@ -49,7 +51,7 @@ export default async function EditServicePage({ params }: Props) {
 
         <section className="mt-12 border-t border-black/5 pt-6">
           <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-700">
-            Danger zone
+            {tr("Danger zone", "სახიფათო ზონა")}
           </h2>
           <DeleteServiceButton id={data.id} title={data.title_en} />
         </section>

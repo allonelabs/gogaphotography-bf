@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/app/components/app/AppShell";
 import { getThread, threadMessages } from "@/app/lib/goga/meta-threads";
 import { toggleHandoff, sendManualReply } from "@/app/lib/goga/actions-meta";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Conversation" };
@@ -16,6 +17,9 @@ export default async function ThreadPage({
   const thread = await getThread(id);
   if (!thread) notFound();
   const messages = await threadMessages(id);
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : "en-US";
   const reply = sendManualReply.bind(null, id);
   const setHandoffTrue = toggleHandoff.bind(null, id, true);
   const setHandoffFalse = toggleHandoff.bind(null, id, false);
@@ -23,12 +27,12 @@ export default async function ThreadPage({
   return (
     <AppShell
       breadcrumb={[
-        { label: "Inbox" },
-        { label: "Messages", href: "/admin/messages" },
+        { label: tr("Inbox", "შემოსული") },
+        { label: tr("Messages", "მესიჯები"), href: "/admin/messages" },
         { label: thread.display_name ?? thread.external_id },
       ]}
       chatScope={{ level: "tool", tool: "messages" }}
-      chatScopeLabel="Messages"
+      chatScopeLabel={tr("Messages", "მესიჯები")}
     >
       <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 sm:py-8">
         <div className="mb-4 flex items-center justify-between">
@@ -41,13 +45,13 @@ export default async function ThreadPage({
           {thread.handoff ? (
             <form action={setHandoffFalse}>
               <button className="rounded-full border px-3 py-1.5 text-xs">
-                Resume bot
+                {tr("Resume bot", "ბოტის განახლება")}
               </button>
             </form>
           ) : (
             <form action={setHandoffTrue}>
               <button className="rounded-full border px-3 py-1.5 text-xs">
-                Take over
+                {tr("Take over", "ხელით პასუხი")}
               </button>
             </form>
           )}
@@ -71,7 +75,8 @@ export default async function ThreadPage({
               >
                 {m.text}
                 <div className="mt-0.5 text-[10px] opacity-60">
-                  {m.sender} · {new Date(m.created_at).toLocaleTimeString()}
+                  {m.sender} ·{" "}
+                  {new Date(m.created_at).toLocaleTimeString(dateLocale)}
                 </div>
               </div>
             </div>
@@ -80,11 +85,11 @@ export default async function ThreadPage({
         <form action={reply} className="mt-4 flex gap-2">
           <input
             name="text"
-            placeholder="Reply as the studio…"
+            placeholder={tr("Reply as the studio…", "უპასუხე სტუდიის სახელით…")}
             className="flex-1 rounded-full border px-4 py-2 text-sm"
           />
           <button className="rounded-full bg-black px-4 py-2 text-sm text-white">
-            Send
+            {tr("Send", "გაგზავნა")}
           </button>
         </form>
       </div>

@@ -5,27 +5,37 @@ import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { isKnownPageSlug } from "@/app/lib/goga/page-slugs";
 import { PageForm } from "./_form";
 import { ImageUploader } from "@/app/admin/(dashboard)/_components/ImageUploader";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 
-const LABELS: Record<string, string> = {
-  about: "About",
-  services: "Services intro",
-  faq: "FAQ",
-  photobook: "Photobook",
-};
+function getLabels(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    about: tr("About", "ჩვენ შესახებ"),
+    services: tr("Services intro", "სერვისების შესავალი"),
+    faq: tr("FAQ", "ხშირი კითხვები"),
+    photobook: tr("Photobook", "ფოტოწიგნი"),
+    privacy: tr("Privacy policy", "კონფიდენციალურობის პოლიტიკა"),
+  };
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
 export default async function EditPagePage({ params }: Props) {
   const { slug } = await params;
   if (!isKnownPageSlug(slug)) notFound();
+  const tr = await getServerTr();
+  const LABELS = getLabels(tr);
 
   const sb = gogaAdmin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data } = (await (sb as any)
     .from("pages")
-    .select("title_en, title_ka, title_ru, body_en, body_ka, body_ru, og_image_path")
+    .select(
+      "title_en, title_ka, title_ru, body_en, body_ka, body_ru, og_image_path",
+    )
     .eq("slug", slug)
     .maybeSingle()) as {
     data: {
@@ -44,8 +54,8 @@ export default async function EditPagePage({ params }: Props) {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Site" },
-        { label: "Pages", href: "/admin/pages" },
+        { label: tr("Site", "საიტი") },
+        { label: tr("Pages", "გვერდები"), href: "/admin/pages" },
         { label: LABELS[slug] ?? slug },
       ]}
       chatScope={{ level: "tool", tool: "pages" }}
@@ -60,21 +70,29 @@ export default async function EditPagePage({ params }: Props) {
             href="/admin/pages"
             className="rounded-full border border-black/10 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-[var(--ink-700)] hover:bg-slate-50"
           >
-            ← back
+            {tr("← back", "← უკან")}
           </Link>
         </header>
 
         <p className="mb-5 max-w-prose text-[13px] text-[var(--ink-500)]">
-          Markdown is supported. Leave a translation blank to fall back to the
-          English version.
+          {tr(
+            "Markdown is supported. Leave a translation blank to fall back to the English version.",
+            "მარკდაუნი მხარდაჭერილია. თარგმანის ველის ცარიელად დატოვება გამოიყენებს ინგლისურ ვერსიას.",
+          )}
         </p>
 
         <section className="mb-5 rounded-2xl bg-white p-5 ring-1 ring-black/5">
           <ImageUploader
             surface="page.og_image"
             rowId={slug}
-            label="Share image (Open Graph)"
-            hint="Shown when this page is shared on social / chat apps. Landscape 1200×630, JPG/PNG."
+            label={tr(
+              "Share image (Open Graph)",
+              "გასაზიარებელი სურათი (Open Graph)",
+            )}
+            hint={tr(
+              "Shown when this page is shared on social / chat apps. Landscape 1200×630, JPG/PNG.",
+              "გამოჩნდება გვერდის გაზიარებისას სოც./მესენჯერ აპებში. ჰორიზონტალური 1200×630, JPG/PNG.",
+            )}
             currentPath={data?.og_image_path ?? null}
             aspect="1200/630"
           />

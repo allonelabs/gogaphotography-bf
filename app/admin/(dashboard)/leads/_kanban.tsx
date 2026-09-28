@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { setLeadStage } from "@/app/lib/goga/actions";
 import { STAGE_TONE, type LeadStage } from "@/app/lib/goga/leads";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export type CardData = {
   id: string;
@@ -27,6 +28,7 @@ interface Props {
 export function Kanban({ stages, labels, initial }: Props) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [cards, setCards] = useState<CardData[]>(initial);
   const [, start] = useTransition();
   const dragRef = useRef<{ id: string; fromStage: LeadStage } | null>(null);
@@ -60,7 +62,7 @@ export function Kanban({ stages, labels, initial }: Props) {
         router.refresh();
       } catch (err) {
         toast.show(
-          `Move failed: ${err instanceof Error ? err.message : err}`,
+          `${tr("Move failed", "გადატანა ვერ მოხერხდა")}: ${err instanceof Error ? err.message : err}`,
           "error",
         );
         setCards((c) =>

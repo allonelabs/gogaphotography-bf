@@ -7,12 +7,15 @@ import {
   deleteBlackoutDate,
 } from "@/app/lib/goga/actions-availability";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Blackout = { id: string; date: string; reason: string | null };
 
 export function BlackoutList({ initial }: { initial: Blackout[] }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr, locale } = useLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : undefined;
   const [items, setItems] = useState<Blackout[]>(initial);
   const [pending, start] = useTransition();
 
@@ -25,11 +28,19 @@ export function BlackoutList({ initial }: { initial: Blackout[] }) {
     start(async () => {
       try {
         await addBlackoutDate(date, reason);
-        toast.show("Blackout date added", "success");
+        toast.show(
+          tr("Blackout date added", "დახურული დღე დამატებულია"),
+          "success",
+        );
         e.currentTarget.reset();
         router.refresh();
       } catch (err) {
-        toast.show(err instanceof Error ? err.message : "Save failed", "error");
+        toast.show(
+          err instanceof Error
+            ? err.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -48,23 +59,26 @@ export function BlackoutList({ initial }: { initial: Blackout[] }) {
   return (
     <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
       <h2 className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-        Blackout dates
+        {tr("Blackout dates", "დახურული დღეები")}
       </h2>
       <form onSubmit={onAdd} className="mb-4 flex flex-wrap items-end gap-2">
         <label className="block">
           <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-            Date
+            {tr("Date", "თარიღი")}
           </span>
           <input type="date" name="date" required className={inputCls} />
         </label>
         <label className="block flex-1 min-w-[180px]">
           <span className="mb-1 block text-[10px] uppercase tracking-[0.18em] text-[var(--ink-500)]">
-            Reason (optional)
+            {tr("Reason (optional)", "მიზეზი (არასავალდებულო)")}
           </span>
           <input
             type="text"
             name="reason"
-            placeholder="Holiday, personal day…"
+            placeholder={tr(
+              "Holiday, personal day…",
+              "დღესასწაული, პირადი დღე…",
+            )}
             className={`${inputCls} w-full`}
           />
         </label>
@@ -73,12 +87,14 @@ export function BlackoutList({ initial }: { initial: Blackout[] }) {
           disabled={pending}
           className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
         >
-          Add
+          {tr("Add", "დამატება")}
         </button>
       </form>
 
       {items.length === 0 ? (
-        <p className="text-[13px] text-[var(--ink-400)]">No blackout dates.</p>
+        <p className="text-[13px] text-[var(--ink-400)]">
+          {tr("No blackout dates.", "დახურული დღეები არ არის.")}
+        </p>
       ) : (
         <ul className="divide-y divide-black/5">
           {items.map((b) => (
@@ -87,7 +103,7 @@ export function BlackoutList({ initial }: { initial: Blackout[] }) {
               className="flex items-center justify-between gap-3 py-2"
             >
               <div className="text-[13px] text-[var(--ink-900)]">
-                {new Date(b.date + "T00:00:00").toLocaleDateString(undefined, {
+                {new Date(b.date + "T00:00:00").toLocaleDateString(dateLocale, {
                   weekday: "short",
                   year: "numeric",
                   month: "short",
@@ -105,7 +121,7 @@ export function BlackoutList({ initial }: { initial: Blackout[] }) {
                 disabled={pending}
                 className="rounded-full border border-black/20 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-slate-700 transition hover:bg-slate-100 disabled:opacity-50"
               >
-                Remove
+                {tr("Remove", "წაშლა")}
               </button>
             </li>
           ))}

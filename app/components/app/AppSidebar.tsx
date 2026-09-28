@@ -88,6 +88,15 @@ function navKey(href: string): TranslationKey {
   return ("nav." + slug) as TranslationKey;
 }
 
+// GOGA nav sections — the dict only carries the tourism template's sections.
+const SECTION_KA: Record<string, string> = {
+  Pipeline: "სამუშაო პროცესი",
+  Catalog: "კატალოგი",
+  Site: "საიტი",
+  Inbox: "შემოსული",
+  System: "სისტემა",
+};
+
 const SECTION_KEY: Record<string, TranslationKey> = {
   Bookings: "nav.section.bookings",
   Operations: "nav.section.operations",
@@ -173,7 +182,7 @@ function SubRow({
 
 export function AppSidebar() {
   const pathname = usePathname() ?? "";
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const matchesItem = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
@@ -189,7 +198,11 @@ export function AppSidebar() {
           <li>
             <NavRow
               href={tourismNav.top.href}
-              label={t(navKey(tourismNav.top.href))}
+              label={
+                locale === "ka" && tourismNav.top.labelKa
+                  ? tourismNav.top.labelKa
+                  : t(navKey(tourismNav.top.href))
+              }
               iconName={tourismNav.top.icon}
               active={pathname === tourismNav.top.href}
             />
@@ -200,9 +213,11 @@ export function AppSidebar() {
         {tourismNav.sections.map((section) => (
           <div key={section.label} className="mt-6 px-3">
             <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-400)]">
-              {SECTION_KEY[section.label]
-                ? t(SECTION_KEY[section.label])
-                : section.label}
+              {locale === "ka" && SECTION_KA[section.label]
+                ? SECTION_KA[section.label]
+                : SECTION_KEY[section.label]
+                  ? t(SECTION_KEY[section.label])
+                  : section.label}
             </div>
             <ul className="space-y-0.5">
               {section.items.map((item) => {
@@ -213,7 +228,12 @@ export function AppSidebar() {
                 const translated = t(key);
                 // Safety: if the dict didn't have it, t() returns the key
                 // itself — fall back to the raw label from the nav config.
-                const label = translated === key ? item.label : translated;
+                const label =
+                  locale === "ka" && item.labelKa
+                    ? item.labelKa
+                    : translated === key
+                      ? item.label
+                      : translated;
                 return (
                   <li key={item.href}>
                     <NavRow

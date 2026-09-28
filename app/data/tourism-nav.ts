@@ -35,7 +35,7 @@ export interface NavConfig {
  * pattern travelplace-bf used when it forked BF.)
  */
 export const tourismNav: NavConfig = {
-  top: { label: "Home", href: "/admin", icon: "home" },
+  top: { label: "Home", labelKa: "მთავარი", href: "/admin", icon: "home" },
   sections: [
     {
       label: "Pipeline",
@@ -141,7 +141,12 @@ export const tourismNav: NavConfig = {
           href: "/admin/seo",
           icon: "search",
         },
-        { label: "Homepage hero", href: "/admin/hero", icon: "sparkles" },
+        {
+          label: "Homepage hero",
+          labelKa: "მთავარი გვერდის ბანერი",
+          href: "/admin/hero",
+          icon: "sparkles",
+        },
         {
           label: "Blog",
           labelKa: "ბლოგი",
@@ -195,8 +200,18 @@ export const tourismNav: NavConfig = {
           href: "/admin/messages",
           icon: "message-circle",
         },
-        { label: "Contact form", href: "/admin/contact", icon: "mail" },
-        { label: "Chatbot", href: "/admin/chatbot", icon: "bot" },
+        {
+          label: "Contact form",
+          labelKa: "საკონტაქტო ფორმა",
+          href: "/admin/contact",
+          icon: "mail",
+        },
+        {
+          label: "Chatbot",
+          labelKa: "ჩატბოტი",
+          href: "/admin/chatbot",
+          icon: "bot",
+        },
       ],
     },
     {

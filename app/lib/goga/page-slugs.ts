@@ -11,6 +11,7 @@ export const KNOWN_PAGE_SLUGS = [
   "services",
   "faq",
   "photobook",
+  "privacy",
 ] as const;
 
 export type KnownPageSlug = (typeof KNOWN_PAGE_SLUGS)[number];

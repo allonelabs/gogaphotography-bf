@@ -1,5 +1,6 @@
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { getServerTr } from "@/app/lib/i18n/server";
 import { RuleEditor } from "./_editor";
 import { RecentLog } from "./_log";
 
@@ -15,14 +16,18 @@ const RULE_ORDER = [
   "upsell",
 ] as const;
 
-const RULE_LABELS: Record<(typeof RULE_ORDER)[number], string> = {
-  booking_received: "Booking received",
-  contract_sent: "Contract sent",
-  contract_signed: "Contract signed",
-  shoot_reminder: "Shoot reminder",
-  delivery_ready: "Delivery ready",
-  upsell: "Upsell",
-};
+function getRuleLabels(
+  tr: (en: string, ka: string) => string,
+): Record<(typeof RULE_ORDER)[number], string> {
+  return {
+    booking_received: tr("Booking received", "ჯავშანი მიღებულია"),
+    contract_sent: tr("Contract sent", "ხელშეკრულება გაგზავნილია"),
+    contract_signed: tr("Contract signed", "ხელშეკრულება ხელმოწერილია"),
+    shoot_reminder: tr("Shoot reminder", "გადაღების შეხსენება"),
+    delivery_ready: tr("Delivery ready", "მიწოდება მზადაა"),
+    upsell: tr("Upsell", "დამატებითი შეთავაზება"),
+  };
+}
 
 const RULE_PLACEHOLDERS: Record<(typeof RULE_ORDER)[number], string[]> = {
   booking_received: [
@@ -47,6 +52,8 @@ const COMMON_PLACEHOLDERS = [
 ];
 
 export default async function AutomationsPage() {
+  const tr = await getServerTr();
+  const RULE_LABELS = getRuleLabels(tr);
   const sb = gogaAdmin();
   const [{ data: rules }, { data: log }] = await Promise.all([
     sb.from("automation_rules").select("*"),
@@ -60,19 +67,23 @@ export default async function AutomationsPage() {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Site" }, { label: "Automations" }]}
+      breadcrumb={[
+        { label: tr("Site", "საიტი") },
+        { label: tr("Automations", "ავტომატიზაცია") },
+      ]}
       chatScope={{ level: "tool", tool: "automations" }}
-      chatScopeLabel="Automations"
+      chatScopeLabel={tr("Automations", "ავტომატიზაცია")}
     >
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
         <header>
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Automations
+            {tr("Automations", "ავტომატიზაცია")}
           </h1>
           <p className="mt-1 max-w-prose text-[13px] text-[var(--ink-500)]">
-            The lifecycle emails GOGA Photography sends automatically — lead →
-            consultation → contract → shoot → delivery → upsell. Every send is
-            idempotent per booking/contract/delivery and logged below.
+            {tr(
+              "The lifecycle emails GOGA Photography sends automatically — lead → consultation → contract → shoot → delivery → upsell. Every send is idempotent per booking/contract/delivery and logged below.",
+              "წერილები, რომლებსაც GOGA Photography ავტომატურად აგზავნის მთელი ციკლის განმავლობაში — ლიდი → კონსულტაცია → ხელშეკრულება → გადაღება → მიწოდება → დამატებითი შეთავაზება. ყოველი გაგზავნა ერთჯერადია ჯავშანზე/ხელშეკრულებაზე/მიწოდებაზე და ჩანს ქვემოთ ჟურნალში.",
+            )}
           </p>
         </header>
 

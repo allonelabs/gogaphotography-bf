@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 import { toast } from "./Toast";
 
 // Two-letter avatar initials. "Luka Adamia" -> "LA", "luka" -> "LU",
@@ -24,6 +25,7 @@ interface SessionUser {
 }
 
 export function AccountMenu() {
+  const { tr } = useLocale();
   // Fetch the session directly instead of going through <SessionProvider>
   // — keeps the menu self-contained and avoids wrapping the whole tree
   // just to read three fields. The AuthGuard already gates render anyway.
@@ -42,7 +44,8 @@ export function AccountMenu() {
       cancelled = true;
     };
   }, []);
-  const displayName = user?.name ?? user?.email?.split("@")[0] ?? "Account";
+  const displayName =
+    user?.name ?? user?.email?.split("@")[0] ?? tr("Account", "ანგარიში");
   const displayEmail = user?.email ?? "";
   const initials = deriveInitials(user?.name, user?.email);
 
@@ -78,7 +81,7 @@ export function AccountMenu() {
       <button
         ref={btnRef}
         type="button"
-        aria-label="Account menu"
+        aria-label={tr("Account menu", "ანგარიშის მენიუ")}
         onClick={() => setOpen((v) => !v)}
         className="ml-1 inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[var(--bg-sunken)] text-[11px] font-semibold text-[var(--ink-900)] shadow-[var(--shadow-sm)] transition hover:scale-105"
       >
@@ -120,22 +123,22 @@ export function AccountMenu() {
             <MenuItem
               href="/admin/account"
               onClick={() => setOpen(false)}
-              label="Account settings"
+              label={tr("Account settings", "ანგარიშის პარამეტრები")}
             />
             <MenuItem
               href="/admin/organization"
               onClick={() => setOpen(false)}
-              label="Organization settings"
+              label={tr("Organization settings", "ორგანიზაციის პარამეტრები")}
             />
             <MenuItem
               href="/admin/billing"
               onClick={() => setOpen(false)}
-              label="Billing"
+              label={tr("Billing", "ბილინგი")}
             />
             <MenuItem
               href="/admin/account/api-keys"
               onClick={() => setOpen(false)}
-              label="API keys"
+              label={tr("API keys", "API გასაღებები")}
             />
           </div>
 
@@ -143,12 +146,12 @@ export function AccountMenu() {
             <MenuItem
               href="/admin/help"
               onClick={() => setOpen(false)}
-              label="Help & docs"
+              label={tr("Help & docs", "დახმარება და დოკუმენტაცია")}
             />
             <MenuItem
               href="/admin/status"
               onClick={() => setOpen(false)}
-              label="System status"
+              label={tr("System status", "სისტემის სტატუსი")}
             />
           </div>
 
@@ -164,7 +167,7 @@ export function AccountMenu() {
                   localStorage.removeItem("allonce.auth.provider");
                   localStorage.removeItem("allonce.auth.email");
                 } catch {}
-                toast("Signed out", "ok");
+                toast(tr("Signed out", "გამოსული ხართ"), "ok");
                 // Land on the marketing page after sign-out, not the signin
                 // form. Users who want to come back can click "Sign in" from
                 // the landing nav. next-auth clears the JWT cookie before
@@ -174,7 +177,7 @@ export function AccountMenu() {
               }}
               className="block w-full px-4 py-2 text-left text-[13px] text-[var(--ink-500)] transition hover:bg-[var(--bg-surface-alt)] hover:text-[var(--allonce-err)]"
             >
-              Sign out
+              {tr("Sign out", "გასვლა")}
             </button>
           </div>
         </div>

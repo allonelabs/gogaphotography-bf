@@ -7,26 +7,30 @@ import {
   createTag,
   deleteTag,
 } from "@/app/lib/goga/actions-blog";
+import { getServerTr } from "@/app/lib/i18n/server";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Blog taxonomy" };
 
 export default async function TaxonomyPage() {
+  const tr = await getServerTr();
   const [categories, tags] = await Promise.all([listCategories(), listTags()]);
   const field = "rounded border border-black/10 px-2 py-1 text-sm";
   return (
     <AppShell
       breadcrumb={[
-        { label: "Content" },
-        { label: "Blog", href: "/admin/blog" },
-        { label: "Taxonomy" },
+        { label: tr("Content", "კონტენტი") },
+        { label: tr("Blog", "ბლოგი"), href: "/admin/blog" },
+        { label: tr("Taxonomy", "ტაქსონომია") },
       ]}
       chatScope={{ level: "tool", tool: "blog" }}
-      chatScopeLabel="Blog"
+      chatScopeLabel={tr("Blog", "ბლოგი")}
     >
       <div className="mx-auto grid max-w-5xl gap-10 px-4 py-6 sm:px-6 sm:py-8 md:grid-cols-2">
         <section>
-          <h2 className="mb-3 text-lg font-semibold">Categories</h2>
+          <h2 className="mb-3 text-lg font-semibold">
+            {tr("Categories", "კატეგორიები")}
+          </h2>
           <ul className="mb-4 space-y-1">
             {categories.map((c) => (
               <li
@@ -39,7 +43,7 @@ export default async function TaxonomyPage() {
                 </span>
                 <form action={deleteCategory.bind(null, c.id)}>
                   <button className="text-xs text-red-600 underline">
-                    delete
+                    {tr("delete", "წაშლა")}
                   </button>
                 </form>
               </li>
@@ -58,12 +62,12 @@ export default async function TaxonomyPage() {
               <input name="name_en" className={field} />
             </label>
             <button className="rounded-full bg-black px-3 py-1.5 text-xs text-white">
-              Add
+              {tr("Add", "დამატება")}
             </button>
           </form>
         </section>
         <section>
-          <h2 className="mb-3 text-lg font-semibold">Tags</h2>
+          <h2 className="mb-3 text-lg font-semibold">{tr("Tags", "ტეგები")}</h2>
           <ul className="mb-4 space-y-1">
             {tags.map((t) => (
               <li
@@ -76,7 +80,7 @@ export default async function TaxonomyPage() {
                 </span>
                 <form action={deleteTag.bind(null, t.id)}>
                   <button className="text-xs text-red-600 underline">
-                    delete
+                    {tr("delete", "წაშლა")}
                   </button>
                 </form>
               </li>
@@ -92,7 +96,7 @@ export default async function TaxonomyPage() {
               <input name="name_en" className={field} />
             </label>
             <button className="rounded-full bg-black px-3 py-1.5 text-xs text-white">
-              Add
+              {tr("Add", "დამატება")}
             </button>
           </form>
         </section>

@@ -3,9 +3,11 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export function LoginForm({ next }: { next: string }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export function LoginForm({ next }: { next: string }) {
       router.replace(next);
       router.refresh();
     } else {
-      setErr("Wrong password.");
+      setErr(tr("Wrong password.", "პაროლი არასწორია."));
       setBusy(false);
     }
   }
@@ -34,7 +36,7 @@ export function LoginForm({ next }: { next: string }) {
         <input
           type="password"
           autoComplete="current-password"
-          placeholder="Password"
+          placeholder={tr("Password", "პაროლი")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoFocus
@@ -46,7 +48,7 @@ export function LoginForm({ next }: { next: string }) {
           disabled={busy}
           className="w-full rounded-full bg-white px-5 py-3 text-[11px] uppercase tracking-[0.22em] text-[#0a0a0a] transition hover:bg-white/90 disabled:opacity-50 disabled:cursor-progress"
         >
-          {busy ? "Signing in…" : "Sign in"}
+          {busy ? tr("Signing in…", "შედის…") : tr("Sign in", "შესვლა")}
         </button>
       </form>
       {err ? <div className="mt-3 text-[13px] text-red-400">{err}</div> : null}

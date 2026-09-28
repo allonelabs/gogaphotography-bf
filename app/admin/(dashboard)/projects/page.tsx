@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
+import { getServerTr } from "@/app/lib/i18n/server";
 import { ProjectsList } from "./_list";
 
 export const dynamic = "force-dynamic";
@@ -23,21 +24,28 @@ export default async function ProjectsPage() {
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   const items = data ?? [];
+  const tr = await getServerTr();
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Catalog" }, { label: "Projects" }]}
+      breadcrumb={[
+        { label: tr("Catalog", "კატალოგი") },
+        { label: tr("Projects", "პროექტები") },
+      ]}
       chatScope={{ level: "tool", tool: "projects" }}
-      chatScopeLabel="Projects"
+      chatScopeLabel={tr("Projects", "პროექტები")}
     >
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5 flex items-baseline justify-between">
           <div>
             <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-              Projects
+              {tr("Projects", "პროექტები")}
             </h1>
             <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
-              {items.length} total · drag to reorder
+              {tr(
+                `${items.length} total · drag to reorder`,
+                `სულ ${items.length} · გადათრიეთ დასალაგებლად`,
+              )}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -45,13 +53,13 @@ export default async function ProjectsPage() {
               href="/admin/projects/albums"
               className="text-[12px] uppercase tracking-[0.18em] text-[var(--ink-500)] underline"
             >
-              Albums
+              {tr("Albums", "ალბომები")}
             </Link>
             <Link
               href="/admin/projects/new"
               className="rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
             >
-              New project
+              {tr("New project", "ახალი პროექტი")}
             </Link>
           </div>
         </header>
@@ -59,14 +67,16 @@ export default async function ProjectsPage() {
         {items.length === 0 ? (
           <div className="rounded-2xl bg-white px-8 py-10 text-center ring-1 ring-black/5">
             <p className="mb-3 text-[14px] text-[var(--ink-500)]">
-              No projects yet — your first one will appear on the home grid as
-              soon as you publish it.
+              {tr(
+                "No projects yet — your first one will appear on the home grid as soon as you publish it.",
+                "პროექტები ჯერ არ არის — თქვენი პირველი პროექტი მთავარ გვერდზე გამოჩნდება, როგორც კი გამოაქვეყნებთ.",
+              )}
             </p>
             <Link
               href="/admin/projects/new"
               className="inline-block rounded-full bg-[var(--ao-accent)] px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)]"
             >
-              Create the first project
+              {tr("Create the first project", "შექმენით პირველი პროექტი")}
             </Link>
           </div>
         ) : (

@@ -15,7 +15,7 @@ export async function getServerLocale(): Promise<Locale> {
   } catch {
     /* cookies() throws outside request scope — fall through */
   }
-  return "en";
+  return "ka";
 }
 
 /** Server-side t() bound to the request locale. */
@@ -24,4 +24,10 @@ export async function getServerT(): Promise<
 > {
   const locale = await getServerLocale();
   return (key, vars) => translate(locale, key, vars);
+}
+
+/** Server-side inline pair: const tr = await getServerTr(); tr("Save", "შენახვა"). */
+export async function getServerTr(): Promise<(en: string, ka: string) => string> {
+  const locale = await getServerLocale();
+  return (en, ka) => (locale === "ka" ? ka : en);
 }

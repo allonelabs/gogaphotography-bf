@@ -4,12 +4,14 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateContractTemplate } from "@/app/lib/goga/actions-contract-template";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Initial = { body_en: string; body_ka: string; body_ru: string };
 
 export function ContractTemplateForm({ initial }: { initial: Initial }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [bodyEn, setBodyEn] = useState(initial.body_en);
   const [bodyKa, setBodyKa] = useState(initial.body_ka);
   const [bodyRu, setBodyRu] = useState(initial.body_ru);
@@ -23,10 +25,15 @@ export function ContractTemplateForm({ initial }: { initial: Initial }) {
           body_ka: bodyKa,
           body_ru: bodyRu,
         });
-        toast.show("Template saved", "success");
+        toast.show(tr("Template saved", "შაბლონი შენახულია"), "success");
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Save failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -36,7 +43,7 @@ export function ContractTemplateForm({ initial }: { initial: Initial }) {
 
   return (
     <div className="space-y-4">
-      <Field label="Body (English)">
+      <Field label={tr("Body (English)", "ტექსტი (ინგლისური)")}>
         <textarea
           value={bodyEn}
           onChange={(e) => setBodyEn(e.target.value)}
@@ -44,7 +51,7 @@ export function ContractTemplateForm({ initial }: { initial: Initial }) {
           className={monoCls}
         />
       </Field>
-      <Field label="Body (Georgian)">
+      <Field label={tr("Body (Georgian)", "ტექსტი (ქართული)")}>
         <textarea
           value={bodyKa}
           onChange={(e) => setBodyKa(e.target.value)}
@@ -52,7 +59,7 @@ export function ContractTemplateForm({ initial }: { initial: Initial }) {
           className={monoCls}
         />
       </Field>
-      <Field label="Body (Russian)">
+      <Field label={tr("Body (Russian)", "ტექსტი (რუსული)")}>
         <textarea
           value={bodyRu}
           onChange={(e) => setBodyRu(e.target.value)}
@@ -66,7 +73,9 @@ export function ContractTemplateForm({ initial }: { initial: Initial }) {
         disabled={pending}
         className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
       >
-        {pending ? "Saving…" : "Save template"}
+        {pending
+          ? tr("Saving…", "ინახება…")
+          : tr("Save template", "შაბლონის შენახვა")}
       </button>
     </div>
   );

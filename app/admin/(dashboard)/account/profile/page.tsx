@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AppShell } from "@/app/components/app/AppShell";
 import { toast } from "@/app/components/app/Toast";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 interface Profile {
   name: string;
@@ -43,12 +44,12 @@ const TIMEZONES = [
   "Asia/Dubai",
 ];
 
-function formatSavedAt(iso: string | null): string {
+function formatSavedAt(iso: string | null, dateLocale?: string): string {
   if (!iso) return "";
   try {
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return "";
-    return d.toLocaleString();
+    return d.toLocaleString(dateLocale);
   } catch {
     return "";
   }
@@ -68,6 +69,8 @@ function pickProfileFields(p: Record<string, unknown>): Profile {
 }
 
 export default function Page() {
+  const { tr, locale } = useLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : undefined;
   const [profile, setProfile] = useState<Profile>(DEFAULT);
   const [draft, setDraft] = useState<Profile>(DEFAULT);
   const [mounted, setMounted] = useState(false);
@@ -97,7 +100,10 @@ export default function Page() {
         );
       })
       .catch(() => {
-        toast("Could not load profile", "warn");
+        toast(
+          tr("Could not load profile", "პროფილის ჩატვირთვა ვერ მოხერხდა"),
+          "warn",
+        );
       });
     return () => {
       cancelled = true;
@@ -135,10 +141,13 @@ export default function Page() {
           ? (body.profile["updatedAt"] as string)
           : new Date().toISOString(),
       );
-      toast("Profile saved", "ok");
+      toast(tr("Profile saved", "პროფილი შენახულია"), "ok");
     } catch (err) {
       toast(
-        `Save failed · ${err instanceof Error ? err.message : "unknown"}`,
+        tr(
+          `Save failed · ${err instanceof Error ? err.message : "unknown"}`,
+          `შენახვა ვერ მოხერხდა · ${err instanceof Error ? err.message : "უცნობი"}`,
+        ),
         "err",
       );
     } finally {
@@ -161,26 +170,29 @@ export default function Page() {
   return (
     <AppShell
       breadcrumb={[
-        { label: "Account", href: "/admin/account" },
-        { label: "Profile" },
+        { label: tr("Account", "ანგარიში"), href: "/admin/account" },
+        { label: tr("Profile", "პროფილი") },
       ]}
       chatScope={{ level: "org" }}
       chatScopeLabel="account/profile"
     >
       <div className="p-10">
         <div className="max-w-3xl">
-          <p className="eyebrow">Profile</p>
+          <p className="eyebrow">{tr("Profile", "პროფილი")}</p>
           <h1
             className="display-h2 mt-3"
             style={{ fontSize: "clamp(30px, 3.8vw, 44px)" }}
           >
-            How you show up
+            {tr("How you show up", "როგორ გამოჩნდებით")}
           </h1>
           <p
             className="mt-3 text-[var(--ink-500)]"
             style={{ fontSize: "17px", fontWeight: 300 }}
           >
-            This is what teammates, operators, and activity logs see.
+            {tr(
+              "This is what teammates, operators, and activity logs see.",
+              "ამას ხედავენ გუნდის წევრები, ოპერატორები და აქტივობის ჟურნალი.",
+            )}
           </p>
 
           {/* Avatar + identity */}
@@ -197,20 +209,29 @@ export default function Page() {
             </div>
             <div>
               <p className="text-[10.5px] font-medium uppercase tracking-[0.22em] text-[var(--ink-500)]">
-                Avatar
+                {tr("Avatar", "ავატარი")}
               </p>
               <div className="mt-2 flex gap-2">
                 <button
                   type="button"
                   onClick={() =>
-                    toast("Avatar upload · ships next round", "info")
+                    toast(
+                      tr(
+                        "Avatar upload · ships next round",
+                        "ავატარის ატვირთვა · მალე დაემატება",
+                      ),
+                      "info",
+                    )
                   }
                   className="h-8 rounded-full bg-[var(--bg-surface-alt)] px-4 text-[12.5px] font-medium text-[var(--ink-900)] transition hover:bg-[var(--bg-sunken)]"
                 >
-                  Upload image
+                  {tr("Upload image", "სურათის ატვირთვა")}
                 </button>
                 <span className="inline-flex h-8 items-center text-[12.5px] text-[var(--ink-500)]">
-                  Initials are the default for now
+                  {tr(
+                    "Initials are the default for now",
+                    "ჯერჯერობით ინიციალები არის ნაგულისხმევი",
+                  )}
                 </span>
               </div>
             </div>
@@ -218,7 +239,7 @@ export default function Page() {
 
           {/* Form */}
           <div className="mt-10 grid gap-5">
-            <Field label="Full name">
+            <Field label={tr("Full name", "სრული სახელი")}>
               <input
                 value={draft.name}
                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
@@ -226,7 +247,7 @@ export default function Page() {
               />
             </Field>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Email">
+              <Field label={tr("Email", "ელფოსტა")}>
                 <input
                   type="email"
                   value={draft.email}
@@ -236,7 +257,7 @@ export default function Page() {
                   className="input"
                 />
               </Field>
-              <Field label="Role">
+              <Field label={tr("Role", "როლი")}>
                 <input
                   value={draft.role}
                   onChange={(e) => setDraft({ ...draft, role: e.target.value })}
@@ -244,7 +265,7 @@ export default function Page() {
                 />
               </Field>
             </div>
-            <Field label="Timezone">
+            <Field label={tr("Timezone", "დროის სარტყელი")}>
               <select
                 value={draft.timezone}
                 onChange={(e) =>
@@ -257,7 +278,7 @@ export default function Page() {
                 ))}
               </select>
             </Field>
-            <Field label="Short bio">
+            <Field label={tr("Short bio", "მოკლე ბიოგრაფია")}>
               <textarea
                 rows={3}
                 value={draft.bio}
@@ -266,7 +287,7 @@ export default function Page() {
               />
             </Field>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Twitter / X">
+              <Field label={tr("Twitter / X", "Twitter / X")}>
                 <input
                   value={draft.twitter}
                   onChange={(e) =>
@@ -276,7 +297,7 @@ export default function Page() {
                   placeholder="@handle"
                 />
               </Field>
-              <Field label="GitHub">
+              <Field label={tr("GitHub", "GitHub")}>
                 <input
                   value={draft.github}
                   onChange={(e) =>
@@ -293,7 +314,7 @@ export default function Page() {
           <div className="mt-6 flex items-center justify-end gap-3">
             {savedAt && !dirty && !saving ? (
               <span className="text-[11.5px] text-[var(--ink-500)]">
-                Saved {formatSavedAt(savedAt)}
+                {tr("Saved", "შენახულია")} {formatSavedAt(savedAt, dateLocale)}
               </span>
             ) : null}
             <button
@@ -302,7 +323,7 @@ export default function Page() {
               disabled={!dirty || saving}
               className="h-10 rounded-full px-5 text-[13px] font-medium text-[var(--ink-500)] transition hover:text-[var(--ink-900)] disabled:opacity-40"
             >
-              Reset
+              {tr("Reset", "გაუქმება")}
             </button>
             <button
               type="button"
@@ -310,7 +331,9 @@ export default function Page() {
               disabled={!dirty || saving}
               className="h-10 rounded-full bg-[var(--ink-900)] px-6 text-[13px] font-medium text-white transition hover:bg-black disabled:opacity-40"
             >
-              {saving ? "Saving…" : "Save changes"}
+              {saving
+                ? tr("Saving…", "ინახება…")
+                : tr("Save changes", "ცვლილებების შენახვა")}
             </button>
           </div>
         </div>

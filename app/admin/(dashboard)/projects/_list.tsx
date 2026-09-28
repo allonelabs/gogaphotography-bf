@@ -10,6 +10,7 @@ import {
   togglePublish,
   deleteProject,
 } from "@/app/lib/goga/actions-projects";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 export type ProjectRow = {
   id: string;
@@ -23,6 +24,7 @@ export type ProjectRow = {
 
 export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [rows, setRows] = useState<ProjectRow[]>(initial);
   const [, start] = useTransition();
   const dragIdRef = useRef<string | null>(null);
@@ -69,7 +71,7 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
           <div className="grid grid-cols-[64px_1fr] items-center gap-y-2 gap-x-3 px-4 py-3 sm:grid-cols-[24px_64px_1fr_70px_auto_auto_auto]">
             <span
               aria-hidden="true"
-              title="Drag to reorder"
+              title={tr("Drag to reorder", "გადათრიეთ დასალაგებლად")}
               className="hidden select-none text-[16px] text-[var(--ink-300)] cursor-grab active:cursor-grabbing sm:inline"
             >
               ⋮⋮
@@ -100,7 +102,10 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
               </div>
               {p.published && !p.hasHero && (
                 <div className="truncate text-[11px] text-amber-700">
-                  No hero image — hidden from public albums
+                  {tr(
+                    "No hero image — hidden from public albums",
+                    "მთავარი ფოტო არ არის — დამალულია საჯარო ალბომებში",
+                  )}
                 </div>
               )}
             </Link>
@@ -112,7 +117,9 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
                   : "bg-slate-100 text-slate-700"
               }`}
             >
-              {p.published ? "Live" : "Draft"}
+              {p.published
+                ? tr("Live", "გამოქვეყნებული")
+                : tr("Draft", "მონახაზი")}
             </span>
 
             <TogglePublishButton
@@ -129,7 +136,7 @@ export function ProjectsList({ initial }: { initial: ProjectRow[] }) {
               href={`/admin/projects/${p.id}`}
               className="rounded-full border border-black/10 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--ink-700)] transition hover:bg-slate-50"
             >
-              Edit
+              {tr("Edit", "რედაქტირება")}
             </Link>
 
             <DeleteButton
@@ -156,6 +163,7 @@ function TogglePublishButton({
   onChange: (next: boolean) => void;
 }) {
   const router = useRouter();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -174,7 +182,11 @@ function TogglePublishButton({
         })
       }
     >
-      {pending ? "…" : published ? "Unpublish" : "Publish"}
+      {pending
+        ? "…"
+        : published
+          ? tr("Unpublish", "გამოქვეყნების გაუქმება")
+          : tr("Publish", "გამოქვეყნება")}
     </button>
   );
 }
@@ -190,6 +202,7 @@ function DeleteButton({
 }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [pending, start] = useTransition();
   return (
     <button
@@ -199,7 +212,10 @@ function DeleteButton({
       onClick={() => {
         if (
           !confirm(
-            `Delete "${title}" and all its photos? This cannot be undone.`,
+            tr(
+              `Delete "${title}" and all its photos? This cannot be undone.`,
+              `წაიშალოს „${title}“ და მისი ყველა ფოტო? ეს ქმედება შეუქცევადია.`,
+            ),
           )
         )
           return;
@@ -211,14 +227,17 @@ function DeleteButton({
           } catch (e) {
             rethrowIfRedirect(e);
             toast.show(
-              `Delete failed: ${e instanceof Error ? e.message : e}`,
+              tr(
+                `Delete failed: ${e instanceof Error ? e.message : e}`,
+                `წაშლა ვერ მოხერხდა: ${e instanceof Error ? e.message : e}`,
+              ),
               "error",
             );
           }
         });
       }}
     >
-      {pending ? "Deleting…" : "Delete"}
+      {pending ? tr("Deleting…", "იშლება…") : tr("Delete", "წაშლა")}
     </button>
   );
 }

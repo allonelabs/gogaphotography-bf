@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateSiteSettings } from "@/app/lib/goga/actions-site-settings";
 import { useToast } from "@/app/admin/(dashboard)/_components/Toaster";
+import { useLocale } from "@/app/lib/i18n/useLocale";
 
 type Settings = {
   page_transitions: boolean;
@@ -17,6 +18,7 @@ type Settings = {
 export function SiteSettingsForm({ initial }: { initial: Settings }) {
   const router = useRouter();
   const toast = useToast();
+  const { tr } = useLocale();
   const [state, setState] = useState<Settings>(initial);
   const [pending, start] = useTransition();
 
@@ -24,10 +26,18 @@ export function SiteSettingsForm({ initial }: { initial: Settings }) {
     start(async () => {
       try {
         await updateSiteSettings(state);
-        toast.show("Site settings saved", "success");
+        toast.show(
+          tr("Site settings saved", "საიტის პარამეტრები შენახულია"),
+          "success",
+        );
         router.refresh();
       } catch (e) {
-        toast.show(e instanceof Error ? e.message : "Save failed", "error");
+        toast.show(
+          e instanceof Error
+            ? e.message
+            : tr("Save failed", "შენახვა ვერ მოხერხდა"),
+          "error",
+        );
       }
     });
   }
@@ -35,43 +45,60 @@ export function SiteSettingsForm({ initial }: { initial: Settings }) {
   return (
     <div className="space-y-3">
       <Toggle
-        label="Page transitions"
-        hint="Cross-document View Transitions (fade/rise) between pages, with the 850ms fallback for browsers without support."
+        label={tr("Page transitions", "გვერდებს შორის გადასვლა")}
+        hint={tr(
+          "Cross-document View Transitions (fade/rise) between pages, with the 850ms fallback for browsers without support.",
+          "დოკუმენტთაშორისი View Transitions (გაქრობა/აწევა) გვერდებს შორის, 850ms fallback-ით ბრაუზერებისთვის მხარდაჭერის გარეშე.",
+        )}
         checked={state.page_transitions}
         onChange={(v) => setState((s) => ({ ...s, page_transitions: v }))}
       />
       <Toggle
-        label="Reveal animations"
-        hint="Headings, text blocks and images fade/rise into view on scroll."
+        label={tr("Reveal animations", "გამოჩენის ანიმაციები")}
+        hint={tr(
+          "Headings, text blocks and images fade/rise into view on scroll.",
+          "სათაურები, ტექსტის ბლოკები და სურათები ჩნდებიან სქროლისას.",
+        )}
         checked={state.reveal_animations}
         onChange={(v) => setState((s) => ({ ...s, reveal_animations: v }))}
       />
       <Toggle
-        label="Lightbox captions"
-        hint="Show the photo's caption inside the lightbox."
+        label={tr("Lightbox captions", "ლაითბოქსის წარწერები")}
+        hint={tr(
+          "Show the photo's caption inside the lightbox.",
+          "აჩვენე ფოტოს წარწერა ლაითბოქსში.",
+        )}
         checked={state.lightbox_captions}
         onChange={(v) => setState((s) => ({ ...s, lightbox_captions: v }))}
       />
       <Toggle
-        label="Price calculator"
-        hint="Enable the add-ons + extra-hours calculator on /book and /services."
+        label={tr("Price calculator", "ფასის კალკულატორი")}
+        hint={tr(
+          "Enable the add-ons + extra-hours calculator on /book and /services.",
+          "ჩართე დამატებებისა და დამატებითი საათების კალკულატორი გვერდებზე /book და /services.",
+        )}
         checked={state.calculator_enabled}
         onChange={(v) => setState((s) => ({ ...s, calculator_enabled: v }))}
       />
       <Toggle
-        label="FAQ photos"
-        hint="Scatter a few very small photos around an answer when a question is opened. Photos come from the “FAQ page” album (homepage photos until you add some)."
+        label={tr("FAQ photos", "ხშირი კითხვების ფოტოები")}
+        hint={tr(
+          "Scatter a few very small photos around an answer when a question is opened. Photos come from the “FAQ page” album (homepage photos until you add some).",
+          "პასუხის ირგვლივ გაფანტე რამდენიმე პატარა ფოტო კითხვის გახსნისას. ფოტოები მოდის „FAQ page“ ალბომიდან (მთავარი გვერდის ფოტოები, სანამ თავად არ დაამატებთ).",
+        )}
         checked={state.faq_photos}
         onChange={(v) => setState((s) => ({ ...s, faq_photos: v }))}
       />
 
       <section className="rounded-2xl bg-white p-5 ring-1 ring-black/5">
         <h3 className="text-[14px] font-medium text-[var(--ink-900)]">
-          Caption mode
+          {tr("Caption mode", "წარწერის რეჟიმი")}
         </h3>
         <p className="mt-1 text-[12px] text-[var(--ink-500)]">
-          How photo captions show on the grid — desktop only; touch devices
-          always use a bottom overlay.
+          {tr(
+            "How photo captions show on the grid — desktop only; touch devices always use a bottom overlay.",
+            "როგორ ჩნდება ფოტოს წარწერა ბადეზე — მხოლოდ დესქტოპზე; სენსორულ მოწყობილობებზე ყოველთვის ქვედა ოვერლეი გამოიყენება.",
+          )}
         </p>
         <div className="mt-3 flex gap-2">
           {(["cursor", "bottom", "off"] as const).map((mode) => (
@@ -86,10 +113,10 @@ export function SiteSettingsForm({ initial }: { initial: Settings }) {
               }`}
             >
               {mode === "cursor"
-                ? "Follows cursor"
+                ? tr("Follows cursor", "კურსორს მისდევს")
                 : mode === "bottom"
-                  ? "Bottom overlay"
-                  : "Off"}
+                  ? tr("Bottom overlay", "ქვედა ოვერლეი")
+                  : tr("Off", "გამორთული")}
             </button>
           ))}
         </div>
@@ -101,7 +128,7 @@ export function SiteSettingsForm({ initial }: { initial: Settings }) {
         disabled={pending}
         className="rounded-full bg-[var(--ao-accent)] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white transition hover:bg-[var(--ao-accent-hover)] disabled:opacity-50"
       >
-        {pending ? "Saving…" : "Save"}
+        {pending ? tr("Saving…", "ინახება…") : tr("Save", "შენახვა")}
       </button>
     </div>
   );

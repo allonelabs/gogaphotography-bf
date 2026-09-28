@@ -2,9 +2,16 @@ import Link from "next/link";
 import { AppShell } from "@/app/components/app/AppShell";
 import { gogaAdmin } from "@/app/lib/supabase/goga";
 import { FilterChips } from "@/app/admin/(dashboard)/_components/FilterChips";
-import { EmptyState, Icon } from "@/app/admin/(dashboard)/_components/EmptyState";
-import { Pagination, parsePage } from "@/app/admin/(dashboard)/_components/Pagination";
+import {
+  EmptyState,
+  Icon,
+} from "@/app/admin/(dashboard)/_components/EmptyState";
+import {
+  Pagination,
+  parsePage,
+} from "@/app/admin/(dashboard)/_components/Pagination";
 import { RealtimeRefresh } from "@/app/admin/(dashboard)/_components/useRealtimeRefresh";
+import { getServerTr, getServerLocale } from "@/app/lib/i18n/server";
 
 const PAGE_SIZE = 50;
 
@@ -17,12 +24,16 @@ const STATUS_TONE: Record<string, string> = {
   signed: "bg-slate-900 text-white",
   void: "bg-slate-100 text-slate-400 line-through",
 };
-const STATUS_LABELS: Record<string, string> = {
-  draft: "Draft",
-  sent: "Sent",
-  signed: "Signed",
-  void: "Void",
-};
+function statusLabels(
+  tr: (en: string, ka: string) => string,
+): Record<string, string> {
+  return {
+    draft: tr("Draft", "მონახაზი"),
+    sent: tr("Sent", "გაგზავნილი"),
+    signed: tr("Signed", "ხელმოწერილი"),
+    void: tr("Void", "გაუქმებული"),
+  };
+}
 const FILTER_STATUSES = ["draft", "sent", "signed", "void"] as const;
 type FilterStatus = (typeof FILTER_STATUSES)[number];
 
@@ -31,6 +42,10 @@ type Props = {
 };
 
 export default async function ContractsPage({ searchParams }: Props) {
+  const tr = await getServerTr();
+  const locale = await getServerLocale();
+  const dateLocale = locale === "ka" ? "ka-GE" : undefined;
+  const STATUS_LABELS = statusLabels(tr);
   const sp = await searchParams;
   const sb = gogaAdmin();
   const active: FilterStatus | null = (
@@ -64,19 +79,25 @@ export default async function ContractsPage({ searchParams }: Props) {
 
   return (
     <AppShell
-      breadcrumb={[{ label: "Pipeline" }, { label: "Contracts" }]}
+      breadcrumb={[
+        { label: tr("Pipeline", "პროცესი") },
+        { label: tr("Contracts", "ხელშეკრულებები") },
+      ]}
       chatScope={{ level: "tool", tool: "contracts" }}
-      chatScopeLabel="Contracts"
+      chatScopeLabel={tr("Contracts", "ხელშეკრულებები")}
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
         <header className="mb-5">
           <h1 className="text-xl font-semibold tracking-[-0.022em] text-[var(--ink-900)] sm:text-2xl">
-            Contracts
+            {tr("Contracts", "ხელშეკრულებები")}
           </h1>
           <p className="mt-1 text-[12px] uppercase tracking-[0.22em] text-[var(--ink-500)]">
             {active
-              ? `${items.length} of ${totalAll} · filtered by ${STATUS_LABELS[active]}`
-              : `${totalAll} total`}
+              ? tr(
+                  `${items.length} of ${totalAll} · filtered by ${STATUS_LABELS[active]}`,
+                  `${items.length} / ${totalAll} · გაფილტრულია: ${STATUS_LABELS[active]}`,
+                )
+              : tr(`${totalAll} total`, `სულ ${totalAll}`)}
           </p>
         </header>
 
@@ -96,17 +117,29 @@ export default async function ContractsPage({ searchParams }: Props) {
             icon={<Icon name="scroll" />}
             title={
               active
-                ? `Nothing in the “${STATUS_LABELS[active]}” bucket`
-                : "No contracts yet"
+                ? tr(
+                    `Nothing in the "${STATUS_LABELS[active]}" bucket`,
+                    `„${STATUS_LABELS[active]}" კატეგორიაში არაფერია`,
+                  )
+                : tr("No contracts yet", "ხელშეკრულებები ჯერ არ არის")
             }
             description={
               active
-                ? "Try a different status — or clear the filter."
-                : "Open a booking detail page and click “Create / open contract” to start one."
+                ? tr(
+                    "Try a different status — or clear the filter.",
+                    "სცადეთ სხვა სტატუსი — ან გაასუფთავეთ ფილტრი.",
+                  )
+                : tr(
+                    'Open a booking detail page and click "Create / open contract" to start one.',
+                    'გახსენით ჯავშნის დეტალები და დააჭირეთ „ხელშეკრულების შექმნა/გახსნა" დასაწყებად.',
+                  )
             }
             secondary={
               active
-                ? { label: "All contracts", href: "/admin/contracts" }
+                ? {
+                    label: tr("All contracts", "ყველა ხელშეკრულება"),
+                    href: "/admin/contracts",
+                  }
                 : undefined
             }
           />
@@ -123,7 +156,8 @@ export default async function ContractsPage({ searchParams }: Props) {
                 >
                   <div>
                     <div className="text-[14px] font-medium text-[var(--ink-900)]">
-                      {c.signer_name ?? "(no signer)"}
+                      {c.signer_name ??
+                        tr("(no signer)", "(ხელმომწერელი არ არის)")}
                     </div>
                     <div className="text-[12px] text-[var(--ink-500)]">
                       {c.signer_email ?? ""}
@@ -131,10 +165,19 @@ export default async function ContractsPage({ searchParams }: Props) {
                   </div>
                   <span className="text-[12px] text-[var(--ink-500)]">
                     {c.signed_at
-                      ? `signed ${new Date(c.signed_at).toLocaleDateString()}`
+                      ? tr(
+                          `signed ${new Date(c.signed_at).toLocaleDateString(dateLocale)}`,
+                          `ხელმოწერილია ${new Date(c.signed_at).toLocaleDateString(dateLocale)}`,
+                        )
                       : c.sent_at
-                        ? `sent ${new Date(c.sent_at).toLocaleDateString()}`
-                        : `created ${c.created_at ? new Date(c.created_at).toLocaleDateString() : "—"}`}
+                        ? tr(
+                            `sent ${new Date(c.sent_at).toLocaleDateString(dateLocale)}`,
+                            `გაგზავნილია ${new Date(c.sent_at).toLocaleDateString(dateLocale)}`,
+                          )
+                        : tr(
+                            `created ${c.created_at ? new Date(c.created_at).toLocaleDateString(dateLocale) : "—"}`,
+                            `შექმნილია ${c.created_at ? new Date(c.created_at).toLocaleDateString(dateLocale) : "—"}`,
+                          )}
                   </span>
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-center text-[10px] uppercase tracking-[0.14em] ${
